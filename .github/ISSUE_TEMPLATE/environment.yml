@@ -1,6 +1,6 @@
-name: "\U0001F30F Meeting"
-description: "팀원들과 논의할 내용이 있나요?"
-labels: "\U0001F30F Meeting"
+name: "\U0001F30F Environment"
+description: "추가적인 환경설정이 필요한가요?"
+labels: "\U0001F30F Environment"
 body:
   - type: textarea
     attributes:
