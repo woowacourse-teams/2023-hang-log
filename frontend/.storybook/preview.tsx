@@ -23,7 +23,7 @@ const preview: Preview = {
   },
 };
 
-export default preview;
+export default previexw;
 
 export const decorators = [
   (Story) => (
