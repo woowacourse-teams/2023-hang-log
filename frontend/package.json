@@ -1,0 +1,73 @@
+{
+  "name": "hang-log",
+  "version": "0.0.1",
+  "description": "장소 기반 여행 기록 서비스, \"행록\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --mode development",
+    "dev": "webpack serve --mode development --open --hot",
+    "build": "webpack --mode production",
+    "storybook": "storybook dev -p 6006",
+    "prepare": "husky install",
+    "build-storybook": "storybook build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@tanstack/react-query": "^4.29.19",
+    "axios": "^1.4.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.1",
+    "recoil": "^0.7.7"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@storybook/addon-essentials": "^7.0.25",
+    "@storybook/addon-interactions": "^7.0.25",
+    "@storybook/addon-links": "^7.0.25",
+    "@storybook/blocks": "^7.0.25",
+    "@storybook/react": "^7.0.25",
+    "@storybook/react-webpack5": "^7.0.25",
+    "@storybook/testing-library": "^0.0.14-next.2",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^8.44.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.12",
+    "html-webpack-plugin": "^5.5.3",
+    "msw": "^1.2.2",
+    "msw-storybook-addon": "^1.8.0",
+    "prettier": "^2.8.8",
+    "storybook": "^7.0.25",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
