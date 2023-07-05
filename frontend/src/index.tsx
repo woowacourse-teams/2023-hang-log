@@ -1,4 +1,3 @@
-import App from '@/App';
 import { Global, ThemeProvider } from '@emotion/react';
 import AppRouter from '@router/AppRouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

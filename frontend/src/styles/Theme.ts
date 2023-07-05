@@ -89,10 +89,24 @@ const borderRadius = {
   lg: '16px',
 };
 
+const boxShadow = {
+  shadow1: '0px 0px 0px 1px rgba(0, 0, 0, 0.05)',
+  shadow2: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
+  shadow3: '0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)',
+  shadow4: '0px 2px 4px -1px rgba(0, 0, 0, 0.06), 0px 4px 6px -1px rgba(0, 0, 0, 0.10)',
+  shadow5: '1px 2px 4px 0px rgba(0, 0, 0, 0.15)',
+  shadow6: '0px 4px 6px -2px rgba(0, 0, 0, 0.05), 0px 10px 15px -3px rgba(0, 0, 0, 0.10)',
+  shadow7: '0px 10px 10px -5px rgba(0, 0, 0, 0.04), 0px 20px 25px -5px rgba(0, 0, 0, 0.10)',
+  shadow8: '0px 0px 5px 0px rgba(0, 0, 0, 0.15)',
+  shadow9: '0px 0px 10px 0px rgba(0, 0, 0, 0.20)',
+  shadow10: '0px 2px 4px 0px rgba(0, 0, 0, 0.06) inset',
+};
+
 export const Theme = {
   color,
   text,
   heading,
   spacer,
   borderRadius,
+  boxShadow,
 };

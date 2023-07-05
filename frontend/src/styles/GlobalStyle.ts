@@ -22,4 +22,9 @@ export const GlobalStyle = css`
     font-size: 16px;
     color: ${Theme.color.gray800};
   }
+
+  a {
+    text-decoration: none;
+    color: ${Theme.color.blue700};
+  }
 `;

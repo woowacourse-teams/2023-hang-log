@@ -2,8 +2,11 @@ import '@emotion/react';
 
 declare module '@emotion/react' {
   export interface Theme {
-    [key: string]: {
-      [key: string]: string | { [key: string]: string };
-    };
+    color: { [key: string]: string };
+    text: TextStyle;
+    heading: TextStyle;
+    spacer: { [key: string]: string };
+    borderRadius: { [key: string]: string };
+    boxShadow: { [key: string]: string };
   }
 }
