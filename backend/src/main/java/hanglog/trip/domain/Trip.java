@@ -40,7 +40,7 @@ public class Trip extends BaseTimeEntity {
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCity> tripCities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip_day", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripDay> tripDays = new ArrayList<>();
 
     public Trip(
