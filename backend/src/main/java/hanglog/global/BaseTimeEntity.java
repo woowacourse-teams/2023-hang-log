@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public final class BaseTimeEntity {
+public class BaseTimeEntity {
 
     @CreatedDate
     private LocalDateTime createdAt;
