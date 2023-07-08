@@ -1,9 +1,11 @@
-package hanglog.trip.domain;
+package hanglog.trip.domain.place;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.trip.domain.category.Category;
+import hanglog.trip.domain.item.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

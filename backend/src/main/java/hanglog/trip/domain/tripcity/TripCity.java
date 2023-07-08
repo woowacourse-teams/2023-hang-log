@@ -1,10 +1,12 @@
-package hanglog.trip.domain;
+package hanglog.trip.domain.tripcity;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import jakarta.persistence.Column;
+import hanglog.global.BaseTimeEntity;
+import hanglog.trip.domain.city.City;
+import hanglog.trip.domain.trip.Trip;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,25 +18,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class DayLog {
+public class TripCity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private Integer ordinal;
-
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "trip_id", nullable = false)
+    @JoinColumn(name = "trip_id")
     private Trip trip;
 
-    public DayLog(final String title, final Integer ordinal, final Trip trip) {
-        this.title = title;
-        this.ordinal = ordinal;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    public TripCity(final Trip trip, final City city) {
         this.trip = trip;
+        this.city = city;
     }
 }

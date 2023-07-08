@@ -1,4 +1,4 @@
-package hanglog.trip.domain;
+package hanglog.trip.domain.category;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

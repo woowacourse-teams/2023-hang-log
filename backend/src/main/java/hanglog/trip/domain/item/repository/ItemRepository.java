@@ -1,6 +1,6 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.domain.item.repository;
 
-import hanglog.trip.domain.Item;
+import hanglog.trip.domain.item.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
