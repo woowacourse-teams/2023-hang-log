@@ -4,15 +4,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseTimeEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,17 +33,11 @@ public class Trip extends BaseTimeEntity {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    private List<TripCity> tripCities = new ArrayList<>();
-
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    private List<TripDay> tripDays = new ArrayList<>();
-
     public Trip(
-            String title,
-            LocalDate startDate,
-            LocalDate endDate,
-            String description
+            final String title,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String description
     ) {
         this.title = title;
         this.startDate = startDate;

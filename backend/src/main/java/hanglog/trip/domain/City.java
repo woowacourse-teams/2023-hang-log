@@ -8,10 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,9 +26,6 @@ public class City extends BaseTimeEntity {
 
     @Column(nullable = false)
     private BigDecimal longitude;
-
-    @OneToMany(mappedBy = "city")
-    private List<TripCity> tripCities = new ArrayList<>();
 
     public City(BigDecimal latitude, BigDecimal longitude) {
         this.latitude = latitude;
