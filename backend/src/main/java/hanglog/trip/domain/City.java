@@ -21,10 +21,10 @@ public class City extends BaseTimeEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 16, scale = 13)
     private BigDecimal latitude;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 16, scale = 13)
     private BigDecimal longitude;
 
     public City(final BigDecimal latitude, final BigDecimal longitude) {

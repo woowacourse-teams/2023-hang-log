@@ -37,6 +37,10 @@ public class Item {
 
     private String memo;
 
+    @ManyToOne
+    @JoinColumn(name = "place_id", nullable = false)
+    private Place place;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
@@ -45,12 +49,14 @@ public class Item {
                 final String title,
                 final Long rating,
                 final String memo,
+                final Place place,
                 final DayLog dayLog
     ) {
         this.itemType = itemType;
         this.title = title;
         this.rating = rating;
         this.memo = memo;
+        this.place = place;
         this.dayLog = dayLog;
     }
 }
