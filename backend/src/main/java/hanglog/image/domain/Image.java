@@ -4,6 +4,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.global.BaseEntity;
 import hanglog.trip.domain.Item;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Image {
+public class Image extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

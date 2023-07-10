@@ -2,6 +2,7 @@ package hanglog.category;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
     private Long id;

@@ -4,9 +4,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.global.BaseTimeEntity;
-import hanglog.trip.domain.City;
-import hanglog.trip.domain.Trip;
+import hanglog.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class TripCity extends BaseTimeEntity {
+public class TripCity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.global.BaseEntity;
 import hanglog.trip.domain.type.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Item {
+public class Item extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -31,6 +32,9 @@ public class Item {
 
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
+    private Integer ordinal;
 
     @Column(nullable = false)
     private Long rating;
@@ -47,6 +51,7 @@ public class Item {
 
     public Item(final ItemType itemType,
                 final String title,
+                final Integer ordinal,
                 final Long rating,
                 final String memo,
                 final Place place,
@@ -54,6 +59,7 @@ public class Item {
     ) {
         this.itemType = itemType;
         this.title = title;
+        this.ordinal = ordinal;
         this.rating = rating;
         this.memo = memo;
         this.place = place;

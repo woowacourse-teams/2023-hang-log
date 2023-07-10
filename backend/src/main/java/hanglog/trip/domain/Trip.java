@@ -3,7 +3,7 @@ package hanglog.trip.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.global.BaseTimeEntity;
+import hanglog.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Trip extends BaseTimeEntity {
+public class Trip extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

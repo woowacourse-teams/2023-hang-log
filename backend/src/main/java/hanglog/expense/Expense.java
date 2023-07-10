@@ -5,6 +5,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.category.Category;
+import hanglog.global.BaseEntity;
 import hanglog.trip.domain.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Expense {
+public class Expense extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
