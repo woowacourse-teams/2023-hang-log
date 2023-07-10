@@ -27,7 +27,7 @@ public class City extends BaseTimeEntity {
     @Column(nullable = false)
     private BigDecimal longitude;
 
-    public City(BigDecimal latitude, BigDecimal longitude) {
+    public City(final BigDecimal latitude, final BigDecimal longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

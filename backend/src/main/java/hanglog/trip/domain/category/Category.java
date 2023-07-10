@@ -20,7 +20,7 @@ public class Category {
     @Column(nullable = false)
     private Long googleApiId;
 
-    public Category(String name, Long googleApiId) {
+    public Category(final String name, final Long googleApiId) {
         this.name = name;
         this.googleApiId = googleApiId;
     }

@@ -4,8 +4,8 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.trip.domain.item.Item;
 import hanglog.trip.domain.category.Category;
+import hanglog.trip.domain.item.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,10 +39,10 @@ public class Expense {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Expense(String currency,
-                   Integer amount,
-                   Item item,
-                   Category category
+    public Expense(final String currency,
+                   final Integer amount,
+                   final Item item,
+                   final Category category
     ) {
         this.currency = currency;
         this.amount = amount;
