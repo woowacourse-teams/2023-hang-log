@@ -1,4 +1,4 @@
-package hanglog.picture.domain;
+package hanglog.image.domain;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Picture {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -34,7 +34,7 @@ public class Picture {
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    public Picture(final byte[] blobImg, final Item item) {
+    public Image(final byte[] blobImg, final Item item) {
         this.blobImg = blobImg;
         this.item = item;
     }
