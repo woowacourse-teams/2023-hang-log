@@ -6,18 +6,17 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 public class TripRequest {
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy.MM.dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy.MM.dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @NotEmpty

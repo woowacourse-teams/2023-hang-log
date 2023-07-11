@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -31,7 +32,20 @@ public class Trip extends BaseEntity {
     private LocalDate endDate;
 
     @Column(nullable = false)
+    @ColumnDefault("''")
     private String description;
+
+    public Trip(final Long id,
+                final String title,
+                final LocalDate startDate,
+                final LocalDate endDate,
+                final String description) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+    }
 
     public Trip(
             final String title,
@@ -39,9 +53,11 @@ public class Trip extends BaseEntity {
             final LocalDate endDate,
             final String description
     ) {
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
+        this(null, title, startDate, endDate, description);
+    }
+
+    public Trip(final String title, final LocalDate startDate, final LocalDate endDate
+    ) {
+        this(title, startDate, endDate, "");
     }
 }
