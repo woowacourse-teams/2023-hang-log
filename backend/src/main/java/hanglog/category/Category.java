@@ -21,9 +21,9 @@ public class Category extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private Long googleApiId;
+    private String googleApiId;
 
-    public Category(final String name, final Long googleApiId) {
+    public Category(final String name, final String googleApiId) {
         this.name = name;
         this.googleApiId = googleApiId;
     }
