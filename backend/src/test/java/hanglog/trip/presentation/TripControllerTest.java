@@ -26,19 +26,19 @@ import org.springframework.test.web.servlet.MockMvc;
 class TripControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @MockBean
-    TripService tripService;
+    private TripService tripService;
 
     @DisplayName("단일 여행을 생성할 수 있다.")
     @Test
     void createTrip() throws Exception {
         // given
-        TripRequest tripRequest = new TripRequest(LocalDate.of(2023, 7, 2),
+        final TripRequest tripRequest = new TripRequest(LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L));
 
