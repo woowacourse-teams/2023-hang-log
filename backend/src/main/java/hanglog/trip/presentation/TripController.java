@@ -23,5 +23,4 @@ public class TripController {
         final Long id = tripService.save(tripRequest);
         return ResponseEntity.created(URI.create("/trips/" + id)).build();
     }
-
 }
