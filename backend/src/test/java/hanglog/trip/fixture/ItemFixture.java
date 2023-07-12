@@ -10,7 +10,8 @@ public class ItemFixture {
     private static DayLog dayLog = new DayLog("첫날",
             1,
             TripFixture.LONDON_TRIP);
-    public static Item LONDON_EYE_ITEM = new Item(ItemType.SPOT,
+    public static Item LONDON_EYE_ITEM = new Item(1L,
+            ItemType.SPOT,
             "런던 아이",
             1,
             4.5,
