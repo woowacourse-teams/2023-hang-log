@@ -13,15 +13,15 @@ public class TripRequest {
 
     @NotNull(message = "여행 시작 날짜를 입력해주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
+    private final LocalDate startDate;
 
     @NotNull(message = "여행 종료 날짜를 입력해주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    private final LocalDate endDate;
 
     @NotNull(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
     @NotEmpty(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
-    private List<Long> cityIds;
+    private final List<Long> cityIds;
 
     public TripRequest(final LocalDate startDate, final LocalDate endDate, final List<Long> cityIds) {
         this.startDate = startDate;
