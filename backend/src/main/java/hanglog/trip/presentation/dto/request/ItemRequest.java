@@ -12,6 +12,7 @@ public class ItemRequest {
     private Integer dayLogOrdinal;
     private Double rating;
     private String memo;
+    private Long dayLogId;
     private PlaceRequest place;
     private ExpenseRequest expense;
     // TODO: images 추가 필요

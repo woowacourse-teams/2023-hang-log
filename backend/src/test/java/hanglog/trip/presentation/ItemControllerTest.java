@@ -55,6 +55,7 @@ public class ItemControllerTest {
                 1,
                 4.5,
                 "에펠탑을 방문",
+                1L,
                 placeRequest,
                 expenseRequest
         );
