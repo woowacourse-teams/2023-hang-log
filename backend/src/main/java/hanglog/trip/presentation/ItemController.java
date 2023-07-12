@@ -1,5 +1,6 @@
 package hanglog.trip.presentation;
 
+import hanglog.trip.presentation.dto.request.ItemRequest;
 import hanglog.trip.service.ItemService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;

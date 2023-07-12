@@ -1,4 +1,4 @@
-package hanglog.trip.presentation;
+package hanglog.trip.presentation.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package hanglog.trip.presentation;
+package hanglog.trip.presentation.dto.request;
 
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
