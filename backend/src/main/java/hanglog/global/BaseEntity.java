@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
@@ -29,4 +30,11 @@ public class BaseEntity {
     @Enumerated(value = STRING)
     @ColumnDefault("'USABLE'")
     private StatusType status;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.status == null) {
+            this.status = StatusType.USABLE;
+        }
+    }
 }
