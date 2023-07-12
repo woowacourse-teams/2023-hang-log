@@ -45,7 +45,7 @@ public class ItemControllerTest {
                 "에펠탑주소",
                 new BigDecimal(38.123456),
                 new BigDecimal(39.123456),
-                "문화"
+                1L
         );
 
         final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, "문화");

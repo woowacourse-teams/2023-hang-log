@@ -13,5 +13,5 @@ public class PlaceRequest {
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private String category;
+    private Long categoryId;
 }
