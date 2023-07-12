@@ -1,4 +1,4 @@
-= HanngLog
+= HangLog
 :toc: left
 :source-highlighter: highlightjs
 :sectlinks:
