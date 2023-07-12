@@ -37,7 +37,7 @@ public class Item extends BaseEntity {
     private Integer ordinal;
 
     @Column(nullable = false)
-    private Long rating;
+    private Double rating;
 
     private String memo;
 
@@ -52,7 +52,7 @@ public class Item extends BaseEntity {
     public Item(final ItemType itemType,
                 final String title,
                 final Integer ordinal,
-                final Long rating,
+                final Double rating,
                 final String memo,
                 final Place place,
                 final DayLog dayLog
