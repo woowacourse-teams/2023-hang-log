@@ -11,15 +11,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 public class TripRequest {
 
-    @NotNull
+    @NotNull(message = "여행 시작 날짜를 입력해주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @NotNull
+    @NotNull(message = "여행 종료 날짜를 입력해주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @NotEmpty
+    @NotNull(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
+    @NotEmpty(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
     private List<Long> cityIds;
 
     public TripRequest(final LocalDate startDate, final LocalDate endDate, final List<Long> cityIds) {
