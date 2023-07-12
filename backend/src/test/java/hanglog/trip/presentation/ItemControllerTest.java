@@ -52,9 +52,9 @@ public class ItemControllerTest {
 
         final ItemRequest itemRequest = new ItemRequest(true,
                 "에펠탑",
-                1,
                 4.5,
                 "에펠탑을 방문",
+                1,
                 1L,
                 placeRequest,
                 expenseRequest

@@ -38,7 +38,7 @@ public class ItemService {
 
         Item item = new Item(ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
-                itemRequest.getDayLogOrdinal(),
+                itemRequest.getOrdinal(),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
                 place,

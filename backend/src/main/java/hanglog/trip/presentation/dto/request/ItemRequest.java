@@ -9,9 +9,9 @@ public class ItemRequest {
 
     private Boolean itemType;
     private String title;
-    private Integer dayLogOrdinal;
     private Double rating;
     private String memo;
+    private Integer ordinal;
     private Long dayLogId;
     private PlaceRequest place;
     private ExpenseRequest expense;
