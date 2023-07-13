@@ -5,8 +5,10 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.trip.domain.type.ItemType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -14,14 +16,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
 public class Item extends BaseEntity {
 
     @Id
@@ -43,22 +44,28 @@ public class Item extends BaseEntity {
 
     private String memo;
 
-    @ManyToOne
-    @JoinColumn(name = "place_id", nullable = false)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
-    public Item(final ItemType itemType,
+    @OneToOne(fetch = LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "expense_id")
+    private Expense expense;
+
+    public Item(final Long id,
+                final ItemType itemType,
                 final String title,
                 final Integer ordinal,
                 final Double rating,
                 final String memo,
                 final Place place,
-                final DayLog dayLog
-    ) {
+                final DayLog dayLog,
+                final Expense expense) {
+        this.id = id;
         this.itemType = itemType;
         this.title = title;
         this.ordinal = ordinal;
@@ -66,5 +73,21 @@ public class Item extends BaseEntity {
         this.memo = memo;
         this.place = place;
         this.dayLog = dayLog;
+        this.expense = expense;
+        if (!dayLog.getItems().contains(this)) {
+            dayLog.getItems().add(this);
+        }
+    }
+
+    public Item(final ItemType itemType,
+                final String title,
+                final Integer ordinal,
+                final Double rating,
+                final String memo,
+                final Place place,
+                final DayLog dayLog,
+                final Expense expense
+    ) {
+        this(null, itemType, title, ordinal, rating, memo, place, dayLog, expense);
     }
 }
