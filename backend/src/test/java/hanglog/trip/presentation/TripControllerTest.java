@@ -7,11 +7,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -20,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import hanglog.trip.restdocs.RestDocsTest;
-import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -312,20 +312,6 @@ class TripControllerTest extends RestDocsTest {
     @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
     @Test
     void deleteTrip() throws Exception {
-        // given
-        makeTrip();
-
-        // when & then
-        mockMvc.perform(delete("/trips/" + 1)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-
-        verify(tripService).delete(anyLong());
-    }
-
-    @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
-    @Test
-    void deleteTrip_IncorrectId() throws Exception {
         // given
         makeTrip();
 
