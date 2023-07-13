@@ -1,5 +1,6 @@
 package hanglog.trip.presentation.dto.response;
 
+import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import java.util.List;
 import lombok.Getter;
@@ -13,4 +14,13 @@ public class DayLogGetResponse {
     private final String title;
     private final Integer ordinal;
     private final List<Item> items;
+
+    public static DayLogGetResponse of(final DayLog dayLog) {
+        return new DayLogGetResponse(
+                dayLog.getId(),
+                dayLog.getTitle(),
+                dayLog.getOrdinal(),
+                dayLog.getItems()
+        );
+    }
 }
