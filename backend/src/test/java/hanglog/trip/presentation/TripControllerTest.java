@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -277,5 +278,33 @@ class TripControllerTest {
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
+    }
+
+    @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
+    @Test
+    void deleteTrip() throws Exception {
+        // given
+        makeTrip();
+
+        // when & then
+        mockMvc.perform(delete("/trips/" + 1)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(tripService).delete(anyLong());
+    }
+
+    @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
+    @Test
+    void deleteTrip_IncorrectId() throws Exception {
+        // given
+        makeTrip();
+
+        // when & then
+        mockMvc.perform(delete("/trips/" + 1)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(tripService).delete(anyLong());
     }
 }

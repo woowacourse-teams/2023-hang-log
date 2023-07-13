@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,6 +34,12 @@ public class TripController {
             @RequestBody @Valid final TripUpdateRequest updateRequest
     ) {
         tripService.update(tripId, updateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{tripId}")
+    public ResponseEntity<Void> deleteTrip(@PathVariable Long tripId) {
+        tripService.delete(tripId);
         return ResponseEntity.noContent().build();
     }
 }
