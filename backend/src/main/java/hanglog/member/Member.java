@@ -38,13 +38,10 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @Column(nullable = false)
-    @Enumerated(value = STRING)
-    private StatusType status = USABLE;
     @Enumerated(value = EnumType.STRING)
-    private MemberState state;
+    private MemberState status;
 
-    public Member(Long id, String name, String image) {
+    public Member(final Long id, final String name, final String image) {
         this.id = id;
         this.name = name;
         this.image = image;
