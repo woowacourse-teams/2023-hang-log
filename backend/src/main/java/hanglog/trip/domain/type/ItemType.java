@@ -1,7 +1,5 @@
 package hanglog.trip.domain.type;
 
-import java.util.Arrays;
-
 public enum ItemType {
 
     SPOT(true),
@@ -13,9 +11,10 @@ public enum ItemType {
         this.isSpot = isSpot;
     }
 
-    public static ItemType getItemTypeByIsSpot(boolean isSpot) {
-        return Arrays.stream(ItemType.values()).filter(
-                itemType -> itemType.isSpot.equals(isSpot)
-        ).findFirst().get();
+    public static ItemType getItemTypeByIsSpot(final boolean isSpot) {
+        if (isSpot) {
+            return SPOT;
+        }
+        return NON_SPOT;
     }
 }
