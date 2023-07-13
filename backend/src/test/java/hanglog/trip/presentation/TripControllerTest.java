@@ -40,6 +40,7 @@ class TripControllerTest extends RestDocsTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private TripService tripService;
 
@@ -63,11 +64,17 @@ class TripControllerTest extends RestDocsTest {
                 .andDo(
                         restDocs.document(
                                 requestFields(
-                                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("여행 시작 날짜")
+                                        fieldWithPath("startDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 시작 날짜")
                                                 .attributes(field("constraint", "yyyy-MM-dd")),
-                                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("여행 종료 날짜")
+                                        fieldWithPath("endDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 종료 날짜")
                                                 .attributes(field("constraint", "yyyy-MM-dd")),
-                                        fieldWithPath("cityIds").type(JsonFieldType.ARRAY).description("도시 ID 목록")
+                                        fieldWithPath("cityIds")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("도시 ID 목록")
                                                 .attributes(field("constraint", "1개 이상의 양의 정수"))
                                 ),
                                 responseHeaders(

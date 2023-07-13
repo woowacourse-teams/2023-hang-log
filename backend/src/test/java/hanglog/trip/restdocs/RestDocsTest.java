@@ -20,6 +20,7 @@ public abstract class RestDocsTest {
 
     @Autowired
     protected RestDocumentationResultHandler restDocs;
+
     @Autowired
     protected MockMvc mockMvc;
 

@@ -11,7 +11,7 @@ import org.springframework.restdocs.snippet.Attributes.Attribute;
 @Configuration
 public class RestDocsConfiguration {
 
-    public static final Attribute field(final String key, final String value) {
+    public static Attribute field(final String key, final String value) {
         return new Attribute(key, value);
     }
 
