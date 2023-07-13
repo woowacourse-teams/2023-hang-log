@@ -28,13 +28,13 @@ class DayLogControllerTest extends RestDocsTest {
     @MockBean
     private DayLogService dayLogService;
 
-    @DisplayName("단일 여행을 생성할 수 있다.")
+    @DisplayName("날짜별 여행을 조회할 수 있다.")
     @Test
     void getDayLog() throws Exception {
         // given
         final DayLogGetResponse response = new DayLogGetResponse(1L, "런던 여행", 1, new ArrayList<>());
 
-        given(dayLogService.getDayLogById(1L))
+        given(dayLogService.getById(1L))
                 .willReturn(response);
 
         // when & then

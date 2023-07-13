@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DayLogService {
 
-    public DayLogGetResponse getDayLogById(final Long id) {
+    public DayLogGetResponse getById(final Long id) {
         return new DayLogGetResponse(null, null, null, null);
     }
 }

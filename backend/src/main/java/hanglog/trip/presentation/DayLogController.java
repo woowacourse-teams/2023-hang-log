@@ -19,7 +19,7 @@ public class DayLogController {
 
     @GetMapping
     public ResponseEntity<DayLogGetResponse> getDayLog(@PathVariable final Long tripId, @PathVariable final Long id) {
-        final DayLogGetResponse response = dayLogService.getDayLogById(id);
+        final DayLogGetResponse response = dayLogService.getById(id);
         return ResponseEntity.ok(response);
     }
 }
