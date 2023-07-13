@@ -7,6 +7,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
+import hanglog.global.type.StatusType;
 import hanglog.trip.domain.type.ItemType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -65,8 +66,10 @@ public class Item extends BaseEntity {
             final String memo,
             final Place place,
             final DayLog dayLog,
-            final Expense expense
+            final Expense expense,
+            final StatusType statusType
     ) {
+        super(statusType);
         this.id = id;
         this.itemType = itemType;
         this.title = title;
@@ -79,6 +82,20 @@ public class Item extends BaseEntity {
         if (!dayLog.getItems().contains(this)) {
             dayLog.getItems().add(this);
         }
+    }
+
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final Place place,
+            final DayLog dayLog,
+            final Expense expense
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, StatusType.USABLE);
     }
 
     public Item(
