@@ -61,8 +61,7 @@ public class OAuthLoginService {
 
         final HttpEntity entity = new HttpEntity(params, headers);
 
-        final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity,
-                JsonNode.class);
+        final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
         final JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
     }
