@@ -2,6 +2,7 @@ package hanglog.trip.presentation;
 
 import hanglog.trip.presentation.dto.request.ItemRequest;
 import hanglog.trip.service.ItemService;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<Void> createItem(@PathVariable Long tripId, @RequestBody ItemRequest itemRequest) {
+    public ResponseEntity<Void> createItem(@PathVariable final Long tripId, @RequestBody @Valid final ItemRequest itemRequest) {
         Long id = itemService.save(tripId, itemRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + id)).build();
     }
