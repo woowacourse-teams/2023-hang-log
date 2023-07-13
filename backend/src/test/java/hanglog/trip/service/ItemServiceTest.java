@@ -118,4 +118,18 @@ public class ItemServiceTest {
         // then
         verify(itemRepository).save(any());
     }
+
+    @DisplayName("여행 아이템의 StatusType을 DELETED로 변경한다.")
+    @Test
+    void delete() {
+        // given
+        given(itemRepository.findById(any()))
+                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+
+        // when
+        itemService.delete(1L);
+
+        // then
+        verify(itemRepository).save(any());
+    }
 }
