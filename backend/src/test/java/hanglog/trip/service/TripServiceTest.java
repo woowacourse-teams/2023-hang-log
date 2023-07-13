@@ -93,4 +93,6 @@ class TripServiceTest {
         assertThatThrownBy(() -> tripService.update(UPDATED_LONDON_TRIP.getId(), updateRequest))
                 .isInstanceOf(IllegalStateException.class);
     }
+
+
 }

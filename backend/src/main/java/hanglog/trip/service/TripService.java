@@ -48,6 +48,16 @@ public class TripService {
         final Trip target = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
         validateAlreadyDeleted(target);
+        final Trip deletedTrip = new Trip(
+                target.getId(),
+                target.getTitle(),
+                target.getStartDate(),
+                target.getEndDate(),
+                target.getDescription(),
+                DELETED
+        );
+
+        tripRepository.save(deletedTrip);
     }
 
     private void validateAlreadyDeleted(final Trip target) {
