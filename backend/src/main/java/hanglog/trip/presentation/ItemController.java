@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,18 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<Void> createItem(@PathVariable final Long tripId, @RequestBody @Valid final ItemRequest itemRequest) {
+    public ResponseEntity<Void> createItem(@PathVariable final Long tripId,
+                                           @RequestBody @Valid final ItemRequest itemRequest) {
         Long id = itemService.save(tripId, itemRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + id)).build();
+    }
+
+    @PutMapping("/{itemId}")
+    public ResponseEntity<Void> updateItem(
+            @PathVariable Long tripId,
+            @PathVariable Long itemId,
+            @RequestBody ItemRequest itemRequest) {
+        itemService.update(tripId, itemId, itemRequest);
+        return ResponseEntity.noContent().build();
     }
 }

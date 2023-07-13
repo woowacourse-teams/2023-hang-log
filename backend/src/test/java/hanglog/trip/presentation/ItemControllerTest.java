@@ -2,7 +2,9 @@ package hanglog.trip.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,5 +69,39 @@ public class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(itemRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, "/trips/1/items/1"));
+    }
+
+    @DisplayName("여행 아이템을 수정할 수 있다.")
+    @Test
+    void updateItem() throws Exception {
+        //given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "apiId",
+                "에펠탑",
+                "에펠탑주소",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                "categoryApiId"
+        );
+
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                placeRequest,
+                expenseRequest
+        );
+
+        doNothing().when(itemService).update(any(), any(), any());
+
+        // when & then
+        mockMvc.perform(put("/trips/1/items/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(itemRequest)))
+                .andExpect(status().isNoContent());
     }
 }
