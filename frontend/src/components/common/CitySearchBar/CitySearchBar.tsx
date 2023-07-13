@@ -16,8 +16,34 @@ import {
 const CitySearchBar = () => {
   const [queryWord, setQueryWord] = useState('');
   const [cities, setCities] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const searchCity = (e: FormEvent<HTMLInputElement>) => {
+    const word = e.currentTarget.value;
+
+    if (word !== '') {
+      //city받아와서 suggestions에 넣기
+      openSuggestion();
+    }
+
+    setQueryWord(word);
+  };
+
+  const addNewCity = (chosenCity: string) => () => {
+    setQueryWord('');
+    setCities((cities) => [...cities, chosenCity]);
+
+    closeSuggestion();
+    inputRef.current?.focus();
+  };
+
+  const deleteCity = (selectedCity: string) => () => {
+    setCities((cities) => cities.filter((city) => city !== selectedCity));
+
+    inputRef.current?.focus();
+  };
 
   return (
     <Menu closeMenu={closeSuggestion}>
@@ -29,7 +55,7 @@ const CitySearchBar = () => {
               {cities.map((city) => (
                 <Badge key={city} css={badgeStyling}>
                   {city}
-                  <CloseIcon css={closeIconStyling} />
+                  <CloseIcon css={closeIconStyling} onClick={deleteCity(city)} />
                 </Badge>
               ))}
             </span>
@@ -37,15 +63,18 @@ const CitySearchBar = () => {
           <Input
             placeholder="방문 도시를 입력해주세요"
             value={queryWord}
+            onChange={searchCity}
             ref={inputRef}
             css={inputStyling}
           />
         </div>
         {isSuggestionOpen && (
           <MenuList css={suggestionContainer}>
-            <MenuItem onClick={() => {}}>abc</MenuItem>
-            <MenuItem onClick={() => {}}>123</MenuItem>
-            <MenuItem onClick={() => {}}>456</MenuItem>
+            {suggestions.map((suggestion) => (
+              <MenuItem key={suggestion} onClick={addNewCity(suggestion)}>
+                {suggestion}
+              </MenuItem>
+            ))}
           </MenuList>
         )}
       </div>
