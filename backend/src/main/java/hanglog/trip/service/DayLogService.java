@@ -23,5 +23,16 @@ public class DayLogService {
     }
 
     public void updateTitle(final Long id, final DayLogUpdateTitleRequest request) {
+        final DayLog dayLog = dayLogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+
+        final DayLog updatedDayLog = new DayLog(
+                dayLog.getId(),
+                request.getTitle(),
+                dayLog.getOrdinal(),
+                dayLog.getTrip(),
+                dayLog.getItems()
+        );
+        dayLogRepository.save(updatedDayLog);
     }
 }
