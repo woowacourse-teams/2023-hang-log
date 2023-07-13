@@ -1,5 +1,6 @@
 package hanglog.global;
 
+import static hanglog.global.type.StatusType.DELETED;
 import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.EnumType.STRING;
 
@@ -35,5 +36,9 @@ public class BaseEntity {
 
     public BaseEntity(final StatusType status) {
         this.status = status;
+    }
+
+    public boolean isDeleted() {
+        return this.status.equals(DELETED);
     }
 }

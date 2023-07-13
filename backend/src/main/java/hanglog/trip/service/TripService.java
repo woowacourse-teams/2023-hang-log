@@ -61,7 +61,7 @@ public class TripService {
     }
 
     private void validateAlreadyDeleted(final Trip target) {
-        if (target.getStatus().equals(DELETED)) {
+        if (target.isDeleted()) {
             throw new IllegalStateException("이미 삭제된 여행입니다.");
         }
     }
