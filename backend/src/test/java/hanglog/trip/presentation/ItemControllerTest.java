@@ -45,16 +45,14 @@ public class ItemControllerTest {
                 "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                1L
+                "categoryApiId"
         );
-
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, "문화");
-
-        final ItemRequest itemRequest = new ItemRequest(true,
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
-                1,
                 1L,
                 placeRequest,
                 expenseRequest

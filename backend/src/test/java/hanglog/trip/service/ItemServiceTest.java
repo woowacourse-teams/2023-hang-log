@@ -48,14 +48,14 @@ public class ItemServiceTest {
                 "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                1L
+                "categoryApiId"
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, "문화");
-        final ItemRequest itemRequest = new ItemRequest(true,
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
-                1,
                 1L,
                 placeRequest,
                 expenseRequest
@@ -64,6 +64,8 @@ public class ItemServiceTest {
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
         given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category("문화", "apiId")));
+        given(categoryRepository.findByGoogleApiId(any()))
                 .willReturn(Optional.of(new Category("문화", "apiId")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));

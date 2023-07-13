@@ -8,10 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PlaceRequest {
 
-    private String apiId;
-    private String name;
-    private String address;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-    private Long categoryId;
+    private final String apiId;
+    private final String name;
+    private final String address;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
+    private final String categoryApiId;
 }

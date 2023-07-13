@@ -7,13 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ItemRequest {
 
-    private Boolean itemType;
-    private String title;
-    private Double rating;
-    private String memo;
-    private Integer ordinal;
-    private Long dayLogId;
-    private PlaceRequest place;
-    private ExpenseRequest expense;
+    private final Boolean itemType;
+    private final String title;
+    private final Double rating;
+    private final String memo;
+    private final Long dayLogId;
+    private final PlaceRequest place;
+    private final ExpenseRequest expense;
     // TODO: images 추가 필요
 }

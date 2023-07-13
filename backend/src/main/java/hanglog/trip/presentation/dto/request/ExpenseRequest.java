@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ExpenseRequest {
 
-    private String currency;
-    private Integer amount;
-    private String category;
+    private final String currency;
+    private final Integer amount;
+    private final Long categoryId;
 }
