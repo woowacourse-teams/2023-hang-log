@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,6 +34,12 @@ public class ItemController {
             @PathVariable Long itemId,
             @RequestBody ItemRequest itemRequest) {
         itemService.update(tripId, itemId, itemRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long itemId) {
+        itemService.delete(itemId);
         return ResponseEntity.noContent().build();
     }
 }

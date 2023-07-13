@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,6 +103,17 @@ public class ItemControllerTest {
         mockMvc.perform(put("/trips/1/items/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(itemRequest)))
+                .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("여행 아이템을 삭제할 수 있다.")
+    @Test
+    void deleteItem() throws Exception {
+        // given
+        doNothing().when(itemService).delete(any());
+
+        // when & then
+        mockMvc.perform(delete("/trips/1/items/1"))
                 .andExpect(status().isNoContent());
     }
 }
