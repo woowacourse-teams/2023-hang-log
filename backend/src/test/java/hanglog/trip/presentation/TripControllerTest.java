@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.presentation.dto.request.TripCreateRequest;
 import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import hanglog.trip.restdocs.RestDocsTest;
@@ -50,37 +50,37 @@ class TripControllerTest extends RestDocsTest {
     private TripService tripService;
 
     private void makeTrip() throws Exception {
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L)
         );
 
-        when(tripService.save(any(TripRequest.class)))
+        when(tripService.save(any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
         mockMvc.perform(post("/trips")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(tripRequest)));
+                .content(objectMapper.writeValueAsString(tripCreateRequest)));
     }
 
     @DisplayName("단일 여행을 생성할 수 있다.")
     @Test
     void createTrip() throws Exception {
         // given
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L)
         );
 
-        when(tripService.save(any(TripRequest.class)))
+        when(tripService.save(any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
         // when & then
         mockMvc.perform(post("/trips")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripRequest)))
+                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, "/trips/1"))
                 .andDo(
@@ -110,7 +110,7 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_StartDateNull() throws Exception {
         // given
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 null,
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L)
@@ -119,7 +119,7 @@ class TripControllerTest extends RestDocsTest {
         // when & then
         mockMvc.perform(post("/trips")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripRequest)))
+                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("여행 시작 날짜를 입력해주세요."));
     }
@@ -128,7 +128,7 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_EndDateNull() throws Exception {
         // given
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 null,
                 List.of(1L, 2L)
@@ -137,7 +137,7 @@ class TripControllerTest extends RestDocsTest {
         // when & then
         mockMvc.perform(post("/trips")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripRequest)))
+                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -145,7 +145,7 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_CitesNull() throws Exception {
         // given
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 null
@@ -154,7 +154,7 @@ class TripControllerTest extends RestDocsTest {
         // when & then
         mockMvc.perform(post("/trips")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripRequest)))
+                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -162,17 +162,17 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_CitesEmpty() throws Exception {
         // given
-        final TripRequest tripRequest = new TripRequest(
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 Collections.EMPTY_LIST
         );
-        new TripRequest(null, null, null);
+        new TripCreateRequest(null, null, null);
 
         // when & then
         mockMvc.perform(post("/trips")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripRequest)))
+                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
                 .andExpect(status().isBadRequest());
     }
 

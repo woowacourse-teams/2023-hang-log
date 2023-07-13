@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @AllArgsConstructor
-public class TripRequest {
+public class TripCreateRequest {
 
     @NotNull(message = "여행 시작 날짜를 입력해주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

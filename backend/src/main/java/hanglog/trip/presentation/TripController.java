@@ -1,6 +1,6 @@
 package hanglog.trip.presentation;
 
-import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.presentation.dto.request.TripCreateRequest;
 import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import hanglog.trip.service.TripService;
 import jakarta.validation.Valid;
@@ -23,8 +23,8 @@ public class TripController {
     private final TripService tripService;
 
     @PostMapping
-    public ResponseEntity<Void> createTrip(@RequestBody @Valid final TripRequest tripRequest) {
-        final Long id = tripService.save(tripRequest);
+    public ResponseEntity<Void> createTrip(@RequestBody @Valid final TripCreateRequest tripCreateRequest) {
+        final Long id = tripService.save(tripCreateRequest);
         return ResponseEntity.created(URI.create("/trips/" + id)).build();
     }
 

@@ -4,7 +4,7 @@ import static hanglog.global.type.StatusType.DELETED;
 
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.presentation.dto.request.TripCreateRequest;
 import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,10 @@ public class TripService {
 
     private final TripRepository tripRepository;
 
-    public Long save(final TripRequest tripRequest) {
+    public Long save(final TripCreateRequest tripCreateRequest) {
         // TODO: 도시 id로 이름 가져와 타이틀 생성
         // TODO: TripCity 테이블에 데이터 추가
-        final Trip trip = new Trip("title", tripRequest.getStartDate(), tripRequest.getEndDate());
+        final Trip trip = new Trip("title", tripCreateRequest.getStartDate(), tripCreateRequest.getEndDate());
         return tripRepository.save(trip).getId();
     }
 

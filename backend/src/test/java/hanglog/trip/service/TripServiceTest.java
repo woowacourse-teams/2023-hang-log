@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.presentation.dto.request.TripCreateRequest;
 import hanglog.trip.presentation.dto.request.TripUpdateRequest;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,7 +35,7 @@ class TripServiceTest {
     @Test
     void save() {
         // given
-        final TripRequest tripRequest = new TripRequest(LocalDate.of(2023, 7, 2),
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L));
 
@@ -43,7 +43,7 @@ class TripServiceTest {
                 .willReturn(LONDON_TRIP);
 
         // when
-        Long actualId = tripService.save(tripRequest);
+        Long actualId = tripService.save(tripCreateRequest);
 
         // then
         assertThat(actualId).isEqualTo(1L);
