@@ -56,15 +56,17 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    public Item(final Long id,
-                final ItemType itemType,
-                final String title,
-                final Integer ordinal,
-                final Double rating,
-                final String memo,
-                final Place place,
-                final DayLog dayLog,
-                final Expense expense) {
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final Place place,
+            final DayLog dayLog,
+            final Expense expense
+    ) {
         this.id = id;
         this.itemType = itemType;
         this.title = title;
@@ -79,14 +81,15 @@ public class Item extends BaseEntity {
         }
     }
 
-    public Item(final ItemType itemType,
-                final String title,
-                final Integer ordinal,
-                final Double rating,
-                final String memo,
-                final Place place,
-                final DayLog dayLog,
-                final Expense expense
+    public Item(
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final Place place,
+            final DayLog dayLog,
+            final Expense expense
     ) {
         this(null, itemType, title, ordinal, rating, memo, place, dayLog, expense);
     }

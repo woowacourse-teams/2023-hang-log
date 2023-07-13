@@ -41,7 +41,8 @@ public class Place extends BaseEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Place(final String name,
+    public Place(
+            final String name,
                  final String address,
                  final BigDecimal latitude,
                  final BigDecimal longitude,

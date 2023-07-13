@@ -35,11 +35,13 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
-    public Trip(final Long id,
-                final String title,
-                final LocalDate startDate,
-                final LocalDate endDate,
-                final String description) {
+    public Trip(
+            final Long id,
+            final String title,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String description
+    ) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
