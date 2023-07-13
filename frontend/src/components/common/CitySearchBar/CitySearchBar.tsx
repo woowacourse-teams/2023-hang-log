@@ -16,7 +16,7 @@ import {
 const CitySearchBar = () => {
   const [queryWord, setQueryWord] = useState('');
   const [cities, setCities] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>(['temp1', 'temp2', 'temp3']);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,9 +31,9 @@ const CitySearchBar = () => {
     setQueryWord(word);
   };
 
-  const addNewCity = (chosenCity: string) => () => {
+  const addNewCity = (selectedCity: string) => () => {
     setQueryWord('');
-    setCities((cities) => [...cities, chosenCity]);
+    setCities((cities) => [...cities, selectedCity]);
 
     closeSuggestion();
     inputRef.current?.focus();
@@ -45,21 +45,35 @@ const CitySearchBar = () => {
     inputRef.current?.focus();
   };
 
+  const CityTags = () =>
+    cities.length ? (
+      <span css={tagListStyling}>
+        {cities.map((city) => (
+          <Badge key={city} css={badgeStyling}>
+            {city}
+            <CloseIcon css={closeIconStyling} onClick={deleteCity(city)} />
+          </Badge>
+        ))}
+      </span>
+    ) : null;
+
+  const Suggestions = () =>
+    isSuggestionOpen ? (
+      <MenuList css={suggestionContainer}>
+        {suggestions.map((suggestion) => (
+          <MenuItem key={suggestion} onClick={addNewCity(suggestion)}>
+            {suggestion}
+          </MenuItem>
+        ))}
+      </MenuList>
+    ) : null;
+
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={container}>
         <div css={wrapper}>
           <SearchPinIcon />
-          {!!cities.length && (
-            <span css={tagListStyling}>
-              {cities.map((city) => (
-                <Badge key={city} css={badgeStyling}>
-                  {city}
-                  <CloseIcon css={closeIconStyling} onClick={deleteCity(city)} />
-                </Badge>
-              ))}
-            </span>
-          )}
+          <CityTags />
           <Input
             placeholder="방문 도시를 입력해주세요"
             value={queryWord}
@@ -68,15 +82,7 @@ const CitySearchBar = () => {
             css={inputStyling}
           />
         </div>
-        {isSuggestionOpen && (
-          <MenuList css={suggestionContainer}>
-            {suggestions.map((suggestion) => (
-              <MenuItem key={suggestion} onClick={addNewCity(suggestion)}>
-                {suggestion}
-              </MenuItem>
-            ))}
-          </MenuList>
-        )}
+        <Suggestions />
       </div>
     </Menu>
   );
