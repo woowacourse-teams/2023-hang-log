@@ -44,6 +44,26 @@ public class ItemService {
         return itemRepository.save(item).getId();
     }
 
+    public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
+        DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
+
+        Item updateditem = new Item(
+                itemId,
+                ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
+                itemRequest.getTitle(),
+                item.getOrdinal(),
+                itemRequest.getRating(),
+                itemRequest.getMemo(),
+                getPlaceByItemRequest(itemRequest),
+                dayLog,
+                getExpenseByItemRequest(itemRequest)
+        );
+        itemRepository.save(updateditem);
+    }
+
     private Place getPlaceByItemRequest(final ItemRequest itemRequest) {
         if (itemRequest.getPlace() == null) {
             return null;

@@ -3,6 +3,7 @@ package hanglog.trip.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
@@ -75,5 +76,46 @@ public class ItemServiceTest {
 
         // then
         assertThat(actualId).isEqualTo(1L);
+    }
+
+    @DisplayName("여행 아이템의 정보를 수정한다.")
+    @Test
+    void update() {
+        // given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "apiId",
+                "에펠탑",
+                "에펠탑주소",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                "categoryApiId"
+        );
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                placeRequest,
+                expenseRequest
+        );
+
+        given(itemRepository.save(any()))
+                .willReturn(ItemFixture.LONDON_EYE_ITEM);
+        given(itemRepository.findById(any()))
+                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category("문화", "apiId")));
+        given(categoryRepository.findByGoogleApiId(any()))
+                .willReturn(Optional.of(new Category("문화", "apiId")));
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when
+        itemService.update(1L, 1L, itemRequest);
+
+        // then
+        verify(itemRepository).save(any());
     }
 }
