@@ -17,8 +17,8 @@ const Header = () => {
           <div css={imageStyling} onClick={open}></div>
           {isOpen && (
             <MenuList>
-              <MenuItem name="마이페이지" onClick={() => navigate(PATH.ROOT)} />
-              <MenuItem name="로그아웃" onClick={() => navigate(PATH.ROOT)} />
+              <MenuItem onClick={() => navigate(PATH.ROOT)}>마이 페이지</MenuItem>
+              <MenuItem onClick={() => navigate(PATH.ROOT)}>로그아웃</MenuItem>
             </MenuList>
           )}
         </Menu>
