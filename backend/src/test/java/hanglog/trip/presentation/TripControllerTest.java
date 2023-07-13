@@ -221,6 +221,52 @@ class TripControllerTest extends RestDocsTest {
                 .andExpect(jsonPath("$.message").value("여행 제목을 입력해 주세요."));
     }
 
+    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @Test
+    void updateTrip_TitleOverMax() throws Exception {
+        // given
+        makeTrip();
+
+        final String updatedTitle = "1" + "1234567890".repeat(5);
+        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+                updatedTitle,
+                LocalDate.of(2023, 7, 2),
+                LocalDate.of(2023, 7, 7),
+                "추가된 여행 설명",
+                List.of(1L, 2L, 3L)
+        );
+
+        // when & then
+        mockMvc.perform(put("/trips/" + 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 제목은 50자를 넘을 수 없습니다."));
+    }
+
+    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @Test
+    void updateTrip_DescriptionOverMax() throws Exception {
+        // given
+        makeTrip();
+
+        final String updateDescription = "1" + "1234567890".repeat(20);
+        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+                "updatedTite",
+                LocalDate.of(2023, 7, 2),
+                LocalDate.of(2023, 7, 7),
+                updateDescription,
+                List.of(1L, 2L, 3L)
+        );
+
+        // when & then
+        mockMvc.perform(put("/trips/" + 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 요약은 200자를 넘을 수 없습니다."));
+    }
+
     @DisplayName("여행 시작 날짜를 입력하지 않으면 예외가 발생한다.")
     @Test
     void updateTrip_StartDateNull() throws Exception {
