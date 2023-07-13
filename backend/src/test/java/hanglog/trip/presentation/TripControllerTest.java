@@ -1,24 +1,5 @@
 package hanglog.trip.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.presentation.dto.request.TripRequest;
-import hanglog.trip.restdocs.RestDocsConfiguration;
-import hanglog.trip.restdocs.RestDocsTest;
-import hanglog.trip.service.TripService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.restdocs.payload.JsonFieldType;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +10,27 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.responseH
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.trip.presentation.dto.request.TripRequest;
+import hanglog.trip.restdocs.RestDocsConfiguration;
+import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.trip.service.TripService;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -62,9 +63,12 @@ class TripControllerTest extends RestDocsTest {
                 .andDo(
                         restDocs.document(
                                 requestFields(
-                                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("여행 시작 날짜").attributes(field("constraint", "yyyy-MM-dd")),
-                                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("여행 종료 날짜").attributes(field("constraint", "yyyy-MM-dd")),
-                                        fieldWithPath("cityIds").type(JsonFieldType.ARRAY).description("도시 ID 목록").attributes(field("constraint", "1개 이상의 양의 정수"))
+                                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("여행 시작 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("여행 종료 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("cityIds").type(JsonFieldType.ARRAY).description("도시 ID 목록")
+                                                .attributes(field("constraint", "1개 이상의 양의 정수"))
                                 ),
                                 responseHeaders(
                                         headerWithName(LOCATION).description("생성된 여행 URL")
