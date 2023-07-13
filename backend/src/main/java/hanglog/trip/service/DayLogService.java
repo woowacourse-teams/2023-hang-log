@@ -3,6 +3,7 @@ package hanglog.trip.service;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.repository.DayLogRepository;
+import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.presentation.dto.response.DayLogGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,8 @@ public class DayLogService {
         final DayLog dayLog = dayLogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
         return DayLogGetResponse.of(dayLog);
+    }
+
+    public void updateTitle(final Long id, final DayLogUpdateTitleRequest request) {
     }
 }
