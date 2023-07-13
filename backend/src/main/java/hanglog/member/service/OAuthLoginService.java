@@ -2,6 +2,7 @@ package hanglog.member.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import hanglog.member.Member;
+import hanglog.member.exception.AlreadyExistUserException;
 import hanglog.member.mapper.OAuthProvider;
 import hanglog.member.repository.MemberRepository;
 import org.springframework.core.env.Environment;
@@ -11,11 +12,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Transactional
 public class OAuthLoginService {
 
     private final Environment env;
@@ -35,7 +38,7 @@ public class OAuthLoginService {
 
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
         if (memberRepository.existsById(userResourceNode.get("id").asLong())) {
-            throw new IllegalArgumentException("member already exist");
+            throw new AlreadyExistUserException("member already exist");
         }
 
         final Member member = new Member(oAuthProvider.getId(), oAuthProvider.getNickname(), oAuthProvider.getPicture());
