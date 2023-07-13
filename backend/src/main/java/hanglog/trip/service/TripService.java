@@ -1,15 +1,18 @@
 package hanglog.trip.service;
 
+import static hanglog.global.type.StatusType.DELETED;
+
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.presentation.dto.request.TripRequest;
 import hanglog.trip.presentation.dto.request.TripUpdateRequest;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TripService {
 
     private final TripRepository tripRepository;
@@ -22,12 +25,15 @@ public class TripService {
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
-        // TODO: 일정 변경 기능
-        final Optional<Trip> target = tripRepository.findById(tripId);
-        if (target.isEmpty()) {
-            throw new IllegalStateException("해당하는 여행이 존재하지 않습니다.");
+        final Trip target = tripRepository.findById(tripId)
+                .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
+        validateAlreadyDeleted(target);
+        if (target.getStartDate() != updateRequest.getStartDate()
+                || target.getEndDate() != updateRequest.getEndDate()) {
+            // TODO: 일정 변경 기능 -> 메서드 분리 예정
         }
-        final Long targetId = target.get().getId();
+
+        final Long targetId = target.getId();
         final Trip updatedTrip = new Trip(
                 targetId,
                 updateRequest.getTitle(),
@@ -36,5 +42,11 @@ public class TripService {
                 updateRequest.getDescription()
         );
         tripRepository.save(updatedTrip);
+    }
+
+    private void validateAlreadyDeleted(final Trip target) {
+        if (target.getStatus().equals(DELETED)) {
+            throw new IllegalStateException("이미 삭제된 여행입니다.");
+        }
     }
 }
