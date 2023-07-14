@@ -1,5 +1,6 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
+import { CITY } from '@constants/city';
 import { Badge, Input, Menu, MenuItem, MenuList, Text, useOverlay } from 'hang-log-design-system';
 import { FormEvent, useRef, useState } from 'react';
 
@@ -59,6 +60,11 @@ const CitySearchBar = () => {
         return [...newCityTags, selectedCity];
       }
 
+      if (cityTags.length >= CITY.MAX_NUM) {
+        //toast로 경고 문구 띄우기
+        return cityTags;
+      }
+
       return [...cityTags, selectedCity];
     });
 
@@ -78,7 +84,7 @@ const CitySearchBar = () => {
         {cityTags.map((city) => (
           <Badge key={city} css={badgeStyling}>
             {city}
-            <CloseIcon css={closeIconStyling} onClick={deleteCity(city)} />
+            <CloseIcon aria-label="remove tag" css={closeIconStyling} onClick={deleteCity(city)} />
           </Badge>
         ))}
       </span>
@@ -102,10 +108,10 @@ const CitySearchBar = () => {
     <Menu closeMenu={closeSuggestion}>
       <div css={container}>
         <div css={wrapper}>
-          <SearchPinIcon />
+          <SearchPinIcon aria-label="map-pin icon" />
           <CityTags />
           <Input
-            placeholder="방문 도시를 입력해주세요"
+            placeholder={cityTags ? '' : '방문 도시를 입력해주세요'}
             value={queryWord}
             onInput={searchCity}
             ref={inputRef}
