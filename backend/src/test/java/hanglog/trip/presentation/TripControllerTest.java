@@ -64,6 +64,15 @@ class TripControllerTest extends RestDocsTest {
                 .content(objectMapper.writeValueAsString(tripCreateRequest)));
     }
 
+    private void performPutWhenBadRequestCase(final TripUpdateRequest updateRequest, final String errMessage)
+            throws Exception {
+        mockMvc.perform(put("/trips/" + 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(errMessage));
+    }
+
     @DisplayName("단일 여행을 생성할 수 있다.")
     @Test
     void createTrip() throws Exception {
@@ -214,11 +223,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행 제목을 입력해 주세요."));
+        performPutWhenBadRequestCase(updateRequest, "여행 제목을 입력해 주세요.");
     }
 
     @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
@@ -237,12 +242,9 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행 제목은 50자를 넘을 수 없습니다."));
+        performPutWhenBadRequestCase(updateRequest, "여행 제목은 50자를 넘을 수 없습니다.");
     }
+
 
     @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
     @Test
@@ -260,11 +262,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행 요약은 200자를 넘을 수 없습니다."));
+        performPutWhenBadRequestCase(updateRequest, "여행 요약은 200자를 넘을 수 없습니다.");
     }
 
     @DisplayName("여행 시작 날짜를 입력하지 않으면 예외가 발생한다.")
@@ -282,11 +280,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행 시작 날짜를 입력해 주세요."));
+        performPutWhenBadRequestCase(updateRequest, "여행 시작 날짜를 입력해 주세요.");
     }
 
     @DisplayName("여행 종료 날짜를 입력하지 않으면 예외가 발생한다.")
@@ -304,11 +298,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행 종료 날짜를 입력해 주세요."));
+        performPutWhenBadRequestCase(updateRequest, "여행 종료 날짜를 입력해 주세요.");
     }
 
     @DisplayName("도시Id 리스트를 입력하지 않으면 예외가 발생한다.")
@@ -326,11 +316,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
+        performPutWhenBadRequestCase(updateRequest, "여행한 도시는 최소 한 개 이상 입력해 주세요.");
     }
 
     @DisplayName("도시Id를 빈 리스트로 요청하면 예외가 발생한다.")
@@ -348,11 +334,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
+        performPutWhenBadRequestCase(updateRequest, "여행한 도시는 최소 한 개 이상 입력해 주세요.");
     }
 
     @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
