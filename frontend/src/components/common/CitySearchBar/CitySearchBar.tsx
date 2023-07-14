@@ -36,7 +36,15 @@ const cities = [
   '오클로호마, 미국',
 ];
 
-const CitySearchBar = () => {
+interface CitySearchBarProps {
+  initialCityTags: string[];
+}
+
+const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
+  initialCityTags: string[];
+}
+
+const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const [cityTags, setCityTags] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>(cities);
