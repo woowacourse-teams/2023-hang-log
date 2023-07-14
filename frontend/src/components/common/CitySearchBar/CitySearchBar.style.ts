@@ -18,6 +18,12 @@ export const wrapper = css({
   border: `1px solid ${Theme.color.gray100}`,
   borderRadius: Theme.borderRadius.small,
   backgroundColor: Theme.color.gray100,
+
+  overflow: 'hidden',
+});
+
+export const searchPinIconStyling = css({
+  position: 'fixed',
 });
 
 export const inputStyling = css({});
@@ -28,9 +34,15 @@ export const suggestionContainer = css({
   transform: 'translateY(0)',
 });
 
+export const emptyTextStyling = css({
+  color: Theme.color.gray500,
+  margin: Theme.spacer.spacing2,
+});
+
 export const tagListStyling = css({
   display: 'flex',
   gap: Theme.spacer.spacing1,
+  marginLeft: Theme.spacer.spacing2,
 });
 
 export const badgeStyling = css({

@@ -1,12 +1,13 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
-import { Badge, Input, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
+import { Badge, Input, Menu, MenuItem, MenuList, Text, useOverlay } from 'hang-log-design-system';
 import { FormEvent, useRef, useState } from 'react';
 
 import {
   badgeStyling,
   closeIconStyling,
   container,
+  emptyTextStyling,
   inputStyling,
   suggestionContainer,
   tagListStyling,
@@ -37,7 +38,9 @@ const CitySearchBar = () => {
     const word = e.currentTarget.value;
 
     if (word !== '') {
-      setSuggestions(fruits.filter((suggestion) => new RegExp(word).test(suggestion)));
+      const filteredSuggestions = fruits.filter((suggestion) => new RegExp(word).test(suggestion));
+
+      setSuggestions(filteredSuggestions);
       openSuggestion();
     }
 
@@ -77,16 +80,19 @@ const CitySearchBar = () => {
       </span>
     ) : null;
 
-  const Suggestions = () =>
-    isSuggestionOpen ? (
-      <MenuList css={suggestionContainer}>
-        {suggestions.map((suggestion) => (
+  const Suggestions = () => (
+    <MenuList css={suggestionContainer}>
+      {suggestions.length ? (
+        suggestions.map((suggestion) => (
           <MenuItem key={suggestion} onClick={addNewCity(suggestion)}>
             {suggestion}
           </MenuItem>
-        ))}
-      </MenuList>
-    ) : null;
+        ))
+      ) : (
+        <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+      )}
+    </MenuList>
+  );
 
   return (
     <Menu closeMenu={closeSuggestion}>
@@ -102,7 +108,7 @@ const CitySearchBar = () => {
             css={inputStyling}
           />
         </div>
-        <Suggestions />
+        {isSuggestionOpen && <Suggestions />}
       </div>
     </Menu>
   );
