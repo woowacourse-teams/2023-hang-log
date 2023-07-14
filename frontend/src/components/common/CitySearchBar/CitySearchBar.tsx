@@ -13,10 +13,23 @@ import {
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 
+const fruits = [
+  'apple',
+  'banana',
+  'orange',
+  'grape',
+  'kiwi',
+  'mango',
+  'strawberry',
+  'watermelon',
+  'pineapple',
+  'pear',
+];
+
 const CitySearchBar = () => {
   const [queryWord, setQueryWord] = useState('');
   const [cities, setCities] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<string[]>(['temp1', 'temp2', 'temp3']);
+  const [suggestions, setSuggestions] = useState<string[]>(fruits);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -24,7 +37,7 @@ const CitySearchBar = () => {
     const word = e.currentTarget.value;
 
     if (word !== '') {
-      //city받아와서 suggestions에 넣기
+      setSuggestions(fruits.filter((suggestion) => new RegExp(word).test(suggestion)));
       openSuggestion();
     }
 
@@ -77,7 +90,7 @@ const CitySearchBar = () => {
           <Input
             placeholder="방문 도시를 입력해주세요"
             value={queryWord}
-            onChange={searchCity}
+            onInput={searchCity}
             ref={inputRef}
             css={inputStyling}
           />
