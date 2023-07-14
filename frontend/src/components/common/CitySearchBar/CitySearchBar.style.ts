@@ -10,7 +10,7 @@ export const wrapper = css({
   display: 'flex',
   alignItems: 'center',
 
-  height: '60px',
+  minHeight: '60px',
 
   padding: Theme.spacer.spacing2,
   gap: Theme.spacer.spacing1,
@@ -18,15 +18,15 @@ export const wrapper = css({
   border: `1px solid ${Theme.color.gray100}`,
   borderRadius: Theme.borderRadius.small,
   backgroundColor: Theme.color.gray100,
-
-  overflow: 'hidden',
 });
 
 export const searchPinIconStyling = css({
   position: 'fixed',
 });
 
-export const inputStyling = css({});
+export const inputStyling = css({
+  width: 'fit-content',
+});
 
 export const suggestionContainer = css({
   //왜 100%가 안먹는거지? 부모가 500px인뎅?
@@ -41,8 +41,11 @@ export const emptyTextStyling = css({
 
 export const tagListStyling = css({
   display: 'flex',
+  flexWrap: 'wrap',
   gap: Theme.spacer.spacing1,
   marginLeft: Theme.spacer.spacing2,
+
+  width: '90%',
 });
 
 export const badgeStyling = css({

@@ -78,17 +78,17 @@ const CitySearchBar = () => {
     inputRef.current?.focus();
   };
 
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
+
   const CityTags = () =>
-    cityTags.length ? (
-      <span css={tagListStyling}>
-        {cityTags.map((city) => (
-          <Badge key={city} css={badgeStyling}>
-            {city}
-            <CloseIcon aria-label="remove tag" css={closeIconStyling} onClick={deleteCity(city)} />
-          </Badge>
-        ))}
-      </span>
-    ) : null;
+    cityTags.map((city) => (
+      <Badge key={city} css={badgeStyling}>
+        {city}
+        <CloseIcon aria-label="remove tag" css={closeIconStyling} onClick={deleteCity(city)} />
+      </Badge>
+    ));
 
   const Suggestions = () => (
     <MenuList css={suggestionContainer}>
@@ -106,17 +106,19 @@ const CitySearchBar = () => {
 
   return (
     <Menu closeMenu={closeSuggestion}>
-      <div css={container}>
+      <div css={container} onClick={focusInput}>
         <div css={wrapper}>
           <SearchPinIcon aria-label="map-pin icon" />
-          <CityTags />
-          <Input
-            placeholder={cityTags ? '' : '방문 도시를 입력해주세요'}
-            value={queryWord}
-            onInput={searchCity}
-            ref={inputRef}
-            css={inputStyling}
-          />
+          <div css={tagListStyling}>
+            <CityTags />
+            <Input
+              placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
+              value={queryWord}
+              onInput={searchCity}
+              ref={inputRef}
+              css={inputStyling}
+            />
+          </div>
         </div>
         {isSuggestionOpen && <Suggestions />}
       </div>
