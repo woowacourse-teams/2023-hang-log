@@ -41,4 +41,8 @@ public class BaseEntity {
     public boolean isDeleted() {
         return this.status.equals(DELETED);
     }
+
+    public void changeStatusToDeleted() {
+        this.status = DELETED;
+    }
 }

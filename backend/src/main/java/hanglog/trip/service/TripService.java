@@ -1,7 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.type.StatusType.DELETED;
-
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.presentation.dto.request.TripCreateRequest;
@@ -48,16 +46,8 @@ public class TripService {
         final Trip target = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
         validateAlreadyDeleted(target);
-        final Trip deletedTrip = new Trip(
-                target.getId(),
-                target.getTitle(),
-                target.getStartDate(),
-                target.getEndDate(),
-                target.getDescription(),
-                DELETED
-        );
-
-        tripRepository.save(deletedTrip);
+        target.changeStatusToDeleted();
+        tripRepository.save(target);
     }
 
     private void validateAlreadyDeleted(final Trip target) {
