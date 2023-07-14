@@ -14,7 +14,7 @@ import {
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 
-const fruits = [
+const cities = [
   'apple',
   'banana',
   'orange',
@@ -29,16 +29,20 @@ const fruits = [
 
 const CitySearchBar = () => {
   const [queryWord, setQueryWord] = useState('');
-  const [cities, setCities] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<string[]>(fruits);
+  const [cityTags, setCityTags] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>(cities);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const searchCity = (e: FormEvent<HTMLInputElement>) => {
     const word = e.currentTarget.value;
 
+    if (word === '') {
+      closeSuggestion();
+    }
+
     if (word !== '') {
-      const filteredSuggestions = fruits.filter((suggestion) => new RegExp(word).test(suggestion));
+      const filteredSuggestions = cities.filter((suggestion) => new RegExp(word).test(suggestion));
 
       setSuggestions(filteredSuggestions);
       openSuggestion();
@@ -49,13 +53,13 @@ const CitySearchBar = () => {
 
   const addNewCity = (selectedCity: string) => () => {
     setQueryWord('');
-    setCities((cities) => {
-      if (cities.includes(selectedCity)) {
-        const newCities = cities.filter((city) => city !== selectedCity);
-        return [...newCities, selectedCity];
+    setCityTags((cityTags) => {
+      if (cityTags.includes(selectedCity)) {
+        const newCityTags = cityTags.filter((cityTag) => cityTag !== selectedCity);
+        return [...newCityTags, selectedCity];
       }
 
-      return [...cities, selectedCity];
+      return [...cityTags, selectedCity];
     });
 
     closeSuggestion();
@@ -63,15 +67,15 @@ const CitySearchBar = () => {
   };
 
   const deleteCity = (selectedCity: string) => () => {
-    setCities((cities) => cities.filter((city) => city !== selectedCity));
+    setCityTags((cityTags) => cityTags.filter((cityTag) => cityTag !== selectedCity));
 
     inputRef.current?.focus();
   };
 
   const CityTags = () =>
-    cities.length ? (
+    cityTags.length ? (
       <span css={tagListStyling}>
-        {cities.map((city) => (
+        {cityTags.map((city) => (
           <Badge key={city} css={badgeStyling}>
             {city}
             <CloseIcon css={closeIconStyling} onClick={deleteCity(city)} />
