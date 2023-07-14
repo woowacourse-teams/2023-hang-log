@@ -24,8 +24,8 @@ public class TripController {
 
     @PostMapping
     public ResponseEntity<Void> createTrip(@RequestBody @Valid final TripCreateRequest tripCreateRequest) {
-        final Long id = tripService.save(tripCreateRequest);
-        return ResponseEntity.created(URI.create("/trips/" + id)).build();
+        final Long tripId = tripService.save(tripCreateRequest);
+        return ResponseEntity.created(URI.create("/trips/" + tripId)).build();
     }
 
     @PutMapping("/{tripId}")
