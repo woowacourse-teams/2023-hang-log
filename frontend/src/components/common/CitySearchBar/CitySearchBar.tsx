@@ -62,11 +62,12 @@ const CitySearchBar = () => {
   };
 
   const addNewCity = (selectedCity: string) => () => {
-    setQueryWord('');
+    const city = selectedCity.split(',')[0];
+
     setCityTags((cityTags) => {
-      if (cityTags.includes(selectedCity)) {
-        const newCityTags = cityTags.filter((cityTag) => cityTag !== selectedCity);
-        return [...newCityTags, selectedCity];
+      if (cityTags.includes(city)) {
+        const newCityTags = cityTags.filter((cityTag) => cityTag !== city);
+        return [...newCityTags, city];
       }
 
       if (cityTags.length >= CITY.MAX_NUM) {
@@ -74,16 +75,19 @@ const CitySearchBar = () => {
         return cityTags;
       }
 
-      return [...cityTags, selectedCity];
+      return [...cityTags, city];
     });
 
+    setQueryWord('');
     setSelectedSuggestionIndex(-1);
     closeSuggestion();
     focusInput();
   };
 
   const deleteCity = (selectedCity: string) => () => {
-    setCityTags((cityTags) => cityTags.filter((cityTag) => cityTag !== selectedCity));
+    const city = selectedCity.split(',')[0];
+
+    setCityTags((cityTags) => cityTags.filter((cityTag) => cityTag !== city));
 
     focusInput();
   };
