@@ -36,6 +36,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -59,18 +60,24 @@ class TripControllerTest extends RestDocsTest {
         when(tripService.save(any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
-        mockMvc.perform(post("/trips")
+        performPostRequest(tripCreateRequest);
+    }
+
+    private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
+        return mockMvc.perform(post("/trips")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(tripCreateRequest)));
     }
 
-    private void performPutWhenBadRequestCase(final TripUpdateRequest updateRequest, final String errMessage)
-            throws Exception {
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(errMessage));
+    private ResultActions performPutRequest(final TripUpdateRequest updateRequest) throws Exception {
+        return mockMvc.perform(put("/trips/" + 1)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)));
+    }
+
+    private ResultActions performDeleteRequest() throws Exception {
+        return mockMvc.perform(delete("/trips/" + 1)
+                .contentType(APPLICATION_JSON));
     }
 
     @DisplayName("단일 여행을 생성할 수 있다.")
@@ -86,11 +93,11 @@ class TripControllerTest extends RestDocsTest {
         when(tripService.save(any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
-        // when & then
-        mockMvc.perform(post("/trips")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
-                .andExpect(status().isCreated())
+        // when
+        ResultActions resultActions = performPostRequest(tripCreateRequest);
+
+        // then
+        resultActions.andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, "/trips/1"))
                 .andDo(
                         restDocs.document(
@@ -119,17 +126,17 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_StartDateNull() throws Exception {
         // given
-        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
+        final TripCreateRequest badRequest = new TripCreateRequest(
                 null,
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L)
         );
 
-        // when & then
-        mockMvc.perform(post("/trips")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
-                .andExpect(status().isBadRequest())
+        // when
+        ResultActions resultActions = performPostRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("여행 시작 날짜를 입력해주세요."));
     }
 
@@ -137,52 +144,51 @@ class TripControllerTest extends RestDocsTest {
     @Test
     void createTrip_EndDateNull() throws Exception {
         // given
-        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
+        final TripCreateRequest badRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 null,
                 List.of(1L, 2L)
         );
 
-        // when & then
-        mockMvc.perform(post("/trips")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
-                .andExpect(status().isBadRequest());
+        // when
+        ResultActions resultActions = performPostRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest());
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
     @Test
     void createTrip_CitesNull() throws Exception {
         // given
-        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
+        final TripCreateRequest badRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 null
         );
 
-        // when & then
-        mockMvc.perform(post("/trips")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
-                .andExpect(status().isBadRequest());
+        // when
+        ResultActions resultActions = performPostRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest());
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
     @Test
     void createTrip_CitesEmpty() throws Exception {
         // given
-        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
+        final TripCreateRequest badRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 Collections.EMPTY_LIST
         );
-        new TripCreateRequest(null, null, null);
 
-        // when & then
-        mockMvc.perform(post("/trips")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateRequest)))
-                .andExpect(status().isBadRequest());
+        // when
+        ResultActions resultActions = performPostRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest());
     }
 
     @DisplayName("트립의 정보를 변경할 수 있다.")
@@ -199,12 +205,11 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        mockMvc.perform(put("/trips/" + 1)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
-                .andExpect(status().isNoContent());
+        // when
+        ResultActions resultActions = performPutRequest(updateRequest);
 
+        // then
+        resultActions.andExpect(status().isNoContent());
         verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
     }
 
@@ -214,7 +219,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
@@ -222,9 +227,14 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행 제목을 입력해 주세요.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 제목을 입력해 주세요."));
     }
+
 
     @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
     @Test
@@ -233,7 +243,7 @@ class TripControllerTest extends RestDocsTest {
         makeTrip();
 
         final String updatedTitle = "1" + "1234567890".repeat(5);
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
@@ -241,8 +251,12 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행 제목은 50자를 넘을 수 없습니다.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 제목은 50자를 넘을 수 없습니다."));
     }
 
 
@@ -253,7 +267,7 @@ class TripControllerTest extends RestDocsTest {
         makeTrip();
 
         final String updateDescription = "1" + "1234567890".repeat(20);
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "updatedTite",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
@@ -261,8 +275,12 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행 요약은 200자를 넘을 수 없습니다.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 요약은 200자를 넘을 수 없습니다."));
     }
 
     @DisplayName("여행 시작 날짜를 입력하지 않으면 예외가 발생한다.")
@@ -271,7 +289,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
                 null,
                 LocalDate.of(2023, 7, 7),
@@ -279,8 +297,12 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행 시작 날짜를 입력해 주세요.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 시작 날짜를 입력해 주세요."));
     }
 
     @DisplayName("여행 종료 날짜를 입력하지 않으면 예외가 발생한다.")
@@ -289,7 +311,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
                 LocalDate.of(2023, 7, 1),
                 null,
@@ -297,8 +319,12 @@ class TripControllerTest extends RestDocsTest {
                 List.of(1L, 2L, 3L)
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행 종료 날짜를 입력해 주세요.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 종료 날짜를 입력해 주세요."));
     }
 
     @DisplayName("도시Id 리스트를 입력하지 않으면 예외가 발생한다.")
@@ -307,7 +333,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
@@ -315,8 +341,12 @@ class TripControllerTest extends RestDocsTest {
                 null
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행한 도시는 최소 한 개 이상 입력해 주세요.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("도시Id를 빈 리스트로 요청하면 예외가 발생한다.")
@@ -325,7 +355,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        final TripUpdateRequest updateRequest = new TripUpdateRequest(
+        final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
@@ -333,8 +363,12 @@ class TripControllerTest extends RestDocsTest {
                 Collections.EMPTY_LIST
         );
 
-        // when & then
-        performPutWhenBadRequestCase(updateRequest, "여행한 도시는 최소 한 개 이상 입력해 주세요.");
+        // when
+        ResultActions resultActions = performPutRequest(badRequest);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
@@ -343,11 +377,11 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
 
-        // when & then
-        mockMvc.perform(delete("/trips/" + 1)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        // when
+        ResultActions resultActions = performDeleteRequest();
 
+        // then
+        resultActions.andExpect(status().isNoContent());
         verify(tripService).delete(anyLong());
     }
 }
