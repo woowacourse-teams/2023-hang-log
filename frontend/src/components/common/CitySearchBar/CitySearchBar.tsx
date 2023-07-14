@@ -46,7 +46,14 @@ const CitySearchBar = () => {
 
   const addNewCity = (selectedCity: string) => () => {
     setQueryWord('');
-    setCities((cities) => [...cities, selectedCity]);
+    setCities((cities) => {
+      if (cities.includes(selectedCity)) {
+        const newCities = cities.filter((city) => city !== selectedCity);
+        return [...newCities, selectedCity];
+      }
+
+      return [...cities, selectedCity];
+    });
 
     closeSuggestion();
     inputRef.current?.focus();
