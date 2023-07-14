@@ -46,3 +46,28 @@ include::{snippets}/trip-controller-test/create-trip/request-fields.adoc[]
 ==== 응답
 include::{snippets}/trip-controller-test/create-trip/http-response.adoc[]
 include::{snippets}/trip-controller-test/create-trip/response-headers.adoc[]
+
+
+
+== DayLog API
+
+=== DayLog 조회
+
+==== 요청
+include::{snippets}/day-log-controller-test/get-day-log/http-request.adoc[]
+include::{snippets}/day-log-controller-test/get-day-log/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/day-log-controller-test/get-day-log/http-response.adoc[]
+include::{snippets}/day-log-controller-test/get-day-log/response-fields.adoc[]
+
+
+=== DayLog 제목 수정
+
+==== 요청
+include::{snippets}/day-log-controller-test/update-day-log-title/http-request.adoc[]
+include::{snippets}/day-log-controller-test/update-day-log-title/path-parameters.adoc[]
+include::{snippets}/day-log-controller-test/update-day-log-title/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/day-log-controller-test/update-day-log-title/http-response.adoc[]
