@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -34,7 +34,7 @@ public class BaseEntity {
     @Enumerated(value = STRING)
     private StatusType status = USABLE;
 
-    public BaseEntity(final StatusType status) {
+    protected BaseEntity(final StatusType status) {
         this.status = status;
     }
 
