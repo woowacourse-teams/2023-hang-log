@@ -1,5 +1,7 @@
 package hanglog.trip.domain;
 
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -9,7 +11,6 @@ import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.global.type.StatusType;
 import hanglog.trip.domain.type.ItemType;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -45,15 +46,15 @@ public class Item extends BaseEntity {
 
     private String memo;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne(fetch = LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
-    @OneToOne(fetch = LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
