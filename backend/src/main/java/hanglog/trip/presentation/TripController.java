@@ -30,7 +30,7 @@ public class TripController {
 
     @PutMapping("/{tripId}")
     public ResponseEntity<Void> updateTrip(
-            @PathVariable Long tripId,
+            @PathVariable final Long tripId,
             @RequestBody @Valid final TripUpdateRequest updateRequest
     ) {
         tripService.update(tripId, updateRequest);
@@ -38,7 +38,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{tripId}")
-    public ResponseEntity<Void> deleteTrip(@PathVariable Long tripId) {
+    public ResponseEntity<Void> deleteTrip(@PathVariable final Long tripId) {
         tripService.delete(tripId);
         return ResponseEntity.noContent().build();
     }
