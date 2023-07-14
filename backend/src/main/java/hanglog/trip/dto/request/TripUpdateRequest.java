@@ -1,4 +1,4 @@
-package hanglog.trip.presentation.dto.request;
+package hanglog.trip.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -10,8 +10,8 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.presentation.dto.request.TripCreateRequest;
-import hanglog.trip.presentation.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

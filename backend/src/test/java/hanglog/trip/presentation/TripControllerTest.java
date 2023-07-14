@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.presentation.dto.request.TripCreateRequest;
-import hanglog.trip.presentation.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;

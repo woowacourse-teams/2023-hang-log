@@ -2,8 +2,8 @@ package hanglog.trip.service;
 
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.presentation.dto.request.TripCreateRequest;
-import hanglog.trip.presentation.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
