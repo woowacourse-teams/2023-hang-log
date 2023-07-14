@@ -43,7 +43,7 @@ class TripServiceTest {
                 .willReturn(LONDON_TRIP);
 
         // when
-        Long actualId = tripService.save(tripCreateRequest);
+        final Long actualId = tripService.save(tripCreateRequest);
 
         // then
         assertThat(actualId).isEqualTo(1L);
