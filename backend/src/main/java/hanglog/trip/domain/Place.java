@@ -43,10 +43,10 @@ public class Place extends BaseEntity {
 
     public Place(
             final String name,
-                 final String address,
-                 final BigDecimal latitude,
-                 final BigDecimal longitude,
-                 final Category category
+            final String address,
+            final BigDecimal latitude,
+            final BigDecimal longitude,
+            final Category category
     ) {
         this.name = name;
         this.address = address;
