@@ -34,6 +34,11 @@ export const suggestionContainer = css({
   transform: 'translateY(0)',
 });
 
+export const getMenuItemStyling = (isSelected: boolean) =>
+  css({
+    backgroundColor: isSelected ? Theme.color.gray200 : Theme.color.white,
+  });
+
 export const emptyTextStyling = css({
   color: Theme.color.gray500,
   margin: Theme.spacer.spacing2,
