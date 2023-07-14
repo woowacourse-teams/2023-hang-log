@@ -24,15 +24,15 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<Void> createItem(@PathVariable final Long tripId,
                                            @RequestBody @Valid final ItemRequest itemRequest) {
-        Long id = itemService.save(tripId, itemRequest);
-        return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + id)).build();
+        final Long itemId = itemService.save(tripId, itemRequest);
+        return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + itemId)).build();
     }
 
     @PutMapping("/{itemId}")
     public ResponseEntity<Void> updateItem(
-            @PathVariable Long tripId,
-            @PathVariable Long itemId,
-            @RequestBody ItemRequest itemRequest) {
+            @PathVariable final Long tripId,
+            @PathVariable final Long itemId,
+            @RequestBody final ItemRequest itemRequest) {
         itemService.update(tripId, itemId, itemRequest);
         return ResponseEntity.noContent().build();
     }
