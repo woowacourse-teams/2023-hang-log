@@ -209,7 +209,34 @@ class TripControllerTest extends RestDocsTest {
         ResultActions resultActions = performPutRequest(updateRequest);
 
         // then
-        resultActions.andExpect(status().isNoContent());
+        resultActions.andExpect(status().isNoContent())
+                .andDo(
+                        restDocs.document(
+                                requestFields(
+                                        fieldWithPath("title")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 제목")
+                                                .attributes(field("constraint", "50자 이하의 문자열")),
+                                        fieldWithPath("startDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 시작 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("endDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 종료 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("description")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 요약")
+                                                .attributes(field("constraint", "200자 이하의 문자열")),
+                                        fieldWithPath("cityIds")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("도시 ID 목록")
+                                                .attributes(field("constraint", "1개 이상의 양의 정수"))
+                                )
+                        )
+                );
+
         verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
     }
 
@@ -381,7 +408,8 @@ class TripControllerTest extends RestDocsTest {
         ResultActions resultActions = performDeleteRequest();
 
         // then
-        resultActions.andExpect(status().isNoContent());
+        resultActions.andExpect(status().isNoContent())
+                .andDo(restDocs.document());
         verify(tripService).delete(anyLong());
     }
 }
