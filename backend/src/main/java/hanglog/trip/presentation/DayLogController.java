@@ -16,22 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/trips/{tripId}/daylog/{id}")
+@RequestMapping("/trips/{tripId}/daylog/{dayLogId}")
 public class DayLogController {
 
     private final DayLogService dayLogService;
 
     @GetMapping
-    public ResponseEntity<DayLogGetResponse> getDayLog(@PathVariable final Long tripId, @PathVariable final Long id) {
-        final DayLogGetResponse response = dayLogService.getById(id);
+    public ResponseEntity<DayLogGetResponse> getDayLog(
+            @PathVariable final Long tripId,
+            @PathVariable final Long dayLogId) {
+        final DayLogGetResponse response = dayLogService.getById(dayLogId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping
-    public ResponseEntity<Void> updateDayLogTitle(@PathVariable final Long tripId,
-                                                  @PathVariable final Long id,
-                                                  @RequestBody @Valid final DayLogUpdateTitleRequest request) {
-        dayLogService.updateTitle(id, request);
+    public ResponseEntity<Void> updateDayLogTitle(
+            @PathVariable final Long tripId,
+            @PathVariable final Long dayLogId,
+            @RequestBody @Valid final DayLogUpdateTitleRequest request) {
+        dayLogService.updateTitle(dayLogId, request);
         return ResponseEntity.noContent().build();
     }
 }
