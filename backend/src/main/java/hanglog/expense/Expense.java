@@ -6,14 +6,13 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.category.Category;
 import hanglog.global.BaseEntity;
-import hanglog.trip.domain.Item;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,22 +31,16 @@ public class Expense extends BaseEntity {
     @Column(nullable = false)
     private Integer amount;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
-
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     public Expense(final String currency,
                    final Integer amount,
-                   final Item item,
                    final Category category
     ) {
         this.currency = currency;
         this.amount = amount;
-        this.item = item;
         this.category = category;
     }
 }
