@@ -63,6 +63,6 @@ public class DayLog extends BaseEntity {
     }
 
     public DayLog(final String title, final Integer ordinal, final Trip trip) {
-        this(title, ordinal, trip, new ArrayList<>());
+        this(null, title, ordinal, trip, new ArrayList<>());
     }
 }
