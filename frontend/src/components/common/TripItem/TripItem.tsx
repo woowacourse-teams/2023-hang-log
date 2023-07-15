@@ -13,13 +13,14 @@ import {
   Theme,
   useOverlay,
 } from 'hang-log-design-system';
-import { memo } from 'react';
+import { useState } from 'react';
 
 import { moneyFormatter } from '@utils/formatter';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import {
-  containerStyling,
+  expenseStyling,
+  getContainerStyling,
   informationContainerStyling,
   memoStyling,
   moreButtonStyling,
@@ -29,13 +30,35 @@ import {
   subInformationStyling,
 } from '@components/common/TripItem/TripItem.style';
 
-type TripListItemProps = TripItemData;
+interface TripListItemProps extends TripItemData {
+  onDragStart: () => void;
+  onDragEnter: () => void;
+  onDragEnd: () => void;
+}
 
-const TripItem = ({ ...information }: TripListItemProps) => {
+const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripListItemProps) => {
   const { isOpen, open, close } = useOverlay();
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDrag = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    onDragEnd();
+  };
 
   return (
-    <li css={containerStyling}>
+    /** 수정 모드에서만 drag할 수 있다 */
+    <li
+      css={getContainerStyling(isDragging)}
+      draggable
+      onDragStart={onDragStart}
+      onDrag={handleDrag}
+      onDragEnter={onDragEnter}
+      onDragEnd={handleDragEnd}
+    >
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
         {information.imageUrls && (
           <ImageCarousel
@@ -55,12 +78,12 @@ const TripItem = ({ ...information }: TripListItemProps) => {
           )}
           {information.rating && <StarRating css={starRatingStyling} rate={information.rating} />}
           {information.memo && (
-            <Text size="small" css={memoStyling}>
+            <Text css={memoStyling} size="small">
               {information.memo}
             </Text>
           )}
           {information.expense && (
-            <Text size="small">
+            <Text css={expenseStyling} size="small">
               {information.expense.category.name} · {CURRENCY_ICON[information.expense.currency]}
               {moneyFormatter(information.expense.amount)}
             </Text>
@@ -74,8 +97,8 @@ const TripItem = ({ ...information }: TripListItemProps) => {
         </button>
         {isOpen && (
           <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={() => console.log('수정')}>마이페이지</MenuItem>
-            <MenuItem onClick={() => console.log('삭제')}>로그아웃</MenuItem>
+            <MenuItem onClick={() => console.log('수정')}>수정</MenuItem>
+            <MenuItem onClick={() => console.log('삭제')}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>
@@ -83,4 +106,4 @@ const TripItem = ({ ...information }: TripListItemProps) => {
   );
 };
 
-export default memo(TripItem);
+export default TripItem;

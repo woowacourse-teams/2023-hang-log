@@ -1,11 +1,19 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const containerStyling = css({
-  position: 'relative',
+export const getContainerStyling = (isDragging?: boolean) =>
+  css({
+    position: 'relative',
 
-  minHeight: '120px',
-});
+    minHeight: '120px',
+    borderRadius: Theme.borderRadius.medium,
+
+    backgroundColor: 'white',
+
+    opacity: isDragging ? '0.4' : '1',
+
+    cursor: 'grab',
+  });
 
 export const informationContainerStyling = css({
   width: '100%',
@@ -19,11 +27,14 @@ export const subInformationStyling = css({
 
 export const starRatingStyling = css({
   marginTop: Theme.spacer.spacing2,
-  marginBottom: Theme.spacer.spacing3,
 });
 
 export const memoStyling = css({
-  marginBottom: Theme.spacer.spacing3,
+  marginTop: Theme.spacer.spacing3,
+});
+
+export const expenseStyling = css({
+  marginTop: Theme.spacer.spacing3,
 });
 
 export const moreButtonStyling = css({
@@ -51,5 +62,12 @@ export const moreMenuStyling = css({
 });
 
 export const moreMenuListStyling = css({
+  minWidth: 'unset',
+  width: 'max-content',
+
   transform: 'translateY(16px)',
+
+  '& > li': {
+    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
+  },
 });

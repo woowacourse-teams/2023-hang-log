@@ -1,13 +1,13 @@
 import { Box, Flex, Skeleton, Theme } from 'hang-log-design-system';
 
 import {
-  containerStyling,
+  getContainerStyling,
   informationContainerStyling,
 } from '@components/common/TripItem/TripItem.style';
 
 const TripItemSkeleton = () => {
   return (
-    <li css={containerStyling}>
+    <li css={getContainerStyling()}>
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
         <Skeleton css={{ minWidth: '250px' }} width="250px" height="167px" />
         <Box css={informationContainerStyling}>
