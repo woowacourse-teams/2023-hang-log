@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { inputStyling } from '@components/common/DayLogItem/TitleInput/TitleInput.style';
 
@@ -9,6 +9,10 @@ interface TitleInputProps {
 
 const TitleInput = ({ initialTitle }: TitleInputProps) => {
   const [title, setTitle] = useState(initialTitle);
+
+  useEffect(() => {
+    setTitle(initialTitle);
+  }, [initialTitle]);
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
