@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const suggestionContainer = css({
+export const suggestionContainerStyling = css({
   width: '500px',
   maxHeight: '300px',
 

@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const container = css({
+export const containerStyling = css({
   width: '500px',
   margin: '0 auto',
 });
 
-export const wrapper = css({
+export const wrapperStyling = css({
   display: 'flex',
   alignItems: 'center',
   gap: Theme.spacer.spacing1,

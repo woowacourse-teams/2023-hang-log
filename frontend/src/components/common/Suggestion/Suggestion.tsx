@@ -1,3 +1,4 @@
+import { useSuggestion } from '@/hooks/common/useSuggestion';
 import {
   MenuList as SuggestionList,
   MenuItem as SuggestionsItem,
@@ -8,7 +9,7 @@ import { useEffect } from 'react';
 import {
   emptyTextStyling,
   getSuggestionItemStyling,
-  suggestionContainer,
+  suggestionContainerStyling,
 } from '@components/common/Suggestion/Suggestion.style';
 import useSuggestion from '@components/common/Suggestion/useSuggestion';
 
@@ -54,7 +55,7 @@ const Suggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   });
 
   return (
-    <SuggestionList css={suggestionContainer}>
+    <SuggestionList css={suggestionContainerStyling}>
       {suggestions.length ? (
         suggestions.map((suggestion, index) => (
           <SuggestionsItem

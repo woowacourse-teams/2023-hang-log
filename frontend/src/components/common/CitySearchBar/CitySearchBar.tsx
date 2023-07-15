@@ -1,3 +1,4 @@
+import { useCityTags } from '@/hooks/common/useCityTags';
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
@@ -6,12 +7,11 @@ import { FormEvent, useRef, useState } from 'react';
 import {
   badgeStyling,
   closeIconStyling,
-  container,
+  containerStyling,
   inputStyling,
   tagListStyling,
-  wrapper,
+  wrapperStyling,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
-import useCityTags from '@components/common/CitySearchBar/useCityTags';
 import Suggestion from '@components/common/Suggestion/Suggestion';
 
 interface CitySearchBarProps {
@@ -62,7 +62,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
       <Badge key={city} css={badgeStyling}>
         {city}
         <CloseIcon
-          aria-label="remove tag"
+          aria-label="삭제 아이콘"
           css={closeIconStyling}
           onClick={handleDeleteButtonClick(city)}
         />
@@ -71,9 +71,9 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
 
   return (
     <Menu closeMenu={closeSuggestion}>
-      <div css={container} onClick={focusInput}>
-        <div css={wrapper}>
-          <SearchPinIcon aria-label="map-pin icon" />
+      <div css={containerStyling} onClick={focusInput}>
+        <div css={wrapperStyling}>
+          <SearchPinIcon aria-label="지도표시 아이콘" />
           <div css={tagListStyling}>
             <CityTags />
             <Input

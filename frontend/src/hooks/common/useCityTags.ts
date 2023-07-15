@@ -1,7 +1,7 @@
 import { CITY } from '@constants/city';
 import { useState } from 'react';
 
-const useCityTags = (initialCityTags: string[]) => {
+export const useCityTags = (initialCityTags: string[]) => {
   const [cityTags, setCityTags] = useState<string[]>(initialCityTags);
 
   const getCityName = (city: string) => {
@@ -33,5 +33,3 @@ const useCityTags = (initialCityTags: string[]) => {
 
   return { cityTags, addCityTag, deleteCityTag };
 };
-
-export default useCityTags;

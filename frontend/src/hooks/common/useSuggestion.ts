@@ -20,7 +20,7 @@ const cities = [
   '오클로호마, 미국',
 ];
 
-const useSuggestion = () => {
+export const useSuggestion = ({ onItemSelect }: { onItemSelect: (item: string) => void }) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
@@ -57,5 +57,3 @@ const useSuggestion = () => {
     focusUpperSuggestion,
   };
 };
-
-export default useSuggestion;
