@@ -52,7 +52,7 @@ const DayLogItem = ({ ...information }: DayLogItemProps) => {
           />
         </ToggleGroup>
       </Flex>
-      {tripItemList.length > 0 ? <TripItemList items={tripItemList} /> : <TripItemList.Empty />}
+      {tripItemList.length > 0 ? <TripItemList tripItems={tripItemList} /> : <TripItemList.Empty />}
     </Box>
   );
 };

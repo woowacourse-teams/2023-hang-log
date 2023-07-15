@@ -1,6 +1,9 @@
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+
+import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
+import { useDayLogOrderMutation } from '@hooks/useDayLogOrderMutation';
 
 import TripItem from '@components/common/TripItem/TripItem';
 import {
@@ -10,15 +13,34 @@ import {
 } from '@components/common/TripItemList/TripItemList.style';
 
 interface TripItemListProps {
-  items: TripItemData[];
+  tripItems: TripItemData[];
 }
 
-const TripItemList = ({ items }: TripItemListProps) => {
+const TripItemList = ({ tripItems }: TripItemListProps) => {
+  const dayLogOrderMutation = useDayLogOrderMutation();
+  const handlePositionChange = async (newItems: TripItemData[]) => {
+    const itemIds = newItems.map((item) => item.id);
+
+    dayLogOrderMutation.mutate({ tripId: 1, dayLogId: 1, itemIds });
+  };
+
+  const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
+    useDragAndDrop(tripItems, handlePositionChange);
+
+  useEffect(() => {
+    handleItemsUpdate(tripItems);
+  }, [tripItems]);
+
   return (
     <ol css={containerStyling}>
-      {items.map((item) => (
+      {items.map((item, index) => (
         <Fragment key={item.id}>
-          <TripItem {...item} />
+          <TripItem
+            onDragStart={handleDragStart(index)}
+            onDragEnter={handleDragEnter(index)}
+            onDragEnd={handleDragEnd}
+            {...item}
+          />
           <Divider />
         </Fragment>
       ))}
