@@ -21,7 +21,7 @@ const cities = [
 ];
 
 const useSuggestion = () => {
-  const [suggestions, setSuggestions] = useState<string[]>(cities);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
   const setNewSuggestions = (word: string) => {
@@ -46,10 +46,6 @@ const useSuggestion = () => {
 
   const focusSuggestion = (index: number) => {
     setFocusedSuggestionIndex(index);
-  };
-
-  const getCityName = (city: string) => {
-    return city.split(',')[0];
   };
 
   return {
