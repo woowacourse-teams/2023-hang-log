@@ -1,4 +1,3 @@
-import { Global, ThemeProvider } from '@emotion/react';
 import type { Preview } from '@storybook/react';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import React from 'react';
@@ -6,8 +5,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import { handlers } from '../src/mocks/handlers';
-import { GlobalStyle } from '../src/styles/GlobalStyle';
-import { Theme } from '../src/styles/Theme';
 
 initialize();
 
@@ -46,10 +43,7 @@ export const decorators = [
   (Story) => (
     <MemoryRouter initialEntries={['/']}>
       <RecoilRoot>
-        <ThemeProvider theme={Theme}>
-          <Global styles={GlobalStyle} />
-          <Story />
-        </ThemeProvider>
+        <Story />
       </RecoilRoot>
     </MemoryRouter>
   ),
