@@ -28,21 +28,7 @@ export const inputStyling = css({
   width: 'fit-content',
 });
 
-export const suggestionContainer = css({
-  //왜 100%가 안먹는거지? 부모가 500px인뎅?
-  width: '500px',
-  transform: 'translateY(0)',
-});
 
-export const getMenuItemStyling = (isSelected: boolean) =>
-  css({
-    backgroundColor: isSelected ? Theme.color.gray200 : Theme.color.white,
-  });
-
-export const emptyTextStyling = css({
-  color: Theme.color.gray500,
-  margin: Theme.spacer.spacing2,
-});
 
 export const tagListStyling = css({
   display: 'flex',

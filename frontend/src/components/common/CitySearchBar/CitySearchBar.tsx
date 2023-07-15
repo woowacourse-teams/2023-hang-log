@@ -1,30 +1,19 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import { CITY } from '@constants/city';
-import {
-  Badge,
-  Input,
-  Menu as Suggestion,
-  MenuList as SuggestionList,
-  MenuItem as SuggestionsItem,
-  Text,
-  useOverlay,
-} from 'hang-log-design-system';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
+import { FormEvent, useRef, useState } from 'react';
 
 import {
   badgeStyling,
   closeIconStyling,
   container,
-  emptyTextStyling,
-  getMenuItemStyling,
   inputStyling,
-  suggestionContainer,
   tagListStyling,
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 
-import useCitySearchBar from './useCitySearchBar';
+import Suggestion from '../Suggestion/Suggestion';
 
 interface CitySearchBarProps {
   initialCityTags: string[];
@@ -33,14 +22,7 @@ interface CitySearchBarProps {
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const [cityTags, setCityTags] = useState<string[]>(initialCityTags);
-  const {
-    suggestions,
-    focusedSuggestionIndex,
-    setNewSuggestions,
-    focusLowerSuggestion,
-    focusUpperSuggestion,
-    focusSuggestion,
-  } = useCitySearchBar();
+
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -52,14 +34,13 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
 
     if (word !== '') {
-      setNewSuggestions(word);
       openSuggestion();
     }
 
     setQueryWord(word);
   };
 
-  const addNewCity = (selectedCity: string) => () => {
+  const addNewCity = (selectedCity: string) => {
     const city = selectedCity.split(',')[0];
 
     setCityTags((cityTags) => {
@@ -80,7 +61,6 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
 
   const resetAll = () => {
     setQueryWord('');
-    focusSuggestion(-1);
     focusInput();
     closeSuggestion();
   };
@@ -103,32 +83,6 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
   };
 
-  const handleKeyUpAndDown = (e: globalThis.KeyboardEvent) => {
-    e.preventDefault();
-
-    if (!isSuggestionOpen) return;
-
-    if (e.key === 'ArrowUp') {
-      focusUpperSuggestion();
-    }
-
-    if (e.key === 'ArrowDown') {
-      focusLowerSuggestion();
-    }
-
-    if (e.key === 'Enter') {
-      if (focusedSuggestionIndex >= 0) {
-        addNewCity(suggestions[focusedSuggestionIndex])();
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keyup', handleKeyUpAndDown);
-
-    return () => window.removeEventListener('keyup', handleKeyUpAndDown);
-  });
-
   const CityTags = () =>
     cityTags.map((city) => (
       <Badge key={city} css={badgeStyling}>
@@ -137,27 +91,8 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
       </Badge>
     ));
 
-  const SuggestionBox = () => (
-    <SuggestionList css={suggestionContainer}>
-      {suggestions.length ? (
-        suggestions.map((suggestion, index) => (
-          <SuggestionsItem
-            key={suggestion}
-            onClick={addNewCity(suggestion)}
-            onMouseEnter={() => focusSuggestion(index)}
-            css={getMenuItemStyling(focusedSuggestionIndex === index)}
-          >
-            {suggestion}
-          </SuggestionsItem>
-        ))
-      ) : (
-        <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
-      )}
-    </SuggestionList>
-  );
-
   return (
-    <Suggestion closeMenu={closeSuggestion}>
+    <Menu closeMenu={closeSuggestion}>
       <div css={container} onClick={focusInput}>
         <div css={wrapper}>
           <SearchPinIcon aria-label="map-pin icon" />
@@ -173,9 +108,9 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
             />
           </div>
         </div>
-        {isSuggestionOpen && <SuggestionBox />}
+        {isSuggestionOpen && <Suggestion queryWord={queryWord} onItemSelect={addNewCity} />}
       </div>
-    </Suggestion>
+    </Menu>
   );
 };
 
