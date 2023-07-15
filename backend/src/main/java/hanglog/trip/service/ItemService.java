@@ -79,7 +79,6 @@ public class ItemService {
 
         return new Place(
                 placeRequest.getName(),
-                placeRequest.getAddress(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 category);
