@@ -4,6 +4,7 @@ import { Theme } from 'hang-log-design-system';
 export const tripsImageBoxStyling = css({
   width: `calc((100vw - 196px) / 5)`,
   height: '304px',
+  maxHeight: '304px',
   margin: '0',
   padding: '0',
 });
@@ -17,6 +18,8 @@ export const tripsItemImageStyling = css({
   objectFit: 'cover',
   width: '100%',
   height: '100%',
+  minHeight: '176px',
+  maxHeight: '176px',
   borderRadius: Theme.borderRadius.medium,
 });
 
@@ -26,11 +29,12 @@ export const tripsItemNameStying = css({
 });
 
 export const tripsItemBadgeBoxStyling = css({
-  width: '100%',
+  width: `calc((100vw - 196px) / 5)`,
   whiteSpace: 'nowrap',
   marginTop: Theme.spacer.spacing3,
   marginBottom: Theme.spacer.spacing2,
-  overflowX: 'auto',
+  minHeight: '22px',
+  overflowX: 'scroll',
   '-ms-overflow-style': 'none',
   scrollbarWidth: 'none',
   '& > span': {
