@@ -1,4 +1,4 @@
-import { CITY } from '@/constants/city';
+import { CITY } from '@constants/city';
 import { useState } from 'react';
 
 const useCityTags = (initialCityTags: string[]) => {

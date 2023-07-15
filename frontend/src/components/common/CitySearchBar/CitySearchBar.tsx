@@ -11,9 +11,8 @@ import {
   tagListStyling,
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
-
-import Suggestion from '../Suggestion/Suggestion';
-import useCityTags from './useCityTags';
+import useCityTags from '@components/common/CitySearchBar/useCityTags';
+import Suggestion from '@components/common/Suggestion/Suggestion';
 
 interface CitySearchBarProps {
   initialCityTags: string[];

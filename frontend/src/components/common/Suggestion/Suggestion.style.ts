@@ -17,6 +17,7 @@ export const getSuggestionItemStyling = (isFocused: boolean) =>
   });
 
 export const emptyTextStyling = css({
-  color: Theme.color.gray500,
   margin: Theme.spacer.spacing2,
+
+  color: Theme.color.gray500,
 });
