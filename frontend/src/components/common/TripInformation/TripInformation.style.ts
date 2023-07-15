@@ -3,7 +3,7 @@ import { Theme } from 'hang-log-design-system';
 
 export const sectionStyling = css({
   position: 'relative',
-  width: '50vw',
+  width: '100%',
   minHeight: '240px',
   padding: `${Theme.spacer.spacing4} 50px`,
 
@@ -17,13 +17,13 @@ export const imageWrapperStyling = css({
   top: '0',
   left: '0',
 
-  width: '50vw',
+  width: '100%',
   height: '100%',
   zIndex: -1,
 
   '& > div': {
     position: 'absolute',
-    width: '50vw',
+    width: '100%',
     height: '100%',
 
     backgroundColor: `rgba(0, 0, 0, .4)`,

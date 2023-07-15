@@ -6,6 +6,10 @@ export const containerStyling = css({
   flexDirection: 'column',
   gap: Theme.spacer.spacing4,
 
-  width: '50vw',
+  width: '100%',
   padding: `${Theme.spacer.spacing4} 50px`,
+
+  '& > ul': {
+    width: '100%',
+  },
 });
