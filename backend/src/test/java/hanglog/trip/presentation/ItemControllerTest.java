@@ -43,9 +43,7 @@ public class ItemControllerTest {
     void createItem() throws Exception {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"
@@ -77,9 +75,7 @@ public class ItemControllerTest {
     void updateItem() throws Exception {
         //given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"

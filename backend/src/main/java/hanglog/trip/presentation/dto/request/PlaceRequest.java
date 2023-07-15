@@ -10,16 +10,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PlaceRequest {
 
-    @NotNull(message = "장소의 API ID를 입력해주세요.")
-    private final String apiId;
-
     @NotNull(message = "장소의 이름을 입력해주세요.")
     @Size(max = 50, message = "장소의 이름은 50자를 초과할 수 없습니다.")
     private final String name;
-
-    @NotNull(message = "장소의 주소를 입력해주세요.")
-    @Size(max = 255, message = "장소의 주소는 255자를 초과할 수 없습니다.")
-    private final String address;
 
     @NotNull(message = "장소의 위도를 입력해주세요.")
     private final BigDecimal latitude;
