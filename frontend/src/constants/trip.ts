@@ -12,3 +12,8 @@ export const CURRENCY_ICON = {
   THB: '฿',
   HKD: '$',
 } as const;
+
+export const DAY_LOG_ITEM_FILTERS = {
+  ALL: '전체',
+  SPOT: '장소',
+} as const;
