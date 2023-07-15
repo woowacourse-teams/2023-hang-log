@@ -1,8 +1,10 @@
 import App from '@/App';
 import { PATH } from '@constants/path';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Suspense } from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
+import TripEditPageSkeleton from '@pages/TripEditPage/TripEditPageSkeleton';
 
 const router = createBrowserRouter([
   {
@@ -11,7 +13,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: PATH.EDIT_TRIP,
-        element: <TripEditPage />,
+        element: (
+          <Suspense fallback={<TripEditPageSkeleton />}>
+            <TripEditPage />
+          </Suspense>
+        ),
       },
     ],
   },

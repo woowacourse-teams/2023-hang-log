@@ -1,17 +1,31 @@
-import { trip } from '@mocks/data/trip';
 import { FloatingButton } from 'hang-log-design-system';
+import { useParams } from 'react-router-dom';
+
+import { useTripQuery } from '@hooks/useTripQuery';
+
+import { addButtonStyling, containerStyling } from '@pages/TripEditPage/TripEditPage.style';
 
 import DayLogList from '@components/common/DayLogList/DayLogList';
 import TripInformation from '@components/common/TripInformation/TripInformation';
 
-import { addButtonStyling, containerStyling } from './TripEditPage.style';
-
 const TripEditPage = () => {
+  const { tripId } = useParams();
+
+  if (!tripId) {
+    throw new Error(`tripId doesn't exist`);
+  }
+
+  const { tripData } = useTripQuery(Number(tripId));
+
+  if (!tripData) {
+    throw new Error('no data');
+  }
+
   return (
     <>
       <section css={containerStyling}>
-        <TripInformation {...trip} />
-        <DayLogList logs={trip.dayLogs} />
+        <TripInformation {...tripData} />
+        <DayLogList logs={tripData.dayLogs} />
         <FloatingButton css={addButtonStyling} />
       </section>
     </>
