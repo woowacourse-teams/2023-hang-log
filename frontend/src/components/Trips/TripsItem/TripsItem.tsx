@@ -1,3 +1,4 @@
+import { Cities } from '@type/trips';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
 import {
@@ -10,7 +11,7 @@ import {
 
 interface TripItemProps {
   coverImage: string;
-  badgeName: string[];
+  badgeName: Cities[];
   itemName: string;
   duration: string;
   description?: string;
@@ -23,8 +24,8 @@ const TripsItem = ({ coverImage, badgeName, itemName, duration, description }: T
         <img src={coverImage} css={tripsItemImageStyling} />
       </Box>
       <Box css={tripsItemBadgeBoxStyling}>
-        {badgeName.map((name) => {
-          return <Badge>{name}</Badge>;
+        {badgeName.map((data) => {
+          return <Badge key={data.id}>{data.name}</Badge>;
         })}
       </Box>
       <Text size="large" css={tripsItemNameStying}>
