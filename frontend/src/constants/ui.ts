@@ -1,0 +1,1 @@
+export const TRIP_ITEM_LIST_SKELETON_LENGTH = 3;
