@@ -19,6 +19,18 @@ export const handlers = [
                 id: 2,
                 name: '애든버러',
               },
+              {
+                id: 3,
+                name: '애든버러',
+              },
+              {
+                id: 4,
+                name: '애든버러',
+              },
+              {
+                id: 5,
+                name: '애든버러',
+              },
             ],
             startDate: '2023-06-13',
             endDate: '2023-06-20',
@@ -65,6 +77,60 @@ export const handlers = [
             startDate: '2021-01-13',
             endDate: '2021-01-17',
             description: '어쩌구 저쩌구 좌충우돌 라곤의 강릉 여행기',
+          },
+          {
+            id: 1,
+            title: '런던 여행',
+            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            cities: [
+              {
+                id: 1,
+                name: '런던',
+              },
+              {
+                id: 2,
+                name: '애든버러',
+              },
+            ],
+            startDate: '2023-06-13',
+            endDate: '2023-06-20',
+            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+          },
+          {
+            id: 1,
+            title: '런던 여행',
+            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            cities: [
+              {
+                id: 1,
+                name: '런던',
+              },
+              {
+                id: 2,
+                name: '애든버러',
+              },
+            ],
+            startDate: '2023-06-13',
+            endDate: '2023-06-20',
+            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+          },
+          {
+            id: 1,
+            title: '런던 여행',
+            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            cities: [
+              {
+                id: 1,
+                name: '런던',
+              },
+              {
+                id: 2,
+                name: '애든버러',
+              },
+            ],
+            startDate: '2023-06-13',
+            endDate: '2023-06-20',
+            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
           },
         ],
       })
