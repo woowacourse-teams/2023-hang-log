@@ -1,7 +1,15 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import { CITY } from '@constants/city';
-import { Badge, Input, Menu, MenuItem, MenuList, Text, useOverlay } from 'hang-log-design-system';
+import {
+  Badge,
+  Input,
+  Menu as Suggestion,
+  MenuList as SuggestionList,
+  MenuItem as SuggestionsItem,
+  Text,
+  useOverlay,
+} from 'hang-log-design-system';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
 import {
@@ -15,8 +23,6 @@ import {
   tagListStyling,
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
-
-import useKeyPress from './useKeyPress';
 
 const cities = [
   '서울, 한국',
@@ -58,7 +64,9 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
 
     if (word !== '') {
-      const filteredSuggestions = cities.filter((suggestion) => new RegExp(word).test(suggestion));
+      const filteredSuggestions = cities.filter((suggestion) =>
+        new RegExp(`^${word}`).test(suggestion)
+      );
 
       setSuggestions(filteredSuggestions);
       openSuggestion();
@@ -114,6 +122,8 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const handleKeyUpAndDown = (e: globalThis.KeyboardEvent) => {
     e.preventDefault();
 
+    if (!isSuggestionOpen) return;
+
     if (e.key === 'ArrowUp') {
       setSelectedSuggestionIndex((prevIndex) =>
         prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
@@ -147,27 +157,27 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
       </Badge>
     ));
 
-  const Suggestions = () => (
-    <MenuList css={suggestionContainer}>
+  const SuggestionBox = () => (
+    <SuggestionList css={suggestionContainer}>
       {suggestions.length ? (
         suggestions.map((suggestion, index) => (
-          <MenuItem
+          <SuggestionsItem
             key={suggestion}
             onClick={addNewCity(suggestion)}
             onMouseEnter={() => setSelectedSuggestionIndex(index)}
             css={getMenuItemStyling(selectedSuggestionIndex === index)}
           >
             {suggestion}
-          </MenuItem>
+          </SuggestionsItem>
         ))
       ) : (
         <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
       )}
-    </MenuList>
+    </SuggestionList>
   );
 
   return (
-    <Menu closeMenu={closeSuggestion}>
+    <Suggestion closeMenu={closeSuggestion}>
       <div css={container} onClick={focusInput}>
         <div css={wrapper}>
           <SearchPinIcon aria-label="map-pin icon" />
@@ -183,9 +193,9 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
             />
           </div>
         </div>
-        {isSuggestionOpen && <Suggestions />}
+        {isSuggestionOpen && <SuggestionBox />}
       </div>
-    </Menu>
+    </Suggestion>
   );
 };
 
