@@ -4,13 +4,15 @@ import { Box, Center, Flex, Heading } from 'hang-log-design-system';
 const TripsHeader = () => {
   return (
     <>
-      <Flex styles={{ justify: 'space-around', width: '100%' }}>
-        <Box styles={{ width: '30%', height: '250px' }}>
+      <Flex styles={{ justify: 'space-between', width: '100%', gap: '200px' }}>
+        <Box styles={{ width: '30%', height: '18%' }}>
           <Center>
             <Heading size="large">라곤의 여행</Heading>
           </Center>
         </Box>
-        <TripsHeaderSVG />
+        <Box styles={{ width: '70%', height: '18%' }}>
+          <TripsHeaderSVG style={{ width: '100%' }} />
+        </Box>
       </Flex>
     </>
   );
