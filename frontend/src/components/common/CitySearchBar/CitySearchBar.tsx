@@ -16,6 +16,8 @@ import {
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 
+import useKeyPress from './useKeyPress';
+
 const cities = [
   '서울, 한국',
   '도쿄, 일본',
@@ -41,12 +43,8 @@ interface CitySearchBarProps {
 }
 
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
-  initialCityTags: string[];
-}
-
-const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
-  const [cityTags, setCityTags] = useState<string[]>([]);
+  const [cityTags, setCityTags] = useState<string[]>(initialCityTags);
   const [suggestions, setSuggestions] = useState<string[]>(cities);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
@@ -79,17 +77,20 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
       }
 
       if (cityTags.length >= CITY.MAX_NUM) {
-        //toast로 경고 문구 띄우기
         return cityTags;
       }
 
       return [...cityTags, city];
     });
 
+    resetAll();
+  };
+
+  const resetAll = () => {
     setQueryWord('');
     setSelectedSuggestionIndex(-1);
-    closeSuggestion();
     focusInput();
+    closeSuggestion();
   };
 
   const deleteCity = (selectedCity: string) => () => {
@@ -102,6 +103,12 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
 
   const focusInput = () => {
     inputRef.current?.focus();
+  };
+
+  const handleInputFocus = () => {
+    if (queryWord) {
+      openSuggestion();
+    }
   };
 
   const handleKeyUpAndDown = (e: globalThis.KeyboardEvent) => {
@@ -120,12 +127,10 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
 
     if (e.key === 'Enter') {
-      addNewCity(suggestions[selectedSuggestionIndex])();
+      if (selectedSuggestionIndex >= 0) {
+        addNewCity(suggestions[selectedSuggestionIndex])();
+      }
     }
-  };
-
-  const handleSuggestionHover = (index: number) => () => {
-    setSelectedSuggestionIndex(index);
   };
 
   useEffect(() => {
@@ -149,7 +154,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
           <MenuItem
             key={suggestion}
             onClick={addNewCity(suggestion)}
-            onMouseEnter={handleSuggestionHover(index)}
+            onMouseEnter={() => setSelectedSuggestionIndex(index)}
             css={getMenuItemStyling(selectedSuggestionIndex === index)}
           >
             {suggestion}
@@ -171,7 +176,8 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
             <Input
               placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
               value={queryWord}
-              onInput={searchCity}
+              onChange={searchCity}
+              onFocus={handleInputFocus}
               ref={inputRef}
               css={inputStyling}
             />
