@@ -1,12 +1,4 @@
-import { rest } from 'msw';
+import { dayLogHandlers } from '@mocks/handlers/dayLog';
+import { tripHandlers } from '@mocks/handlers/trip';
 
-export const handlers = [
-  rest.get('/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        data: 'test',
-      })
-    );
-  }),
-];
+export const handlers = [...tripHandlers, ...dayLogHandlers];
