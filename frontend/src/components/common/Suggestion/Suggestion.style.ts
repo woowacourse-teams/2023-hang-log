@@ -3,6 +3,11 @@ import { Theme } from 'hang-log-design-system';
 
 export const suggestionContainer = css({
   width: '500px',
+  maxHeight: '300px',
+
+  overflowY: 'auto',
+  overflowX: 'hidden',
+
   transform: 'translateY(0)',
 });
 

@@ -32,8 +32,6 @@ const Suggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   }, [queryWord]);
 
   const handleKeyPress = (e: globalThis.KeyboardEvent) => {
-    e.preventDefault();
-
     if (e.key === 'ArrowUp') {
       focusUpperSuggestion();
     }
