@@ -74,7 +74,7 @@ public class ItemService {
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        Category category = categoryRepository.findByGoogleApiId(placeRequest.getCategoryApiId())
+        Category category = categoryRepository.findByGoogleApiId(placeRequest.getApiCategory())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 카테고리가 존재하지 않습니다."));
 
         return new Place(

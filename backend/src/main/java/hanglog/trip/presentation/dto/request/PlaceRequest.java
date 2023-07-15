@@ -21,5 +21,5 @@ public class PlaceRequest {
     private final BigDecimal longitude;
 
     @NotNull(message = "장소의 카데고리 API ID를 입력해주세요.")
-    private final String categoryApiId;
+    private final String apiCategory;
 }
