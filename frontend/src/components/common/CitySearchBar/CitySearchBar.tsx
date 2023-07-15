@@ -24,25 +24,7 @@ import {
   wrapper,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 
-const cities = [
-  '서울, 한국',
-  '도쿄, 일본',
-  '뉴욕, 미국',
-  '런던, 영국',
-  '파리, 프랑스',
-  '로스앤젤레스, 미국',
-  '시드니, 호주',
-  '오클랜드, 뉴질랜드',
-  '웰링턴, 뉴질랜드',
-  '보스턴, 미국',
-  '오하이오, 미국',
-  '퀸즈타운, 뉴질랜드',
-  '교토, 일본',
-  '오사카, 일본',
-  '부산, 한국',
-  '제주도, 한국',
-  '오클로호마, 미국',
-];
+import useCitySearchBar from './useCitySearchBar';
 
 interface CitySearchBarProps {
   initialCityTags: string[];
@@ -51,8 +33,14 @@ interface CitySearchBarProps {
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const [cityTags, setCityTags] = useState<string[]>(initialCityTags);
-  const [suggestions, setSuggestions] = useState<string[]>(cities);
-  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const {
+    suggestions,
+    focusedSuggestionIndex,
+    setNewSuggestions,
+    focusLowerSuggestion,
+    focusUpperSuggestion,
+    focusSuggestion,
+  } = useCitySearchBar();
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -64,11 +52,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
 
     if (word !== '') {
-      const filteredSuggestions = cities.filter((suggestion) =>
-        new RegExp(`^${word}`).test(suggestion)
-      );
-
-      setSuggestions(filteredSuggestions);
+      setNewSuggestions(word);
       openSuggestion();
     }
 
@@ -96,7 +80,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
 
   const resetAll = () => {
     setQueryWord('');
-    setSelectedSuggestionIndex(-1);
+    focusSuggestion(-1);
     focusInput();
     closeSuggestion();
   };
@@ -125,20 +109,16 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     if (!isSuggestionOpen) return;
 
     if (e.key === 'ArrowUp') {
-      setSelectedSuggestionIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
-      );
+      focusUpperSuggestion();
     }
 
     if (e.key === 'ArrowDown') {
-      setSelectedSuggestionIndex((prevIndex) =>
-        prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
-      );
+      focusLowerSuggestion();
     }
 
     if (e.key === 'Enter') {
-      if (selectedSuggestionIndex >= 0) {
-        addNewCity(suggestions[selectedSuggestionIndex])();
+      if (focusedSuggestionIndex >= 0) {
+        addNewCity(suggestions[focusedSuggestionIndex])();
       }
     }
   };
@@ -164,8 +144,8 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
           <SuggestionsItem
             key={suggestion}
             onClick={addNewCity(suggestion)}
-            onMouseEnter={() => setSelectedSuggestionIndex(index)}
-            css={getMenuItemStyling(selectedSuggestionIndex === index)}
+            onMouseEnter={() => focusSuggestion(index)}
+            css={getMenuItemStyling(focusedSuggestionIndex === index)}
           >
             {suggestion}
           </SuggestionsItem>
