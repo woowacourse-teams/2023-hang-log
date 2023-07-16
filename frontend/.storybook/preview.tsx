@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import { HangLogProvider } from 'hang-log-design-system';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -43,7 +44,9 @@ export const decorators = [
   (Story) => (
     <MemoryRouter initialEntries={['/']}>
       <RecoilRoot>
-        <Story />
+        <HangLogProvider>
+          <Story />
+        </HangLogProvider>
       </RecoilRoot>
     </MemoryRouter>
   ),
