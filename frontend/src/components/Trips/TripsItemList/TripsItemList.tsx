@@ -1,5 +1,5 @@
 import { TripsType } from '@type/trips';
-import { Box, Flex, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
+import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import {
@@ -9,10 +9,11 @@ import {
 
 interface TripItemListProps {
   data: TripsType[];
+  sortBy: string | number;
+  changeSelect: (selectedId: string | number) => void;
 }
 
-const TripssItemList = ({ data }: TripItemListProps) => {
-  const { selected, handleSelectClick } = useSelect('등록순');
+const TripssItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
   return (
     data && (
       <>
@@ -21,14 +22,14 @@ const TripssItemList = ({ data }: TripItemListProps) => {
             <Toggle
               text="등록순"
               toggleId="등록순"
-              selectedId={selected}
-              changeSelect={handleSelectClick}
+              selectedId={sortBy}
+              changeSelect={changeSelect}
             />
             <Toggle
               text="날짜순"
               toggleId="날짜순"
-              selectedId={selected}
-              changeSelect={handleSelectClick}
+              selectedId={sortBy}
+              changeSelect={changeSelect}
             />
           </ToggleGroup>
         </Flex>
