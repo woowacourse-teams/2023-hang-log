@@ -13,7 +13,7 @@ interface TripItemListProps {
   changeSelect: (selectedId: string | number) => void;
 }
 
-const TripssItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
+const TripsItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
   return (
     data && (
       <>
@@ -51,4 +51,4 @@ const TripssItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
   );
 };
 
-export default TripssItemList;
+export default TripsItemList;
