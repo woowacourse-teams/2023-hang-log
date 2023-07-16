@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HangLogProvider } from 'hang-log-design-system';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import React from 'react';
@@ -40,14 +41,18 @@ const preview: Preview = {
 
 export default preview;
 
+const queryClient = new QueryClient();
+
 export const decorators = [
   (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <RecoilRoot>
-        <HangLogProvider>
-          <Story />
-        </HangLogProvider>
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <HangLogProvider>
+            <Story />
+          </HangLogProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
     </MemoryRouter>
   ),
   mswDecorator,
