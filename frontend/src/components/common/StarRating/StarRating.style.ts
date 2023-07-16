@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-export const getContainerStyling = (size: number, gap: number) => {
+export const getContainerStyling = (size: number) => {
   return css({
     width: 'initial',
     height: 'initial',
