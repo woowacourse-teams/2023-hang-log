@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <header css={headerStyling}>
-      <Flex styles={{ justify: 'space-between', align: 'center', margin: '0', padding: '0' }}>
+      <Flex styles={{ justify: 'space-between', align: 'center' }}>
         <LogoHorizontal onClick={() => navigate(PATH.ROOT)} />
         <Menu closeMenu={close}>
           <div css={imageStyling} onClick={open} />
