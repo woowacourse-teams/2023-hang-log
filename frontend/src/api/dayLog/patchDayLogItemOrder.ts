@@ -8,9 +8,10 @@ export interface PatchDayLogItemOrderParams {
   itemIds: number[];
 }
 
-interface PatchDayLogOrderRequestBody {
+export interface PatchDayLogOrderRequestBody {
   itemIds: number[];
 }
+
 export const patchDayLogItemOrder =
   () =>
   ({ tripId, dayLogId, itemIds }: PatchDayLogItemOrderParams) => {
