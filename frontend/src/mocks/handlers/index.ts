@@ -80,60 +80,75 @@ export const handlers = [
             description: '어쩌구 저쩌구 좌충우돌 라곤의 강릉 여행기',
           },
           {
-            id: 1,
-            title: '런던 여행',
-            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            id: 4,
+            title: '바르셀로나 여행',
+            imageUrls:
+              'https://www.jamonfive.com/files/attach/images/1032/015/002/aa092a675ca23b89e818562389d62c12.jpg',
             cities: [
               {
                 id: 1,
-                name: '런던',
+                name: '스페인',
               },
               {
                 id: 2,
-                name: '애든버러',
+                name: '바르셀로나',
               },
             ],
-            startDate: '2023-06-13',
-            endDate: '2023-06-20',
-            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+            startDate: '2015-07-13',
+            endDate: '20215-07-28',
+            description: '어쩌구 저쩌구 좌충우돌 레고의 바르셀로나 여행기',
           },
           {
-            id: 1,
-            title: '런던 여행',
-            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            id: 5,
+            title: '어바인 여행',
+            imageUrls:
+              'https://youimg1.tripcdn.com/target/10060n000000e4c6nEB47_D_1180_558.jpg?proc=source%2Ftrip',
             cities: [
               {
                 id: 1,
-                name: '런던',
+                name: '미국',
               },
               {
                 id: 2,
-                name: '애든버러',
+                name: '캘리포니아',
+              },
+              {
+                id: 2,
+                name: '어바인',
               },
             ],
-            startDate: '2023-06-13',
-            endDate: '2023-06-20',
-            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+            startDate: '2023-03-31',
+            endDate: '2023-04-20',
+            description: '어쩌구 저쩌구 좌충우돌 첵스의 어바인 여행기',
           },
           {
-            id: 1,
-            title: '런던 여행',
-            imageUrls: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
+            id: 6,
+            title: 'LA 여행',
+            imageUrls:
+              'https://www.discoverlosangeles.com/sites/default/files/images/2023-02/IMG_0410-Edit-3.jpg?width=1600&height=1200&fit=crop&quality=78&auto=webp',
             cities: [
               {
                 id: 1,
-                name: '런던',
+                name: '미국',
               },
               {
                 id: 2,
-                name: '애든버러',
+                name: 'LA',
               },
             ],
-            startDate: '2023-06-13',
-            endDate: '2023-06-20',
-            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+            startDate: '2018-08-15',
+            endDate: '2018-08-30',
+            description: '어쩌구 저쩌구 좌충우돌 야미의 LA 여행기',
           },
         ],
+      })
+    );
+  }),
+  rest.get('/trips/none', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        trips: [],
       })
     );
   }),
