@@ -1,8 +1,9 @@
-import { useGetTrips } from '@/hooks/trips/useGetTrips';
+import { useGetTrips } from '@hooks/trips/useGetTrips';
 
 import Header from '@components/layout/Header/Header';
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
+import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 
 const TripsPage = () => {
   const { data } = useGetTrips();
@@ -11,7 +12,7 @@ const TripsPage = () => {
     <>
       <Header />
       <TripsHeader />
-      <TripsItemList data={data?.data.trips} />
+      {data?.data.trips.length ? <TripsItemList data={data?.data.trips} /> : <TripsItemNone />}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import TripsHeaderSVG from '@assets/svg/TripsHeader.svg';
-import { Box, Center, Flex, Heading } from 'hang-log-design-system';
+import { Box, Flex, Heading } from 'hang-log-design-system';
 
-import { SVGBoxStyling } from './TripsHeader.style';
+import { SVGBoxStyling } from '@components/trips/TripsHeader/TripsHeader.style';
 
 const TripsHeader = () => {
   return (
