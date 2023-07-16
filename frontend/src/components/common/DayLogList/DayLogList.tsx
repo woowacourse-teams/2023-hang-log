@@ -1,6 +1,5 @@
 import type { DayLogData } from '@type/dayLog';
 import { Tab, Tabs, useSelect } from 'hang-log-design-system';
-import { useState } from 'react';
 
 import { formatMonthDate } from '@utils/formatter';
 
@@ -14,14 +13,7 @@ interface DayLogListProps {
 
 const DayLogList = ({ tripId, logs }: DayLogListProps) => {
   const { selected, handleSelectClick } = useSelect(logs[0].id);
-  const [dayLog, setDayLog] = useState(logs[0]);
-
-  const handleTabChange = (selectedId: string | number) => {
-    handleSelectClick(selectedId);
-
-    const selectedDayLog = logs.find((log) => log.id === selectedId)!;
-    setDayLog(selectedDayLog);
-  };
+  const selectedDayLog = logs.find((log) => log.id === selected)!;
 
   return (
     <section css={containerStyling}>
@@ -37,11 +29,11 @@ const DayLogList = ({ tripId, logs }: DayLogListProps) => {
             variant="outline"
             tabId={log.id}
             selectedId={selected}
-            changeSelect={handleTabChange}
+            changeSelect={handleSelectClick}
           />
         ))}
       </Tabs>
-      <DayLogItem tripId={tripId} {...dayLog} />
+      <DayLogItem tripId={tripId} {...selectedDayLog} />
     </section>
   );
 };

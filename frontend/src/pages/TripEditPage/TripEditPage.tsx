@@ -11,24 +11,18 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 const TripEditPage = () => {
   const { tripId } = useParams();
 
-  if (!tripId) {
-    throw new Error(`tripId doesn't exist`);
-  }
+  if (!tripId) throw new Error(`tripId doesn't exist`);
 
   const { tripData } = useTripQuery(Number(tripId));
 
-  if (!tripData) {
-    throw new Error('no data');
-  }
+  if (!tripData) throw new Error('no data');
 
   return (
-    <>
-      <section css={containerStyling}>
-        <TripInformation {...tripData} />
-        <DayLogList tripId={Number(tripId)} logs={tripData.dayLogs} />
-        <FloatingButton css={addButtonStyling} />
-      </section>
-    </>
+    <section css={containerStyling}>
+      <TripInformation {...tripData} />
+      <DayLogList tripId={Number(tripId)} logs={tripData.dayLogs} />
+      <FloatingButton css={addButtonStyling} />
+    </section>
   );
 };
 
