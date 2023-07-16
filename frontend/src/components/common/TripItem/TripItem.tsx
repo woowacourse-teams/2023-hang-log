@@ -64,7 +64,9 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
           <ImageCarousel
             width={250}
             height={167}
+            isDraggable={false}
             showNavigationOnHover={true}
+            showArrows={true}
             showDots={true}
             images={information.imageUrls}
           />
