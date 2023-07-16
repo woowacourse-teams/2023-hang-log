@@ -8,8 +8,6 @@ export const dayLogHandlers = [
     const { tripId, dayLogId } = req.params;
     const { itemIds } = await req.json<PatchDayLogOrderRequestBody>();
 
-    console.log(itemIds);
-
     return res(ctx.status(200), ctx.json(trip));
   }),
 ];

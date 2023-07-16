@@ -31,7 +31,6 @@ export const useDragAndDrop = <T>(
   );
 
   const handleDragEnd = useCallback(() => {
-    console.log('drop');
     const draggingItem = items[draggingIndex];
     const newItems = [...items];
     newItems.splice(draggingIndex, 1);
