@@ -1,24 +1,27 @@
-import EmptyStarIcon from '@assets/svg/empty-star-icon.svg';
-import FilledStarIcon from '@assets/svg/filled-star-icon.svg';
 import { STAR_RATING_LENGTH } from '@constants/ui';
 import { Flex } from 'hang-log-design-system';
 import type { ComponentPropsWithoutRef } from 'react';
-import { Fragment } from 'react';
 
-import { getContainerStyling } from '@components/common/StarRating/StarRating.style';
+import Star from '@components/common/StarRating/Star/Star';
+import { containerStyling } from '@components/common/StarRating/StarRating.style';
 
 interface StarRatingProps extends ComponentPropsWithoutRef<'div'> {
-  rate: number;
-  size?: number;
-  gap?: number;
+  rate: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 }
 
-const StarRating = ({ rate, size = 20, gap = 6, ...attributes }: StarRatingProps) => {
+const StarRating = ({ rate, ...attributes }: StarRatingProps) => {
   return (
-    <Flex css={getContainerStyling(size)} styles={{ gap: `${gap}px` }} {...attributes}>
-      {Array.from({ length: STAR_RATING_LENGTH }, (_, index) => (
-        <Fragment key={index}>{index < rate ? <FilledStarIcon /> : <EmptyStarIcon />}</Fragment>
-      ))}
+    <Flex css={containerStyling} styles={{ gap: '6px' }} {...attributes}>
+      {Array.from({ length: STAR_RATING_LENGTH }, (_, index) => {
+        const isFilled = index < rate;
+        const isHalf = rate - index === 0.5;
+
+        return (
+          <Flex key={index}>
+            <Star isFilled={isFilled} isHalf={isHalf} />
+          </Flex>
+        );
+      })}
     </Flex>
   );
 };
