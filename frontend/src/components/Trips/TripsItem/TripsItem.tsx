@@ -32,7 +32,7 @@ const TripsItem = ({ coverImage, badgeName, itemName, duration, description }: T
       <Text size="large" css={tripsItemNameStying}>
         {itemName}
       </Text>
-      <Text size="small">{duration}</Text>
+      <Text size="medium">{duration}</Text>
       <Text size="small" css={tripsDurationTextStyling}>
         {description}
       </Text>

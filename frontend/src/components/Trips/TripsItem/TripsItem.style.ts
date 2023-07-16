@@ -49,6 +49,7 @@ export const tripsTiemDurationStyling = css({
 });
 
 export const tripsDurationTextStyling = css({
+  marginTop: '4px',
   width: '100%',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
