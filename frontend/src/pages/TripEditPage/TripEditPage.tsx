@@ -25,7 +25,7 @@ const TripEditPage = () => {
     <>
       <section css={containerStyling}>
         <TripInformation {...tripData} />
-        <DayLogList logs={tripData.dayLogs} />
+        <DayLogList tripId={Number(tripId)} logs={tripData.dayLogs} />
         <FloatingButton css={addButtonStyling} />
       </section>
     </>

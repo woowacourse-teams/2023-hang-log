@@ -7,9 +7,11 @@ import { containerStyling, headerStyling } from '@components/common/DayLogItem/D
 import TitleInput from '@components/common/DayLogItem/TitleInput/TitleInput';
 import TripItemList from '@components/common/TripItemList/TripItemList';
 
-type DayLogItemProps = DayLogData;
+interface DayLogItemProps extends DayLogData {
+  tripId: number;
+}
 
-const DayLogItem = ({ ...information }: DayLogItemProps) => {
+const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
   const { selected, handleSelectClick } = useSelect(DAY_LOG_ITEM_FILTERS.ALL);
   const [tripItemList, setTripItemList] = useState(information.items);
 
@@ -52,7 +54,11 @@ const DayLogItem = ({ ...information }: DayLogItemProps) => {
           />
         </ToggleGroup>
       </Flex>
-      {tripItemList.length > 0 ? <TripItemList tripItems={tripItemList} /> : <TripItemList.Empty />}
+      {tripItemList.length > 0 ? (
+        <TripItemList tripId={tripId} dayLogId={information.id} tripItems={tripItemList} />
+      ) : (
+        <TripItemList.Empty />
+      )}
     </Box>
   );
 };

@@ -8,10 +8,11 @@ import DayLogItem from '@components/common/DayLogItem/DayLogItem';
 import { containerStyling } from '@components/common/DayLogList/DayLogList.style';
 
 interface DayLogListProps {
+  tripId: number;
   logs: DayLogData[];
 }
 
-const DayLogList = ({ logs }: DayLogListProps) => {
+const DayLogList = ({ tripId, logs }: DayLogListProps) => {
   const { selected, handleSelectClick } = useSelect(logs[0].id);
   const [dayLog, setDayLog] = useState(logs[0]);
 
@@ -40,7 +41,7 @@ const DayLogList = ({ logs }: DayLogListProps) => {
           />
         ))}
       </Tabs>
-      <DayLogItem {...dayLog} />
+      <DayLogItem tripId={tripId} {...dayLog} />
     </section>
   );
 };

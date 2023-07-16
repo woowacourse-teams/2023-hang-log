@@ -13,15 +13,17 @@ import {
 } from '@components/common/TripItemList/TripItemList.style';
 
 interface TripItemListProps {
+  tripId: number;
+  dayLogId: number;
   tripItems: TripItemData[];
 }
 
-const TripItemList = ({ tripItems }: TripItemListProps) => {
+const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
   const handlePositionChange = async (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
 
-    dayLogOrderMutation.mutate({ tripId: 1, dayLogId: 1, itemIds });
+    dayLogOrderMutation.mutate({ tripId, dayLogId, itemIds });
   };
 
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
