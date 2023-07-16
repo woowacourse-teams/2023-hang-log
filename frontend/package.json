@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
-    "hang-log-design-system": "^1.1.1",
+    "hang-log-design-system": "^1.1.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
