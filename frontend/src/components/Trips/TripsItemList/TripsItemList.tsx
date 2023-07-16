@@ -37,6 +37,7 @@ const TripsItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
           {data.map((trip) => {
             return (
               <TripsItem
+                key={trip.id}
                 coverImage={trip.imageUrls}
                 badgeName={trip.cities}
                 itemName={trip.title}
