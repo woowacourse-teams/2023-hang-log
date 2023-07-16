@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const tripsImageBoxStyling = css({
+export const tripsBoxStyling = css({
   width: `calc((100vw - 196px) / 5)`,
-  height: '304px',
-  maxHeight: '304px',
+  alignSelf: 'start',
   margin: '0',
   padding: '0',
 });
@@ -47,4 +46,14 @@ export const tripsItemBadgeBoxStyling = css({
 
 export const tripsTiemDurationStyling = css({
   marginBottom: Theme.spacer.spacing1,
+});
+
+export const tripsDurationTextStyling = css({
+  width: '100%',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  wordBreak: 'break-word',
+  display: '-webkit-box',
+  '-webkit-line-clamp': '2',
+  '-webkit-box-orient': 'vertical',
 });

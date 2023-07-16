@@ -34,7 +34,8 @@ export const handlers = [
             ],
             startDate: '2023-06-13',
             endDate: '2023-06-20',
-            description: '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기',
+            description:
+              '어쩌구 저쩌구 좌충우돌 라곤의 런던 여행기 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 하하하',
           },
           {
             id: 2,

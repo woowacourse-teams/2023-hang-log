@@ -2,7 +2,8 @@ import { Cities } from '@type/trips';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
 import {
-  tripsImageBoxStyling,
+  tripsBoxStyling,
+  tripsDurationTextStyling,
   tripsItemBadgeBoxStyling,
   tripsItemImageBoxStyling,
   tripsItemImageStyling,
@@ -19,7 +20,7 @@ interface TripItemProps {
 
 const TripsItem = ({ coverImage, badgeName, itemName, duration, description }: TripItemProps) => {
   return (
-    <Flex styles={{ direction: 'column' }} css={tripsImageBoxStyling}>
+    <Flex styles={{ direction: 'column' }} css={tripsBoxStyling}>
       <Box css={tripsItemImageBoxStyling}>
         <img src={coverImage} css={tripsItemImageStyling} />
       </Box>
@@ -31,8 +32,10 @@ const TripsItem = ({ coverImage, badgeName, itemName, duration, description }: T
       <Text size="large" css={tripsItemNameStying}>
         {itemName}
       </Text>
-      <Text>{duration}</Text>
-      <Text>{description}</Text>
+      <Text size="small">{duration}</Text>
+      <Text size="small" css={tripsDurationTextStyling}>
+        {description}
+      </Text>
     </Flex>
   );
 };
