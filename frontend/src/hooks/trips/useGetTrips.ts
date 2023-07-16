@@ -8,7 +8,7 @@ const fetchTrips = async () => {
 };
 
 export const useGetTrips = () => {
-  const { isLoading, isFetching, data, isSuccess } = useQuery(['trips'], fetchTrips);
+  const { isLoading, isFetching, data, isSuccess, refetch } = useQuery(['trips'], fetchTrips);
 
-  return { isLoading, isFetching, data, isSuccess };
+  return { isLoading, isFetching, data, isSuccess, refetch };
 };
