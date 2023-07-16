@@ -1,5 +1,6 @@
 import AppRouter from '@router/AppRouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { HangLogProvider } from 'hang-log-design-system';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -23,6 +24,7 @@ root.render(
           <AppRouter />
         </HangLogProvider>
       </RecoilRoot>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>
 );
