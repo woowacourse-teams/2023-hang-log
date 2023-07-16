@@ -1,4 +1,4 @@
-import type { DayLogItemData } from '@type/dayLog';
+import type { DayLogData } from '@type/dayLog';
 import { Tab, Tabs, useSelect } from 'hang-log-design-system';
 import { useState } from 'react';
 
@@ -8,7 +8,7 @@ import DayLogItem from '@components/common/DayLogItem/DayLogItem';
 import { containerStyling } from '@components/common/DayLogList/DayLogList.style';
 
 interface DayLogListProps {
-  logs: DayLogItemData[];
+  logs: DayLogData[];
 }
 
 const DayLogList = ({ logs }: DayLogListProps) => {

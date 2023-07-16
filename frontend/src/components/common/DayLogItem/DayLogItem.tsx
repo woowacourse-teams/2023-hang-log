@@ -1,5 +1,5 @@
 import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
-import type { DayLogItemData } from '@type/dayLog';
+import type { DayLogData } from '@type/dayLog';
 import { Box, Flex, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
 import { useEffect, useState } from 'react';
 
@@ -7,7 +7,7 @@ import { containerStyling, headerStyling } from '@components/common/DayLogItem/D
 import TitleInput from '@components/common/DayLogItem/TitleInput/TitleInput';
 import TripItemList from '@components/common/TripItemList/TripItemList';
 
-type DayLogItemProps = DayLogItemData;
+type DayLogItemProps = DayLogData;
 
 const DayLogItem = ({ ...information }: DayLogItemProps) => {
   const { selected, handleSelectClick } = useSelect(DAY_LOG_ITEM_FILTERS.ALL);

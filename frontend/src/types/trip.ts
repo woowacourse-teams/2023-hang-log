@@ -1,4 +1,4 @@
-import type { DayLogItemData } from '@type/dayLog';
+import type { DayLogData } from '@type/dayLog';
 
 interface City {
   id: number;
@@ -13,5 +13,5 @@ export interface TripData {
   description: string | null;
   imageUrl: string | null;
   cities: City[];
-  dayLogs: DayLogItemData[];
+  dayLogs: DayLogData[];
 }

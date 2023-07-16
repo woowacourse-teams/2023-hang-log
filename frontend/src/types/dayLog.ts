@@ -1,7 +1,7 @@
 import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
-import { TripItemData } from '@type/tripItem';
+import type { TripItemData } from '@type/tripItem';
 
-export interface DayLogItemData {
+export interface DayLogData {
   id: number;
   title: string;
   ordinal: number;
@@ -9,4 +9,4 @@ export interface DayLogItemData {
   items: TripItemData[];
 }
 
-export type DayLogItemFilters = (typeof DAY_LOG_ITEM_FILTERS)[keyof typeof DAY_LOG_ITEM_FILTERS];
+export type DayLogFilters = (typeof DAY_LOG_ITEM_FILTERS)[keyof typeof DAY_LOG_ITEM_FILTERS];
