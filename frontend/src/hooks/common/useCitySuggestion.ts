@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import { makeRegexByCho } from '@utils/cityFilter';
+
 import { getCities } from '@api/city/getCities';
 
 import { City } from '@components/common/CitySearchBar/CitySearchBar';
@@ -11,8 +13,10 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: City)
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
   const setNewSuggestions = (word: string) => {
+    const regex = makeRegexByCho(word);
+
     if (cities) {
-      const filteredSuggestions = cities.filter(({ name }) => new RegExp(`^${word}`).test(name));
+      const filteredSuggestions = cities.filter(({ name }) => regex.test(name));
       setSuggestions(filteredSuggestions);
     }
   };
