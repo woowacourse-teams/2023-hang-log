@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TripService {
 
-    public static final String TITLE_POSTFIX = " 여행";
+    private static final String TITLE_POSTFIX = " 여행";
 
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
