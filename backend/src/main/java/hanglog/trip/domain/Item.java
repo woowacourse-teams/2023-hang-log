@@ -100,6 +100,19 @@ public class Item extends BaseEntity {
     }
 
     public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final DayLog dayLog,
+            final Expense expense
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, StatusType.USABLE);
+    }
+
+    public Item(
             final ItemType itemType,
             final String title,
             final Integer ordinal,
