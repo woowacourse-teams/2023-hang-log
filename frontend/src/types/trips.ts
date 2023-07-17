@@ -1,11 +1,11 @@
 export interface TripsType {
   id: number;
   title: string;
-  imageUrls: string;
+  imageUrl: string;
   cities: Cities[];
   startDate: string;
   endDate: string;
-  description: string;
+  description?: string;
 }
 
 export interface Cities {
