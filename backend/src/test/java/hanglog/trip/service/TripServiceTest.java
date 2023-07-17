@@ -63,6 +63,24 @@ class TripServiceTest {
         assertThat(actualId).isEqualTo(1L);
     }
 
+    @DisplayName("올바르지 않은 cityId 목록을 입력받으면 예외를 발생한다.")
+    @Test
+    void save_UnCorrectCites() {
+        // given
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(LocalDate.of(2023, 7, 2),
+                LocalDate.of(2023, 7, 7),
+                List.of(1L, 3L));
+
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(LONDON));
+        given(cityRepository.findById(3L))
+                .willThrow(new IllegalArgumentException("해당하는 여행이 존재하지 않습니다."));
+
+        // when & then
+        assertThatThrownBy(() -> tripService.save(tripCreateRequest))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
     @Test
     void update() {
