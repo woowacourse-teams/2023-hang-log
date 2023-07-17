@@ -1,7 +1,7 @@
 package hanglog.member.mapper;
 
-import static hanglog.feature.MemberFeature.GOOGLE_USER_INFO_JSON_STRING;
-import static hanglog.feature.MemberFeature.KAKAO_USER_INFO_JSON_STRING;
+import static hanglog.member.mapper.fixture.MemberFixture.GOOGLE_USER_INFO_JSON_STRING;
+import static hanglog.member.mapper.fixture.MemberFixture.KAKAO_USER_INFO_JSON_STRING;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
