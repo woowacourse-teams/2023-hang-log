@@ -6,15 +6,11 @@ import { AxiosError } from 'axios';
 import { getTrips } from '@api/trips/trips';
 
 export const useGetTrips = () => {
-  const { data: tripsData, refetch: refetchTripsData } = useQuery<TripsType[], AxiosError>(
-    ['trips'],
-    getTrips,
-    {
-      retry: NETWORK.RETRY_COUNT,
-      suspense: true,
-      useErrorBoundary: true,
-    }
-  );
+  const { data: tripsData } = useQuery<TripsType[], AxiosError>(['trips'], getTrips, {
+    retry: NETWORK.RETRY_COUNT,
+    suspense: true,
+    useErrorBoundary: true,
+  });
 
-  return { tripsData, refetchTripsData };
+  return { tripsData };
 };

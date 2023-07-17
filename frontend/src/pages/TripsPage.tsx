@@ -1,4 +1,5 @@
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@/constants/order';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSelect } from 'hang-log-design-system';
 import { useEffect } from 'react';
 
@@ -12,12 +13,13 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 
 const TripsPage = () => {
-  const { tripsData, refetchTripsData } = useGetTrips();
+  const { tripsData } = useGetTrips();
   const { selected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (selected === ORDER_BY_REGISTRATION) refetchTripsData();
-  }, [selected, refetchTripsData]);
+    if (selected === ORDER_BY_REGISTRATION) queryClient.invalidateQueries(['trips']);
+  }, [selected, queryClient]);
 
   const sortedTrips =
     selected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
@@ -26,12 +28,8 @@ const TripsPage = () => {
     <>
       <Header />
       <TripsHeader />
-      {tripsData?.length ? (
-        <TripsItemList
-          trips={tripsData ?? sortedTrips}
-          order={selected}
-          changeSelect={handleSelectClick}
-        />
+      {sortedTrips?.length ? (
+        <TripsItemList trips={sortedTrips} order={selected} changeSelect={handleSelectClick} />
       ) : (
         tripsData && <TripsItemNone />
       )}
