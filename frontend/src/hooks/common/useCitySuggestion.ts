@@ -5,7 +5,7 @@ import { getCities } from '@api/city/getCities';
 
 import { City } from '@components/common/CitySearchBar/CitySearchBar';
 
-export const useSuggestion = ({ onItemSelect }: { onItemSelect: (item: City) => void }) => {
+export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: City) => void }) => {
   const { data: cities } = useQuery<City[]>(['city'], getCities);
   const [suggestions, setSuggestions] = useState<City[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);

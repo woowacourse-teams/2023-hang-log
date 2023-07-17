@@ -12,7 +12,7 @@ import {
   tagListStyling,
   wrapperStyling,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
-import Suggestion from '@components/common/Suggestion/Suggestion';
+import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 export interface City {
   id: number;
@@ -92,7 +92,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
           </div>
         </div>
         {isSuggestionOpen && (
-          <Suggestion queryWord={queryWord} onItemSelect={handleSuggestionClick} />
+          <CitySuggestion queryWord={queryWord} onItemSelect={handleSuggestionClick} />
         )}
       </div>
     </Menu>
