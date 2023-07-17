@@ -34,15 +34,4 @@ public class City extends BaseEntity {
 
     @Column(nullable = false, precision = 16, scale = 13)
     private BigDecimal longitude;
-
-    public City(final String name,
-                final String country,
-                final BigDecimal latitude,
-                final BigDecimal longitude
-    ) {
-        this.name = name;
-        this.country = country;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
 }
