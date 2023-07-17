@@ -1,4 +1,4 @@
-import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@/constants/order';
+import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSelect } from 'hang-log-design-system';
 import { useEffect } from 'react';

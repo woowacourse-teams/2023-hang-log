@@ -1,7 +1,8 @@
-import { formatDate } from '@/utils/formatter';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { TripsType } from '@type/trips';
 import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
+
+import { formatDate } from '@utils/formatter';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import {

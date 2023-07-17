@@ -1,3 +1,6 @@
+import { Cities } from '@type/trips';
+import { Badge, Box, Flex, Text } from 'hang-log-design-system';
+
 import {
   tripsBoxStyling,
   tripsDurationTextStyling,
@@ -5,9 +8,7 @@ import {
   tripsItemImageBoxStyling,
   tripsItemImageStyling,
   tripsItemNameStying,
-} from '@/components/trips/TripsItem/TripsItem.style';
-import { Cities } from '@type/trips';
-import { Badge, Box, Flex, Text } from 'hang-log-design-system';
+} from '@components/trips/TripsItem/TripsItem.style';
 
 interface TripItemProps {
   coverImage: string;

@@ -1,7 +1,7 @@
-import TutorialModal from '@/components/trips/TutorialModal/TutorialModal';
 import { Box, Button, Heading, Text } from 'hang-log-design-system';
 
 import { TripsItemNoneBoxStyling } from '@components/trips/TripsItemNone/TripsItemNone.style';
+import TutorialModal from '@components/trips/TutorialModal/TutorialModal';
 
 const TripsItemNone = () => {
   return (
