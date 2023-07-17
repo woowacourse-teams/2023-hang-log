@@ -41,7 +41,7 @@ public class OAuthLoginService {
             throw new AlreadyExistUserException("member already exist");
         }
 
-        final Member member = new Member(oAuthProvider.getId(), oAuthProvider.getNickname(), oAuthProvider.getPicture());
+        final Member member = new Member(oAuthProvider.getSocialLoginId(), oAuthProvider.getNickname(), oAuthProvider.getPicture());
         return memberRepository.save(member);
     }
 

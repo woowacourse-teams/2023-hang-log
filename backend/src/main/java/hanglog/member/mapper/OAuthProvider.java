@@ -10,7 +10,7 @@ public abstract class OAuthProvider {
         this.userResourceNode = userResourceNode;
     }
 
-    abstract public Long getId();
+    abstract public String getSocialLoginId();
 
     abstract public String getNickname();
 

@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -23,27 +25,33 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class Member {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, length = 30)
+    private String socialLoginId;
 
-    @Column(nullable = false)
-    private String image;
+    @Column(nullable = false, length = 20)
+    private String nickname;
+
 
     private LocalDateTime lastLoginDate;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Enumerated(value = EnumType.STRING)
+    private MemberState status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @Enumerated(value = EnumType.STRING)
-    private MemberState status;
-
-    public Member(final Long id, final String name, final String image) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
+    public Member(String socialLoginId, String nickname, String imageUrl) {
+        this.socialLoginId = socialLoginId;
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
     }
 }

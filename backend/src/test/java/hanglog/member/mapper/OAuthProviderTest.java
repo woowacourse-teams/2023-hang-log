@@ -32,7 +32,7 @@ class OAuthProviderTest {
 
         //then
        assertSoftly(softly->{
-           softly.assertThat(oAuthProvider.getId()).isEqualTo(expectedId);
+           softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(expectedId);
            softly.assertThat(oAuthProvider.getNickname()).isEqualTo(expectedNickname);
            softly.assertThat(oAuthProvider.getPicture()).isEqualTo(expectedImage);
        });

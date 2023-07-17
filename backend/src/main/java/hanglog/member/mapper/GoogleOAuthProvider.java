@@ -9,8 +9,8 @@ public class GoogleOAuthProvider extends OAuthProvider {
     }
 
     @Override
-    public Long getId() {
-        return userResourceNode.get("id").asLong();
+    public String getSocialLoginId() {
+        return userResourceNode.get("id").asText();
     }
 
     @Override
