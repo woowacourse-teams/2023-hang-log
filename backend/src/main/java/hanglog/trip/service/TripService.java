@@ -24,7 +24,8 @@ public class TripService {
 
     public Long save(final TripCreateRequest tripCreateRequest) {
         final List<City> cites = tripCreateRequest.getCityIds().stream()
-                .map(cityId -> cityRepository.findById(cityId).orElseThrow())
+                .map(cityId -> cityRepository.findById(cityId)
+                        .orElseThrow(() -> new IllegalArgumentException("해당하는 도시가 존재하지 않습니다.")))
                 .toList();
 
         final Trip trip = new Trip(
