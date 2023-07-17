@@ -19,10 +19,7 @@ class OAuthProviderTest {
     @MethodSource("oAuthRegisterProvider")
     void mappingProvider(
             final String registrationId,
-            final String jsonString,
-            final String expectedId,
-            final String expectedNickname,
-            final String expectedImage
+            final String jsonString
     ) throws JsonProcessingException {
         // given
         final JsonNode userResourceNode = new ObjectMapper().readTree(jsonString);
@@ -32,23 +29,16 @@ class OAuthProviderTest {
 
         // then
        assertSoftly(softly->{
-           softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(expectedId);
-           softly.assertThat(oAuthProvider.getNickname()).isEqualTo(expectedNickname);
-           softly.assertThat(oAuthProvider.getPicture()).isEqualTo(expectedImage);
+           softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(registrationId + "_id");
+           softly.assertThat(oAuthProvider.getNickname()).isEqualTo(registrationId + "_test");
+           softly.assertThat(oAuthProvider.getPicture()).isEqualTo(registrationId + "_image_url");
        });
     }
 
     private static Stream<Arguments> oAuthRegisterProvider(){
         return Stream.of(
-                Arguments.of("google",
-                        GOOGLE_USER_INFO_JSON_STRING,
-                        "123","google_test","google_image-url"
-                ),
-                Arguments.of("kakao",
-                                KAKAO_USER_INFO_JSON_STRING
-                                ,
-                        "123","kakao_test","kakao_image-url"
-                )
+                Arguments.of("google", GOOGLE_USER_INFO_JSON_STRING),
+                Arguments.of("kakao", KAKAO_USER_INFO_JSON_STRING)
         );
     }
 }

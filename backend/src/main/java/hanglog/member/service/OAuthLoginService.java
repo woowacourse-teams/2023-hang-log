@@ -27,10 +27,14 @@ public class OAuthLoginService {
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
 
-    public OAuthLoginService(Environment env, MemberRepository memberRepository, RestTemplateBuilder builder) {
+    public OAuthLoginService(
+            final Environment env,
+            final MemberRepository memberRepository,
+            final RestTemplate restTemplate
+    ) {
         this.env = env;
         this.memberRepository = memberRepository;
-        this.restTemplate = builder.build();
+        this.restTemplate = restTemplate;
     }
 
     public Member socialSignUp(final String code, final String registrationId) {
