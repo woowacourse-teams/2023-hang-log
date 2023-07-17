@@ -33,7 +33,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
     handleItemsUpdate(tripItems);
   }, [tripItems]);
 
-  /** useEffect를 안 사용하고 롤백할 수 있는 방법?? */
+  // useEffect를 안 사용하고 롤백할 수 있는 방법??
   useEffect(() => {
     if (dayLogOrderMutation.isError) {
       handleItemsUpdate(tripItems);

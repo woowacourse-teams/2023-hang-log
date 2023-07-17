@@ -18,8 +18,6 @@ const TitleInput = ({ initialTitle }: TitleInputProps) => {
     setTitle(event.target.value);
   };
 
-  // input onBlur시에 api 요청 보내기
-
   return (
     <input css={inputStyling} value={title} placeholder="소제목" onChange={handleTitleChange} />
   );

@@ -21,7 +21,7 @@ const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
       : information.items;
 
   useEffect(() => {
-    /** ordinal 변경되었을 때 목록 및 선택된 토클 초기화 */
+    // ordinal 변경되었을 때 목록 및 선택된 토클 초기화
     handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
   }, [information.items]);
 

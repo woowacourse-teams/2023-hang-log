@@ -50,7 +50,7 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
   };
 
   return (
-    /** 수정 모드에서만 drag할 수 있다 */
+    // 수정 모드에서만 drag할 수 있다
     <li
       css={getContainerStyling(isDragging)}
       draggable
