@@ -77,12 +77,11 @@ public class ItemService {
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        Category category = categoryRepository.findByGoogleApiId(placeRequest.getCategoryApiId())
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 카테고리가 존재하지 않습니다."));
+        // TODO apiCategory를 가지고 category를 탐색
+        Category category = new Category(1L, "문화", "culture");
 
         return new Place(
                 placeRequest.getName(),
-                placeRequest.getAddress(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 category);
