@@ -9,15 +9,15 @@ public class CityFixture {
             1L,
             "파리",
             "프랑스",
-            new BigDecimal(123.456),
-            new BigDecimal(123.456)
+            new BigDecimal("123.456"),
+            new BigDecimal("654.321")
     );
 
     public static final City LONDON = new City(
             2L,
             "런던",
             "영국",
-            new BigDecimal(789.000),
-            new BigDecimal(987.098)
+            new BigDecimal("789.000"),
+            new BigDecimal("987.098")
     );
 }
