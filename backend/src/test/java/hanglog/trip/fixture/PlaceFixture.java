@@ -10,5 +10,5 @@ public class PlaceFixture {
             "런던아이주소",
             new BigDecimal("30.123456"),
             new BigDecimal("31.123456"),
-            new Category(1L, "문화", "apiCategoryId"));
+            new Category(1L, "문화", "culture"));
 }
