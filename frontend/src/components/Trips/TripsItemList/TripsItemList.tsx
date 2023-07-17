@@ -3,37 +3,38 @@ import {
   TripsItemGridBoxStyling,
   TripsToggleGroupStyling,
 } from '@/components/trips/TripsItemList/TripsItemList.style';
+import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { TripsType } from '@type/trips';
 import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
 
-interface TripItemListProps {
-  data: TripsType[];
-  sortBy: string | number;
+interface TripsItemListProps {
+  trips: TripsType[];
+  order: string | number;
   changeSelect: (selectedId: string | number) => void;
 }
 
-const TripsItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
+const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
   return (
-    data && (
+    trips && (
       <>
-        <Flex styles={{ justify: 'right', paddingRight: '60px' }} css={TripsToggleGroupStyling}>
+        <Flex styles={{ justify: 'right', paddingRight: '50px' }} css={TripsToggleGroupStyling}>
           <ToggleGroup>
             <Toggle
-              text="등록순"
-              toggleId="등록순"
-              selectedId={sortBy}
+              text={ORDER_BY_REGISTRATION}
+              toggleId={ORDER_BY_REGISTRATION}
+              selectedId={order}
               changeSelect={changeSelect}
             />
             <Toggle
-              text="날짜순"
-              toggleId="날짜순"
-              selectedId={sortBy}
+              text={ORDER_BY_DATE}
+              toggleId={ORDER_BY_DATE}
+              selectedId={order}
               changeSelect={changeSelect}
             />
           </ToggleGroup>
         </Flex>
         <Box css={TripsItemGridBoxStyling}>
-          {data.map((trip) => {
+          {trips.map((trip) => {
             return (
               <TripsItem
                 key={trip.id}
