@@ -21,12 +21,4 @@ public class Category extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String googleApiId;
-
-    public Category(final String name, final String googleApiId) {
-        this.name = name;
-        this.googleApiId = googleApiId;
-    }
 }

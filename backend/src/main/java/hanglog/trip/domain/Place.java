@@ -28,9 +28,6 @@ public class Place extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String address;
-
     @Column(nullable = false, precision = 16, scale = 13)
     private BigDecimal latitude;
 
@@ -43,13 +40,11 @@ public class Place extends BaseEntity {
 
     public Place(
             final String name,
-            final String address,
             final BigDecimal latitude,
             final BigDecimal longitude,
             final Category category
     ) {
         this.name = name;
-        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;

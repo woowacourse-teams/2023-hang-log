@@ -44,9 +44,7 @@ public class ItemServiceTest {
     void save() {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"
@@ -65,9 +63,7 @@ public class ItemServiceTest {
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
-        given(categoryRepository.findByGoogleApiId(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
+                .willReturn(Optional.of(new Category(1L, "문화")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -83,9 +79,7 @@ public class ItemServiceTest {
     void update() {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"
@@ -106,9 +100,7 @@ public class ItemServiceTest {
         given(itemRepository.findById(any()))
                 .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
-        given(categoryRepository.findByGoogleApiId(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
+                .willReturn(Optional.of(new Category(1L, "문화")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
