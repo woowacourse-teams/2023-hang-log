@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 public class CityFixture {
 
-    public static City PARIS = new City(
+    public static final City PARIS = new City(
             1L,
             "파리",
             "프랑스",
@@ -13,7 +13,7 @@ public class CityFixture {
             new BigDecimal(123.456)
     );
 
-    public static City LONDON = new City(
+    public static final City LONDON = new City(
             2L,
             "런던",
             "영국",
