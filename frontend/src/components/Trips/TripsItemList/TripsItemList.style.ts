@@ -6,7 +6,7 @@ export const TripsItemGridBoxStyling = css({
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
   rowGap: Theme.spacer.spacing5,
-  columnGap: '24px',
+  columnGap: Theme.spacer.spacing4,
   placeItems: 'center',
 });
 

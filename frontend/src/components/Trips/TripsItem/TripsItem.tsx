@@ -24,8 +24,8 @@ const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: Tr
         <img src={coverImage} css={tripsItemImageStyling} />
       </Box>
       <Box css={tripsItemBadgeBoxStyling}>
-        {cityTags.map((data) => {
-          return <Badge key={data.id}>{data.name}</Badge>;
+        {cityTags.map((badge) => {
+          return <Badge key={badge.id}>{badge.name}</Badge>;
         })}
       </Box>
       <Text size="large" css={tripsItemNameStying}>
