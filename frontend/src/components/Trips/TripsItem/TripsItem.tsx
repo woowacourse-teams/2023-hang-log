@@ -1,6 +1,3 @@
-import { Cities } from '@type/trips';
-import { Badge, Box, Flex, Text } from 'hang-log-design-system';
-
 import {
   tripsBoxStyling,
   tripsDurationTextStyling,
@@ -8,24 +5,26 @@ import {
   tripsItemImageBoxStyling,
   tripsItemImageStyling,
   tripsItemNameStying,
-} from '@components/trips/TripsItem/TripsItem.style';
+} from '@/components/trips/TripsItem/TripsItem.style';
+import { Cities } from '@type/trips';
+import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
 interface TripItemProps {
   coverImage: string;
-  badgeName: Cities[];
+  cityTags: Cities[];
   itemName: string;
   duration: string;
   description?: string;
 }
 
-const TripsItem = ({ coverImage, badgeName, itemName, duration, description }: TripItemProps) => {
+const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripItemProps) => {
   return (
     <Flex styles={{ direction: 'column' }} css={tripsBoxStyling}>
       <Box css={tripsItemImageBoxStyling}>
         <img src={coverImage} css={tripsItemImageStyling} />
       </Box>
       <Box css={tripsItemBadgeBoxStyling}>
-        {badgeName.map((data) => {
+        {cityTags.map((data) => {
           return <Badge key={data.id}>{data.name}</Badge>;
         })}
       </Box>

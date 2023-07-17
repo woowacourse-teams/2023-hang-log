@@ -1,11 +1,10 @@
-import { TripsType } from '@type/trips';
-import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
-
-import TripsItem from '@components/trips/TripsItem/TripsItem';
+import TripsItem from '@/components/trips/TripsItem/TripsItem';
 import {
   TripsItemGridBoxStyling,
   TripsToggleGroupStyling,
-} from '@components/trips/TripsItemList/TripsItemList.style';
+} from '@/components/trips/TripsItemList/TripsItemList.style';
+import { TripsType } from '@type/trips';
+import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
 
 interface TripItemListProps {
   data: TripsType[];
@@ -39,7 +38,7 @@ const TripsItemList = ({ data, sortBy, changeSelect }: TripItemListProps) => {
               <TripsItem
                 key={trip.id}
                 coverImage={trip.imageUrls}
-                badgeName={trip.cities}
+                cityTags={trip.cities}
                 itemName={trip.title}
                 duration={`${trip.startDate}~${trip.endDate}`}
                 description={trip.description}
