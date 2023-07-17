@@ -10,12 +10,6 @@ public abstract class OAuthProvider {
         this.userResourceNode = userResourceNode;
     }
 
-    abstract public String getSocialLoginId();
-
-    abstract public String getNickname();
-
-    abstract public String getPicture();
-
     // todo : custom exception
     public static OAuthProvider mappingProvider(final JsonNode userResourceNode, final String registrationId) {
         if (registrationId.equals("google")) {
@@ -26,4 +20,10 @@ public abstract class OAuthProvider {
         }
         throw new IllegalArgumentException();
     }
+
+    abstract public String getSocialLoginId();
+
+    abstract public String getNickname();
+
+    abstract public String getPicture();
 }

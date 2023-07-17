@@ -15,6 +15,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class OAuthProviderTest {
 
+    private static Stream<Arguments> oAuthRegisterProvider() {
+        return Stream.of(
+                Arguments.of("google", GOOGLE_USER_INFO_JSON_STRING),
+                Arguments.of("kakao", KAKAO_USER_INFO_JSON_STRING)
+        );
+    }
+
     @ParameterizedTest(name = "{0} OAuth2 요청에서 id, 닉네임, 프로필사진을 가져온다.")
     @MethodSource("oAuthRegisterProvider")
     void mappingProvider(
@@ -25,20 +32,13 @@ class OAuthProviderTest {
         final JsonNode userResourceNode = new ObjectMapper().readTree(jsonString);
 
         // when
-        final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode,registrationId);
+        final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
 
         // then
-       assertSoftly(softly->{
-           softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(registrationId + "_id");
-           softly.assertThat(oAuthProvider.getNickname()).isEqualTo(registrationId + "_test");
-           softly.assertThat(oAuthProvider.getPicture()).isEqualTo(registrationId + "_image_url");
-       });
-    }
-
-    private static Stream<Arguments> oAuthRegisterProvider(){
-        return Stream.of(
-                Arguments.of("google", GOOGLE_USER_INFO_JSON_STRING),
-                Arguments.of("kakao", KAKAO_USER_INFO_JSON_STRING)
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(registrationId + "_id");
+            softly.assertThat(oAuthProvider.getNickname()).isEqualTo(registrationId + "_test");
+            softly.assertThat(oAuthProvider.getPicture()).isEqualTo(registrationId + "_image_url");
+        });
     }
 }

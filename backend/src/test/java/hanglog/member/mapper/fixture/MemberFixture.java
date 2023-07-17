@@ -4,15 +4,15 @@ public class MemberFixture {
 
     public static final String GOOGLE_USER_INFO_JSON_STRING =
             "{\"id\":\"google_id\","
-            + "\"email\":\"test@test.com\","
-            + "\"verified_email\":true,"
-            + "\"name\":\"google_test\","
-            + "\"given_name\":\"google_test\","
-            + "\"family_name\":\"google_test\","
-            + "\"picture\":\"google_image_url\","
-            + "\"locale\":\"ko\"}";
+                    + "\"email\":\"test@test.com\","
+                    + "\"verified_email\":true,"
+                    + "\"name\":\"google_test\","
+                    + "\"given_name\":\"google_test\","
+                    + "\"family_name\":\"google_test\","
+                    + "\"picture\":\"google_image_url\","
+                    + "\"locale\":\"ko\"}";
     public static final String KAKAO_USER_INFO_JSON_STRING =
-                    "{\"id\":\"kakao_id\","
+            "{\"id\":\"kakao_id\","
                     + "\"connected_at\":\"2023-07-13T01:18:52Z\","
                     + "\"properties\":{"
                     + "\"nickname\":\"kakao_test\","

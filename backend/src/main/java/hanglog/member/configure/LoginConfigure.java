@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class LoginConfigure {
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder){
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder.build();
     }
 }
