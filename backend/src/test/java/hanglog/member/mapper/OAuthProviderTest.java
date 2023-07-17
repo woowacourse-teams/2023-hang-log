@@ -30,7 +30,7 @@ class OAuthProviderTest {
         // when
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode,registrationId);
 
-        //then
+        // then
        assertSoftly(softly->{
            softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(expectedId);
            softly.assertThat(oAuthProvider.getNickname()).isEqualTo(expectedNickname);

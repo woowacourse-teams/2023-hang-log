@@ -5,6 +5,7 @@ import hanglog.member.Member;
 import hanglog.member.exception.AlreadyExistUserException;
 import hanglog.member.mapper.OAuthProvider;
 import hanglog.member.repository.MemberRepository;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,17 +24,13 @@ public class OAuthLoginService {
 
     private static final String PROPERTY_PATH = "spring.oauth2.client.registration.";
     private final Environment env;
-    private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
+    private final RestTemplate restTemplate;
 
-    public OAuthLoginService(
-            final Environment env,
-            final RestTemplate restTemplate,
-            final MemberRepository memberRepository
-    ) {
+    public OAuthLoginService(Environment env, MemberRepository memberRepository, RestTemplateBuilder builder) {
         this.env = env;
-        this.restTemplate = restTemplate;
         this.memberRepository = memberRepository;
+        this.restTemplate = builder.build();
     }
 
     public Member socialSignUp(final String code, final String registrationId) {
