@@ -16,18 +16,18 @@ export const imageWrapperStyling = css({
   position: 'absolute',
   top: '0',
   left: '0',
+  zIndex: -1,
 
   width: '100%',
   height: '100%',
-  zIndex: -1,
 
   '& > div': {
     position: 'absolute',
     width: '100%',
     height: '100%',
+    zIndex: Theme.zIndex.overlayTop,
 
     backgroundColor: `rgba(0, 0, 0, .4)`,
-    zIndex: Theme.zIndex.overlayTop,
   },
 
   '& > img': {
