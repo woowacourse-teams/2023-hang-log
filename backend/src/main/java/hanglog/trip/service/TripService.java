@@ -71,7 +71,7 @@ public class TripService {
     }
 
     private void saveTripCity(final List<City> cites, final Trip trip) {
-        for (City city : cites) {
+        for (final City city : cites) {
             tripCityRepository.save(new TripCity(trip, city));
         }
     }
