@@ -1,5 +1,7 @@
 package hanglog.trip.service;
 
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.fixture.TripFixture.UPDATED_LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,6 +11,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.repository.CityRepository;
+import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -31,6 +35,12 @@ class TripServiceTest {
     @Mock
     private TripRepository tripRepository;
 
+    @Mock
+    private CityRepository cityRepository;
+
+    @Mock
+    private TripCityRepository tripCityRepository;
+
     @DisplayName("새롭게 생성한 여행의 id를 반환한다.")
     @Test
     void save() {
@@ -39,6 +49,10 @@ class TripServiceTest {
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L));
 
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(LONDON));
+        given(cityRepository.findById(2L))
+                .willReturn(Optional.of(PARIS));
         given(tripRepository.save(any(Trip.class)))
                 .willReturn(LONDON_TRIP);
 
