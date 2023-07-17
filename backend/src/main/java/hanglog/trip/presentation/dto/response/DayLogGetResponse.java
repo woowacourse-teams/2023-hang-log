@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class DayLogGetResponse {
 
     public static final int DEFAULT_DAY = 1;
+    
     private final Long id;
     private final String title;
     private final Integer ordinal;
