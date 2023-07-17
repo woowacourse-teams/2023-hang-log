@@ -99,8 +99,8 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
         </button>
         {isOpen && (
           <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={() => console.log('수정')}>수정</MenuItem>
-            <MenuItem onClick={() => console.log('삭제')}>삭제</MenuItem>
+            <MenuItem onClick={() => {}}>수정</MenuItem>
+            <MenuItem onClick={() => {}}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>
