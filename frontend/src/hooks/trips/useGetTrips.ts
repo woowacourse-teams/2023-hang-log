@@ -1,14 +1,20 @@
-import { END_POINTS } from '@constants/api';
+import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
+import type { TripsType } from '@type/trips';
+import { AxiosError } from 'axios';
 
-import { axiosInstance } from '@api/axiosInstance';
-
-const fetchTrips = async () => {
-  return await axiosInstance.get(END_POINTS.TRIPS);
-};
+import { getTrips } from '@api/trips/trips';
 
 export const useGetTrips = () => {
-  const { isLoading, isFetching, data, isSuccess, refetch } = useQuery(['trips'], fetchTrips);
+  const { data: tripsData, refetch: refetchTripsData } = useQuery<TripsType[], AxiosError>(
+    ['trips'],
+    getTrips,
+    {
+      retry: NETWORK.RETRY_COUNT,
+      suspense: true,
+      useErrorBoundary: true,
+    }
+  );
 
-  return { isLoading, isFetching, data, isSuccess, refetch };
+  return { tripsData, refetchTripsData };
 };

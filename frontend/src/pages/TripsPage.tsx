@@ -12,24 +12,28 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 
 const TripsPage = () => {
-  const { data, refetch } = useGetTrips();
+  const { tripsData, refetchTripsData } = useGetTrips();
   const { selected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
 
   useEffect(() => {
-    if (selected === ORDER_BY_REGISTRATION) refetch();
-  }, [selected, refetch]);
+    if (selected === ORDER_BY_REGISTRATION) refetchTripsData();
+  }, [selected, refetchTripsData]);
 
   const sortedTrips =
-    selected === ORDER_BY_DATE ? data?.data.trips.slice().sort(sortByStartDate) : data?.data.trips;
+    selected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
 
   return (
     <>
       <Header />
       <TripsHeader />
-      {data?.data.trips.length ? (
-        <TripsItemList trips={sortedTrips} order={selected} changeSelect={handleSelectClick} />
+      {tripsData?.length ? (
+        <TripsItemList
+          trips={tripsData ?? sortedTrips}
+          order={selected}
+          changeSelect={handleSelectClick}
+        />
       ) : (
-        data && <TripsItemNone />
+        tripsData && <TripsItemNone />
       )}
     </>
   );
