@@ -1,6 +1,6 @@
 package hanglog.trip.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -28,7 +28,6 @@ public class TripUpdateRequest {
     @Size(max = 200, message = "여행 요약은 200자를 넘을 수 없습니다.")
     private final String description;
 
-    @NotNull(message = "여행한 도시는 최소 한 개 이상 입력해 주세요.")
-    @NotEmpty(message = "여행한 도시는 최소 한 개 이상 입력해 주세요.")
+    @NotBlank(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
     private final List<Long> cityIds;
 }

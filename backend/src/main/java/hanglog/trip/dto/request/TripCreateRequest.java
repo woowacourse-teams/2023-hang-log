@@ -1,7 +1,7 @@
 package hanglog.trip.dto.request;
 
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +21,6 @@ public class TripCreateRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private final LocalDate endDate;
 
-    @NotNull(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
-    @NotEmpty(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
+    @NotBlank(message = "여행한 도시는 최소 한 개 이상 입력해주세요.")
     private final List<Long> cityIds;
 }
