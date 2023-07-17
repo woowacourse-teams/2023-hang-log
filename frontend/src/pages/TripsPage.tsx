@@ -1,3 +1,4 @@
+import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@/constants/order';
 import { useSelect } from 'hang-log-design-system';
 import { useEffect } from 'react';
 
@@ -12,21 +13,21 @@ import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 
 const TripsPage = () => {
   const { data, refetch } = useGetTrips();
-  const { selected, handleSelectClick } = useSelect('등록순');
+  const { selected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
 
   useEffect(() => {
-    if (selected === '등록순') refetch();
+    if (selected === ORDER_BY_REGISTRATION) refetch();
   }, [selected, refetch]);
 
   const sortedTrips =
-    selected === '날짜순' ? data?.data.trips.slice().sort(sortByStartDate) : data?.data.trips;
+    selected === ORDER_BY_DATE ? data?.data.trips.slice().sort(sortByStartDate) : data?.data.trips;
 
   return (
     <>
       <Header />
       <TripsHeader />
       {data?.data.trips.length ? (
-        <TripsItemList data={sortedTrips} sortBy={selected} changeSelect={handleSelectClick} />
+        <TripsItemList trips={sortedTrips} order={selected} changeSelect={handleSelectClick} />
       ) : (
         data && <TripsItemNone />
       )}
