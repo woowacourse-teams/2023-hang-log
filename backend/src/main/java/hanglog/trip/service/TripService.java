@@ -36,7 +36,7 @@ public class TripService {
                 tripCreateRequest.getEndDate()
         );
         final Trip savedTrip = tripRepository.save(trip);
-        saveTripCity(cites, trip);
+        saveAllTripCities(cites, trip);
         return savedTrip.getId();
     }
 
@@ -72,7 +72,7 @@ public class TripService {
         return cites.get(0).getName() + TITLE_POSTFIX;
     }
 
-    private void saveTripCity(final List<City> cites, final Trip trip) {
+    private void saveAllTripCities(final List<City> cites, final Trip trip) {
         for (final City city : cites) {
             tripCityRepository.save(new TripCity(trip, city));
         }
