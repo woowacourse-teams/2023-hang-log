@@ -1,8 +1,10 @@
-import { useCityTags } from '@/hooks/common/useCityTags';
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import type { FormEvent } from 'react';
+
+import { useCityTags } from '@hooks/common/useCityTags';
 
 import {
   badgeStyling,

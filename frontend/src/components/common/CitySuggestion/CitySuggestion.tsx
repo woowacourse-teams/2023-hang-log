@@ -1,10 +1,11 @@
-import { useCitySuggestion } from '@/hooks/common/useCitySuggestion';
 import {
   MenuList as SuggestionList,
   MenuItem as SuggestionsItem,
   Text,
 } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
+
+import { useCitySuggestion } from '@hooks/common/useCitySuggestion';
 
 import { City } from '@components/common/CitySearchBar/CitySearchBar';
 import {

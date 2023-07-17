@@ -1,4 +1,4 @@
-import { City } from '@/components/common/CitySearchBar/CitySearchBar';
+import { City } from '@components/common/CitySearchBar/CitySearchBar';
 
 export const cities: City[] = [
   { id: 1, name: '서울, 한국' },
