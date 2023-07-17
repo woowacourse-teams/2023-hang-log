@@ -14,22 +14,22 @@ import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 
 const TripsPage = () => {
   const { tripsData } = useGetTrips();
-  const { selected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
+  const { selected: sortSelected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (selected === ORDER_BY_REGISTRATION) queryClient.invalidateQueries(['trips']);
-  }, [selected, queryClient]);
+    if (sortSelected === ORDER_BY_REGISTRATION) queryClient.invalidateQueries(['trips']);
+  }, [sortSelected, queryClient]);
 
   const sortedTrips =
-    selected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
+    sortSelected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
 
   return (
     <>
       <Header />
       <TripsHeader />
       {sortedTrips?.length ? (
-        <TripsItemList trips={sortedTrips} order={selected} changeSelect={handleSelectClick} />
+        <TripsItemList trips={sortedTrips} order={sortSelected} changeSelect={handleSelectClick} />
       ) : (
         tripsData && <TripsItemNone />
       )}
