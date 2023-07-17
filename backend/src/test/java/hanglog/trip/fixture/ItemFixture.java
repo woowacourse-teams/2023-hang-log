@@ -22,4 +22,14 @@ public class ItemFixture {
             dayLog,
             ExpenseFixture.expense
     );
+    public static Item TAXI_ITEM = new Item(
+            2L,
+            ItemType.NON_SPOT,
+            "택시",
+            2,
+            4.0,
+            "런던에서 탄 택시",
+            dayLog,
+            ExpenseFixture.expense
+    );
 }

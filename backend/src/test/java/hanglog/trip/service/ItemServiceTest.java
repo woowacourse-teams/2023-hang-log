@@ -15,7 +15,9 @@ import hanglog.trip.fixture.TripFixture;
 import hanglog.trip.presentation.dto.request.ExpenseRequest;
 import hanglog.trip.presentation.dto.request.ItemRequest;
 import hanglog.trip.presentation.dto.request.PlaceRequest;
+import hanglog.trip.presentation.dto.response.ItemResponse;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -131,5 +133,20 @@ public class ItemServiceTest {
 
         // then
         verify(itemRepository).save(any());
+    }
+
+    @DisplayName("모든 여행 아이템의 Response를 반환한다.")
+    @Test
+    void getItems() {
+        // given
+        given(itemRepository.findAll())
+                .willReturn(List.of(ItemFixture.LONDON_EYE_ITEM, ItemFixture.TAXI_ITEM));
+
+        // when
+        List<ItemResponse> items = itemService.getItems();
+
+        // then
+        assertThat(items.get(0)).usingRecursiveComparison().isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
+        assertThat(items.get(1)).usingRecursiveComparison().isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
     }
 }

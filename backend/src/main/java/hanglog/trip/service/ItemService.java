@@ -13,6 +13,9 @@ import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.presentation.dto.request.ExpenseRequest;
 import hanglog.trip.presentation.dto.request.ItemRequest;
 import hanglog.trip.presentation.dto.request.PlaceRequest;
+import hanglog.trip.presentation.dto.response.ItemResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,5 +135,12 @@ public class ItemService {
         if (item.getStatus().equals(StatusType.DELETED)) {
             throw new IllegalArgumentException("이미 삭제된 여행 아이템입니다.");
         }
+    }
+
+    public List<ItemResponse> getItems() {
+        return itemRepository.findAll()
+                .stream()
+                .map(ItemResponse::of)
+                .collect(Collectors.toList());
     }
 }
