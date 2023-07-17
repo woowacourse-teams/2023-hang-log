@@ -11,60 +11,42 @@ import {
   getSuggestionItemStyling,
   suggestionContainerStyling,
 } from '@components/common/Suggestion/Suggestion.style';
-import useSuggestion from '@components/common/Suggestion/useSuggestion';
+
+import { City } from '../CitySearchBar/CitySearchBar';
 
 interface SuggestionProps {
   queryWord: string;
-  onItemSelect: (item: string) => void;
+  onItemSelect: (city: City) => void;
 }
 
 const Suggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
-  const {
-    suggestions,
-    focusedSuggestionIndex,
-    setNewSuggestions,
-    focusLowerSuggestion,
-    focusUpperSuggestion,
-    focusSuggestion,
-  } = useSuggestion();
+  const { suggestions, isFocused, setNewSuggestions, focusSuggestion } = useSuggestion({
+    onItemSelect,
+  });
 
   useEffect(() => {
     setNewSuggestions(queryWord);
   }, [queryWord]);
 
-  const handleKeyPress = (e: globalThis.KeyboardEvent) => {
-    if (e.key === 'ArrowUp') {
-      focusUpperSuggestion();
-    }
-
-    if (e.key === 'ArrowDown') {
-      focusLowerSuggestion();
-    }
-
-    if (e.key === 'Enter') {
-      if (focusedSuggestionIndex >= 0) {
-        onItemSelect(suggestions[focusedSuggestionIndex]);
-      }
-    }
+  const handleItemClick = (suggestion: City) => () => {
+    onItemSelect(suggestion);
   };
 
-  useEffect(() => {
-    window.addEventListener('keyup', handleKeyPress);
-
-    return () => window.removeEventListener('keyup', handleKeyPress);
-  });
+  const handleItemMouseHover = (index: number) => () => {
+    focusSuggestion(index);
+  };
 
   return (
     <SuggestionList css={suggestionContainerStyling}>
       {suggestions.length ? (
-        suggestions.map((suggestion, index) => (
+        suggestions.map((city, index) => (
           <SuggestionsItem
-            key={suggestion}
-            onClick={() => onItemSelect(suggestion)}
-            onMouseEnter={() => focusSuggestion(index)}
-            css={getSuggestionItemStyling(focusedSuggestionIndex === index)}
+            key={city.id}
+            onClick={handleItemClick(city)}
+            onMouseEnter={handleItemMouseHover(index)}
+            css={getSuggestionItemStyling(isFocused(index))}
           >
-            {suggestion}
+            {city.name}
           </SuggestionsItem>
         ))
       ) : (

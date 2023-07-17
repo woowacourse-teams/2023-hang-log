@@ -1,34 +1,35 @@
-import { CITY } from '@constants/city';
+import { City } from '@/components/common/CitySearchBar/CitySearchBar';
+import { CITY_TAG_MAX_LENGTH } from '@constants/ui';
 import { useState } from 'react';
 
-export const useCityTags = (initialCityTags: string[]) => {
-  const [cityTags, setCityTags] = useState<string[]>(initialCityTags);
+export const useCityTags = (initialCityTags: City[]) => {
+  const [cityTags, setCityTags] = useState(initialCityTags);
 
   const getCityName = (city: string) => {
     return city.split(',')[0];
   };
 
-  const addCityTag = (selectedCity: string) => {
-    const city = getCityName(selectedCity);
+  const addCityTag = (selectedCity: City) => {
+    const cityName = getCityName(selectedCity.name);
 
-    setCityTags((cityTags) => {
-      if (cityTags.includes(city)) {
-        const filteredCityTags = cityTags.filter((cityTag) => cityTag !== city);
-        return [...filteredCityTags, city];
+    setCityTags((prevCityTags) => {
+      const hasCityTag = prevCityTags.map((tags) => tags.id).includes(selectedCity.id);
+
+      if (hasCityTag) {
+        const filteredCityTags = prevCityTags.filter((cityTag) => cityTag.id !== selectedCity.id);
+        return [...filteredCityTags, { id: selectedCity.id, name: cityName }];
       }
 
-      if (cityTags.length >= CITY.MAX_NUM) {
-        return cityTags;
+      if (prevCityTags.length >= CITY_TAG_MAX_LENGTH) {
+        return prevCityTags;
       }
 
-      return [...cityTags, city];
+      return [...prevCityTags, { id: selectedCity.id, name: cityName }];
     });
   };
 
-  const deleteCityTag = (selectedCity: string) => {
-    const city = getCityName(selectedCity);
-
-    setCityTags((cityTags) => cityTags.filter((cityTag) => cityTag !== city));
+  const deleteCityTag = (selectedCity: City) => {
+    setCityTags((prevCityTags) => prevCityTags.filter((cityTag) => cityTag.id !== selectedCity.id));
   };
 
   return { cityTags, addCityTag, deleteCityTag };

@@ -14,8 +14,13 @@ import {
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 import Suggestion from '@components/common/Suggestion/Suggestion';
 
+export interface City {
+  id: number;
+  name: string;
+}
+
 interface CitySearchBarProps {
-  initialCityTags: string[];
+  initialCityTags: City[];
 }
 
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
@@ -31,7 +36,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     openSuggestion();
   };
 
-  const handleSuggestionClick = (selectedCity: string) => {
+  const handleSuggestionClick = (selectedCity: City) => {
     addCityTag(selectedCity);
     resetAll();
   };
@@ -42,7 +47,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     closeSuggestion();
   };
 
-  const handleDeleteButtonClick = (selectedCity: string) => () => {
+  const handleDeleteButtonClick = (selectedCity: City) => () => {
     deleteCityTag(selectedCity);
     focusInput();
   };
@@ -58,13 +63,13 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   };
 
   const CityTags = () =>
-    cityTags.map((city) => (
-      <Badge key={city} css={badgeStyling}>
-        {city}
+    cityTags.map((cityTag) => (
+      <Badge key={cityTag.id} css={badgeStyling}>
+        {cityTag.name}
         <CloseIcon
           aria-label="삭제 아이콘"
           css={closeIconStyling}
-          onClick={handleDeleteButtonClick(city)}
+          onClick={handleDeleteButtonClick(cityTag)}
         />
       </Badge>
     ));
