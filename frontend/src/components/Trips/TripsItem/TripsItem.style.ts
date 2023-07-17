@@ -55,12 +55,14 @@ export const tripsTiemDurationStyling = css({
 });
 
 export const tripsDurationTextStyling = css({
-  marginTop: '4px',
-  width: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  wordBreak: 'break-word',
   display: '-webkit-box',
   '-webkit-line-clamp': '2',
   '-webkit-box-orient': 'vertical',
+
+  marginTop: '4px',
+  width: '100%',
+
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  wordBreak: 'break-word',
 });
