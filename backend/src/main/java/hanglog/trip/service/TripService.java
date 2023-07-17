@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TripService {
 
+    public static final String TITLE_POSTFIX = " 여행";
+
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
@@ -67,7 +69,7 @@ public class TripService {
     }
 
     private String getInitTitle(final List<City> cites) {
-        return cites.get(0).getName() + " 여행";
+        return cites.get(0).getName() + TITLE_POSTFIX;
     }
 
     private void saveTripCity(final List<City> cites, final Trip trip) {
