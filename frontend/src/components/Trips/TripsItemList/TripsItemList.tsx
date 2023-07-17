@@ -1,11 +1,13 @@
-import TripsItem from '@/components/trips/TripsItem/TripsItem';
-import {
-  TripsItemGridBoxStyling,
-  TripsToggleGroupStyling,
-} from '@/components/trips/TripsItemList/TripsItemList.style';
+import { formatDate } from '@/utils/formatter';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { TripsType } from '@type/trips';
 import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
+
+import TripsItem from '@components/trips/TripsItem/TripsItem';
+import {
+  TripsItemGridBoxStyling,
+  TripsToggleGroupStyling,
+} from '@components/trips/TripsItemList/TripsItemList.style';
 
 interface TripsItemListProps {
   trips: TripsType[];
@@ -38,10 +40,10 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
             return (
               <TripsItem
                 key={trip.id}
-                coverImage={trip.imageUrls}
+                coverImage={trip.imageUrl}
                 cityTags={trip.cities}
                 itemName={trip.title}
-                duration={`${trip.startDate}~${trip.endDate}`}
+                duration={`${formatDate(trip.startDate)}~${formatDate(trip.endDate)}`}
                 description={trip.description}
               />
             );
