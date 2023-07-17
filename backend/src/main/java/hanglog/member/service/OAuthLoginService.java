@@ -26,23 +26,27 @@ public class OAuthLoginService {
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
 
-    public OAuthLoginService(final Environment env, final RestTemplate restTemplate, final MemberRepository memberRepository) {
+    public OAuthLoginService(
+            final Environment env,
+            final RestTemplate restTemplate,
+            final MemberRepository memberRepository
+    ) {
         this.env = env;
         this.restTemplate = restTemplate;
         this.memberRepository = memberRepository;
     }
 
-    //todo : exception custom
     public Member socialSignUp(final String code, final String registrationId) {
         final String accessToken = getAccessToken(code, registrationId);
         final JsonNode userResourceNode = getUserResource(accessToken, registrationId);
 
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
-        if (memberRepository.existsById(userResourceNode.get("id").asLong())) {
+        if (memberRepository.existsBySocialLoginId(userResourceNode.get("id").asText())) {
             throw new AlreadyExistUserException("member already exist");
         }
 
-        final Member member = new Member(oAuthProvider.getSocialLoginId(), oAuthProvider.getNickname(), oAuthProvider.getPicture());
+        final Member member = new Member(oAuthProvider.getSocialLoginId(), oAuthProvider.getNickname(),
+                oAuthProvider.getPicture());
         return memberRepository.save(member);
     }
 

@@ -1,10 +1,8 @@
 package hanglog.member;
 
-import static hanglog.global.type.StatusType.USABLE;
-import static jakarta.persistence.EnumType.STRING;
+import static hanglog.member.MemberState.ACTIVE;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.global.type.StatusType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,7 +32,7 @@ public class Member {
     @Column(nullable = false, length = 20)
     private String nickname;
 
-
+    @Column(nullable = false)
     private LocalDateTime lastLoginDate;
 
     @Column(nullable = false)
@@ -53,5 +51,7 @@ public class Member {
         this.socialLoginId = socialLoginId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
+        this.lastLoginDate = LocalDateTime.now();
+        this.status = ACTIVE;
     }
 }

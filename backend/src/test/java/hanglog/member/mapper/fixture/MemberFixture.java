@@ -1,6 +1,7 @@
 package hanglog.member.mapper.fixture;
 
 public class MemberFixture {
+
     public static final String GOOGLE_USER_INFO_JSON_STRING =
             "{\"id\":\"123\","
             + "\"email\":\"test@test.com\","
