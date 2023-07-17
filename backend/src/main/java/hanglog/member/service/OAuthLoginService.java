@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @Transactional
 public class OAuthLoginService {
 
+    private static final String PROPERTY_PATH = "spring.oauth2.client.registration.";
     private final Environment env;
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
@@ -46,11 +47,10 @@ public class OAuthLoginService {
     }
 
     private String getAccessToken(final String authorizationCode, final String registrationId) {
-
-        final String clientId = env.getProperty("spring.oauth2.client.registration." + registrationId + ".client-id");
-        final String clientSecret = env.getProperty("spring.oauth2.client.registration." + registrationId + ".client-secret");
-        final String redirectUri = env.getProperty("spring.oauth2.client.registration." + registrationId + ".redirect-uri");
-        final String tokenUri = env.getProperty("spring.oauth2.client.registration." + registrationId + ".token-uri");
+        final String clientId = env.getProperty(PROPERTY_PATH + registrationId + ".client-id");
+        final String clientSecret = env.getProperty(PROPERTY_PATH + registrationId + ".client-secret");
+        final String redirectUri = env.getProperty(PROPERTY_PATH + registrationId + ".redirect-uri");
+        final String tokenUri = env.getProperty(PROPERTY_PATH + registrationId + ".token-uri");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
@@ -70,7 +70,7 @@ public class OAuthLoginService {
     }
 
     private JsonNode getUserResource(final String accessToken, final String registrationId) {
-        final String resourceUri = env.getProperty("spring.oauth2.client.registration." + registrationId + ".user-info");
+        final String resourceUri = env.getProperty(PROPERTY_PATH + registrationId + ".user-info");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
