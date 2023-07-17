@@ -5,7 +5,7 @@ export interface TripsType {
   cities: Cities[];
   startDate: string;
   endDate: string;
-  description?: string;
+  description?: string | null;
 }
 
 export interface Cities {

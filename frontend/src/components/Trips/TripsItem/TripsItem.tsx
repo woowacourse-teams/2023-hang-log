@@ -15,7 +15,7 @@ interface TripItemProps {
   cityTags: Cities[];
   itemName: string;
   duration: string;
-  description?: string;
+  description?: string | null;
 }
 
 const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripItemProps) => {

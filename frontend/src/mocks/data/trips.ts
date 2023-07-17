@@ -70,7 +70,7 @@ export const tripsMock = [
     ],
     startDate: '2021.01.13',
     endDate: '2021.01.17',
-    description: '어쩌구 저쩌구 좌충우돌 라곤의 강릉 여행기',
+    description: null,
   },
   {
     id: 4,
