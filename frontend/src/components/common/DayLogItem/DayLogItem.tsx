@@ -12,15 +12,17 @@ interface DayLogItemProps extends DayLogData {
 }
 
 const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
-  const { selected, handleSelectClick } = useSelect(DAY_LOG_ITEM_FILTERS.ALL);
+  const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
+    DAY_LOG_ITEM_FILTERS.ALL
+  );
   const selectedTripItemList =
-    selected === DAY_LOG_ITEM_FILTERS.SPOT
+    selectedFilter === DAY_LOG_ITEM_FILTERS.SPOT
       ? information.items.filter((item) => item.itemType === true)
       : information.items;
 
   useEffect(() => {
     /** ordinal 변경되었을 때 목록 및 선택된 토클 초기화 */
-    handleSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
+    handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
   }, [information.items]);
 
   return (
@@ -32,14 +34,14 @@ const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
           <Toggle
             text={DAY_LOG_ITEM_FILTERS.ALL}
             toggleId={DAY_LOG_ITEM_FILTERS.ALL}
-            selectedId={selected}
-            changeSelect={handleSelectClick}
+            selectedId={selectedFilter}
+            changeSelect={handleFilterSelectClick}
           />
           <Toggle
             text={DAY_LOG_ITEM_FILTERS.SPOT}
             toggleId={DAY_LOG_ITEM_FILTERS.SPOT}
-            selectedId={selected}
-            changeSelect={handleSelectClick}
+            selectedId={selectedFilter}
+            changeSelect={handleFilterSelectClick}
           />
         </ToggleGroup>
       </Flex>
