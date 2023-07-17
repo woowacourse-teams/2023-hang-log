@@ -75,7 +75,7 @@ public class ItemService {
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
         // TODO apiCategory를 가지고 category를 탐색
-        Category category = new Category(1L, "문화");
+        Category category = new Category(1L, "문화", "culture");
 
         return new Place(
                 placeRequest.getName(),
