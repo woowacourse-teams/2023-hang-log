@@ -23,7 +23,7 @@ public class TripService {
     private final TripCityRepository tripCityRepository;
 
     public Long save(final TripCreateRequest tripCreateRequest) {
-        List<City> cites = tripCreateRequest.getCityIds().stream()
+        final List<City> cites = tripCreateRequest.getCityIds().stream()
                 .map(cityId -> cityRepository.findById(cityId).orElseThrow())
                 .toList();
 
@@ -32,7 +32,7 @@ public class TripService {
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
-        Trip savedTrip = tripRepository.save(trip);
+        final Trip savedTrip = tripRepository.save(trip);
         saveTripCity(cites, trip);
         return savedTrip.getId();
     }
