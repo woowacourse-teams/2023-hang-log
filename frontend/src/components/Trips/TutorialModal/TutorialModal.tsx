@@ -1,29 +1,31 @@
+import {
+  ModalCarouselBoxStyling,
+  ModalCloseButtonStyling,
+} from '@/components/trips/TutorialModal/TutorialModal.style';
 import Tutorial1SVG from '@assets/svg/tutorial1.svg';
 import Tutorial2SVG from '@assets/svg/tutorial2.svg';
 import Tutorial3SVG from '@assets/svg/tutorial3.svg';
 import Tutorial4SVG from '@assets/svg/tutorial4.svg';
-import { Button, Flex, Modal, SVGCarousel } from 'hang-log-design-system';
-import { useCallback, useState } from 'react';
-
-import {
-  ModalCarouselBoxStyling,
-  ModalCloseButtonStyling,
-} from '@components/trips/TutorialModal/TutorialModal.style';
+import { Button, Flex, Modal, SVGCarousel, useOverlay } from 'hang-log-design-system';
+import { useCallback, useEffect } from 'react';
 
 const TutorialModal = () => {
-  const [modalStatus, setModalStatus] = useState(true);
+  const { isOpen, open, close } = useOverlay();
 
   const handleModalClose = useCallback(() => {
-    setModalStatus(false);
+    close();
+  }, []);
+
+  useEffect(() => {
+    open();
   }, []);
 
   return (
-    <Modal isOpen={modalStatus} closeModal={handleModalClose} hasCloseButton={true}>
+    <Modal isOpen={isOpen} closeModal={handleModalClose} hasCloseButton={true}>
       <Flex css={ModalCarouselBoxStyling}>
         <SVGCarousel
-          width={390}
-          height={420}
-          showArrows={true}
+          width={379}
+          height={403}
           images={[Tutorial1SVG, Tutorial2SVG, Tutorial3SVG, Tutorial4SVG]}
         />
         <Button variant="primary" css={ModalCloseButtonStyling} onClick={handleModalClose}>
