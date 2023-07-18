@@ -59,7 +59,6 @@ public class OAuthLoginService {
         String socialLoginId = userResourceNode.get("id").asText();
 
         return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(() -> saveMember(oAuthProvider));
-
     }
 
     private HttpEntity getEntity(final String authorizationCode, final String registrationId) {
@@ -81,12 +80,11 @@ public class OAuthLoginService {
     }
 
     private Member saveMember(OAuthProvider oAuthProvider) {
-        return memberRepository.save(
-                new Member(
-                        oAuthProvider.getSocialId(),
-                        oAuthProvider.getNickname(),
-                        oAuthProvider.getImage()
-                )
+        final Member member = new Member(
+                oAuthProvider.getSocialId(),
+                oAuthProvider.getNickname(),
+                oAuthProvider.getImage()
         );
+        return memberRepository.save(member);
     }
 }
