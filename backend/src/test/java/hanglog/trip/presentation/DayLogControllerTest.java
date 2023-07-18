@@ -20,6 +20,7 @@ import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.presentation.dto.response.DayLogGetResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,12 @@ class DayLogControllerTest extends RestDocsTest {
     @Test
     void getDayLog() throws Exception {
         // given
-        final DayLogGetResponse response = new DayLogGetResponse(1L, "런던 여행", 1, new ArrayList<>());
+        final DayLogGetResponse response = new DayLogGetResponse(
+                1L,
+                "런던 여행 첫날",
+                1,
+                LocalDate.of(2023, 7, 1),
+                new ArrayList<>());
 
         given(dayLogService.getById(1L))
                 .willReturn(response);
@@ -73,6 +79,10 @@ class DayLogControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("여행에서의 날짜 순서")
                                                 .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("date")
+                                                .type(JsonFieldType.STRING)
+                                                .description("실제 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
                                         fieldWithPath("items")
                                                 .type(JsonFieldType.ARRAY)
                                                 .description("아이템 목록")
