@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-// todo: status 고민하기
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -42,6 +41,7 @@ public class Member {
     private MemberState status;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -52,6 +52,7 @@ public class Member {
         this.nickname = nickname;
         this.imageUrl = imageUrl;
         this.lastLoginDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
         this.status = ACTIVE;
     }
 }
