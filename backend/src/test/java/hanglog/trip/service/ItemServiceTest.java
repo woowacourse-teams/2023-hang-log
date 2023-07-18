@@ -1,6 +1,7 @@
 package hanglog.trip.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -100,7 +101,7 @@ public class ItemServiceTest {
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
         given(itemRepository.findById(any()))
-                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+                .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
@@ -135,10 +136,14 @@ public class ItemServiceTest {
                 .willReturn(List.of(ItemFixture.LONDON_EYE_ITEM, ItemFixture.TAXI_ITEM));
 
         // when
-        List<ItemResponse> items = itemService.getItems();
+        final List<ItemResponse> items = itemService.getItems();
 
         // then
-        assertThat(items.get(0)).usingRecursiveComparison().isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
-        assertThat(items.get(1)).usingRecursiveComparison().isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
+        assertSoftly(softly -> {
+            softly.assertThat(items.get(0)).usingRecursiveComparison()
+                    .isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
+            softly.assertThat(items.get(1)).usingRecursiveComparison()
+                    .isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
+        });
     }
 }
