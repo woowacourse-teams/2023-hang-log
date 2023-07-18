@@ -1,7 +1,5 @@
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
-import { useQueryClient } from '@tanstack/react-query';
 import { useSelect } from 'hang-log-design-system';
-import { useEffect } from 'react';
 
 import { sortByStartDate } from '@utils/common/sortByStartDate';
 
@@ -15,11 +13,6 @@ import TripsItemNone from '@components/trips/TripsItemNone/TripsItemNone';
 const TripsPage = () => {
   const { tripsData } = useGetTrips();
   const { selected: sortSelected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (sortSelected === ORDER_BY_REGISTRATION) queryClient.invalidateQueries(['trips']);
-  }, [sortSelected, queryClient]);
 
   const sortedTrips =
     sortSelected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
