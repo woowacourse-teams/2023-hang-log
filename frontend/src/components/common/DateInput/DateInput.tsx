@@ -1,16 +1,9 @@
-import { DateRangeData } from '@/types/trips';
-import { dateRangeToString } from '@/utils/formatter';
 import CalendarIcon from '@assets/svg/calendar-icon.svg';
-import {
-  Box,
-  DateRangePicker,
-  Flex,
-  Heading,
-  Input,
-  Menu,
-  useOverlay,
-} from 'hang-log-design-system';
+import { DateRangeData } from '@type/trips';
+import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import { useState } from 'react';
+
+import { dateRangeToString } from '@utils/formatter';
 
 import {
   calendarStyling,
@@ -36,7 +29,7 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
 
   return (
     <Flex styles={{ direction: 'column', width: '40%', margin: '0 auto', align: 'flex-start' }}>
-      <Heading size="xSmall">방문 기간</Heading>
+      <Label>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={inputStyling}>
           <Input

@@ -12,7 +12,7 @@ export const containerStyling = css({
 });
 
 export const inputStyling = css({
-  width: '500px',
+  width: '400px',
   marginTop: Theme.spacer.spacing2,
 
   cursor: 'pointer',
