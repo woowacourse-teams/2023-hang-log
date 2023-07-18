@@ -39,8 +39,7 @@ public class DayLogService {
         );
         dayLogRepository.save(updatedDayLog);
     }
-
-
+    
     private void validateAlreadyDeleted(final DayLog dayLog) {
         if (dayLog.isDeleted()) {
             throw new IllegalStateException("이미 삭제된 날짜입니다.");

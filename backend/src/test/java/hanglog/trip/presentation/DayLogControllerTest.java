@@ -56,7 +56,7 @@ class DayLogControllerTest extends RestDocsTest {
                 .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/trips/{tripId}/daylog/{dayLogId}", 1L, 1L))
+        mockMvc.perform(get("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L))
                 .andExpect(status().isOk())
                 .andDo(
                         restDocs.document(
@@ -101,7 +101,7 @@ class DayLogControllerTest extends RestDocsTest {
         doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
 
         // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylog/{dayLogId}", 1L, 1L)
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNoContent())
