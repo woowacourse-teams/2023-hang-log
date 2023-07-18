@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,7 +18,7 @@ public class ItemRequest {
     @Size(max = 50, message = "여행 아이템의 제목은 50자를 초과할 수 없습니다.")
     private final String title;
 
-    @Size(max = 5, message = "여행 별점은 5점을 초과할 수 없습니다.")
+    @DecimalMax(value = "5.0", message = "여행 별점은 5점을 초과할 수 없습니다.")
     private final Double rating;
 
     @Size(max = 255, message = "여행 아이템의 메모는 255자를 초과할 수 없습니다.")
