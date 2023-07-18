@@ -12,7 +12,7 @@ public class ExpenseResponse {
     private final Integer amount;
     private final CategoryResponse category;
 
-    public static ExpenseResponse of(Expense expense) {
+    public static ExpenseResponse of(final Expense expense) {
         return new ExpenseResponse(
                 expense.getId(),
                 expense.getCurrency(),

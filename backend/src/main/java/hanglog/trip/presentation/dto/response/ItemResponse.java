@@ -19,7 +19,7 @@ public class ItemResponse {
     private final ExpenseResponse expense;
     // TODO: imageUrls 추가 필요
 
-    public static ItemResponse of(Item item) {
+    public static ItemResponse of(final Item item) {
         return new ItemResponse(
                 item.getId(),
                 item.getItemType().isSpot(),
@@ -32,14 +32,14 @@ public class ItemResponse {
         );
     }
 
-    public static PlaceResponse getPlaceResponse(Place place) {
+    public static PlaceResponse getPlaceResponse(final Place place) {
         if (place == null) {
             return null;
         }
         return PlaceResponse.of(place);
     }
 
-    public static ExpenseResponse getExpenseResponse(Expense expense) {
+    public static ExpenseResponse getExpenseResponse(final Expense expense) {
         if (expense == null) {
             return null;
         }

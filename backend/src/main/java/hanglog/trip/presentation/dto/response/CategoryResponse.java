@@ -11,7 +11,7 @@ public class CategoryResponse {
     private final String korName;
     private final String engName;
 
-    public static CategoryResponse of(Category category) {
+    public static CategoryResponse of(final Category category) {
         return new CategoryResponse(
                 category.getId(),
                 category.getKorName(),

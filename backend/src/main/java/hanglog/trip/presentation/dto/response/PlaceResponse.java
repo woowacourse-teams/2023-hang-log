@@ -14,7 +14,7 @@ public class PlaceResponse {
     private final BigDecimal longitude;
     private final CategoryResponse category;
 
-    public static PlaceResponse of(Place place) {
+    public static PlaceResponse of(final Place place) {
         return new PlaceResponse(
                 place.getId(),
                 place.getName(),
