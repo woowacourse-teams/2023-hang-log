@@ -41,20 +41,26 @@ const config: StorybookConfig = {
 
       if (!test) return false;
 
-      return test.test('.svg');
+      return test.test('.svg') || test.test('.png');
     }) as { [key: string]: any };
 
-    imageRule.exclude = /\.svg$/;
+    imageRule.exclude = /\.(svg|png)$/;
 
     config.module?.rules?.push({
       test: /\.svg$/,
-      issuer: /\.(jsx|tsx)$/,
+      issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
 
     config.module?.rules?.push({
       test: /\.svg$/,
-      issuer: /\.(js|ts)$/,
+      issuer: /\.(style.js|style.ts)$/,
+      use: ['url-loader'],
+    });
+
+    config.module?.rules?.push({
+      test: /\.png$/i,
+      issuer: /\.[jt]sx?$/,
       use: ['url-loader'],
     });
 

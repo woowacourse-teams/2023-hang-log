@@ -14,11 +14,11 @@ const Header = () => {
       <Flex styles={{ justify: 'space-between', align: 'center' }}>
         <LogoHorizontal onClick={() => navigate(PATH.ROOT)} />
         <Menu closeMenu={close}>
-          <div css={imageStyling} onClick={open}></div>
+          <div css={imageStyling} onClick={open} />
           {isOpen && (
             <MenuList>
-              <MenuItem name="마이페이지" onClick={() => navigate(PATH.ROOT)} />
-              <MenuItem name="로그아웃" onClick={() => navigate(PATH.ROOT)} />
+              <MenuItem onClick={() => navigate(PATH.ROOT)}>마이페이지</MenuItem>
+              <MenuItem onClick={() => navigate(PATH.ROOT)}>로그아웃</MenuItem>
             </MenuList>
           )}
         </Menu>
