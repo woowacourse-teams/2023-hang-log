@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -40,13 +41,13 @@ public class Item extends BaseEntity {
     @Enumerated(value = STRING)
     private ItemType itemType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Column(nullable = false)
     private Integer ordinal;
 
-    @Column(nullable = false)
+    @Size(max = 5)
     private Double rating;
 
     private String memo;
