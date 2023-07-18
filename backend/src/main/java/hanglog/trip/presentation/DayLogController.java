@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/trips/{tripId}/daylog/{dayLogId}")
+@RequestMapping("/trips/{tripId}/daylogs/{dayLogId}")
 public class DayLogController {
 
     private final DayLogService dayLogService;
