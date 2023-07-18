@@ -61,7 +61,7 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: City)
     window.addEventListener('keyup', handleKeyPress);
 
     return () => window.removeEventListener('keyup', handleKeyPress);
-  }, []);
+  }, [focusedSuggestionIndex]);
 
   return {
     suggestions,
