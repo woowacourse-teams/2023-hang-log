@@ -13,23 +13,19 @@ import {
 const TutorialModal = () => {
   const { isOpen, open, close } = useOverlay();
 
-  const handleModalClose = useCallback(() => {
-    close();
-  }, []);
-
   useEffect(() => {
     open();
   }, []);
 
   return (
-    <Modal isOpen={isOpen} closeModal={handleModalClose} hasCloseButton={true}>
+    <Modal isOpen={isOpen} closeModal={close} hasCloseButton={true}>
       <Flex css={ModalCarouselBoxStyling}>
         <SVGCarousel
           width={385}
           height={412}
           images={[Tutorial1SVG, Tutorial2SVG, Tutorial3SVG, Tutorial4SVG]}
         />
-        <Button variant="primary" css={ModalCloseButtonStyling} onClick={handleModalClose}>
+        <Button variant="primary" css={ModalCloseButtonStyling} onClick={close}>
           닫기
         </Button>
       </Flex>
