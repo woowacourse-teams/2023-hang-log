@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const tripsBoxStyling = css({
+export const boxStyling = css({
   alignSelf: 'start',
 
   width: `calc((100vw - 196px) / 5)`,
@@ -9,12 +9,12 @@ export const tripsBoxStyling = css({
   padding: 0,
 });
 
-export const tripsItemImageBoxStyling = css({
+export const imageBoxStyling = css({
   width: '100%',
   height: '176px',
 });
 
-export const tripsItemImageStyling = css({
+export const imageStyling = css({
   objectFit: 'cover',
 
   width: '100%',
@@ -24,13 +24,13 @@ export const tripsItemImageStyling = css({
   borderRadius: Theme.borderRadius.medium,
 });
 
-export const tripsItemNameStying = css({
+export const nameStyling = css({
   marginBottom: Theme.spacer.spacing1,
 
   fontWeight: '600',
 });
 
-export const tripsItemBadgeBoxStyling = css({
+export const badgeBoxStyling = css({
   width: `calc((100vw - 196px) / 5)`,
   minHeight: '22px',
   marginTop: Theme.spacer.spacing3,
@@ -50,11 +50,11 @@ export const tripsItemBadgeBoxStyling = css({
   },
 });
 
-export const tripsTiemDurationStyling = css({
+export const durationStyling = css({
   marginBottom: Theme.spacer.spacing1,
 });
 
-export const tripsDurationTextStyling = css({
+export const durationTextStyling = css({
   display: '-webkit-box',
   '-webkit-line-clamp': '2',
   '-webkit-box-orient': 'vertical',

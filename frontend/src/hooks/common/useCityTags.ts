@@ -1,15 +1,15 @@
-import { City } from '@/components/common/CitySearchBar/CitySearchBar';
 import { CITY_TAG_MAX_LENGTH } from '@constants/ui';
+import type { CityData } from '@type/city';
 import { useState } from 'react';
 
-export const useCityTags = (initialCityTags: City[]) => {
+export const useCityTags = (initialCityTags: CityData[]) => {
   const [cityTags, setCityTags] = useState(initialCityTags);
 
   const getCityName = (city: string) => {
     return city.split(',')[0];
   };
 
-  const addCityTag = (selectedCity: City) => {
+  const addCityTag = (selectedCity: CityData) => {
     const cityName = getCityName(selectedCity.name);
 
     setCityTags((prevCityTags) => {
@@ -28,7 +28,7 @@ export const useCityTags = (initialCityTags: City[]) => {
     });
   };
 
-  const deleteCityTag = (selectedCity: City) => {
+  const deleteCityTag = (selectedCity: CityData) => {
     setCityTags((prevCityTags) => prevCityTags.filter((cityTag) => cityTag.id !== selectedCity.id));
   };
 

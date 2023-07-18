@@ -1,24 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
+import type { CityData } from '@type/city';
 import { useEffect, useState } from 'react';
 
 import { makeRegexByCho } from '@utils/cityFilter';
 
-import { getCities } from '@api/city/getCities';
+import { useCityQuery } from '@hooks/api/useCityQuery';
 
-import { City } from '@components/common/CitySearchBar/CitySearchBar';
-
-export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: City) => void }) => {
-  const { data: cities } = useQuery<City[]>(['city'], getCities);
-  const [suggestions, setSuggestions] = useState<City[]>([]);
+export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
+  const { citiesData } = useCityQuery();
+  const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
   const setNewSuggestions = (word: string) => {
     const regex = makeRegexByCho(word);
 
-    if (cities) {
-      const filteredSuggestions = cities.filter(({ name }) => regex.test(name));
-      setSuggestions(filteredSuggestions);
-    }
+    const filteredSuggestions = citiesData.filter(({ name }) => regex.test(name));
+    setSuggestions(filteredSuggestions);
   };
 
   const focusUpperSuggestion = () => {

@@ -23,3 +23,11 @@ export const imageStyling = css({
 
   backgroundColor: Theme.color.gray200,
 });
+
+export const menuListStyling = css({
+  transform: 'translateY(36px)',
+
+  '& > li': {
+    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
+  },
+});
