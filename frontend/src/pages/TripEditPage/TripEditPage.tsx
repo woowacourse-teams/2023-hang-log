@@ -1,7 +1,7 @@
 import { FloatingButton } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
 
-import { useTripQuery } from '@hooks/useTripQuery';
+import { useTripQuery } from '@hooks/api/useTripQuery';
 
 import { addButtonStyling, containerStyling } from '@pages/TripEditPage/TripEditPage.style';
 
