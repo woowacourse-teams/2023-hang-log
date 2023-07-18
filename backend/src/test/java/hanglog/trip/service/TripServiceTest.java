@@ -1,5 +1,7 @@
 package hanglog.trip.service;
 
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.fixture.TripFixture.UPDATED_LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,6 +11,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.repository.CityRepository;
+import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -31,6 +35,12 @@ class TripServiceTest {
     @Mock
     private TripRepository tripRepository;
 
+    @Mock
+    private CityRepository cityRepository;
+
+    @Mock
+    private TripCityRepository tripCityRepository;
+
     @DisplayName("새롭게 생성한 여행의 id를 반환한다.")
     @Test
     void save() {
@@ -39,6 +49,10 @@ class TripServiceTest {
                 LocalDate.of(2023, 7, 7),
                 List.of(1L, 2L));
 
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(LONDON));
+        given(cityRepository.findById(2L))
+                .willReturn(Optional.of(PARIS));
         given(tripRepository.save(any(Trip.class)))
                 .willReturn(LONDON_TRIP);
 
@@ -47,6 +61,24 @@ class TripServiceTest {
 
         // then
         assertThat(actualId).isEqualTo(1L);
+    }
+
+    @DisplayName("올바르지 않은 cityId 목록을 입력받으면 예외를 발생한다.")
+    @Test
+    void save_UnCorrectCites() {
+        // given
+        final TripCreateRequest tripCreateRequest = new TripCreateRequest(LocalDate.of(2023, 7, 2),
+                LocalDate.of(2023, 7, 7),
+                List.of(1L, 3L));
+
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(LONDON));
+        given(cityRepository.findById(3L))
+                .willThrow(new IllegalArgumentException("해당하는 여행이 존재하지 않습니다."));
+
+        // when & then
+        assertThatThrownBy(() -> tripService.save(tripCreateRequest))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
