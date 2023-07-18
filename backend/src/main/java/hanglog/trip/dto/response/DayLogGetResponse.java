@@ -1,4 +1,4 @@
-package hanglog.trip.presentation.dto.response;
+package hanglog.trip.dto.response;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class DayLogGetResponse {
 
     public static final int DEFAULT_DAY = 1;
-    
+
     private final Long id;
     private final String title;
     private final Integer ordinal;

@@ -11,9 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.presentation.dto.request.ExpenseRequest;
-import hanglog.trip.presentation.dto.request.ItemRequest;
-import hanglog.trip.presentation.dto.request.PlaceRequest;
+import hanglog.trip.dto.request.ExpenseRequest;
+import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.service.ItemService;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
