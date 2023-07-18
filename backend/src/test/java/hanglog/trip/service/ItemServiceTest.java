@@ -143,7 +143,7 @@ public class ItemServiceTest {
         itemService.delete(itemForDelete.getId());
 
         // then
-        assertThat(itemForDelete.isDeleted()).isTrue();
+        verify(itemRepository).delete(any());
     }
 
     @DisplayName("모든 여행 아이템의 Response를 반환한다.")
