@@ -5,6 +5,7 @@ import {
 } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
 
+import { useAutoScroll } from '@hooks/common/useAutoScroll';
 import { useCitySuggestion } from '@hooks/common/useCitySuggestion';
 
 import { City } from '@components/common/CitySearchBar/CitySearchBar';
@@ -26,6 +27,7 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
     });
   const listRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
+  const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 
   useEffect(() => {
     setNewSuggestions(queryWord);
@@ -39,26 +41,8 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
     focusSuggestion(index);
   };
 
-  const scrollToFocusedSuggestion = () => {
-    const list = listRef.current;
-    const focusedItem = itemRef.current;
-
-    if (list && focusedItem) {
-      const listRect = list.getBoundingClientRect();
-      const focusedItemRect = focusedItem.getBoundingClientRect();
-
-      const scrollOffset =
-        focusedItemRect.top - listRect.top - listRect.height / 2 + focusedItemRect.height / 2;
-
-      list.scrollTo({
-        top: list.scrollTop + scrollOffset,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   useEffect(() => {
-    scrollToFocusedSuggestion();
+    scrollToFocusedItem();
   }, [focusedSuggestionIndex]);
 
   return (
