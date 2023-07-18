@@ -35,7 +35,6 @@ const config: StorybookConfig = {
         '@utils': path.resolve(__dirname, '../src/utils'),
       };
     }
-
     const imageRule = config.module?.rules?.find((rule) => {
       const test = (rule as { test: RegExp }).test;
 
