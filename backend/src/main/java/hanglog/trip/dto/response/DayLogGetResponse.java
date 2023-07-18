@@ -20,8 +20,7 @@ public class DayLogGetResponse {
 
     public static DayLogGetResponse of(final DayLog dayLog) {
         final LocalDate date = calculateDate(dayLog);
-        final List<ItemResponse> itemResponses = dayLog.getItems()
-                .stream()
+        final List<ItemResponse> itemResponses = dayLog.getItems().stream()
                 .map(ItemResponse::of)
                 .toList();
 
