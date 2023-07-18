@@ -32,5 +32,5 @@ export interface TripItemData {
   memo: string | null;
   place: PlaceData | null;
   expense: ExpenseData | null;
-  imageUrls: string[] | null;
+  imageUrls: string[];
 }

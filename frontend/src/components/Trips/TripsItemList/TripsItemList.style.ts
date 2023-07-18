@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const TripsItemGridBoxStyling = css({
+export const gridBoxStyling = css({
   margin: `${Theme.spacer.spacing4} 50px ${Theme.spacer.spacing7}`,
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
@@ -10,6 +10,10 @@ export const TripsItemGridBoxStyling = css({
   placeItems: 'center',
 });
 
-export const TripsToggleGroupStyling = css({
+export const toggleGroupStyling = css({
   marginTop: Theme.spacer.spacing3,
+});
+
+export const emptyBoxStyling = css({
+  marginLeft: '50px',
 });

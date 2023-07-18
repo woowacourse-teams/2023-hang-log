@@ -1,8 +1,9 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
+import type { CityData } from '@type/city';
 import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
-import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import { useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
 
@@ -16,13 +17,8 @@ import {
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
-export interface City {
-  id: number;
-  name: string;
-}
-
 interface CitySearchBarProps {
-  initialCityTags: City[];
+  initialCityTags: CityData[];
 }
 
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
@@ -31,14 +27,14 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
-    const word = e.currentTarget.value;
+  const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
+    const word = event.currentTarget.value;
     setQueryWord(word);
 
     openSuggestion();
   };
 
-  const handleSuggestionClick = (selectedCity: City) => {
+  const handleSuggestionClick = (selectedCity: CityData) => {
     addCityTag(selectedCity);
     resetAll();
   };
@@ -49,7 +45,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     closeSuggestion();
   };
 
-  const handleDeleteButtonClick = (selectedCity: City) => () => {
+  const handleDeleteButtonClick = (selectedCity: CityData) => () => {
     deleteCityTag(selectedCity);
     focusInput();
   };
@@ -64,8 +60,8 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     }
   };
 
-  const CityTags = () =>
-    cityTags.map((cityTag) => (
+  const CityTags = () => {
+    return cityTags.map((cityTag) => (
       <Badge key={cityTag.id} css={badgeStyling}>
         {cityTag.name}
         <CloseIcon
@@ -75,6 +71,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
         />
       </Badge>
     ));
+  };
 
   return (
     <Menu closeMenu={closeSuggestion}>

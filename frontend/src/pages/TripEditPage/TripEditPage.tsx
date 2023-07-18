@@ -15,8 +15,6 @@ const TripEditPage = () => {
 
   const { tripData } = useTripQuery(Number(tripId));
 
-  if (!tripData) throw new Error('no data');
-
   return (
     <section css={containerStyling}>
       <TripInformation {...tripData} />

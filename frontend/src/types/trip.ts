@@ -1,9 +1,5 @@
+import type { CityData } from '@type/city';
 import type { DayLogData } from '@type/dayLog';
-
-interface CityData {
-  id: number;
-  name: string;
-}
 
 export interface TripData {
   id: number;

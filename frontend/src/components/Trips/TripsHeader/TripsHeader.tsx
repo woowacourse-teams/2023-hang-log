@@ -1,19 +1,24 @@
 import TripsHeaderSVG from '@assets/svg/TripsHeader.svg';
-import { Box, Flex, Heading } from 'hang-log-design-system';
+import { Box, Flex, Heading, Theme } from 'hang-log-design-system';
 
 const TripsHeader = () => {
   return (
     <>
-      <Flex styles={{ justify: 'space-between', width: '100%', gap: '200px' }}>
+      <Flex
+        styles={{
+          justify: 'space-between',
+          align: 'center',
+          width: '100%',
+          marginTop: Theme.spacer.spacing3,
+        }}
+      >
         <Box>
-          <Box
-            style={{ height: '200px', paddingLeft: '50px', display: 'flex', alignItems: 'center' }}
-          >
+          <Flex styles={{ paddingLeft: '50px', align: 'center' }}>
             <Heading size="large">라곤의 여행</Heading>
-          </Box>
+          </Flex>
         </Box>
-        <Flex styles={{ width: '70%', height: '18%', paddingRight: '50px', justify: 'right' }}>
-          <TripsHeaderSVG style={{ width: '854px' }} />
+        <Flex styles={{ paddingRight: '50px' }}>
+          <TripsHeaderSVG />
         </Flex>
       </Flex>
     </>

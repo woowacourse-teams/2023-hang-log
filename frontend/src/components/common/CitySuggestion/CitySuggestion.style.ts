@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const suggestionContainerStyling = css({
+export const containerStyling = css({
   width: '500px',
   maxHeight: '300px',
 
@@ -11,10 +11,11 @@ export const suggestionContainerStyling = css({
   transform: 'translateY(0)',
 });
 
-export const getSuggestionItemStyling = (isFocused: boolean) =>
-  css({
+export const getItemStyling = (isFocused: boolean) => {
+  return css({
     backgroundColor: isFocused ? Theme.color.gray200 : Theme.color.white,
   });
+};
 
 export const emptyTextStyling = css({
   margin: Theme.spacer.spacing2,
