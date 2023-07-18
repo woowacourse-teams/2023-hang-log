@@ -21,10 +21,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SQLDelete(sql = "UPDATE item SET status = 'DELETED' WHERE id = ?")
+@Where(clause = "status = 'USABLE'")
 public class Item extends BaseEntity {
 
     @Id
@@ -50,7 +54,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST})
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
@@ -97,6 +101,19 @@ public class Item extends BaseEntity {
             final Expense expense
     ) {
         this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, StatusType.USABLE);
+    }
+
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final DayLog dayLog,
+            final Expense expense
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, StatusType.USABLE);
     }
 
     public Item(

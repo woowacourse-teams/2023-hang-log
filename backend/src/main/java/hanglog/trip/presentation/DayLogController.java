@@ -1,8 +1,8 @@
 package hanglog.trip.presentation;
 
 
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
 import hanglog.trip.service.DayLogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

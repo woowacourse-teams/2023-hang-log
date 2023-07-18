@@ -20,13 +20,8 @@ public class Category extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String korName;
 
     @Column(nullable = false)
-    private String googleApiId;
-
-    public Category(final String name, final String googleApiId) {
-        this.name = name;
-        this.googleApiId = googleApiId;
-    }
+    private String engName;
 }

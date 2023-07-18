@@ -1,6 +1,7 @@
 package hanglog.trip.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -8,14 +9,19 @@ import static org.mockito.Mockito.verify;
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
+import hanglog.trip.domain.type.ItemType;
+import hanglog.trip.dto.request.ExpenseRequest;
+import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.PlaceRequest;
+import hanglog.trip.dto.response.ItemResponse;
+import hanglog.trip.fixture.ExpenseFixture;
 import hanglog.trip.fixture.ItemFixture;
 import hanglog.trip.fixture.TripFixture;
-import hanglog.trip.presentation.dto.request.ExpenseRequest;
-import hanglog.trip.presentation.dto.request.ItemRequest;
-import hanglog.trip.presentation.dto.request.PlaceRequest;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,9 +50,7 @@ public class ItemServiceTest {
     void save() {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"
@@ -65,9 +69,7 @@ public class ItemServiceTest {
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
-        given(categoryRepository.findByGoogleApiId(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -83,9 +85,7 @@ public class ItemServiceTest {
     void update() {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
-                "apiId",
                 "에펠탑",
-                "에펠탑주소",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
                 "categoryApiId"
@@ -104,11 +104,9 @@ public class ItemServiceTest {
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
         given(itemRepository.findById(any()))
-                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+                .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
-        given(categoryRepository.findByGoogleApiId(any()))
-                .willReturn(Optional.of(new Category("문화", "apiId")));
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -123,13 +121,47 @@ public class ItemServiceTest {
     @Test
     void delete() {
         // given
+        final DayLog dayLog = new DayLog(
+                "첫날",
+                1,
+                TripFixture.LONDON_TRIP
+        );
+        final Item itemForDelete = new Item(
+                1L,
+                ItemType.NON_SPOT,
+                "버스",
+                1,
+                3.0,
+                "",
+                dayLog,
+                ExpenseFixture.EURO_10000
+        );
         given(itemRepository.findById(any()))
-                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+                .willReturn(Optional.ofNullable(itemForDelete));
 
         // when
-        itemService.delete(1L);
+        itemService.delete(itemForDelete.getId());
 
         // then
-        verify(itemRepository).save(any());
+        verify(itemRepository).delete(any());
+    }
+
+    @DisplayName("모든 여행 아이템의 Response를 반환한다.")
+    @Test
+    void getItems() {
+        // given
+        given(itemRepository.findAll())
+                .willReturn(List.of(ItemFixture.LONDON_EYE_ITEM, ItemFixture.TAXI_ITEM));
+
+        // when
+        final List<ItemResponse> items = itemService.getItems();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(items.get(0)).usingRecursiveComparison()
+                    .isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
+            softly.assertThat(items.get(1)).usingRecursiveComparison()
+                    .isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
+        });
     }
 }

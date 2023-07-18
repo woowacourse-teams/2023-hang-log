@@ -9,8 +9,9 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,12 @@ class DayLogServiceTest {
     @Test
     void getDayLogById() {
         // given
-        final DayLogGetResponse expected = new DayLogGetResponse(1L, "런던 여행", 1, List.of());
+        final DayLogGetResponse expected = new DayLogGetResponse(
+                1L,
+                "런던 여행 첫날",
+                1,
+                LocalDate.of(2023, 7, 1),
+                List.of());
 
         given(dayLogRepository.findById(1L))
                 .willReturn(Optional.of(LONDON_DAYLOG));
