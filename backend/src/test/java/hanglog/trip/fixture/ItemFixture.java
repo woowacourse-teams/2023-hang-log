@@ -4,14 +4,15 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.type.ItemType;
 
-public class ItemFixture {
+public final class ItemFixture {
 
-    // TODO: ItemFixture를 위한 임시 dayLog. 이후 dayLogFixture로 분리 필요
-    private static DayLog dayLog = new DayLog(
+    private static final DayLog DAYLOG_FOR_ITEM_FIXTURE = new DayLog(
             "첫날",
             1,
-            TripFixture.LONDON_TRIP);
-    public static Item LONDON_EYE_ITEM = new Item(
+            TripFixture.LONDON_TRIP
+    );
+
+    public static final Item LONDON_EYE_ITEM = new Item(
             1L,
             ItemType.SPOT,
             "런던 아이",
@@ -19,7 +20,17 @@ public class ItemFixture {
             4.5,
             "런던 아이 메모",
             PlaceFixture.LONDON_EYE,
-            dayLog,
-            ExpenseFixture.expense
+            DAYLOG_FOR_ITEM_FIXTURE,
+            ExpenseFixture.EURO_10000
+    );
+    public static final Item TAXI_ITEM = new Item(
+            2L,
+            ItemType.NON_SPOT,
+            "택시",
+            2,
+            4.0,
+            "런던에서 탄 택시",
+            DAYLOG_FOR_ITEM_FIXTURE,
+            ExpenseFixture.EURO_10000
     );
 }

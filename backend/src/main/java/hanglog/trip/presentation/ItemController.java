@@ -1,6 +1,6 @@
 package hanglog.trip.presentation;
 
-import hanglog.trip.presentation.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.service.ItemService;
 import jakarta.validation.Valid;
 import java.net.URI;
