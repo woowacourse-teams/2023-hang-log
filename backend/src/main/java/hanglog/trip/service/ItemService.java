@@ -1,7 +1,5 @@
 package hanglog.trip.service;
 
-import static java.util.stream.Collectors.toList;
-
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
@@ -129,6 +127,6 @@ public class ItemService {
     public List<ItemResponse> getItems() {
         return itemRepository.findAll().stream()
                 .map(ItemResponse::of)
-                .collect(toList());
+                .toList();
     }
 }
