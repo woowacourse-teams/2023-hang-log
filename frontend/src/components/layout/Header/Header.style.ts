@@ -6,7 +6,7 @@ export const headerStyling = css({
   top: 0,
 
   border: `1px solid ${Theme.color.gray200}`,
-  zIndex: Theme.zIndex.overlayTop,
+  zIndex: Theme.zIndex.overlayMiddle,
 
   backgroundColor: Theme.color.white,
   padding: `${Theme.spacer.spacing4} 50px`,
