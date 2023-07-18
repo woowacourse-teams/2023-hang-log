@@ -48,6 +48,28 @@ include::{snippets}/trip-controller-test/create-trip/http-response.adoc[]
 include::{snippets}/trip-controller-test/create-trip/response-headers.adoc[]
 
 
+=== 단일 여행 수정
+
+==== 요청
+include::{snippets}/trip-controller-test/update-trip/http-request.adoc[]
+include::{snippets}/trip-controller-test/update-trip/path-parameters.adoc[]
+include::{snippets}/trip-controller-test/update-trip/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/update-trip/http-response.adoc[]
+
+
+=== 단일 여행 삭제
+
+==== 요청
+include::{snippets}/trip-controller-test/delete-trip/http-request.adoc[]
+include::{snippets}/trip-controller-test/delete-trip/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/delete-trip/http-response.adoc[]
+
+
+
 
 == DayLog API
 

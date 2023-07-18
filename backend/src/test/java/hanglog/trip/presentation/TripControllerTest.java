@@ -9,11 +9,13 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,13 +72,13 @@ class TripControllerTest extends RestDocsTest {
     }
 
     private ResultActions performPutRequest(final TripUpdateRequest updateRequest) throws Exception {
-        return mockMvc.perform(put("/trips/" + 1)
+        return mockMvc.perform(put("/trips/{tripId}", 1)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
     }
 
     private ResultActions performDeleteRequest() throws Exception {
-        return mockMvc.perform(delete("/trips/" + 1)
+        return mockMvc.perform(delete("/trips/{tripId}", 1)
                 .contentType(APPLICATION_JSON));
     }
 
@@ -94,7 +96,7 @@ class TripControllerTest extends RestDocsTest {
                 .thenReturn(1L);
 
         // when
-        ResultActions resultActions = performPostRequest(tripCreateRequest);
+        final ResultActions resultActions = performPostRequest(tripCreateRequest);
 
         // then
         resultActions.andExpect(status().isCreated())
@@ -133,7 +135,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPostRequest(badRequest);
+        final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -151,7 +153,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPostRequest(badRequest);
+        final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest());
@@ -168,7 +170,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPostRequest(badRequest);
+        final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest());
@@ -185,7 +187,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPostRequest(badRequest);
+        final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest());
@@ -206,12 +208,16 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(updateRequest);
+        final ResultActions resultActions = performPutRequest(updateRequest);
 
         // then
         resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
                                 requestFields(
                                         fieldWithPath("title")
                                                 .type(JsonFieldType.STRING)
@@ -255,7 +261,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -279,7 +285,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -303,7 +309,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -325,7 +331,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -347,7 +353,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -369,7 +375,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -391,7 +397,7 @@ class TripControllerTest extends RestDocsTest {
         );
 
         // when
-        ResultActions resultActions = performPutRequest(badRequest);
+        final ResultActions resultActions = performPutRequest(badRequest);
 
         // then
         resultActions.andExpect(status().isBadRequest())
@@ -405,11 +411,17 @@ class TripControllerTest extends RestDocsTest {
         makeTrip();
 
         // when
-        ResultActions resultActions = performDeleteRequest();
+        final ResultActions resultActions = performDeleteRequest();
 
         // then
         resultActions.andExpect(status().isNoContent())
-                .andDo(restDocs.document());
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("tripId")
+                                        .description("여행 ID")
+                        )
+                ));
         verify(tripService).delete(anyLong());
     }
 }
+
