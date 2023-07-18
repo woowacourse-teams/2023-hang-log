@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class PlaceResponse {
+
     private final Long id;
     private final String name;
     private final BigDecimal latitude;

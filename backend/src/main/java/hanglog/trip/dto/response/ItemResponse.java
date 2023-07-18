@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ItemResponse {
+
     private final Long id;
     private final Boolean itemType;
     private final String title;
