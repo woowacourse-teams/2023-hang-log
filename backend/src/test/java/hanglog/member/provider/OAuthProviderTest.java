@@ -1,7 +1,7 @@
-package hanglog.member.mapper;
+package hanglog.member.provider;
 
-import static hanglog.member.mapper.fixture.MemberFixture.GOOGLE_USER_INFO_JSON_STRING;
-import static hanglog.member.mapper.fixture.MemberFixture.KAKAO_USER_INFO_JSON_STRING;
+import static hanglog.member.provider.fixture.MemberFixture.GOOGLE_USER_INFO_JSON_STRING;
+import static hanglog.member.provider.fixture.MemberFixture.KAKAO_USER_INFO_JSON_STRING;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,9 +36,9 @@ class OAuthProviderTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(oAuthProvider.getSocialLoginId()).isEqualTo(registrationId + "_id");
+            softly.assertThat(oAuthProvider.getSocialId()).isEqualTo(registrationId + "_id");
             softly.assertThat(oAuthProvider.getNickname()).isEqualTo(registrationId + "_test");
-            softly.assertThat(oAuthProvider.getPicture()).isEqualTo(registrationId + "_image_url");
+            softly.assertThat(oAuthProvider.getImage()).isEqualTo(registrationId + "_image_url");
         });
     }
 }

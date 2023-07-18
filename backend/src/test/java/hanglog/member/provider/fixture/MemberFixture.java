@@ -1,4 +1,4 @@
-package hanglog.member.mapper.fixture;
+package hanglog.member.provider.fixture;
 
 public class MemberFixture {
 

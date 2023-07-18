@@ -1,4 +1,4 @@
-package hanglog.member.mapper;
+package hanglog.member.provider;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -9,17 +9,17 @@ public class KakaoOAuthProvider extends OAuthProvider {
     }
 
     @Override
-    public String getSocialLoginId() {
+    protected String setSocialLoginId(final JsonNode userResourceNode) {
         return userResourceNode.get("id").asText();
     }
 
     @Override
-    public String getNickname() {
+    protected String setNickname(final JsonNode userResourceNode) {
         return userResourceNode.get("properties").get("nickname").asText();
     }
 
     @Override
-    public String getPicture() {
+    protected String setPicture(final JsonNode userResourceNode) {
         return userResourceNode.get("properties").get("profile_image").asText();
     }
 }
