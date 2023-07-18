@@ -96,9 +96,9 @@ include::{snippets}/day-log-controller-test/update-day-log-title/http-response.a
 
 
 
-== 아이템 API
+== 여행 아이템 API
 
-=== 여행 아이템 생성
+=== 단일 아이템 생성
 
 ==== 요청
 include::{snippets}/item-controller-test/create-item/http-request.adoc[]
@@ -110,7 +110,7 @@ include::{snippets}/item-controller-test/create-item/http-response.adoc[]
 include::{snippets}/item-controller-test/create-item/response-headers.adoc[]
 
 
-=== 여행 아이템 수정
+=== 단일 아이템 수정
 
 ==== 요청
 include::{snippets}/item-controller-test/update-item/http-request.adoc[]
@@ -119,3 +119,13 @@ include::{snippets}/item-controller-test/update-item/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/item-controller-test/update-item/http-response.adoc[]
+
+
+=== 단일 아이템 삭제
+
+==== 요청
+include::{snippets}/item-controller-test/delete-item/http-request.adoc[]
+include::{snippets}/item-controller-test/delete-item/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/item-controller-test/delete-item/http-response.adoc[]

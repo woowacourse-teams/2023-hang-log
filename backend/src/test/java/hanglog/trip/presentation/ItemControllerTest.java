@@ -235,7 +235,14 @@ public class ItemControllerTest extends RestDocsTest {
         doNothing().when(itemService).delete(any());
 
         // when & then
-        mockMvc.perform(delete("/trips/1/items/1"))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/trips/{tripId}/items/{itemId}", 1L, 1L))
+                .andExpect(status().isNoContent()).andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("tripId")
+                                        .description("여행 ID"),
+                                parameterWithName("itemId")
+                                        .description("아이템 ID")
+                        )
+                ));
     }
 }
