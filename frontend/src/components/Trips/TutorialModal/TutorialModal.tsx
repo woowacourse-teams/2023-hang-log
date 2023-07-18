@@ -25,8 +25,8 @@ const TutorialModal = () => {
     <Modal isOpen={isOpen} closeModal={handleModalClose} hasCloseButton={true}>
       <Flex css={ModalCarouselBoxStyling}>
         <SVGCarousel
-          width={379}
-          height={403}
+          width={385}
+          height={412}
           images={[Tutorial1SVG, Tutorial2SVG, Tutorial3SVG, Tutorial4SVG]}
         />
         <Button variant="primary" css={ModalCloseButtonStyling} onClick={handleModalClose}>

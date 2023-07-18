@@ -6,7 +6,7 @@ export const ModalCarouselBoxStyling = css({
   alignItems: 'center',
 
   width: '450px',
-  height: '541px',
+  height: '581px',
   marginTop: '30px',
 });
 
