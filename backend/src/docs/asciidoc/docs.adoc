@@ -93,3 +93,18 @@ include::{snippets}/day-log-controller-test/update-day-log-title/request-fields.
 
 ==== 응답
 include::{snippets}/day-log-controller-test/update-day-log-title/http-response.adoc[]
+
+
+
+== 아이템 API
+
+=== 여행 아이템 생성
+
+==== 요청
+include::{snippets}/item-controller-test/create-item/http-request.adoc[]
+include::{snippets}/item-controller-test/create-item/path-parameters.adoc[]
+include::{snippets}/item-controller-test/create-item/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/item-controller-test/create-item/http-response.adoc[]
+include::{snippets}/item-controller-test/create-item/response-headers.adoc[]
