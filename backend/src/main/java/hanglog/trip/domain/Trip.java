@@ -1,9 +1,11 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
+import hanglog.global.type.StatusType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,16 +37,30 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
-    public Trip(final Long id,
-                final String title,
-                final LocalDate startDate,
-                final LocalDate endDate,
-                final String description) {
+    public Trip(
+            final Long id,
+            final String title,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String description,
+            final StatusType status
+    ) {
+        super(status);
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+    }
+
+    public Trip(
+            final Long id,
+            final String title,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String description
+    ) {
+        this(id, title, startDate, endDate, description, USABLE);
     }
 
     public Trip(
