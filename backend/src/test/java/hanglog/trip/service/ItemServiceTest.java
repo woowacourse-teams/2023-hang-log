@@ -74,7 +74,7 @@ public class ItemServiceTest {
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when
-        Long actualId = itemService.save(1L, itemRequest);
+        final Long actualId = itemService.save(1L, itemRequest);
 
         // then
         assertThat(actualId).isEqualTo(1L);

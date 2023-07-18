@@ -1,5 +1,7 @@
 package hanglog.trip.service;
 
+import static java.util.stream.Collectors.toList;
+
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
@@ -15,7 +17,6 @@ import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +85,8 @@ public class ItemService {
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
-                category);
+                category
+        );
     }
 
     private Expense getExpenseByItemRequest(final ItemRequest itemRequest) {
@@ -125,9 +127,8 @@ public class ItemService {
     }
 
     public List<ItemResponse> getItems() {
-        return itemRepository.findAll()
-                .stream()
+        return itemRepository.findAll().stream()
                 .map(ItemResponse::of)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 }

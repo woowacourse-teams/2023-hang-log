@@ -1,5 +1,6 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -100,7 +101,7 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, StatusType.USABLE);
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, USABLE);
     }
 
     public Item(
@@ -113,7 +114,7 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, StatusType.USABLE);
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, USABLE);
     }
 
     public Item(
