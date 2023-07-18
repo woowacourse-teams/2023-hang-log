@@ -2,8 +2,7 @@ package hanglog.member.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import hanglog.member.Member;
-import hanglog.member.exception.AlreadyExistUserException;
-import hanglog.member.mapper.OAuthProvider;
+import hanglog.member.provider.OAuthProvider;
 import hanglog.member.repository.MemberRepository;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -28,33 +27,45 @@ public class OAuthLoginService {
 
     public OAuthLoginService(
             final Environment env,
-            final MemberRepository memberRepository,
-            final RestTemplate restTemplate
+            final MemberRepository memberRepository
     ) {
         this.env = env;
         this.memberRepository = memberRepository;
-        this.restTemplate = restTemplate;
+        this.restTemplate = new RestTemplate();
     }
 
-    public Member socialSignUp(final String code, final String registrationId) {
-        final String accessToken = getAccessToken(code, registrationId);
-        final JsonNode userResourceNode = getUserResource(accessToken, registrationId);
+    public String getAccessToken(final String authorizationCode, final String registrationId) {
+        final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
+                env.getProperty(PROPERTY_PATH + registrationId + ".token-uri"),
+                HttpMethod.POST,
+                getEntity(authorizationCode,registrationId),
+                JsonNode.class
+        );
+        final JsonNode accessTokenNode = responseNode.getBody();
+        return accessTokenNode.get("access_token").asText();
+    }
 
+    public JsonNode getUserInfo(final String accessToken, final String registrationId) {
+        final String resourceUri = env.getProperty(PROPERTY_PATH + registrationId + ".user-info");
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
+        final HttpEntity entity = new HttpEntity(headers);
+        return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+    }
+
+    public Member socialLogin(final JsonNode userResourceNode, final String registrationId) {
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
-        if (memberRepository.existsBySocialLoginId(userResourceNode.get("id").asText())) {
-            throw new AlreadyExistUserException("member already exist");
-        }
+        String socialLoginId = userResourceNode.get("id").asText();
 
-        final Member member = new Member(oAuthProvider.getSocialLoginId(), oAuthProvider.getNickname(),
-                oAuthProvider.getPicture());
-        return memberRepository.save(member);
+        return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(()-> saveMember(oAuthProvider));
+
     }
 
-    private String getAccessToken(final String authorizationCode, final String registrationId) {
+    private HttpEntity getEntity(final String authorizationCode, final String registrationId){
         final String clientId = env.getProperty(PROPERTY_PATH + registrationId + ".client-id");
         final String clientSecret = env.getProperty(PROPERTY_PATH + registrationId + ".client-secret");
         final String redirectUri = env.getProperty(PROPERTY_PATH + registrationId + ".redirect-uri");
-        final String tokenUri = env.getProperty(PROPERTY_PATH + registrationId + ".token-uri");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
@@ -66,24 +77,16 @@ public class OAuthLoginService {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        final HttpEntity entity = new HttpEntity(params, headers);
-
-        final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
-                tokenUri,
-                HttpMethod.POST,
-                entity,
-                JsonNode.class
-        );
-        final JsonNode accessTokenNode = responseNode.getBody();
-        return accessTokenNode.get("access_token").asText();
+        return new HttpEntity(params, headers);
     }
 
-    private JsonNode getUserResource(final String accessToken, final String registrationId) {
-        final String resourceUri = env.getProperty(PROPERTY_PATH + registrationId + ".user-info");
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        final HttpEntity entity = new HttpEntity(headers);
-        return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+    private Member saveMember(OAuthProvider oAuthProvider) {
+        return memberRepository.save(
+                new Member(
+                        oAuthProvider.getSocialId(),
+                        oAuthProvider.getNickname(),
+                        oAuthProvider.getImage()
+                )
+        );
     }
 }
