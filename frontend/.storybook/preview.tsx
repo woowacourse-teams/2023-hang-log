@@ -1,13 +1,12 @@
-import { Global, ThemeProvider } from '@emotion/react';
 import type { Preview } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HangLogProvider } from 'hang-log-design-system';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import { handlers } from '../src/mocks/handlers';
-import { GlobalStyle } from '../src/styles/GlobalStyle';
-import { Theme } from '../src/styles/Theme';
 
 initialize();
 
@@ -42,15 +41,18 @@ const preview: Preview = {
 
 export default preview;
 
+const queryClient = new QueryClient();
+
 export const decorators = [
   (Story) => (
     <MemoryRouter initialEntries={['/']}>
-      <RecoilRoot>
-        <ThemeProvider theme={Theme}>
-          <Global styles={GlobalStyle} />
-          <Story />
-        </ThemeProvider>
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <HangLogProvider>
+            <Story />
+          </HangLogProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
     </MemoryRouter>
   ),
   mswDecorator,

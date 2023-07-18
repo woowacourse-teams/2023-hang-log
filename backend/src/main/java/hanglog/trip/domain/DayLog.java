@@ -16,10 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SQLDelete(sql = "UPDATE day_log SET status = 'DELETED' WHERE id = ?")
+@Where(clause = "status = 'USABLE'")
 public class DayLog extends BaseEntity {
 
     @Id

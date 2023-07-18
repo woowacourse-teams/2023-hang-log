@@ -28,11 +28,17 @@ module.exports = {
         issuer: /\.(style.js|style.ts)$/,
         use: ['url-loader'],
       },
+      {
+        test: /\.png$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['url-loader'],
+      },
     ],
   },
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
 
   devServer: {
