@@ -1,4 +1,4 @@
-package hanglog.trip.presentation.dto.response;
+package hanglog.trip.dto.response;
 
 import hanglog.expense.Expense;
 import hanglog.trip.domain.Item;

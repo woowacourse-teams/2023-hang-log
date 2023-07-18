@@ -7,7 +7,7 @@ public enum ItemType {
 
     private final Boolean isSpot;
 
-    ItemType(boolean isSpot) {
+    ItemType(final boolean isSpot) {
         this.isSpot = isSpot;
     }
 

@@ -16,8 +16,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
 import java.time.LocalDate;

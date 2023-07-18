@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

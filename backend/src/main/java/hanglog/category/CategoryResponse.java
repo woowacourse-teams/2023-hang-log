@@ -1,6 +1,5 @@
-package hanglog.trip.presentation.dto.response;
+package hanglog.category;
 
-import hanglog.category.Category;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
