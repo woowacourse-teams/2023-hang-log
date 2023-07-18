@@ -9,7 +9,8 @@ public final class ItemFixture {
     private static final DayLog DAYLOG_FOR_ITEM_FIXTURE = new DayLog(
             "첫날",
             1,
-            TripFixture.LONDON_TRIP);
+            TripFixture.LONDON_TRIP
+    );
 
     public static final Item LONDON_EYE_ITEM = new Item(
             1L,

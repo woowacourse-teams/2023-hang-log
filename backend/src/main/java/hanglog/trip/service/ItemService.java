@@ -115,19 +115,7 @@ public class ItemService {
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
         validateAlreadyDeleted(item);
-        final Item deletedItem = new Item(
-                item.getId(),
-                item.getItemType(),
-                item.getTitle(),
-                item.getOrdinal(),
-                item.getRating(),
-                item.getMemo(),
-                item.getPlace(),
-                item.getDayLog(),
-                item.getExpense(),
-                StatusType.DELETED
-        );
-        itemRepository.save(deletedItem);
+        itemRepository.delete(item);
     }
 
     private void validateAlreadyDeleted(final Item item) {

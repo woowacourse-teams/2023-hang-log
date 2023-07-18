@@ -9,14 +9,17 @@ import static org.mockito.Mockito.verify;
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
-import hanglog.trip.fixture.ItemFixture;
-import hanglog.trip.fixture.TripFixture;
+import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
+import hanglog.trip.fixture.ExpenseFixture;
+import hanglog.trip.fixture.ItemFixture;
+import hanglog.trip.fixture.TripFixture;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -118,14 +121,29 @@ public class ItemServiceTest {
     @Test
     void delete() {
         // given
+        final DayLog dayLog = new DayLog(
+                "첫날",
+                1,
+                TripFixture.LONDON_TRIP
+        );
+        final Item itemForDelete = new Item(
+                1L,
+                ItemType.NON_SPOT,
+                "버스",
+                1,
+                3.0,
+                "",
+                dayLog,
+                ExpenseFixture.EURO_10000
+        );
         given(itemRepository.findById(any()))
-                .willReturn(Optional.ofNullable(ItemFixture.LONDON_EYE_ITEM));
+                .willReturn(Optional.ofNullable(itemForDelete));
 
         // when
-        itemService.delete(1L);
+        itemService.delete(itemForDelete.getId());
 
         // then
-        verify(itemRepository).save(any());
+        assertThat(itemForDelete.isDeleted()).isTrue();
     }
 
     @DisplayName("모든 여행 아이템의 Response를 반환한다.")
