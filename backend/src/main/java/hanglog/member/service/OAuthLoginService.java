@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class OAuthLoginService {
 
     private static final String PROPERTY_PATH = "spring.oauth2.client.registration.";
+
     private final Environment env;
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
@@ -56,7 +57,7 @@ public class OAuthLoginService {
 
     public Member socialLogin(final JsonNode userResourceNode, final String registrationId) {
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
-        String socialLoginId = userResourceNode.get("id").asText();
+        final String socialLoginId = userResourceNode.get("id").asText();
 
         return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(() -> saveMember(oAuthProvider));
     }
@@ -66,7 +67,7 @@ public class OAuthLoginService {
         final String clientSecret = env.getProperty(PROPERTY_PATH + registrationId + ".client-secret");
         final String redirectUri = env.getProperty(PROPERTY_PATH + registrationId + ".redirect-uri");
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
@@ -79,7 +80,7 @@ public class OAuthLoginService {
         return new HttpEntity(params, headers);
     }
 
-    private Member saveMember(OAuthProvider oAuthProvider) {
+    private Member saveMember(final OAuthProvider oAuthProvider) {
         final Member member = new Member(
                 oAuthProvider.getSocialId(),
                 oAuthProvider.getNickname(),
