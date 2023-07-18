@@ -1,5 +1,6 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -19,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -39,13 +41,13 @@ public class Item extends BaseEntity {
     @Enumerated(value = STRING)
     private ItemType itemType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Column(nullable = false)
     private Integer ordinal;
 
-    @Column(nullable = false)
+    @Size(max = 5)
     private Double rating;
 
     private String memo;
@@ -100,7 +102,7 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, StatusType.USABLE);
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, USABLE);
     }
 
     public Item(
@@ -113,7 +115,7 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, StatusType.USABLE);
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, USABLE);
     }
 
     public Item(

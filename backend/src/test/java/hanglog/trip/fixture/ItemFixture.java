@@ -23,6 +23,7 @@ public final class ItemFixture {
             DAYLOG_FOR_ITEM_FIXTURE,
             ExpenseFixture.EURO_10000
     );
+
     public static final Item TAXI_ITEM = new Item(
             2L,
             ItemType.NON_SPOT,
