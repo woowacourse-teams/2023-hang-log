@@ -5,6 +5,7 @@ import hanglog.trip.domain.Item;
 import hanglog.trip.domain.type.ItemType;
 
 public final class ItemFixture {
+
     private static final DayLog DAYLOG_FOR_ITEM_FIXTURE = new DayLog(
             "첫날",
             1,

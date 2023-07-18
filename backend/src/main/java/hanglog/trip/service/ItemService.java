@@ -31,10 +31,10 @@ public class ItemService {
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
-        DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
 
-        Item item = new Item(
+        final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
                 getNewItemOrdinal(tripId),
@@ -49,13 +49,13 @@ public class ItemService {
     }
 
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
-        DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
-        Item item = itemRepository.findById(itemId)
+        final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
         validateAlreadyDeleted(item);
 
-        Item updateditem = new Item(
+        final Item updateditem = new Item(
                 itemId,
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
@@ -78,7 +78,7 @@ public class ItemService {
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
         // TODO apiCategory를 가지고 category를 탐색
-        Category category = new Category(1L, "문화", "culture");
+        final Category category = new Category(1L, "문화", "culture");
 
         return new Place(
                 placeRequest.getName(),
@@ -111,11 +111,11 @@ public class ItemService {
                 .size() + 1;
     }
 
-    public void delete(Long itemId) {
-        Item item = itemRepository.findById(itemId)
+    public void delete(final Long itemId) {
+        final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
         validateAlreadyDeleted(item);
-        Item deletedItem = new Item(
+        final Item deletedItem = new Item(
                 item.getId(),
                 item.getItemType(),
                 item.getTitle(),

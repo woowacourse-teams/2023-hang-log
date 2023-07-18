@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ExpenseResponse {
+
     private final Long id;
     private final String currency;
     private final Integer amount;
