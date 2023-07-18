@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const getContainerStyling = (isDragging?: boolean) =>
-  css({
+export const getContainerStyling = (isDragging?: boolean) => {
+  return css({
     position: 'relative',
 
     minHeight: '120px',
@@ -14,6 +14,7 @@ export const getContainerStyling = (isDragging?: boolean) =>
 
     cursor: 'grab',
   });
+};
 
 export const informationContainerStyling = css({
   width: '100%',
