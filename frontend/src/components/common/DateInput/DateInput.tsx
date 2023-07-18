@@ -27,10 +27,6 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
 
-  const handleCloseCalendar = () => {
-    closeCalendar();
-  };
-
   const handleDateClick = (dateRange: DateRange) => {
     if (!dateRange.end) return;
 
@@ -41,7 +37,7 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
   return (
     <Flex styles={{ direction: 'column', width: '40%', margin: '0 auto', align: 'flex-start' }}>
       <Heading size="xSmall">방문 기간</Heading>
-      <Menu closeMenu={handleCloseCalendar} css={containerStyling}>
+      <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={inputStyling}>
           <Input
             placeholder="방문 날짜를 입력해주세요"
@@ -56,7 +52,6 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
               onDateSelect={handleDateClick}
               maxDateRange={60}
               hasRangeRestriction={true}
-              //두달력에 걸친 날짜가 선택되고, 닫히고 다시 열릴때 시작날짜 캘린더가 오른쪽에 위치함. => 왼쪽에 와야 할 듯
               initialSelectedDateRange={
                 selectedDateRange.start !== null ? selectedDateRange : undefined
               }
