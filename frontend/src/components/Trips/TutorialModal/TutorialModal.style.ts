@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-export const ModalCarouselBoxStyling = css({
+export const boxStyling = css({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -10,7 +10,7 @@ export const ModalCarouselBoxStyling = css({
   marginTop: '30px',
 });
 
-export const ModalCloseButtonStyling = css({
+export const buttonStyling = css({
   width: '100%',
   marginTop: 'auto',
 });
