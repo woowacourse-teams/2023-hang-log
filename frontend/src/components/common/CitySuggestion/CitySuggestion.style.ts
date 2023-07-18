@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
-  width: '500px',
+  width: '400px',
   maxHeight: '300px',
 
   overflowY: 'auto',

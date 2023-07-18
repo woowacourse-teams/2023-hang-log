@@ -7,14 +7,17 @@ import { useCityQuery } from '@hooks/api/useCityQuery';
 
 export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
   const { citiesData } = useCityQuery();
+  console.log(citiesData);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
   const setNewSuggestions = (word: string) => {
     const regex = makeRegexByCho(word);
 
-    const filteredSuggestions = citiesData.filter(({ name }) => regex.test(name));
-    setSuggestions(filteredSuggestions);
+    if (citiesData) {
+      const filteredSuggestions = citiesData.filter(({ name }) => regex.test(name));
+      setSuggestions(filteredSuggestions);
+    }
   };
 
   const focusUpperSuggestion = () => {

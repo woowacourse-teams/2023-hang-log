@@ -12,18 +12,19 @@ import {
   closeIconStyling,
   containerStyling,
   inputStyling,
+  searchPinIconStyling,
   tagListStyling,
   wrapperStyling,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 interface CitySearchBarProps {
-  initialCityTags: CityData[];
+  initialCityTags?: CityData[];
 }
 
 const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
-  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags);
+  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -77,7 +78,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
         <div css={wrapperStyling}>
-          <SearchPinIcon aria-label="지도표시 아이콘" />
+          <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>
             <CityTags />
             <Input
