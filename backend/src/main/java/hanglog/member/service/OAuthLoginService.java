@@ -38,7 +38,7 @@ public class OAuthLoginService {
         final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
                 env.getProperty(PROPERTY_PATH + registrationId + ".token-uri"),
                 HttpMethod.POST,
-                getEntity(authorizationCode,registrationId),
+                getEntity(authorizationCode, registrationId),
                 JsonNode.class
         );
         final JsonNode accessTokenNode = responseNode.getBody();
@@ -58,11 +58,11 @@ public class OAuthLoginService {
         final OAuthProvider oAuthProvider = OAuthProvider.mappingProvider(userResourceNode, registrationId);
         String socialLoginId = userResourceNode.get("id").asText();
 
-        return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(()-> saveMember(oAuthProvider));
+        return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(() -> saveMember(oAuthProvider));
 
     }
 
-    private HttpEntity getEntity(final String authorizationCode, final String registrationId){
+    private HttpEntity getEntity(final String authorizationCode, final String registrationId) {
         final String clientId = env.getProperty(PROPERTY_PATH + registrationId + ".client-id");
         final String clientSecret = env.getProperty(PROPERTY_PATH + registrationId + ".client-secret");
         final String redirectUri = env.getProperty(PROPERTY_PATH + registrationId + ".redirect-uri");
