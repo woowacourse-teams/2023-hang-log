@@ -9,4 +9,4 @@ export interface DayLogData {
   items: TripItemData[];
 }
 
-export type DayLogFilters = (typeof DAY_LOG_ITEM_FILTERS)[keyof typeof DAY_LOG_ITEM_FILTERS];
+export type DayLogFiltersType = (typeof DAY_LOG_ITEM_FILTERS)[keyof typeof DAY_LOG_ITEM_FILTERS];

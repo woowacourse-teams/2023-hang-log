@@ -1,6 +1,6 @@
 import type { DayLogData } from '@type/dayLog';
 
-interface City {
+interface CityData {
   id: number;
   name: string;
 }
@@ -12,6 +12,6 @@ export interface TripData {
   endDate: string;
   description: string | null;
   imageUrl: string | null;
-  cities: City[];
+  cities: CityData[];
   dayLogs: DayLogData[];
 }

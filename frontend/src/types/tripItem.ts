@@ -2,7 +2,7 @@ import { CURRENCY_ICON } from '@constants/trip';
 
 type Currency = keyof typeof CURRENCY_ICON;
 
-interface Place {
+interface PlaceData {
   id: number;
   name: string;
   latitude: number;
@@ -13,7 +13,7 @@ interface Place {
   };
 }
 
-interface Expense {
+interface ExpenseData {
   id: number;
   currency: Currency;
   amount: number;
@@ -30,7 +30,7 @@ export interface TripItemData {
   ordinal: number;
   rating: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5 | null;
   memo: string | null;
-  place: Place | null;
-  expense: Expense | null;
+  place: PlaceData | null;
+  expense: ExpenseData | null;
   imageUrls: string[] | null;
 }
