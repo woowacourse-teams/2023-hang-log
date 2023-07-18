@@ -147,7 +147,7 @@ public class ItemControllerTest extends RestDocsTest {
                 "categoryApiId"
         );
 
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
 
         final ItemRequest itemRequest = new ItemRequest(
                 true,
@@ -162,10 +162,70 @@ public class ItemControllerTest extends RestDocsTest {
         doNothing().when(itemService).update(any(), any(), any());
 
         // when & then
-        mockMvc.perform(put("/trips/1/items/1")
+        mockMvc.perform(put("/trips/{tripId}/items/{itemId}", 1L, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(itemRequest)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(
+                        restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID"),
+                                        parameterWithName("itemId")
+                                                .description("아이템 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("itemType")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("여행 아이템의 타입")
+                                                .attributes(field("constraint", "True: 스팟, False: 논스팟")),
+                                        fieldWithPath("title")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 아이템 제목")
+                                                .attributes(field("constraint", "50자 이내의 문자열")),
+                                        fieldWithPath("rating")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("별점")
+                                                .attributes(field("constraint", "최소 0.0 ~ 최대 5.0")),
+                                        fieldWithPath("memo")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 아이템 메모")
+                                                .attributes(field("constraint", "255자 이내의 문자열")),
+                                        fieldWithPath("dayLogId")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("날짜 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("place.name")
+                                                .type(JsonFieldType.STRING)
+                                                .description("장소 이름")
+                                                .attributes(field("constraint", "50자 이내의 문자열")),
+                                        fieldWithPath("place.latitude")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("장소 위도")
+                                                .attributes(field("constraint", "BigDecimal(3,13)")),
+                                        fieldWithPath("place.longitude")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("장소 경도")
+                                                .attributes(field("constraint", "BigDecimal(3,13)")),
+                                        fieldWithPath("place.apiCategory")
+                                                .type(JsonFieldType.STRING)
+                                                .description("장소 카테고리 배열")
+                                                .attributes(field("constraint", "문자열 배열")),
+                                        fieldWithPath("expense.currency")
+                                                .type(JsonFieldType.STRING)
+                                                .description("경비 환율")
+                                                .attributes(field("constraint", "문자열")),
+                                        fieldWithPath("expense.amount")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("경비 금액")
+                                                .attributes(field("constraint", "숫자")),
+                                        fieldWithPath("expense.categoryId")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("경비 카테고리 ID")
+                                                .attributes(field("constraint", "양의 정수"))
+                                )
+                        )
+                );
     }
 
     @DisplayName("여행 아이템을 삭제할 수 있다.")
