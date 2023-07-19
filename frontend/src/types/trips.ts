@@ -9,3 +9,8 @@ export interface TripsData {
   endDate: string;
   description?: string | null;
 }
+
+export interface DateRangeData {
+  start: string | null;
+  end: string | null;
+}
