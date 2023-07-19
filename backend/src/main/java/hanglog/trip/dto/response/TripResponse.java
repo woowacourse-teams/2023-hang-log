@@ -1,7 +1,6 @@
 package hanglog.trip.dto.response;
 
 import hanglog.trip.domain.Trip;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
