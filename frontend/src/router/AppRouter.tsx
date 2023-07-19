@@ -32,11 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: PATH.CREATE_TRIP,
-        element: (
-          <Suspense fallback={<TripEditPageSkeleton />}>
-            <TripCreatePage />
-          </Suspense>
-        ),
+        element: <TripCreatePage />,
       },
     ],
   },

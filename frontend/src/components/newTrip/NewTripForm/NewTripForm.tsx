@@ -24,7 +24,7 @@ const NewTripForm = () => {
   };
 
   const moveToTripEditPageWithId = (id: string) => {
-    navigate(PATH.EDIT_TRIP.replace(':id', id));
+    navigate(PATH.EDIT_TRIP.replace(':tripId', id));
   };
 
   return (
