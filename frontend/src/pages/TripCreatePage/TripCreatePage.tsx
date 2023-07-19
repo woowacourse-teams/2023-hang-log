@@ -1,9 +1,12 @@
+import { PATH } from '@/constants/path';
+import { useCityQuery } from '@/hooks/api/useCityQuery';
 import CreatePageImage from '@assets/svg/create-page-image.svg';
 import { CityData } from '@type/city';
 import { DateRangeData, NewTripData } from '@type/trips';
 import { Box, Button, Flex, Heading } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   backgroundImage,
@@ -24,6 +27,8 @@ const initialNewTripData = {
 const TripCreatePage = () => {
   const [newTripData, setNewTripData] = useState<NewTripData>(initialNewTripData);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
+  const navigate = useNavigate();
+  useCityQuery();
 
   useEffect(() => {
     validateInputs();
@@ -49,7 +54,8 @@ const TripCreatePage = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(newTripData);
+    //서버에 post 요청 보내기 => 새로운 트립 id 받기
+    navigate(PATH.EDIT_TRIP.replace(':id', '1'));
   };
 
   return (
