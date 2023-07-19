@@ -1,9 +1,12 @@
 package hanglog.trip.dto.request;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,11 +19,13 @@ public class PlaceRequest {
     private final String name;
 
     @NotNull(message = "장소의 위도를 입력해주세요.")
+    @Digits(integer = 3, fraction = 13)
     private final BigDecimal latitude;
 
     @NotNull(message = "장소의 경도를 입력해주세요.")
+    @Digits(integer = 3, fraction = 13)
     private final BigDecimal longitude;
 
-    @NotBlank(message = "장소의 카테고리 API ID를 입력해주세요.")
-    private final String apiCategory;
+    @NotEmpty(message = "장소의 카테고리를 입력해주세요.")
+    private final List<String> apiCategory;
 }
