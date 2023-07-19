@@ -243,7 +243,7 @@ class TripServiceTest {
                         softly.assertThat(trip.getDayLogs())
                                 .usingRecursiveComparison()
                                 .ignoringFields("trip")
-                                .isEqualTo(List.of(dayLog1, dayLog2, dayLog3, DayLog.empty(4, trip), extraDayLog));
+                                .isEqualTo(List.of(dayLog1, dayLog2, dayLog3, DayLog.generateEmpty(4, trip), extraDayLog));
                     }
             );
         }

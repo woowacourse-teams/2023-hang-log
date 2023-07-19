@@ -48,7 +48,7 @@ public class TripService {
     private void saveDayLogs(final Trip savedTrip) {
         final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate());
         final List<DayLog> dayLogs = IntStream.range(1, period.getDays() + 1)
-                .mapToObj(ordinal -> DayLog.empty(ordinal, savedTrip))
+                .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
         dayLogRepository.saveAll(savedTrip.getDayLogs());
@@ -92,7 +92,7 @@ public class TripService {
 
             if (currentPeriod < requestPeriod) {
                 IntStream.range(currentPeriod, requestPeriod)
-                        .mapToObj(i -> DayLog.empty(i+1, trip))
+                        .mapToObj(i -> DayLog.generateEmpty(i+1, trip))
                         .forEach(trip.getDayLogs()::add);
             }
 
