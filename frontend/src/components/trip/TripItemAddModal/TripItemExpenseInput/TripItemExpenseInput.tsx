@@ -4,7 +4,7 @@ import type { ExpenseCategoryData } from '@type/expense';
 import type { TripItemFormType } from '@type/tripItem';
 import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 import {
   categorySelectStyling,
@@ -88,4 +88,4 @@ const TripItemExpenseInput = ({
   );
 };
 
-export default TripItemExpenseInput;
+export default memo(TripItemExpenseInput);
