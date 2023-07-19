@@ -7,15 +7,13 @@ import { formatMonthDate } from '@utils/formatter';
 
 interface TripItemDateInputProps {
   currentCategory: TripItemFormType['itemType'];
-  dayLogIds: number[];
   initialDate: string;
-  dates: string[];
+  dates: { id: number; date: string }[];
   updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
 }
 
 const TripItemDateInput = ({
   currentCategory,
-  dayLogIds,
   initialDate,
   dates,
   updateInputValue,
@@ -29,20 +27,20 @@ const TripItemDateInput = ({
       <>
         {Array.from({ length: dates.length - 1 }, (_, index) => (
           <option
-            key={dates[index]}
-            value={dayLogIds[index]}
-            selected={initialDate === dates[index]}
+            key={dates[index].id}
+            value={dates[index].id}
+            selected={initialDate === dates[index].date}
           >
-            Day {index + 1} - {formatMonthDate(dates[index])}
+            Day {index + 1} - {formatMonthDate(dates[index].date)}
           </option>
         ))}
       </>
       <>
         {!currentCategory && (
           <option
-            key={dates.at(-1)}
-            value={dayLogIds.at(-1)}
-            selected={initialDate === dates.at(-1)}
+            key={dates.at(-1)?.id}
+            value={dates.at(-1)?.id}
+            selected={initialDate === dates.at(-1)?.date}
           >
             기타
           </option>
