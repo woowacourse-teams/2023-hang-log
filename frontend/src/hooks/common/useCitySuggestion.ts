@@ -7,7 +7,6 @@ import { useCityQuery } from '@hooks/api/useCityQuery';
 
 export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
   const { citiesData } = useCityQuery();
-  console.log(citiesData);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
@@ -30,10 +29,6 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     setFocusedSuggestionIndex((prevIndex) =>
       prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
     );
-  };
-
-  const focusSuggestion = (index: number) => {
-    setFocusedSuggestionIndex(index);
   };
 
   const isFocused = (index: number) => {
@@ -67,7 +62,6 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     focusedSuggestionIndex,
     setNewSuggestions,
     focusLowerSuggestion,
-    focusSuggestion,
     focusUpperSuggestion,
     isFocused,
   };

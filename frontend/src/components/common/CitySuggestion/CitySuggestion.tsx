@@ -21,10 +21,9 @@ interface SuggestionProps {
 }
 
 const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
-  const { suggestions, focusedSuggestionIndex, isFocused, setNewSuggestions, focusSuggestion } =
-    useCitySuggestion({
-      onItemSelect,
-    });
+  const { suggestions, focusedSuggestionIndex, isFocused, setNewSuggestions } = useCitySuggestion({
+    onItemSelect,
+  });
   const listRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
@@ -33,12 +32,8 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
     setNewSuggestions(queryWord);
   }, [queryWord]);
 
-  const handleItemClick = (suggestion: CityData) => () => {
-    onItemSelect(suggestion);
-  };
-
-  const handleItemMouseHover = (index: number) => () => {
-    focusSuggestion(index);
+  const handleItemClick = (city: CityData) => () => {
+    onItemSelect(city);
   };
 
   useEffect(() => {
@@ -52,7 +47,6 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
           <SuggestionsItem
             key={city.id}
             onClick={handleItemClick(city)}
-            onMouseEnter={handleItemMouseHover(index)}
             css={getItemStyling(isFocused(index))}
             ref={isFocused(index) ? itemRef : null}
           >
