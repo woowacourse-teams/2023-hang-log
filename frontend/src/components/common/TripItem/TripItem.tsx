@@ -60,7 +60,7 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
       onDragEnd={handleDragEnd}
     >
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
-        {information.imageUrls && (
+        {information.imageUrls.length > 0 && (
           <ImageCarousel
             width={250}
             height={167}
