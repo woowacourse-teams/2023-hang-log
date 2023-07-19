@@ -82,7 +82,7 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
-        <Label>방문 날짜</Label>
+        <Label>방문 도시</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>

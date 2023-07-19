@@ -3,7 +3,7 @@ import { CityData } from '@type/city';
 import { DateRangeData, NewTripData } from '@type/trips';
 import { Box, Button, Flex, Heading } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   backgroundImage,
@@ -23,6 +23,11 @@ const initialNewTripData = {
 
 const TripCreatePage = () => {
   const [newTripData, setNewTripData] = useState<NewTripData>(initialNewTripData);
+  const [isAllInputFilled, setIsAllInputFilled] = useState(false);
+
+  useEffect(() => {
+    validateInputs();
+  }, [newTripData]);
 
   const setCityData = (cities: CityData[]) => {
     const cityIds = cities.map((city) => city.id);
@@ -34,6 +39,12 @@ const TripCreatePage = () => {
     const { start: startDate, end: endDate } = dateRange;
 
     setNewTripData((prev) => ({ ...prev, startDate, endDate }));
+  };
+
+  const validateInputs = () => {
+    const { startDate, endDate, cityIds } = newTripData;
+
+    setIsAllInputFilled(!!startDate && !!endDate && !!cityIds.length);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -48,7 +59,7 @@ const TripCreatePage = () => {
         <form css={formStyling} onSubmit={handleSubmit}>
           <CitySearchBar setCityData={setCityData} />
           <DateInput setDateData={setDateData} />
-          <Button variant="primary" style={{ width: '400px' }}>
+          <Button variant="primary" disabled={!isAllInputFilled} style={{ width: '400px' }}>
             기록하기
           </Button>
         </form>
