@@ -1,6 +1,6 @@
 import { END_POINTS } from '@constants/api';
 import { trip } from '@mocks/data/trip';
-import { tripsMock } from '@mocks/data/trips';
+import { trips } from '@mocks/data/trips';
 import { rest } from 'msw';
 
 export const tripsHandlers = [
@@ -8,7 +8,7 @@ export const tripsHandlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        trips: tripsMock,
+        trips,
       })
     );
   }),
