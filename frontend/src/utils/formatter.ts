@@ -13,7 +13,9 @@ export const moneyFormatter = (money: number) => {
 };
 
 export const dateRangeToString = (dateRange: DateRangeData) => {
-  if (!dateRange.start || !dateRange.end) return '';
+  const { start, end } = dateRange;
 
-  return `${dateRange.start} ~ ${dateRange.end}`;
+  if (!start || !end) return '';
+
+  return `${formatDate(start)} - ${formatDate(end)}`;
 };
