@@ -66,3 +66,7 @@ export const durationTextStyling = css({
   overflow: 'hidden',
   wordBreak: 'break-word',
 });
+
+export const skeletonDurationTextStyling = css({
+  marginTop: '2px',
+});

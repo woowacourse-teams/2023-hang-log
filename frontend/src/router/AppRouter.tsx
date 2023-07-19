@@ -7,6 +7,7 @@ import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripEditPageSkeleton from '@pages/TripEditPage/TripEditPageSkeleton';
 import TripsPage from '@pages/TripsPage/TripsPage';
+import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: PATH.TRIPS,
-        element: <TripsPage />,
+        element: (
+          <Suspense fallback={<TripsPageSkeleton />}>
+            <TripsPage />
+          </Suspense>
+        ),
       },
       {
         path: PATH.EDIT_TRIP,
