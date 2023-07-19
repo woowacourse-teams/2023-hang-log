@@ -17,14 +17,6 @@ export const boxStyling = css({
   zIndex: Theme.zIndex.overlayMiddle,
 });
 
-export const formStyling = css({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: Theme.spacer.spacing4,
-  marginTop: Theme.spacer.spacing5,
-});
-
 export const backgroundImage = css({
   position: 'fixed',
   bottom: Theme.spacer.spacing4,

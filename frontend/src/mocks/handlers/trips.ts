@@ -18,4 +18,7 @@ export const tripsHandler = [
       })
     );
   }),
+  rest.post('/trips/none', (req, res, ctx) => {
+    return res(ctx.status(201), ctx.set('Location', '1'));
+  }),
 ];
