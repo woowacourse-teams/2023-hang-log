@@ -24,6 +24,7 @@ import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.ItemService;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class ItemControllerTest extends RestDocsTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
         final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000, 1L);
         final ItemRequest itemRequest = new ItemRequest(
@@ -113,7 +114,7 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .description("장소 경도")
                                                 .attributes(field("constraint", "BigDecimal(3,13)")),
                                         fieldWithPath("place.apiCategory")
-                                                .type(JsonFieldType.STRING)
+                                                .type(JsonFieldType.ARRAY)
                                                 .description("장소 카테고리 배열")
                                                 .attributes(field("constraint", "문자열 배열")),
                                         fieldWithPath("expense.currency")
@@ -144,7 +145,7 @@ public class ItemControllerTest extends RestDocsTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
 
         final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
@@ -208,7 +209,7 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .description("장소 경도")
                                                 .attributes(field("constraint", "BigDecimal(3,13)")),
                                         fieldWithPath("place.apiCategory")
-                                                .type(JsonFieldType.STRING)
+                                                .type(JsonFieldType.ARRAY)
                                                 .description("장소 카테고리 배열")
                                                 .attributes(field("constraint", "문자열 배열")),
                                         fieldWithPath("expense.currency")

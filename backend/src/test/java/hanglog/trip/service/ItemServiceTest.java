@@ -53,7 +53,7 @@ public class ItemServiceTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
         final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
         final ItemRequest itemRequest = new ItemRequest(
@@ -88,7 +88,7 @@ public class ItemServiceTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
         final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
         final ItemRequest itemRequest = new ItemRequest(

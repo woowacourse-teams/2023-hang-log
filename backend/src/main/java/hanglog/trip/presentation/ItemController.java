@@ -38,7 +38,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Long itemId) {
+    public ResponseEntity<Void> deleteItem(@PathVariable final Long itemId) {
         itemService.delete(itemId);
         return ResponseEntity.noContent().build();
     }
