@@ -8,7 +8,7 @@ import { dateRangeToString } from '@utils/formatter';
 import {
   calendarStyling,
   containerStyling,
-  inputStyling,
+  getInputStyling,
 } from '@components/common/DateInput/DateInput.style';
 
 interface DateInputProps {
@@ -28,10 +28,10 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
   };
 
   return (
-    <Flex styles={{ direction: 'column', width: '40%', margin: '0 auto', align: 'flex-start' }}>
+    <Flex styles={{ direction: 'column', width: '400px', margin: '0 auto', align: 'flex-start' }}>
       <Label>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
-        <Box onClick={toggleCalendar} css={inputStyling}>
+        <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
           <Input
             placeholder="방문 날짜를 입력해주세요"
             icon={<CalendarIcon aria-label="캘린더 아이콘" />}
