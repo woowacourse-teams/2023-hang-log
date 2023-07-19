@@ -19,7 +19,7 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
     cursor: 'pointer',
 
     '> *': {
-      '> *:nth-child(odd)': {
+      '> *:nth-of-type(odd)': {
         backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray100,
         boxShadow: isCalendarOpen ? Theme.boxShadow.shadow8 : '',
         border: `1px solid ${Theme.color.gray100}`,

@@ -7,7 +7,6 @@ import { useCityQuery } from '@hooks/api/useCityQuery';
 
 export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
   const { citiesData } = useCityQuery();
-  console.log(citiesData);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 

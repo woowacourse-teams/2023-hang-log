@@ -3,7 +3,7 @@ import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
 import { Badge, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
 
@@ -20,13 +20,18 @@ import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 interface CitySearchBarProps {
   initialCityTags?: CityData[];
+  setCityData: (cities: CityData[]) => void;
 }
 
-const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
+const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setCityData(cityTags);
+  }, [cityTags]);
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const word = event.currentTarget.value;

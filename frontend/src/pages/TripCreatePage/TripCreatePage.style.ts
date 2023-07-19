@@ -7,6 +7,14 @@ export const containerStyling = css({
   justifyContent: 'center',
 });
 
+export const formStyling = css({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px',
+  marginTop: '32px',
+});
+
 export const boxStyling = css({
   position: 'relative',
   top: '100px',
