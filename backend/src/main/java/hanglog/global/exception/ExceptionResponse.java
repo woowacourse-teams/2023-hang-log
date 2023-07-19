@@ -1,4 +1,4 @@
-package hanglog.global;
+package hanglog.global.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ExceptionResponse {
 
+    private final int code;
     private final String message;
 }
 
