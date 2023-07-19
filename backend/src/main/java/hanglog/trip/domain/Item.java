@@ -22,7 +22,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -51,7 +52,8 @@ public class Item extends BaseEntity {
     @Column(nullable = false)
     private Integer ordinal;
 
-    @Size(max = 5)
+    @DecimalMax(value = "5.0")
+    @DecimalMin(value = "0.5")
     private Double rating;
 
     private String memo;
@@ -85,6 +87,7 @@ public class Item extends BaseEntity {
             final StatusType statusType
     ) {
         super(statusType);
+        validateRatingFormat(rating);
         this.id = id;
         this.itemType = itemType;
         this.title = title;
@@ -168,5 +171,12 @@ public class Item extends BaseEntity {
             final Expense expense
     ) {
         this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, new ArrayList<>());
+    }
+
+    private void validateRatingFormat(final double rating) {
+        final double scaleValue = rating % 1;
+        if (scaleValue != 0.0 && scaleValue != 0.5) {
+            throw new IllegalArgumentException("별점은 N.0점이거나 N.5점 형태이어야 합니다.");
+        }
     }
 }

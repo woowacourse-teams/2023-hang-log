@@ -60,7 +60,7 @@ public class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
@@ -98,7 +98,7 @@ public class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
