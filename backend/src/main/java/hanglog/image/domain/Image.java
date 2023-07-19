@@ -6,13 +6,11 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
 import hanglog.trip.domain.Item;
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +24,19 @@ public class Image extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Lob
-    @Basic(fetch = LAZY)
-    @Column(nullable = false)
-    private byte[] blobImg;
+    @Column(nullable = false, unique = true)
+    private String imageUrl;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id")
     private Item item;
 
-    public Image(final byte[] blobImg, final Item item) {
-        this.blobImg = blobImg;
+    public Image(final String imageUrl, final Item item) {
+        this.imageUrl = imageUrl;
         this.item = item;
+    }
+
+    public Image(final String imageUrl) {
+        this(imageUrl, null);
     }
 }

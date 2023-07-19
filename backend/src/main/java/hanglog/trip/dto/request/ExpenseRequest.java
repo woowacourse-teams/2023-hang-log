@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,8 @@ public class ExpenseRequest {
     private final String currency;
 
     @NotNull(message = "화폐의 금액을 입력해주세요.")
-    private final Integer amount;
+    @DecimalMin(value = "0.0", message = "화폐의 금액은 0원이상이어야 합니다.")
+    private final Double amount;
 
     @NotNull(message = "화폐의 카테고리를 입력해주세요.")
     private final Long categoryId;
