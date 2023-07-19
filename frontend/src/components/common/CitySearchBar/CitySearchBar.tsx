@@ -1,7 +1,7 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
-import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
+import { Badge, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useRef, useState } from 'react';
 
@@ -77,6 +77,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
+        <Label>방문 날짜</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>

@@ -3,7 +3,7 @@ import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
   width: '400px',
-  height: '48px',
+  height: '77.6px',
   margin: '0 auto',
 });
 
@@ -14,6 +14,7 @@ export const wrapperStyling = css({
   gap: '12px',
 
   padding: `0 ${Theme.spacer.spacing3}`,
+  marginTop: Theme.spacer.spacing2,
   borderRadius: Theme.borderRadius.small,
 
   backgroundColor: Theme.color.gray100,
@@ -38,7 +39,7 @@ export const tagListStyling = css({
   gap: Theme.spacer.spacing1,
   alignItems: 'center',
 
-  overflowX: 'scroll',
+  overflowX: 'auto',
 
   '& > div': {
     '& > *:focus-within': {

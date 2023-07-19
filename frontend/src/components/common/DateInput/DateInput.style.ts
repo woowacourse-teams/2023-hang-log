@@ -20,17 +20,22 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
 
     '> *': {
       '> *:nth-child(odd)': {
-        backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray200,
+        backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray100,
         boxShadow: isCalendarOpen ? Theme.boxShadow.shadow8 : '',
-        border: `1px solid ${Theme.color.gray200}`,
+        border: `1px solid ${Theme.color.gray100}`,
       },
     },
   });
 };
 
 export const calendarStyling = css({
+  position: 'absolute',
+  transform: 'translateY(60px)',
   marginTop: Theme.spacer.spacing2,
 
   border: `1px solid ${Theme.color.gray200}`,
   borderRadius: Theme.borderRadius.small,
+  backgroundColor: Theme.color.white,
+
+  zIndex: Theme.zIndex.overlayPeak,
 });
