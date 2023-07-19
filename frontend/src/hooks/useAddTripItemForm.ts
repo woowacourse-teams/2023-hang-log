@@ -1,6 +1,7 @@
-import { isEmptyString } from '@/utils/validator';
 import { TripItemFormType } from '@type/tripItem';
 import { FormEvent, useCallback, useState } from 'react';
+
+import { isEmptyString } from '@utils/validator';
 
 import { useAddTripItemMutation } from './api/useAddTripItemMutation';
 
