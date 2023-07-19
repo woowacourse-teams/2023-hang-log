@@ -99,7 +99,7 @@ export const trip: TripData = {
               name: '교통',
             },
           },
-          imageUrls: null,
+          imageUrls: [],
         },
       ],
     },

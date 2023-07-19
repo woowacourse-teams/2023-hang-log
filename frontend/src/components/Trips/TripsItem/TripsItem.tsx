@@ -1,39 +1,37 @@
-import { Cities } from '@type/trips';
+import type { CityData } from '@type/city';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
 import {
-  tripsBoxStyling,
-  tripsDurationTextStyling,
-  tripsItemBadgeBoxStyling,
-  tripsItemImageBoxStyling,
-  tripsItemImageStyling,
-  tripsItemNameStying,
+  badgeBoxStyling,
+  boxStyling,
+  durationTextStyling,
+  imageBoxStyling,
+  imageStyling,
+  nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
 
-interface TripItemProps {
-  coverImage: string;
-  cityTags: Cities[];
+interface TripsItemProps {
+  coverImage: string | null;
+  cityTags: CityData[];
   itemName: string;
   duration: string;
   description?: string | null;
 }
 
-const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripItemProps) => {
+const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripsItemProps) => {
   return (
-    <Flex styles={{ direction: 'column' }} css={tripsBoxStyling}>
-      <Box css={tripsItemImageBoxStyling}>
-        <img src={coverImage} css={tripsItemImageStyling} />
-      </Box>
-      <Box css={tripsItemBadgeBoxStyling}>
+    <Flex styles={{ direction: 'column' }} css={boxStyling}>
+      <Box css={imageBoxStyling}>{coverImage && <img src={coverImage} css={imageStyling} />}</Box>
+      <Box css={badgeBoxStyling}>
         {cityTags.map((badge) => {
           return <Badge key={badge.id}>{badge.name}</Badge>;
         })}
       </Box>
-      <Text size="large" css={tripsItemNameStying}>
+      <Text size="large" css={nameStyling}>
         {itemName}
       </Text>
       <Text size="medium">{duration}</Text>
-      <Text size="small" css={tripsDurationTextStyling}>
+      <Text size="small" css={durationTextStyling}>
         {description}
       </Text>
     </Flex>

@@ -1,3 +1,4 @@
+import type { CityData } from '@type/city';
 import {
   MenuList as SuggestionList,
   MenuItem as SuggestionsItem,
@@ -8,16 +9,15 @@ import { useEffect, useRef } from 'react';
 import { useAutoScroll } from '@hooks/common/useAutoScroll';
 import { useCitySuggestion } from '@hooks/common/useCitySuggestion';
 
-import { City } from '@components/common/CitySearchBar/CitySearchBar';
 import {
+  containerStyling,
   emptyTextStyling,
-  getSuggestionItemStyling,
-  suggestionContainerStyling,
+  getItemStyling,
 } from '@components/common/CitySuggestion/CitySuggestion.style';
 
 interface SuggestionProps {
   queryWord: string;
-  onItemSelect: (city: City) => void;
+  onItemSelect: (city: CityData) => void;
 }
 
 const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
@@ -33,7 +33,7 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
     setNewSuggestions(queryWord);
   }, [queryWord]);
 
-  const handleItemClick = (suggestion: City) => () => {
+  const handleItemClick = (suggestion: CityData) => () => {
     onItemSelect(suggestion);
   };
 
@@ -46,14 +46,14 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   }, [focusedSuggestionIndex]);
 
   return (
-    <SuggestionList css={suggestionContainerStyling} ref={listRef}>
+    <SuggestionList css={containerStyling} ref={listRef}>
       {suggestions.length ? (
         suggestions.map((city, index) => (
           <SuggestionsItem
             key={city.id}
             onClick={handleItemClick(city)}
             onMouseEnter={handleItemMouseHover(index)}
-            css={getSuggestionItemStyling(isFocused(index))}
+            css={getItemStyling(isFocused(index))}
             ref={isFocused(index) ? itemRef : null}
           >
             {city.name}

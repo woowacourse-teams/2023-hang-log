@@ -6,15 +6,11 @@ import { AxiosError } from 'axios';
 import { getTrip } from '@api/trip/getTrip';
 
 export const useTripQuery = (tripId: number) => {
-  const { data: tripData } = useQuery<TripData, AxiosError>(
-    ['trip', tripId],
-    () => getTrip(tripId),
-    {
-      retry: NETWORK.RETRY_COUNT,
-      suspense: true,
-      useErrorBoundary: true,
-    }
-  );
+  const { data } = useQuery<TripData, AxiosError>(['trip', tripId], () => getTrip(tripId), {
+    retry: NETWORK.RETRY_COUNT,
+    suspense: true,
+    useErrorBoundary: true,
+  });
 
-  return { tripData };
+  return { tripData: data! };
 };
