@@ -8,28 +8,30 @@ import { containerStyling } from '@components/common/DayLogList/DayLogList.style
 
 interface DayLogListProps {
   tripId: number;
-  logs: DayLogData[];
+  selectedDayLog: DayLogData;
+  dates: {
+    id: number;
+    date: string;
+  }[];
+  onTabChange: (selectedId: string | number) => void;
 }
 
-const DayLogList = ({ tripId, logs }: DayLogListProps) => {
-  const { selected, handleSelectClick } = useSelect(logs[0].id);
-  const selectedDayLog = logs.find((log) => log.id === selected)!;
-
+const DayLogList = ({ tripId, selectedDayLog, dates, onTabChange }: DayLogListProps) => {
   return (
     <section css={containerStyling}>
       <Tabs>
-        {logs.map((log, index) => (
+        {dates.map((date, index) => (
           <Tab
             key={index}
             text={
-              log.id === selected
-                ? `Day ${log.ordinal} - ${formatMonthDate(log.date)} `
-                : `Day ${log.ordinal}`
+              date.id === selectedDayLog.id
+                ? `Day ${index + 1} - ${formatMonthDate(date.date)} `
+                : `Day ${index + 1}`
             }
             variant="outline"
-            tabId={log.id}
-            selectedId={selected}
-            changeSelect={handleSelectClick}
+            tabId={date.id}
+            selectedId={selectedDayLog.id}
+            changeSelect={onTabChange}
           />
         ))}
       </Tabs>
