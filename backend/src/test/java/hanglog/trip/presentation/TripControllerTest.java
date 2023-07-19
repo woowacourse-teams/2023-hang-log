@@ -1,5 +1,6 @@
 package hanglog.trip.presentation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -71,6 +72,12 @@ class TripControllerTest extends RestDocsTest {
         return mockMvc.perform(get("/trips/{tripId}", tripId)
                 .contentType(APPLICATION_JSON));
     }
+
+    private ResultActions performGetRequest() throws Exception {
+        return mockMvc.perform(get("/trips")
+                .contentType(APPLICATION_JSON));
+    }
+
 
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
         return mockMvc.perform(post("/trips")
@@ -220,7 +227,33 @@ class TripControllerTest extends RestDocsTest {
                 mvcResult.getResponse().getContentAsString(),
                 TripResponse.class
         );
-        assertThat(tripResponse).usingRecursiveComparison().isEqualTo(TripResponse.of(LONDON_TRIP));
+        assertThat(tripResponse).usingRecursiveComparison()
+                .isEqualTo(TripResponse.of(LONDON_TRIP));
+    }
+
+
+    @DisplayName("모든 여행을 조회한다.")
+    @Test
+    void getTrips() throws Exception {
+        // given
+        makeTrip();
+        when(tripService.getAllTrip())
+                .thenReturn(List.of(TripResponse.of(LONDON_TRIP)));
+
+        // when
+        final ResultActions resultActions = performGetRequest();
+
+        // then
+        final MvcResult mvcResult = resultActions.andExpect(status().isOk())
+                .andDo(restDocs.document())
+                .andReturn();
+
+        List<TripResponse> tripResponses = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                new TypeReference<>() {}
+        );
+        assertThat(tripResponses).usingRecursiveComparison()
+                .isEqualTo(List.of(TripResponse.of(LONDON_TRIP)));
     }
 
     @DisplayName("트립의 정보를 변경할 수 있다.")

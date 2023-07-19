@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +23,12 @@ public class TripController {
     public ResponseEntity<Void> createTrip(@RequestBody @Valid final TripCreateRequest tripCreateRequest) {
         final Long tripId = tripService.save(tripCreateRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId)).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TripResponse>> getTrips() {
+        List<TripResponse> tripResponses = tripService.getAllTrip();
+        return ResponseEntity.ok().body(tripResponses);
     }
 
     @GetMapping("/{tripId}")

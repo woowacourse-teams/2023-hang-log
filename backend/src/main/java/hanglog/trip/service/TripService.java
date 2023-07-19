@@ -54,6 +54,13 @@ public class TripService {
         dayLogRepository.saveAll(savedTrip.getDayLogs());
     }
 
+    public List<TripResponse> getAllTrip() {
+        List<Trip> trips = tripRepository.findAll();
+        return trips.stream()
+                .map(TripResponse::of)
+                .toList();
+    }
+
     public TripResponse getTrip(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 여행이 존재하지 않습니다."));

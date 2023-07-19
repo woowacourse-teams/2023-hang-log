@@ -209,7 +209,6 @@ class TripServiceTest {
             );
         }
 
-
         @DisplayName("변경된 일정이 줄어든 경우")
         @Test
         void update_DecreasePeriod() {
