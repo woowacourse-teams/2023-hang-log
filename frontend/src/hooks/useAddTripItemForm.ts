@@ -1,9 +1,10 @@
 import type { TripItemFormType } from '@type/tripItem';
-import { FormEvent, useCallback, useState } from 'react';
+import type { FormEvent } from 'react';
+import { useCallback, useState } from 'react';
 
 import { isEmptyString } from '@utils/validator';
 
-import { useAddTripItemMutation } from './api/useAddTripItemMutation';
+import { useAddTripItemMutation } from '@hooks/api/useAddTripItemMutation';
 
 export const useAddTripItemForm = (
   tripId: number,

@@ -1,4 +1,4 @@
-import { END_POINTS } from '@/constants/api';
+import { END_POINTS } from '@constants/api';
 import type { TripItemFormType } from '@type/tripItem';
 
 import { axiosInstance } from '@api/axiosInstance';
