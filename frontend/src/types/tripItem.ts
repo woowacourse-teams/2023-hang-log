@@ -1,6 +1,8 @@
 import { CURRENCY_ICON } from '@constants/trip';
 
-type Currency = keyof typeof CURRENCY_ICON;
+export type CurrencyType = keyof typeof CURRENCY_ICON;
+
+export type StarRatingData = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 
 interface PlaceData {
   id: number;
@@ -15,7 +17,7 @@ interface PlaceData {
 
 interface ExpenseData {
   id: number;
-  currency: Currency;
+  currency: CurrencyType;
   amount: number;
   category: {
     id: number;
@@ -28,9 +30,26 @@ export interface TripItemData {
   itemType: boolean;
   title: string;
   ordinal: number;
-  rating: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5 | null;
+  rating: StarRatingData | null;
   memo: string | null;
   place: PlaceData | null;
   expense: ExpenseData | null;
+  imageUrls: string[];
+}
+
+export type TripItemCategory = '장소' | '기타';
+
+export interface TripItemFormType {
+  itemType: boolean;
+  dayLogId: number | null;
+  title: string;
+  place: PlaceData | null;
+  rating: StarRatingData | null;
+  expense: {
+    currency: string;
+    amount: number;
+    categoryId: number;
+  } | null;
+  memo: string | null;
   imageUrls: string[];
 }

@@ -3,7 +3,7 @@ import { trip } from '@mocks/data/trip';
 import { tripsMock } from '@mocks/data/trips';
 import { rest } from 'msw';
 
-export const tripsHandler = [
+export const tripsHandlers = [
   rest.get('/trips', (req, res, ctx) => {
     return res(
       ctx.status(200),
