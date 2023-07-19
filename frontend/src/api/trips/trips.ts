@@ -9,8 +9,8 @@ export const getTrips = async () => {
   return data?.trips;
 };
 
-export const postTrips = async (newTripData: NewTripData) => async () => {
+export const postNewTrip = async (newTripData: NewTripData) => {
   const response = await axiosInstance.post(END_POINTS.TRIPS, newTripData);
 
-  return response;
+  return response.headers.location;
 };

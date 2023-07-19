@@ -1,3 +1,4 @@
+import { postNewTrip } from '@/api/trips/trips';
 import { PATH } from '@/constants/path';
 import { Button } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
@@ -13,10 +14,11 @@ const NewTripForm = () => {
   const { newTripData, setCityData, setDateData, isAllInputFilled } = useNewTripForm();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //서버에 post 요청 보내기 => 새로운 트립 id 받기
-    navigate(PATH.EDIT_TRIP.replace(':id', '1'));
+    const id = await postNewTrip(newTripData);
+    console.log(id);
+    navigate(PATH.EDIT_TRIP.replace(':id', id));
   };
 
   return (
