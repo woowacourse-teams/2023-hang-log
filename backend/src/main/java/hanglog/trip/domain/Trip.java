@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@SQLDelete(sql = "UPDATE day_log SET status = 'DELETED' WHERE id = ?")
+@SQLDelete(sql = "UPDATE trip SET status = 'DELETED' WHERE id = ?")
 @Where(clause = "status = 'USABLE'")
 public class Trip extends BaseEntity {
 
