@@ -5,7 +5,8 @@ export const headerStyling = css({
   position: 'sticky',
   top: 0,
 
-  zIndex: Theme.zIndex.overlayTop,
+  border: `1px solid ${Theme.color.gray200}`,
+  zIndex: Theme.zIndex.overlayMiddle,
 
   backgroundColor: Theme.color.white,
   padding: `${Theme.spacer.spacing4} 50px`,
@@ -21,4 +22,12 @@ export const imageStyling = css({
   borderRadius: '50%',
 
   backgroundColor: Theme.color.gray200,
+});
+
+export const menuListStyling = css({
+  transform: 'translateY(36px)',
+
+  '& > li': {
+    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
+  },
 });

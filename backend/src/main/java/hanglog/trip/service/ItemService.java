@@ -4,15 +4,19 @@ import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
 import hanglog.global.type.StatusType;
+import hanglog.image.domain.Image;
+import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.type.ItemType;
-import hanglog.trip.presentation.dto.request.ExpenseRequest;
-import hanglog.trip.presentation.dto.request.ItemRequest;
-import hanglog.trip.presentation.dto.request.PlaceRequest;
+import hanglog.trip.dto.request.ExpenseRequest;
+import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.PlaceRequest;
+import hanglog.trip.dto.response.ItemResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +29,14 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
+    private final ImageRepository imageRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
-        DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
 
-        Item item = new Item(
+        final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
                 getNewItemOrdinal(tripId),
@@ -39,20 +44,29 @@ public class ItemService {
                 itemRequest.getMemo(),
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
-                getExpenseByItemRequest(itemRequest)
+                getExpenseByItemRequest(itemRequest),
+                getImagesByItemRequest(itemRequest)
         );
         validateAlreadyDeleted(item);
         return itemRepository.save(item).getId();
     }
 
+    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
+        return itemRequest.getImageUrls().stream()
+                .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
+                        .orElseThrow(() -> new IllegalArgumentException("요청한 URL에 해당하는 이미지가 존재하지 않습니다."))
+                )
+                .toList();
+    }
+
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
-        DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
-        Item item = itemRepository.findById(itemId)
+        final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
         validateAlreadyDeleted(item);
 
-        Item updateditem = new Item(
+        final Item updateditem = new Item(
                 itemId,
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
@@ -75,13 +89,14 @@ public class ItemService {
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
         // TODO apiCategory를 가지고 category를 탐색
-        Category category = new Category(1L, "문화");
+        final Category category = new Category(1L, "문화", "culture");
 
         return new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
-                category);
+                category
+        );
     }
 
     private Expense getExpenseByItemRequest(final ItemRequest itemRequest) {
@@ -108,28 +123,22 @@ public class ItemService {
                 .size() + 1;
     }
 
-    public void delete(Long itemId) {
-        Item item = itemRepository.findById(itemId)
+    public void delete(final Long itemId) {
+        final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
         validateAlreadyDeleted(item);
-        Item deletedItem = new Item(
-                item.getId(),
-                item.getItemType(),
-                item.getTitle(),
-                item.getOrdinal(),
-                item.getRating(),
-                item.getMemo(),
-                item.getPlace(),
-                item.getDayLog(),
-                item.getExpense(),
-                StatusType.DELETED
-        );
-        itemRepository.save(deletedItem);
+        itemRepository.delete(item);
     }
 
     private void validateAlreadyDeleted(final Item item) {
         if (item.getStatus().equals(StatusType.DELETED)) {
             throw new IllegalArgumentException("이미 삭제된 여행 아이템입니다.");
         }
+    }
+
+    public List<ItemResponse> getItems() {
+        return itemRepository.findAll().stream()
+                .map(ItemResponse::of)
+                .toList();
     }
 }

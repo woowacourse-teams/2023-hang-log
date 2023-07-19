@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const prod = (process.env.NODE_ENV = 'production');
 
@@ -28,11 +29,17 @@ module.exports = {
         issuer: /\.(style.js|style.ts)$/,
         use: ['url-loader'],
       },
+      {
+        test: /\.png$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['url-loader'],
+      },
     ],
   },
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
 
   devServer: {
@@ -74,5 +81,6 @@ module.exports = {
     new CopyPlugin({
       patterns: [{ from: 'public/mockServiceWorker.js', to: '' }],
     }),
+    new Dotenv(),
   ],
 };

@@ -19,6 +19,9 @@ public class Category extends BaseEntity {
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, length = 50)
+    private String korName;
+
+    @Column(nullable = false, length = 50)
+    private String engName;
 }

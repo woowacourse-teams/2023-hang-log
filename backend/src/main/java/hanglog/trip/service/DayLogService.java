@@ -3,8 +3,8 @@ package hanglog.trip.service;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +39,7 @@ public class DayLogService {
         );
         dayLogRepository.save(updatedDayLog);
     }
-
-
+    
     private void validateAlreadyDeleted(final DayLog dayLog) {
         if (dayLog.isDeleted()) {
             throw new IllegalStateException("이미 삭제된 날짜입니다.");

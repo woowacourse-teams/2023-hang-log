@@ -1,8 +1,8 @@
 package hanglog.trip.presentation;
 
 
-import hanglog.trip.presentation.dto.request.DayLogUpdateTitleRequest;
-import hanglog.trip.presentation.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.response.DayLogGetResponse;
 import hanglog.trip.service.DayLogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/trips/{tripId}/daylog/{dayLogId}")
+@RequestMapping("/trips/{tripId}/daylogs/{dayLogId}")
 public class DayLogController {
 
     private final DayLogService dayLogService;
