@@ -1,7 +1,12 @@
 package hanglog.trip.fixture;
 
 import hanglog.trip.domain.Trip;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static hanglog.trip.fixture.DayLogFixture.*;
 
 public final class TripFixture {
 
@@ -9,15 +14,8 @@ public final class TripFixture {
             1L,
             "런던 여행",
             LocalDate.of(2023, 7, 1),
-            LocalDate.of(2023, 7, 7),
-            ""
-    );
-
-    public static final Trip UPDATED_LONDON_TRIP = new Trip(
-            1L,
-            "변경된 런던 여행 제목",
-            LocalDate.of(2023, 7, 1),
-            LocalDate.of(2023, 7, 7),
-            "추가된 여행 요약"
+            LocalDate.of(2023, 7, 2),
+            "",
+            new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA))
     );
 }

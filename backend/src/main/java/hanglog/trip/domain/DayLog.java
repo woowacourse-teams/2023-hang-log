@@ -41,7 +41,7 @@ public class DayLog extends BaseEntity {
     private Trip trip;
 
     @OneToMany(mappedBy = "dayLog")
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 
     public DayLog(
             final Long id,
@@ -60,13 +60,16 @@ public class DayLog extends BaseEntity {
     public DayLog(
             final String title,
             final Integer ordinal,
-            final Trip trip,
-            final List<Item> items
+            final Trip trip
     ) {
-        this(null, title, ordinal, trip, items);
+        this(null, title, ordinal, trip, new ArrayList<>());
     }
 
-    public DayLog(final String title, final Integer ordinal, final Trip trip) {
-        this(null, title, ordinal, trip, new ArrayList<>());
+    public static DayLog empty(final Integer ordinal, final Trip trip) {
+        return new DayLog(null, "", ordinal , trip , new ArrayList<>());
+    }
+
+    public void updateOrdinal(final Integer newOrdinal) {
+        this.ordinal = newOrdinal;
     }
 }

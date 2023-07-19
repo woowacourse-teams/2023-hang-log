@@ -101,7 +101,7 @@ public class TripService {
     public void delete(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
-        tripRepository.save(trip);
+        tripRepository.delete(trip);
     }
 
     private String getInitTitle(final List<City> cites) {
