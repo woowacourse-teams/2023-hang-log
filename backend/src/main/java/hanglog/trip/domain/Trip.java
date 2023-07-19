@@ -41,7 +41,7 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.PERSIST)
     private List<DayLog> dayLogs = new ArrayList<>();
 
     private Trip(

@@ -3,7 +3,6 @@ package hanglog.trip.service;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -52,9 +49,6 @@ class TripServiceTest {
     @Mock
     private TripCityRepository tripCityRepository;
 
-    @Mock
-    private DayLogRepository dayLogRepository;
-
     @DisplayName("여행을 생성한 후 tripId를 반환한다.")
     @Test
     void save() {
@@ -71,8 +65,6 @@ class TripServiceTest {
                 .willReturn(Optional.of(PARIS));
         given(tripRepository.save(any(Trip.class)))
                 .willReturn(LONDON_TRIP);
-        given(dayLogRepository.saveAll(anyList()))
-                .willReturn(Collections.emptyList());
 
         // when
         final Long actualId = tripService.save(tripCreateRequest);

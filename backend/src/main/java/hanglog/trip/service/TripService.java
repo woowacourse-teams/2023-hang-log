@@ -5,7 +5,6 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -29,7 +28,6 @@ public class TripService {
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
-    private final DayLogRepository dayLogRepository;
 
     public Long save(final TripCreateRequest tripCreateRequest) {
         final List<City> cites = tripCreateRequest.getCityIds().stream()
@@ -51,7 +49,6 @@ public class TripService {
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
-        dayLogRepository.saveAll(savedTrip.getDayLogs());
     }
 
     public List<TripResponse> getAllTrip() {
