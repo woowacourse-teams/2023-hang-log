@@ -9,9 +9,9 @@ import { useAddTripItemMutation } from '@hooks/api/useAddTripItemMutation';
 export const useAddTripItemForm = (
   tripId: number,
   initialDayLogId: number,
-  onSuccess?: CallableFunction
+  onSuccess?: () => void
 ) => {
-  const addTripItemMutation = useAddTripItemMutation(onSuccess);
+  const addTripItemMutation = useAddTripItemMutation();
   const [tripItemInformation, setTripItemInformation] = useState<TripItemFormType>({
     itemType: true,
     dayLogId: initialDayLogId,
@@ -51,7 +51,7 @@ export const useAddTripItemForm = (
       return;
     }
 
-    addTripItemMutation.mutate({ tripId, ...tripItemInformation });
+    addTripItemMutation.mutate({ tripId, ...tripItemInformation }, { onSuccess });
   };
 
   return { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit };
