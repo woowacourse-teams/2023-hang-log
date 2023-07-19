@@ -22,8 +22,9 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<Void> createItem(@PathVariable final Long tripId,
-                                           @RequestBody @Valid final ItemRequest itemRequest) {
+    public ResponseEntity<Void> createItem(
+            @PathVariable final Long tripId,
+            @RequestBody @Valid final ItemRequest itemRequest) {
         final Long itemId = itemService.save(tripId, itemRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + itemId)).build();
     }
