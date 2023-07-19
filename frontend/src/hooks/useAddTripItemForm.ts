@@ -1,4 +1,4 @@
-import { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormType } from '@type/tripItem';
 import { FormEvent, useCallback, useState } from 'react';
 
 import { isEmptyString } from '@utils/validator';

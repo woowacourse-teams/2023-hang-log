@@ -1,6 +1,6 @@
-import { ExpenseCategoryData } from '@/types/expense';
 import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
+import type { ExpenseCategoryData } from '@type/expense';
 import type { AxiosError } from 'axios';
 
 import { getExpenseCategory } from '@api/expense/getExpenseCategory';
