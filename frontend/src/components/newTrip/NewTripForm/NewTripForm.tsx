@@ -1,9 +1,9 @@
-import { postNewTrip } from '@/api/trips/trips';
-import { PATH } from '@/constants/path';
+import { PATH } from '@constants/path';
 import { Button } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useNewTripMutation } from '@hooks/api/useNewTripMutation';
 import { useNewTripForm } from '@hooks/newTrip/useNewTripForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
@@ -12,12 +12,18 @@ import { formStyling } from '@components/newTrip/NewTripForm/NewTripForm.style';
 
 const NewTripForm = () => {
   const { newTripData, setCityData, setDateData, isAllInputFilled } = useNewTripForm();
+  const { mutate } = useNewTripMutation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const id = await postNewTrip(newTripData);
-    console.log(id);
+
+    mutate(newTripData, {
+      onSuccess: moveToTripEditPageWithId,
+    });
+  };
+
+  const moveToTripEditPageWithId = (id: string) => {
     navigate(PATH.EDIT_TRIP.replace(':id', id));
   };
 

@@ -1,13 +1,15 @@
-import NewTripForm from '@/components/newTrip/NewTripForm/NewTripForm';
-import { useCityQuery } from '@/hooks/api/useCityQuery';
 import CreatePageImage from '@assets/svg/create-page-image.svg';
 import { Box, Flex, Heading } from 'hang-log-design-system';
+
+import { useCityQuery } from '@hooks/api/useCityQuery';
 
 import {
   backgroundImage,
   boxStyling,
   containerStyling,
 } from '@pages/TripCreatePage/TripCreatePage.style';
+
+import NewTripForm from '@components/newTrip/NewTripForm/NewTripForm';
 
 const TripCreatePage = () => {
   useCityQuery();
