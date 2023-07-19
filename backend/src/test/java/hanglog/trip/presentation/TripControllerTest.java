@@ -1,34 +1,12 @@
 package hanglog.trip.presentation;
 
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +16,31 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
+import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -63,6 +65,11 @@ class TripControllerTest extends RestDocsTest {
                 .thenReturn(1L);
 
         performPostRequest(tripCreateRequest);
+    }
+
+    private ResultActions performGetRequest(final int tripId) throws Exception {
+        return mockMvc.perform(get("/trips/{tripId}", tripId)
+                .contentType(APPLICATION_JSON));
     }
 
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
@@ -191,6 +198,29 @@ class TripControllerTest extends RestDocsTest {
 
         // then
         resultActions.andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("TripId로 단일 여행을 조회한다.")
+    @Test
+    void getTrip() throws Exception {
+        // given
+        makeTrip();
+        when(tripService.getTrip(1L))
+                .thenReturn(TripResponse.of(LONDON_TRIP));
+
+        // when
+        final ResultActions resultActions = performGetRequest(1);
+
+        // then
+        final MvcResult mvcResult = resultActions.andExpect(status().isOk())
+                .andDo(restDocs.document())
+                .andReturn();
+
+        final TripResponse tripResponse = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                TripResponse.class
+        );
+        assertThat(tripResponse).usingRecursiveComparison().isEqualTo(TripResponse.of(LONDON_TRIP));
     }
 
     @DisplayName("트립의 정보를 변경할 수 있다.")
@@ -424,4 +454,3 @@ class TripControllerTest extends RestDocsTest {
         verify(tripService).delete(anyLong());
     }
 }
-
