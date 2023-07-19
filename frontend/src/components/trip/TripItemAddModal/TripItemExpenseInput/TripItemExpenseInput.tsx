@@ -1,4 +1,4 @@
-import { CURRENCY_ICON } from '@constants/trip';
+import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ExpenseCategoryData } from '@type/expense';
 import type { TripItemFormType } from '@type/tripItem';
@@ -23,7 +23,7 @@ const TripItemExpenseInput = ({
 }: TripItemExpenseInputProps) => {
   const [_, setExpenseValue] = useState<TripItemFormType['expense']>(
     initialExpenseValue ?? {
-      currency: 'KRW',
+      currency: DEFAULT_CURRENCY,
       categoryId: 100,
       amount: 0,
     }
