@@ -69,7 +69,10 @@ public class TripService {
                 .orElseThrow(() -> new IllegalStateException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
         final int currentPeriod = Period.between(trip.getStartDate(), trip.getEndDate()).getDays() + 1;
         final int requestPeriod = Period.between(updateRequest.getStartDate(), updateRequest.getEndDate()).getDays() + 1;
-        changePeriod(trip, currentPeriod, requestPeriod);
+
+        if (currentPeriod != requestPeriod) {
+            changePeriod(trip, currentPeriod, requestPeriod);
+        }
 
         final Trip updatedTrip = new Trip(
                 trip.getId(),
@@ -83,23 +86,21 @@ public class TripService {
     }
 
     private void changePeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        if (currentPeriod != requestPeriod) {
-            final DayLog extraDayLog = trip.getDayLogs().remove(currentPeriod);
-            extraDayLog.updateOrdinal(requestPeriod + 1);
+        final DayLog extraDayLog = trip.getDayLogs().remove(currentPeriod);
+        extraDayLog.updateOrdinal(requestPeriod + 1);
 
-            if (currentPeriod < requestPeriod) {
-                IntStream.range(currentPeriod, requestPeriod)
-                        .mapToObj(i -> DayLog.generateEmpty(i+1, trip))
-                        .forEach(trip.getDayLogs()::add);
-            }
-
-            if (currentPeriod > requestPeriod) {
-                trip.getDayLogs().removeIf(dayLog ->
-                        dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod
-                );
-            }
-            trip.getDayLogs().add(extraDayLog);
+        if (currentPeriod < requestPeriod) {
+            IntStream.range(currentPeriod, requestPeriod)
+                    .mapToObj(i -> DayLog.generateEmpty(i + 1, trip))
+                    .forEach(trip.getDayLogs()::add);
         }
+
+        if (currentPeriod > requestPeriod) {
+            trip.getDayLogs().removeIf(dayLog ->
+                    dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod
+            );
+        }
+        trip.getDayLogs().add(extraDayLog);
     }
 
     public void delete(final Long tripId) {
