@@ -6,7 +6,6 @@ export const tripItemHandlers = [
   rest.post('/trips/:tripId/items', async (req, res, ctx) => {
     const { tripId } = req.params;
     const response = await req.json<TripItemFormType>();
-    console.log(response, '!!');
 
     const newTripItem = {
       id: 7,
@@ -32,6 +31,6 @@ export const tripItemHandlers = [
 
     trip.dayLogs[0].items.push(newTripItem);
 
-    return res(ctx.delay(3000), ctx.status(200));
+    return res(ctx.status(200));
   }),
 ];
