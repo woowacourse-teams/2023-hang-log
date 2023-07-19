@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,9 +19,11 @@ public class PlaceRequest {
     private final String name;
 
     @NotNull(message = "장소의 위도를 입력해주세요.")
+    @Digits(integer = 3, fraction = 13)
     private final BigDecimal latitude;
 
     @NotNull(message = "장소의 경도를 입력해주세요.")
+    @Digits(integer = 3, fraction = 13)
     private final BigDecimal longitude;
 
     @NotEmpty(message = "장소의 카테고리를 입력해주세요.")
