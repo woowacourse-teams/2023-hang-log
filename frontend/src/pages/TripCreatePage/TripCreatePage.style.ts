@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
   width: '100%',
@@ -7,22 +8,25 @@ export const containerStyling = css({
   justifyContent: 'center',
 });
 
+export const boxStyling = css({
+  position: 'relative',
+  top: '150px',
+  gap: Theme.spacer.spacing5,
+
+  backgroundColor: Theme.color.white,
+  zIndex: Theme.zIndex.overlayMiddle,
+});
+
 export const formStyling = css({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  gap: '24px',
-  marginTop: '32px',
-});
-
-export const boxStyling = css({
-  position: 'relative',
-  top: '100px',
-  gap: '32px',
+  gap: Theme.spacer.spacing4,
+  marginTop: Theme.spacer.spacing5,
 });
 
 export const backgroundImage = css({
   position: 'fixed',
-  bottom: 0,
+  bottom: Theme.spacer.spacing4,
   right: 0,
 });
