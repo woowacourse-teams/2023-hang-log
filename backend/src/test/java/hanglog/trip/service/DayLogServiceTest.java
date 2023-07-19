@@ -1,7 +1,6 @@
 package hanglog.trip.service;
 
-import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG;
-import static hanglog.trip.fixture.DayLogFixture.UPDATED_LONDON_DAYLOG;
+import static hanglog.trip.fixture.DayLogFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -36,16 +35,16 @@ class DayLogServiceTest {
         // given
         final DayLogGetResponse expected = new DayLogGetResponse(
                 1L,
-                "런던 여행 첫날",
+                "런던 여행 1일차",
                 1,
                 LocalDate.of(2023, 7, 1),
                 List.of());
 
         given(dayLogRepository.findById(1L))
-                .willReturn(Optional.of(LONDON_DAYLOG));
+                .willReturn(Optional.of(LONDON_DAYLOG_1));
 
         // when
-        final DayLogGetResponse actual = dayLogService.getById(LONDON_DAYLOG.getId());
+        final DayLogGetResponse actual = dayLogService.getById(LONDON_DAYLOG_1.getId());
 
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
@@ -58,12 +57,12 @@ class DayLogServiceTest {
         final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest("updated");
 
         given(dayLogRepository.findById(1L))
-                .willReturn(Optional.of(LONDON_DAYLOG));
+                .willReturn(Optional.of(LONDON_DAYLOG_1));
         given(dayLogRepository.save(any(DayLog.class)))
                 .willReturn(UPDATED_LONDON_DAYLOG);
 
         // when
-        dayLogService.updateTitle(LONDON_DAYLOG.getId(), request);
+        dayLogService.updateTitle(LONDON_DAYLOG_1.getId(), request);
 
         // then
         verify(dayLogRepository).findById(UPDATED_LONDON_DAYLOG.getId());
