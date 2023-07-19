@@ -18,10 +18,10 @@ public class OAuthLoginController {
         this.oAuthLoginService = oAuthLoginService;
     }
 
-    @GetMapping("/code/{registrationId}")
-    public void loginOAuth(@RequestParam final String code, @PathVariable final String registrationId) {
-        final String accessCode = oAuthLoginService.getAccessToken(code, registrationId);
-        final JsonNode userInfo = oAuthLoginService.getUserInfo(accessCode, registrationId);
-        oAuthLoginService.socialLogin(userInfo, registrationId);
+    @GetMapping("/code/{oAuthProvider}")
+    public void loginOAuth(@RequestParam final String code, @PathVariable final String oAuthProvider) {
+        final String accessCode = oAuthLoginService.getAccessToken(code, oAuthProvider);
+        final JsonNode userInfo = oAuthLoginService.getUserInfo(accessCode, oAuthProvider);
+        oAuthLoginService.socialLogin(userInfo, oAuthProvider);
     }
 }

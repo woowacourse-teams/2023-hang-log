@@ -35,19 +35,19 @@ public class OAuthLoginService {
         this.restTemplate = new RestTemplate();
     }
 
-    public String getAccessToken(final String authorizationCode, final String registrationId) {
+    public String getAccessToken(final String authorizationCode, final String oAuthProvider) {
         final ResponseEntity<JsonNode> responseNode = restTemplate.exchange(
-                env.getProperty(PROPERTY_PATH + registrationId + ".token-uri"),
+                env.getProperty(PROPERTY_PATH + oAuthProvider + ".token-uri"),
                 HttpMethod.POST,
-                getEntity(authorizationCode, registrationId),
+                getEntity(authorizationCode, oAuthProvider),
                 JsonNode.class
         );
         final JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
     }
 
-    public JsonNode getUserInfo(final String accessToken, final String registrationId) {
-        final String resourceUri = env.getProperty(PROPERTY_PATH + registrationId + ".user-info");
+    public JsonNode getUserInfo(final String accessToken, final String oAuthProvider) {
+        final String resourceUri = env.getProperty(PROPERTY_PATH + oAuthProvider + ".user-info");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -62,10 +62,10 @@ public class OAuthLoginService {
         return memberRepository.findBySocialLoginId(socialLoginId).orElseGet(() -> saveMember(oAuthProvider));
     }
 
-    private HttpEntity getEntity(final String authorizationCode, final String registrationId) {
-        final String clientId = env.getProperty(PROPERTY_PATH + registrationId + ".client-id");
-        final String clientSecret = env.getProperty(PROPERTY_PATH + registrationId + ".client-secret");
-        final String redirectUri = env.getProperty(PROPERTY_PATH + registrationId + ".redirect-uri");
+    private HttpEntity getEntity(final String authorizationCode, final String oAuthProvider) {
+        final String clientId = env.getProperty(PROPERTY_PATH + oAuthProvider + ".client-id");
+        final String clientSecret = env.getProperty(PROPERTY_PATH + oAuthProvider + ".client-secret");
+        final String redirectUri = env.getProperty(PROPERTY_PATH + oAuthProvider + ".redirect-uri");
 
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);

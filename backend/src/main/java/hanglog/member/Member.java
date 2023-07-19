@@ -1,6 +1,7 @@
 package hanglog.member;
 
 import static hanglog.member.MemberState.ACTIVE;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
@@ -8,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 30)
@@ -47,7 +47,7 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    public Member(String socialLoginId, String nickname, String imageUrl) {
+    public Member(final String socialLoginId, final String nickname, final String imageUrl) {
         this.socialLoginId = socialLoginId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
