@@ -173,8 +173,8 @@ public class Item extends BaseEntity {
         this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, new ArrayList<>());
     }
 
-    private void validateRatingFormat(final double rating) {
-        final double scaleValue = rating % 1;
+    private void validateRatingFormat(final Double rating) {
+        final Double scaleValue = rating % 1;
         if (scaleValue != 0.0 && scaleValue != 0.5) {
             throw new IllegalArgumentException("별점은 N.0점이거나 N.5점 형태이어야 합니다.");
         }
