@@ -4,6 +4,8 @@ import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
 import hanglog.global.type.StatusType;
+import hanglog.image.domain.Image;
+import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
@@ -27,6 +29,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
+    private final ImageRepository imageRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
@@ -41,10 +44,19 @@ public class ItemService {
                 itemRequest.getMemo(),
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
-                getExpenseByItemRequest(itemRequest)
+                getExpenseByItemRequest(itemRequest),
+                getImagesByItemRequest(itemRequest)
         );
         validateAlreadyDeleted(item);
         return itemRepository.save(item).getId();
+    }
+
+    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
+        return itemRequest.getImageUrls().stream()
+                .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
+                        .orElseThrow(() -> new IllegalArgumentException("요청한 URL에 해당하는 이미지가 존재하지 않습니다."))
+                )
+                .toList();
     }
 
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {

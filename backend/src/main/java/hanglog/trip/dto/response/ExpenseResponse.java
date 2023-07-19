@@ -11,7 +11,7 @@ public class ExpenseResponse {
 
     private final Long id;
     private final String currency;
-    private final Integer amount;
+    private final Double amount;
     private final CategoryResponse category;
 
     public static ExpenseResponse of(final Expense expense) {
