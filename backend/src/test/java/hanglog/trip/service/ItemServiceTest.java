@@ -8,6 +8,8 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
+import hanglog.image.domain.Image;
+import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
@@ -45,6 +47,9 @@ public class ItemServiceTest {
     @Mock
     private DayLogRepository dayLogRepository;
 
+    @Mock
+    private ImageRepository imageRepository;
+
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
     void save() {
@@ -62,6 +67,7 @@ public class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -72,6 +78,8 @@ public class ItemServiceTest {
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(imageRepository.findByImageUrl(any()))
+                .willReturn(Optional.of(new Image("imageUrl")));
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
@@ -97,6 +105,7 @@ public class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -137,7 +146,7 @@ public class ItemServiceTest {
                 ExpenseFixture.EURO_10000
         );
         given(itemRepository.findById(any()))
-                .willReturn(Optional.ofNullable(itemForDelete));
+                .willReturn(Optional.of(itemForDelete));
 
         // when
         itemService.delete(itemForDelete.getId());

@@ -1,8 +1,10 @@
 package hanglog.trip.dto.response;
 
 import hanglog.expense.Expense;
+import hanglog.image.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +18,9 @@ public class ItemResponse {
     private final Integer ordinal;
     private final Double rating;
     private final String memo;
+    private final List<String> imageUrls;
     private final PlaceResponse place;
     private final ExpenseResponse expense;
-    // TODO: imageUrls 추가 필요
 
     public static ItemResponse of(final Item item) {
         return new ItemResponse(
@@ -28,22 +30,29 @@ public class ItemResponse {
                 item.getOrdinal(),
                 item.getRating(),
                 item.getMemo(),
+                getImageUrls(item.getImages()),
                 getPlaceResponse(item.getPlace()),
                 getExpenseResponse(item.getExpense())
         );
     }
 
-    public static PlaceResponse getPlaceResponse(final Place place) {
+    private static PlaceResponse getPlaceResponse(final Place place) {
         if (place == null) {
             return null;
         }
         return PlaceResponse.of(place);
     }
 
-    public static ExpenseResponse getExpenseResponse(final Expense expense) {
+    private static ExpenseResponse getExpenseResponse(final Expense expense) {
         if (expense == null) {
             return null;
         }
         return ExpenseResponse.of(expense);
+    }
+
+    private static List<String> getImageUrls(final List<Image> images) {
+        return images.stream()
+                .map(Image::getImageUrl)
+                .toList();
     }
 }

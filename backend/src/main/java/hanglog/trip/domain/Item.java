@@ -11,6 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.global.type.StatusType;
+import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,8 +20,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -64,6 +68,9 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
+    @OneToMany(mappedBy = "item")
+    private List<Image> images = new ArrayList<>();
+
     public Item(
             final Long id,
             final ItemType itemType,
@@ -74,6 +81,7 @@ public class Item extends BaseEntity {
             final Place place,
             final DayLog dayLog,
             final Expense expense,
+            final List<Image> images,
             final StatusType statusType
     ) {
         super(statusType);
@@ -86,6 +94,7 @@ public class Item extends BaseEntity {
         this.place = place;
         this.dayLog = dayLog;
         this.expense = expense;
+        this.images = images;
         if (!dayLog.getItems().contains(this)) {
             dayLog.getItems().add(this);
         }
@@ -102,7 +111,50 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, USABLE);
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, new ArrayList<>(), USABLE);
+    }
+
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final Place place,
+            final DayLog dayLog,
+            final Expense expense,
+            final List<Image> images
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, images, USABLE);
+    }
+
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final DayLog dayLog,
+            final Expense expense,
+            final List<Image> images
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, images, USABLE);
+    }
+
+    public Item(
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final Place place,
+            final DayLog dayLog,
+            final Expense expense,
+            final List<Image> images
+    ) {
+        this(null, itemType, title, ordinal, rating, memo, place, dayLog, expense, images);
     }
 
     public Item(
@@ -115,19 +167,6 @@ public class Item extends BaseEntity {
             final DayLog dayLog,
             final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, USABLE);
-    }
-
-    public Item(
-            final ItemType itemType,
-            final String title,
-            final Integer ordinal,
-            final Double rating,
-            final String memo,
-            final Place place,
-            final DayLog dayLog,
-            final Expense expense
-    ) {
-        this(null, itemType, title, ordinal, rating, memo, place, dayLog, expense);
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, new ArrayList<>());
     }
 }

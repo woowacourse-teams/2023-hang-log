@@ -58,9 +58,10 @@ public class ItemControllerTest extends RestDocsTest {
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
-                4.5,
+                5.5,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -101,6 +102,10 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("imageUrls")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("여행 아이템 이미지 URL 배열")
+                                                .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
                                                 .description("장소 이름")
@@ -156,6 +161,7 @@ public class ItemControllerTest extends RestDocsTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -196,6 +202,10 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("imageUrls")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("여행 아이템 이미지 URL 배열")
+                                                .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
                                                 .description("장소 이름")
