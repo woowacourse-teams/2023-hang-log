@@ -95,7 +95,7 @@ class TripServiceTest {
         given(cityRepository.findById(1L))
                 .willReturn(Optional.of(LONDON));
         given(cityRepository.findById(3L))
-                .willThrow(new IllegalArgumentException("해당하는 여행이 존재하지 않습니다."));
+                .willThrow(new IllegalArgumentException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
 
         // when & then
         assertThatThrownBy(() -> tripService.save(tripCreateRequest))

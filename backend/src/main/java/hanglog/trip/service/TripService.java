@@ -63,13 +63,13 @@ public class TripService {
 
     public TripResponse getTrip(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
         return TripResponse.of(trip);
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalStateException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
         final int currentPeriod = Period.between(trip.getStartDate(), trip.getEndDate()).getDays() + 1;
         final int requestPeriod = Period.between(updateRequest.getStartDate(), updateRequest.getEndDate()).getDays() + 1;
         changePeriod(trip, currentPeriod, requestPeriod);
@@ -107,7 +107,7 @@ public class TripService {
 
     public void delete(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalStateException("해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalStateException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
         tripRepository.delete(trip);
     }
 
