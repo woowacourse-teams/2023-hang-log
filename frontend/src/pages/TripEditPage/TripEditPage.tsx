@@ -19,8 +19,10 @@ const TripEditPage = () => {
   useExpenseCategoryQuery();
 
   const { isOpen, open, close } = useOverlay();
-  const { selected, handleSelectClick } = useSelect(tripData.dayLogs[0].id);
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selected)!;
+  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
+    tripData.dayLogs[0].id
+  );
+  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
   const dates = tripData.dayLogs.map((data) => ({
     id: data.id,
@@ -34,7 +36,7 @@ const TripEditPage = () => {
         tripId={Number(tripId)}
         selectedDayLog={selectedDayLog}
         dates={dates}
-        onTabChange={handleSelectClick}
+        onTabChange={handleDayLogIdSelectClick}
       />
       <FloatingButton css={addButtonStyling} onClick={open} />
       <TripItemAddModal
