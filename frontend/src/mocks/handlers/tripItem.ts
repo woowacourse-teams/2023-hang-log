@@ -11,7 +11,7 @@ export const tripItemHandlers = [
       id: 7,
       itemType: false,
       title: response.title,
-      ordinal: 4,
+      ordinal: 1,
       rating: response.rating,
       memo: response.memo,
       place: response.place,
@@ -21,15 +21,15 @@ export const tripItemHandlers = [
             currency: response.expense.currency as CurrencyType,
             amount: response.expense.amount,
             category: {
-              id: 100,
-              name: '음식',
+              id: 500,
+              name: '교통',
             },
           }
         : null,
       imageUrls: [],
     };
 
-    trip.dayLogs[0].items.push(newTripItem);
+    trip.dayLogs[2].items.push(newTripItem);
 
     return res(ctx.status(200));
   }),
