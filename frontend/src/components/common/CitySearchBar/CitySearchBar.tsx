@@ -2,7 +2,7 @@ import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
 import { Badge, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
-import type { FormEvent } from 'react';
+import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
@@ -60,9 +60,15 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
     inputRef.current?.focus();
   };
 
-  const handleInputFocus = () => {
+  const handleInputFocus = (e: any) => {
     if (queryWord) {
       openSuggestion();
+    }
+  };
+
+  const preventSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   };
 
@@ -92,6 +98,7 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
               value={queryWord}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              onKeyDown={preventSubmit}
               ref={inputRef}
               css={inputStyling}
             />
