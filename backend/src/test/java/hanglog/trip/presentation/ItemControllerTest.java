@@ -24,6 +24,7 @@ import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.ItemService;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +52,16 @@ public class ItemControllerTest extends RestDocsTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
-                4.5,
+                5.0,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -100,6 +102,10 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("imageUrls")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("여행 아이템 이미지 URL 배열")
+                                                .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
                                                 .description("장소 이름")
@@ -113,7 +119,7 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .description("장소 경도")
                                                 .attributes(field("constraint", "BigDecimal(3,13)")),
                                         fieldWithPath("place.apiCategory")
-                                                .type(JsonFieldType.STRING)
+                                                .type(JsonFieldType.ARRAY)
                                                 .description("장소 카테고리 배열")
                                                 .attributes(field("constraint", "문자열 배열")),
                                         fieldWithPath("expense.currency")
@@ -144,10 +150,10 @@ public class ItemControllerTest extends RestDocsTest {
                 "에펠탑",
                 new BigDecimal("38.123456"),
                 new BigDecimal("39.123456"),
-                "categoryApiId"
+                List.of("culture")
         );
 
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
 
         final ItemRequest itemRequest = new ItemRequest(
                 true,
@@ -155,6 +161,7 @@ public class ItemControllerTest extends RestDocsTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
+                List.of("imageUrl"),
                 placeRequest,
                 expenseRequest
         );
@@ -195,6 +202,10 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("imageUrls")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("여행 아이템 이미지 URL 배열")
+                                                .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
                                                 .description("장소 이름")
@@ -208,7 +219,7 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .description("장소 경도")
                                                 .attributes(field("constraint", "BigDecimal(3,13)")),
                                         fieldWithPath("place.apiCategory")
-                                                .type(JsonFieldType.STRING)
+                                                .type(JsonFieldType.ARRAY)
                                                 .description("장소 카테고리 배열")
                                                 .attributes(field("constraint", "문자열 배열")),
                                         fieldWithPath("expense.currency")

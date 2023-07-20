@@ -4,6 +4,7 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -27,8 +28,10 @@ public class ItemRequest {
     @NotNull(message = "여행 아이템이 속한 데이 로그를 입력해주세요.")
     private final Long dayLogId;
 
+    @Size(max = 10, message = "여행 아이템의 이미지는 최대 10개까지 첨부할 수 있습니다.")
+    private final List<String> imageUrls;
+
     private final PlaceRequest place;
 
     private final ExpenseRequest expense;
-    // TODO: images 추가 필요
 }
