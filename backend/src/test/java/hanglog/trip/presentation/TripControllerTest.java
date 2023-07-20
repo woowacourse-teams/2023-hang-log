@@ -220,7 +220,62 @@ class TripControllerTest extends RestDocsTest {
 
         // then
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
-                .andDo(restDocs.document())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("tripId")
+                                        .description("여행 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 제목")
+                                        .attributes(field("constraint", "50자 이하의 문자열")),
+                                fieldWithPath("startDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 시작 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("endDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 종료 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("description")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 요약")
+                                        .attributes(field("constraint", "200자 이하의 문자열")),
+                                fieldWithPath("imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("대표 이미지")
+                                        .attributes(field("constraint", "url")),
+                                fieldWithPath("dayLogs")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("날짜별 여행 기록 배열")
+                                        .attributes(field("constraint", "2개 이상의 데이 로그")),
+                                fieldWithPath("dayLogs[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("날짜별 기록 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("dayLogs[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("소제목")
+                                        .attributes(field("constraint", "문자열")),
+                                fieldWithPath("dayLogs[].ordinal")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행에서의 날짜 순서")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("dayLogs[].date")
+                                        .type(JsonFieldType.STRING)
+                                        .description("실제 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("dayLogs[].items")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("아이템 목록")
+                                        .attributes(field("constraint", "배열"))
+                        )
+                ))
                 .andReturn();
 
         final TripResponse tripResponse = objectMapper.readValue(
@@ -245,12 +300,64 @@ class TripControllerTest extends RestDocsTest {
 
         // then
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
-                .andDo(restDocs.document())
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 제목")
+                                        .attributes(field("constraint", "50자 이하의 문자열")),
+                                fieldWithPath("[].startDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 시작 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("[].endDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 종료 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("[].description")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 요약")
+                                        .attributes(field("constraint", "200자 이하의 문자열")),
+                                fieldWithPath("[].imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("대표 이미지")
+                                        .attributes(field("constraint", "url")),
+                                fieldWithPath("[].dayLogs")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("날짜별 여행 기록 배열")
+                                        .attributes(field("constraint", "2개 이상의 데이 로그")),
+                                fieldWithPath("[].dayLogs[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("날짜별 기록 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("[].dayLogs[].title")
+                                        .type(JsonFieldType.STRING)
+                                        .description("소제목")
+                                        .attributes(field("constraint", "문자열")),
+                                fieldWithPath("[].dayLogs[].ordinal")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행에서의 날짜 순서")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("[].dayLogs[].date")
+                                        .type(JsonFieldType.STRING)
+                                        .description("실제 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd")),
+                                fieldWithPath("[].dayLogs[].items")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("아이템 목록")
+                                        .attributes(field("constraint", "배열"))
+                        )
+                ))
                 .andReturn();
 
-        List<TripResponse> tripResponses = objectMapper.readValue(
+        final List<TripResponse> tripResponses = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
-                new TypeReference<>() {}
+                new TypeReference<>() {
+                }
         );
         assertThat(tripResponses).usingRecursiveComparison()
                 .isEqualTo(List.of(TripResponse.of(LONDON_TRIP)));
