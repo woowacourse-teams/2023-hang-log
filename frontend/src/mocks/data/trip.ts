@@ -4,7 +4,7 @@ export const trip: TripData = {
   id: 1,
   title: '런던 여행',
   startDate: '2023-07-01',
-  endDate: '2023-07-03',
+  endDate: '2023-07-04',
   description: '라곤의 좌충우돌 유럽 여행기',
   imageUrl:
     'https://a.cdn-hotels.com/gdcs/production153/d1371/e6c1f55e-51ac-41d5-8c63-2d0c63faf59e.jpg',
@@ -66,7 +66,7 @@ export const trip: TripData = {
           id: 2,
           itemType: true,
           title: '대영박물관',
-          ordinal: 1,
+          ordinal: 2,
           rating: null,
           memo: '세계의 역사를 볼 수 있는 대영박물관',
           place: {
@@ -86,7 +86,7 @@ export const trip: TripData = {
           id: 3,
           itemType: false,
           title: '택시',
-          ordinal: 1,
+          ordinal: 3,
           rating: null,
           memo: '대영박물관에서 빅밴으로',
           place: null,
@@ -113,7 +113,7 @@ export const trip: TripData = {
           id: 5,
           itemType: true,
           title: 'LOWDOWN',
-          ordinal: 2,
+          ordinal: 1,
           rating: 4.5,
           memo: null,
           place: {
@@ -164,9 +164,16 @@ export const trip: TripData = {
     },
     {
       id: 3,
-      title: '파리 방문기',
+      title: '',
       ordinal: 3,
       date: '2023-07-03',
+      items: [],
+    },
+    {
+      id: 4,
+      title: '',
+      ordinal: 4,
+      date: '2023-07-04',
       items: [],
     },
   ],

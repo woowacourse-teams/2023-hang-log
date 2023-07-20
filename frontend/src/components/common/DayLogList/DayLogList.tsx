@@ -1,5 +1,5 @@
 import type { DayLogData } from '@type/dayLog';
-import { Tab, Tabs, useSelect } from 'hang-log-design-system';
+import { Tab, Tabs } from 'hang-log-design-system';
 
 import { formatMonthDate } from '@utils/formatter';
 
@@ -8,32 +8,56 @@ import { containerStyling } from '@components/common/DayLogList/DayLogList.style
 
 interface DayLogListProps {
   tripId: number;
-  logs: DayLogData[];
+  selectedDayLog: DayLogData;
+  dates: {
+    id: number;
+    date: string;
+  }[];
+  onTabChange: (selectedId: string | number) => void;
+  openAddModal: () => void;
 }
 
-const DayLogList = ({ tripId, logs }: DayLogListProps) => {
-  const { selected, handleSelectClick } = useSelect(logs[0].id);
-  const selectedDayLog = logs.find((log) => log.id === selected)!;
-
+const DayLogList = ({
+  tripId,
+  selectedDayLog,
+  dates,
+  onTabChange,
+  openAddModal,
+}: DayLogListProps) => {
   return (
     <section css={containerStyling}>
       <Tabs>
-        {logs.map((log, index) => (
-          <Tab
-            key={index}
-            text={
-              log.id === selected
-                ? `Day ${log.ordinal} - ${formatMonthDate(log.date)} `
-                : `Day ${log.ordinal}`
-            }
-            variant="outline"
-            tabId={log.id}
-            selectedId={selected}
-            changeSelect={handleSelectClick}
-          />
-        ))}
+        {dates.map((date, index) => {
+          if (index === dates.length - 1) {
+            return (
+              <Tab
+                key={index}
+                text={'기타'}
+                variant="outline"
+                tabId={date.id}
+                selectedId={selectedDayLog.id}
+                changeSelect={onTabChange}
+              />
+            );
+          }
+
+          return (
+            <Tab
+              key={index}
+              text={
+                date.id === selectedDayLog.id
+                  ? `Day ${index + 1} - ${formatMonthDate(date.date)} `
+                  : `Day ${index + 1}`
+              }
+              variant="outline"
+              tabId={date.id}
+              selectedId={selectedDayLog.id}
+              changeSelect={onTabChange}
+            />
+          );
+        })}
       </Tabs>
-      <DayLogItem tripId={tripId} {...selectedDayLog} />
+      <DayLogItem tripId={tripId} openAddModal={openAddModal} {...selectedDayLog} />
     </section>
   );
 };

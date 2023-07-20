@@ -8,8 +8,8 @@ import { getCities } from '@api/city/getCities';
 export const useCityQuery = () => {
   const { data: citiesData } = useQuery<CityData[], AxiosError>(['city'], getCities, {
     retry: NETWORK.RETRY_COUNT,
-    // suspense: true,
-    // useErrorBoundary: true,
+    suspense: true,
+    useErrorBoundary: true,
   });
 
   return { citiesData };
