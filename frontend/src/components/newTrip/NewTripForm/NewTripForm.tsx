@@ -12,19 +12,20 @@ import { formStyling } from '@components/newTrip/NewTripForm/NewTripForm.style';
 
 const NewTripForm = () => {
   const { newTripData, setCityData, setDateData, isAllInputFilled } = useNewTripForm();
-  const { mutate } = useNewTripMutation();
+  const newTripMutation = useNewTripMutation();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    mutate(newTripData, {
-      onSuccess: moveToTripEditPageWithId,
+    newTripMutation.mutate(newTripData, {
+      onSuccess: goToTripEditPageWithId,
     });
   };
 
-  const moveToTripEditPageWithId = (id: string) => {
-    navigate(PATH.EDIT_TRIP.replace(':tripId', id));
+  const goToTripEditPageWithId = (id: string) => {
+    const targetURL = PATH.EDIT_TRIP.replace(':tripId', id);
+    navigate(targetURL);
   };
 
   return (
