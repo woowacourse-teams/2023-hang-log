@@ -11,3 +11,7 @@ export interface TripData {
   cities: CityData[];
   dayLogs: DayLogData[];
 }
+
+export interface TripPutData extends Omit<TripData, 'cities' | 'id'> {
+  cityIds: number[];
+}
