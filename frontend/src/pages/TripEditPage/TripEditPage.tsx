@@ -18,7 +18,7 @@ const TripEditPage = () => {
   const { tripData } = useTripQuery(Number(tripId));
   useExpenseCategoryQuery();
 
-  const { isOpen, open, close } = useOverlay();
+  const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
@@ -38,13 +38,13 @@ const TripEditPage = () => {
         dates={dates}
         onTabChange={handleDayLogIdSelectClick}
       />
-      <FloatingButton css={addButtonStyling} onClick={open} />
+      <FloatingButton css={addButtonStyling} onClick={openAddModal} />
       <TripItemAddModal
         tripId={Number(tripId)}
-        isOpen={isOpen}
+        isOpen={isAddModalOpen}
         dates={dates}
         currentDate={{ id: selectedDayLog.id, date: selectedDayLog.date }}
-        onClose={close}
+        onClose={closeAddModal}
       />
     </section>
   );
