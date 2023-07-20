@@ -7,7 +7,7 @@ spring:
       show-sql: true
     open-in-view: false
   datasource:
-    url: jdbc:mysql://localhost:3306/hang_log?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/hanglog?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: user
     password: password

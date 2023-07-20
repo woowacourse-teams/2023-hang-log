@@ -1,15 +1,18 @@
 version: '3'
 services:
   mysql8:
-    image: mysql:8.0
+    image: mysql:8.0.28
+    platform: linux/x86_64
     container_name: mysql8
     restart: always
     ports:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: hang_log
+      MYSQL_DATABASE: hanglog
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     volumes:
-      - ./data:/var/lib/mysql
+      - ./db/mysql/data:/var/lib/mysql
+      - ./db/mysql/config:/etc/mysql/conf.d
+      - ./db/mysql/init:/docker-entrypoint-initdb.d
