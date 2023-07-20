@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { makeRegexByCho } from '@utils/cityFilter';
 
 export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
-  const cityData = useQueryClient().getQueryData<CityData[]>(['city']);
+  const queryClient = useQueryClient();
+  const cityData = queryClient.getQueryData<CityData[]>(['city']);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 

@@ -3,11 +3,7 @@ import { Box, Flex, Heading } from 'hang-log-design-system';
 
 import { useCityQuery } from '@hooks/api/useCityQuery';
 
-import {
-  backgroundImage,
-  boxStyling,
-  containerStyling,
-} from '@pages/TripCreatePage/TripCreatePage.style';
+import { backgroundImage, boxStyling } from '@pages/TripCreatePage/TripCreatePage.style';
 
 import NewTripForm from '@components/newTrip/NewTripForm/NewTripForm';
 
