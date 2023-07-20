@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CityResponse {
 
+    private static final String CITY_SEPARATOR =", ";
+
     private final Long id;
     private final String name;
 
     public static CityResponse of(final City city) {
-        String country = city.getCountry();
-        String name = city.getName();
-        return new CityResponse(city.getId(), country + ", " + name);
+        final String country = city.getCountry();
+        final String name = city.getName();
+        return new CityResponse(city.getId(), country + CITY_SEPARATOR + name);
     }
 }
