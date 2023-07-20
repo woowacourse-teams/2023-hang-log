@@ -31,7 +31,7 @@ const NewTripForm = () => {
     <form css={formStyling} onSubmit={handleSubmit}>
       <CitySearchBar setCityData={setCityData} />
       <DateInput setDateData={setDateData} />
-      <Button variant="primary" disabled={!isAllInputFilled} style={{ width: '400px' }}>
+      <Button variant="primary" disabled={!isAllInputFilled}>
         기록하기
       </Button>
     </form>

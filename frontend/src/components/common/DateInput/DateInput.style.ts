@@ -7,8 +7,6 @@ export const containerStyling = css({
 
   width: '100%',
   margin: '0 auto',
-
-  cursor: 'pointer',
 });
 
 export const getInputStyling = (isCalendarOpen: boolean) => {
@@ -16,13 +14,10 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
     width: '400px',
     marginTop: Theme.spacer.spacing2,
 
-    cursor: 'pointer',
-
     '> *': {
       '> *:nth-of-type(odd)': {
         backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray100,
         boxShadow: isCalendarOpen ? Theme.boxShadow.shadow8 : '',
-        border: `1px solid ${Theme.color.gray100}`,
       },
     },
   });
@@ -36,6 +31,7 @@ export const calendarStyling = css({
   border: `1px solid ${Theme.color.gray200}`,
   borderRadius: Theme.borderRadius.small,
   backgroundColor: Theme.color.white,
+  boxShadow: Theme.boxShadow.shadow8,
 
   zIndex: Theme.zIndex.overlayPeak,
 });

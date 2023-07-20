@@ -7,4 +7,8 @@ export const formStyling = css({
   flexDirection: 'column',
   gap: Theme.spacer.spacing4,
   marginTop: Theme.spacer.spacing5,
+
+  '> button': {
+    width: '100%',
+  },
 });
