@@ -12,7 +12,6 @@ export const boxStyling = css({
   left: '50%',
   transform: 'translate(-45%, -50%)',
   gap: Theme.spacer.spacing5,
-
   zIndex: Theme.zIndex.overlayMiddle,
 });
 

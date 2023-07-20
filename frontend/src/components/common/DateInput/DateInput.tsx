@@ -1,5 +1,5 @@
 import CalendarIcon from '@assets/svg/calendar-icon.svg';
-import { DateRangeData } from '@type/trips';
+import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import { useEffect, useState } from 'react';
 

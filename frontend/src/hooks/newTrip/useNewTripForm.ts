@@ -1,5 +1,5 @@
-import { CityData } from '@type/city';
-import { DateRangeData, NewTripData } from '@type/trips';
+import type { CityData } from '@type/city';
+import type { DateRangeData, NewTripData } from '@type/trips';
 import { useEffect, useState } from 'react';
 
 const initialNewTripData = {
