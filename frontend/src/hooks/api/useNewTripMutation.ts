@@ -1,7 +1,6 @@
+import { postNewTrip } from '@/api/trips/postNewTrip';
 import { NETWORK } from '@constants/api';
 import { useMutation } from '@tanstack/react-query';
-
-import { postNewTrip } from '@api/trips/newTrip';
 
 export const useNewTripMutation = () => {
   const newTripMutation = useMutation(postNewTrip(), {
