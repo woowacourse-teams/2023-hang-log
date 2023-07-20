@@ -1,7 +1,7 @@
 import CalendarIcon from '@assets/svg/calendar-icon.svg';
-import { DateRangeData } from '@type/trips';
+import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { dateRangeToString } from '@utils/formatter';
 
@@ -13,12 +13,20 @@ import {
 
 interface DateInputProps {
   initialDateRange?: DateRangeData;
+  setDateData: (dateRange: DateRangeData) => void;
 }
 
-const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputProps) => {
+const DateInput = ({
+  initialDateRange = { start: null, end: null },
+  setDateData,
+}: DateInputProps) => {
   const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
+
+  useEffect(() => {
+    setDateData(selectedDateRange);
+  }, [selectedDateRange]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
     if (!dateRange.end) return;
@@ -35,8 +43,8 @@ const DateInput = ({ initialDateRange = { start: null, end: null } }: DateInputP
           <Input
             placeholder="방문 날짜를 입력해주세요"
             icon={<CalendarIcon aria-label="캘린더 아이콘" />}
-            disabled
             value={inputValue}
+            readOnly
           />
         </Box>
         {isCalendarOpen && (

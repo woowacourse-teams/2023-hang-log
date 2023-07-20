@@ -14,3 +14,9 @@ export interface DateRangeData {
   start: string | null;
   end: string | null;
 }
+
+export interface NewTripData {
+  startDate: string | null;
+  endDate: string | null;
+  cityIds: number[];
+}
