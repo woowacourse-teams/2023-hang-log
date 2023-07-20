@@ -1,0 +1,15 @@
+version: '3'
+services:
+  mysql8:
+    image: mysql:8.0
+    container_name: mysql8
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hanglog
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./data:/var/lib/mysql
