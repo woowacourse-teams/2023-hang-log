@@ -7,6 +7,8 @@ export const containerStyling = css({
 
   width: '100%',
   margin: '0 auto',
+
+  cursor: 'pointer',
 });
 
 export const getInputStyling = (isCalendarOpen: boolean) => {
@@ -18,6 +20,10 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
       '> *:nth-of-type(odd)': {
         backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray100,
         boxShadow: isCalendarOpen ? Theme.boxShadow.shadow8 : '',
+        cursor: 'pointer',
+      },
+      '> *': {
+        '> input': { cursor: 'pointer' },
       },
     },
   });
