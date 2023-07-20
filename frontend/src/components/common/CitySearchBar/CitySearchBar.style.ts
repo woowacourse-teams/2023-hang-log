@@ -3,7 +3,6 @@ import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
   width: '400px',
-  height: '78px',
   margin: '0 auto',
 });
 

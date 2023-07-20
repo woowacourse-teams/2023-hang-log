@@ -4,13 +4,13 @@ import { Theme } from 'hang-log-design-system';
 export const containerStyling = css({
   width: '100%',
   flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 
 export const boxStyling = css({
-  position: 'fixed',
-  top: '45%',
-  left: '50%',
-  transform: 'translate(-45%, -50%)',
+  position: 'relative',
+  top: '72px',
   gap: Theme.spacer.spacing5,
   zIndex: Theme.zIndex.overlayMiddle,
 });
