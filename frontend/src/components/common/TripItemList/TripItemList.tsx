@@ -57,7 +57,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   );
 };
 
-TripItemList.Empty = () => {
+TripItemList.Empty = ({ openAddModal }: { openAddModal: () => void }) => {
   return (
     <>
       <Heading size="xSmall">아직 추가된 일정 기록이 없습니다!</Heading>
@@ -65,7 +65,7 @@ TripItemList.Empty = () => {
         여행하면서 갔던 장소, 사용했던 경비와 같은 여행 일정 기록들을 추가해 보세요.
       </Text>
       {/* 클릭하면 일정 추가 모달 열기 */}
-      <Button css={addItemButtonStyling} type="button" variant="primary">
+      <Button css={addItemButtonStyling} type="button" variant="primary" onClick={openAddModal}>
         일정 기록 추가하기
       </Button>
     </>

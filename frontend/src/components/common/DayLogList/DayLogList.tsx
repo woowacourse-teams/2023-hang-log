@@ -14,9 +14,16 @@ interface DayLogListProps {
     date: string;
   }[];
   onTabChange: (selectedId: string | number) => void;
+  openAddModal: () => void;
 }
 
-const DayLogList = ({ tripId, selectedDayLog, dates, onTabChange }: DayLogListProps) => {
+const DayLogList = ({
+  tripId,
+  selectedDayLog,
+  dates,
+  onTabChange,
+  openAddModal,
+}: DayLogListProps) => {
   return (
     <section css={containerStyling}>
       <Tabs>
@@ -35,7 +42,7 @@ const DayLogList = ({ tripId, selectedDayLog, dates, onTabChange }: DayLogListPr
           />
         ))}
       </Tabs>
-      <DayLogItem tripId={tripId} {...selectedDayLog} />
+      <DayLogItem tripId={tripId} openAddModal={openAddModal} {...selectedDayLog} />
     </section>
   );
 };

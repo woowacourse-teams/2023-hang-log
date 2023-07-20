@@ -33,6 +33,7 @@ export const Default: Story = {
         selectedDayLog={selectedDayLog}
         dates={dates}
         onTabChange={handleSelectClick}
+        openAddModal={() => {}}
       />
     );
   },

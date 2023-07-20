@@ -37,6 +37,7 @@ const TripEditPage = () => {
         selectedDayLog={selectedDayLog}
         dates={dates}
         onTabChange={handleDayLogIdSelectClick}
+        openAddModal={openAddModal}
       />
       <FloatingButton css={addButtonStyling} onClick={openAddModal} />
       <TripItemAddModal
