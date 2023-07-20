@@ -8,7 +8,7 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: hanglog
+      MYSQL_DATABASE: hang_log
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     volumes:
