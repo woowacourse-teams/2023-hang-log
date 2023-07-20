@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import { memo, useState } from 'react';
 
 interface TripItemTitleInputProps {
-  initialValue: string;
+  value: string;
   isError: boolean;
   updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
   disableError: () => void;
@@ -12,16 +12,13 @@ interface TripItemTitleInputProps {
 
 const TripItemTitleInput = ({
   isError,
-  initialValue,
+  value,
   updateInputValue,
   disableError,
 }: TripItemTitleInputProps) => {
-  const [value, setValue] = useState(initialValue);
-
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (isError) disableError();
 
-    setValue(event.target.value);
     updateInputValue('title', event.target.value);
   };
 

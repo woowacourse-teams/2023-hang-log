@@ -34,12 +34,12 @@ const TripItemAddModal = ({
         <Flex styles={{ gap: Theme.spacer.spacing4 }}>
           <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
             <TripItemCategoryInput
-              initialCategory={tripItemInformation.itemType}
+              itemType={tripItemInformation.itemType}
               updateInputValue={updateInputValue}
             />
             <TripItemDateInput
               currentCategory={tripItemInformation.itemType}
-              initialDate={currentDate.date}
+              currentDate={currentDate.date}
               dates={dates}
               updateInputValue={updateInputValue}
             />
@@ -48,20 +48,20 @@ const TripItemAddModal = ({
             ) : (
               <TripItemTitleInput
                 isError={isTitleError}
-                initialValue={tripItemInformation.title}
+                value={tripItemInformation.title}
                 updateInputValue={updateInputValue}
                 disableError={disableTitleError}
               />
             )}
             <TripItemStarRatingInput
-              initialRate={tripItemInformation.rating}
+              rating={tripItemInformation.rating}
               updateInputValue={updateInputValue}
             />
             <TripItemExpenseInput updateInputValue={updateInputValue} />
           </Flex>
           <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
             <TripItemMemoInput
-              initialValue={tripItemInformation.memo}
+              value={tripItemInformation.memo}
               updateInputValue={updateInputValue}
             />
             {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}

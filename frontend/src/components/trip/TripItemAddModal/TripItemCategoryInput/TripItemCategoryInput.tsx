@@ -4,14 +4,11 @@ import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
 interface TripItemCategoryInputProps {
-  initialCategory: TripItemFormType['itemType'];
+  itemType: TripItemFormType['itemType'];
   updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
 }
 
-const TripItemCategoryInput = ({
-  initialCategory,
-  updateInputValue,
-}: TripItemCategoryInputProps) => {
+const TripItemCategoryInput = ({ itemType, updateInputValue }: TripItemCategoryInputProps) => {
   const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const itemType = event.target.id === '장소';
     updateInputValue('itemType', itemType);
@@ -23,7 +20,7 @@ const TripItemCategoryInput = ({
       required
       name="trip-item-category"
       options={['장소', '기타']}
-      initialCheckedOption={initialCategory ? '장소' : '기타'}
+      initialCheckedOption={itemType ? '장소' : '기타'}
       onChange={handleCategoryChange}
     />
   );
