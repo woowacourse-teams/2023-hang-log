@@ -4,17 +4,15 @@ import hanglog.member.repository.MemberRepository;
 import hanglog.member.service.dto.GoogleUserInfoResponseDto;
 import hanglog.member.service.dto.UserInfoDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 @Service
-@PropertySource("classpath:application.properties")
 public class GoogleLoginService extends LoginService {
 
-    private static final String PROPERTIES_PATH = "${spring.oauth2.client.registration.google.";
+    private static final String PROPERTIES_PATH = "${spring.oauth2.provider.google.";
 
     private GoogleLoginService(
             final MemberRepository memberRepository,
