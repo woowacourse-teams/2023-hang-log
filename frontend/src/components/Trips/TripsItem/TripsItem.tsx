@@ -23,8 +23,8 @@ const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: Tr
     <Flex styles={{ direction: 'column' }} css={boxStyling}>
       <Box css={imageBoxStyling}>{coverImage && <img src={coverImage} css={imageStyling} />}</Box>
       <Box css={badgeBoxStyling}>
-        {cityTags.map((badge) => {
-          return <Badge key={badge.id}>{badge.name}</Badge>;
+        {cityTags.map((cityTag) => {
+          return <Badge key={cityTag.id}>{cityTag.name}</Badge>;
         })}
       </Box>
       <Text size="large" css={nameStyling}>

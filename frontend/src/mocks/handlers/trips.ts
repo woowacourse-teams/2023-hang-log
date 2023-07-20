@@ -12,14 +12,16 @@ export const tripsHandlers = [
       })
     );
   }),
-
-  rest.get(`${END_POINTS.TRIPS}/none`, (req, res, ctx) => {
+  rest.get('/trips/none', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
         trips: [],
       })
     );
+  }),
+  rest.post('/trips', (req, res, ctx) => {
+    return res(ctx.status(201), ctx.set('Location', '1'));
   }),
 
   rest.get(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
