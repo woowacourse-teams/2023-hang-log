@@ -13,7 +13,7 @@ export const useCityTags = (initialCityTags: CityData[]) => {
     const cityName = getCityName(selectedCity.name);
 
     setCityTags((prevCityTags) => {
-      const hasCityTag = !!prevCityTags.filter((tags) => tags.id === selectedCity.id);
+      const hasCityTag = !!prevCityTags.filter((tags) => tags.id === selectedCity.id).length;
 
       if (hasCityTag) {
         const filteredCityTags = prevCityTags.filter((cityTag) => cityTag.id !== selectedCity.id);

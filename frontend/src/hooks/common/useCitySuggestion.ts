@@ -31,10 +31,6 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     );
   };
 
-  const focusSuggestion = (index: number) => {
-    setFocusedSuggestionIndex(index);
-  };
-
   const isFocused = (index: number) => {
     return index === focusedSuggestionIndex;
   };
@@ -66,7 +62,6 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     focusedSuggestionIndex,
     setNewSuggestions,
     focusLowerSuggestion,
-    focusSuggestion,
     focusUpperSuggestion,
     isFocused,
   };

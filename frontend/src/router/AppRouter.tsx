@@ -32,7 +32,11 @@ const router = createBrowserRouter([
       },
       {
         path: PATH.CREATE_TRIP,
-        element: <TripCreatePage />,
+        element: (
+          <Suspense>
+            <TripCreatePage />
+          </Suspense>
+        ),
       },
     ],
   },
