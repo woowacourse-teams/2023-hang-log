@@ -1,7 +1,7 @@
 import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
 import type { TripsData } from '@type/trips';
-import { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 
 import { getTrips } from '@api/trips/trips';
 

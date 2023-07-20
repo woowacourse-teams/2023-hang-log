@@ -1,4 +1,4 @@
-import { tripsMock } from '@mocks/data/trips';
+import { trips } from '@mocks/data/trips';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { sortByStartDate } from '@utils/sortByStartDate';
@@ -9,7 +9,7 @@ const meta = {
   title: 'common/TripsItemList',
   component: TripsItemList,
   args: {
-    trips: tripsMock,
+    trips: trips,
     order: '등록순',
     changeSelect: (selectedId: string | number) => {},
   },
@@ -19,11 +19,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SortBy_Register: Story = {};
+
 export const SortBy_Date: Story = {
   render: () => {
     return (
       <TripsItemList
-        trips={tripsMock?.slice().sort(sortByStartDate)}
+        trips={trips?.slice().sort(sortByStartDate)}
         order="날짜순"
         changeSelect={(selectedId: string | number) => {}}
       />

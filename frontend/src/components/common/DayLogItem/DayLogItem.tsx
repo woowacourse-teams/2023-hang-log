@@ -9,9 +9,10 @@ import TripItemList from '@components/common/TripItemList/TripItemList';
 
 interface DayLogItemProps extends DayLogData {
   tripId: number;
+  openAddModal: () => void;
 }
 
-const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
+const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) => {
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
     DAY_LOG_ITEM_FILTERS.ALL
   );
@@ -48,7 +49,7 @@ const DayLogItem = ({ tripId, ...information }: DayLogItemProps) => {
       {selectedTripItemList.length > 0 ? (
         <TripItemList tripId={tripId} dayLogId={information.id} tripItems={selectedTripItemList} />
       ) : (
-        <TripItemList.Empty />
+        <TripItemList.Empty openAddModal={openAddModal} />
       )}
     </Box>
   );
