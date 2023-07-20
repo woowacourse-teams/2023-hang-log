@@ -1,7 +1,7 @@
 import type { TripItemFormType } from '@type/tripItem';
 import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 interface TripItemTitleInputProps {
   value: string;

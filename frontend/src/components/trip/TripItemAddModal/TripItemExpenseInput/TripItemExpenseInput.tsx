@@ -1,11 +1,8 @@
 import { useTripItemExpenseInput } from '@/hooks/useTripItemExpenseInput';
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
-import { useQueryClient } from '@tanstack/react-query';
-import type { ExpenseCategoryData } from '@type/expense';
+import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemFormType } from '@type/tripItem';
 import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
-import type { ChangeEvent } from 'react';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import {
   categorySelectStyling,
