@@ -1,4 +1,4 @@
-export const tripsMock = [
+export const trips = [
   {
     id: 1,
     title: '런던 여행',

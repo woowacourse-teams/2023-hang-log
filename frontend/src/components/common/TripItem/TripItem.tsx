@@ -15,7 +15,7 @@ import {
 } from 'hang-log-design-system';
 import { useState } from 'react';
 
-import { moneyFormatter } from '@utils/formatter';
+import { formatNumberToMoney } from '@utils/formatter';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import {
@@ -87,7 +87,7 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
           {information.expense && (
             <Text css={expenseStyling} size="small">
               {information.expense.category.name} · {CURRENCY_ICON[information.expense.currency]}
-              {moneyFormatter(information.expense.amount)}
+              {formatNumberToMoney(information.expense.amount)}
             </Text>
           )}
         </Box>

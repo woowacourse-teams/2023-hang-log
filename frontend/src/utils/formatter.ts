@@ -8,8 +8,8 @@ export const formatMonthDate = (date: string) => {
   return formatDate(date).slice(5);
 };
 
-export const moneyFormatter = (money: number) => {
-  return money === 0 ? 0 : money.toLocaleString();
+export const formatNumberToMoney = (number: number) => {
+  return number === 0 ? 0 : number.toLocaleString();
 };
 
 export const dateRangeToString = (dateRange: DateRangeData) => {
