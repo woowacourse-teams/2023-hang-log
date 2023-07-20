@@ -38,7 +38,14 @@ export const tagListStyling = css({
   gap: Theme.spacer.spacing1,
   alignItems: 'center',
 
-  overflowX: 'auto',
+  overflowX: 'scroll',
+  whiteSpace: 'nowrap',
+  '-ms-overflow-style': 'none',
+  scrollbarWidth: 'none',
+
+  '::-webkit-scrollbar': {
+    display: 'none',
+  },
 
   '& > div': {
     '& > *:focus-within': {
