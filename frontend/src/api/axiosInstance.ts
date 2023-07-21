@@ -1,4 +1,4 @@
-import { BASE_URL } from '@constants/api';
+import { BASE_URL, HTTP_STATUS_CODE } from '@constants/api';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 
@@ -19,7 +19,17 @@ export const handleAPIError = (error: AxiosError<ErrorResponseData>) => {
 
   const { data, status } = error.response;
 
-  throw new HTTPError(status, data.message);
+  if (status >= HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR) {
+    throw new HTTPError(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR, data.message);
+  }
+
+  if (status === HTTP_STATUS_CODE.NOT_FOUND) {
+    throw new HTTPError(HTTP_STATUS_CODE.NOT_FOUND, data.message);
+  }
+
+  if (status >= HTTP_STATUS_CODE.BAD_REQUEST) {
+    throw new HTTPError(HTTP_STATUS_CODE.BAD_REQUEST, data.message);
+  }
 };
 
 axiosInstance.interceptors.response.use((response) => response, handleAPIError);
