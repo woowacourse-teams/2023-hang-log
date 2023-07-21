@@ -2,7 +2,6 @@ package hanglog.trip.presentation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.domain.City;
 import hanglog.trip.dto.response.CityResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.CityService;
@@ -16,9 +15,10 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.math.BigDecimal;
 import java.util.List;
 
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -40,10 +40,7 @@ class CityControllerTest extends RestDocsTest {
     @Test
     void getCities() throws Exception {
         // given
-        final City seoul = new City(1L, "서울", "대한민국", new BigDecimal("126.9779692"), new BigDecimal("37.566535"));
-        final City busan = new City(2L, "부산", "대한민국", new BigDecimal("129.0756416"), new BigDecimal("35.1795543"));
-
-        when(cityService.getAllCities()).thenReturn(List.of(CityResponse.of(seoul), CityResponse.of(busan)));
+        when(cityService.getAllCities()).thenReturn(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
 
         // when
         final ResultActions resultActions = mockMvc.perform(get("/cities")
@@ -61,6 +58,6 @@ class CityControllerTest extends RestDocsTest {
         );
 
         assertThat(cityResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(CityResponse.of(seoul), CityResponse.of(busan)));
+                .isEqualTo(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
     }
 }
