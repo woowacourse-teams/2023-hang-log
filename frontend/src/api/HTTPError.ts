@@ -6,5 +6,7 @@ export class HTTPError extends Error {
 
     this.name = 'HTTPError';
     this.statusCode = statusCode;
+
+    Object.setPrototypeOf(this, HTTPError.prototype);
   }
 }
