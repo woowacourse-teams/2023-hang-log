@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -54,6 +55,7 @@ public abstract class LoginService {
     abstract public UserInfoDto getUserInfo(final String accessToken);
 
     // TODO : 토큰 발기
+    @Transactional
     public Member socialLogin(final String socialLoginId, final String nickname, final String image) {
         return memberRepository.findBySocialLoginId(socialLoginId)
                 .orElseGet(() -> saveMember(socialLoginId, nickname, image));
