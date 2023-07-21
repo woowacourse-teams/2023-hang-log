@@ -15,10 +15,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SQLDelete(sql = "UPDATE expense SET status = 'DELETED' WHERE id = ?")
+@Where(clause = "status = 'USABLE'")
 public class Expense extends BaseEntity {
 
     @Id

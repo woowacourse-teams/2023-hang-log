@@ -58,7 +58,7 @@ public class Item extends BaseEntity {
 
     private String memo;
 
-    @ManyToOne(fetch = LAZY, cascade = PERSIST)
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
     @JoinColumn(name = "place_id")
     private Place place;
 
