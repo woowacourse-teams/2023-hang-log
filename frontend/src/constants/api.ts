@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://3.35.232.23';
+export const BASE_URL = '/';
 
 export const END_POINTS = {
   TRIPS: '/trips',
