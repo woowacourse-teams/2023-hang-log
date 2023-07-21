@@ -19,6 +19,7 @@ public class CityController {
 
     @GetMapping
     public ResponseEntity<List<CityResponse>> getCities() {
-        return ResponseEntity.ok(cityService.getAllCities());
+        final List<CityResponse> cityResponses = cityService.getAllCities();
+        return ResponseEntity.ok(cityResponses);
     }
 }
