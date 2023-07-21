@@ -37,7 +37,16 @@
 
 == 여행 API
 
-=== 단일 여행 생성
+=== 여행 목록 조회 (GET /trips)
+
+==== 요청
+include::{snippets}/trip-controller-test/get-trips/http-request.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/get-trips/http-response.adoc[]
+include::{snippets}/day-log-controller-test/get-trip/response-fields.adoc[]
+
+=== 단일 여행 생성 (POST /trips/:tripId/daylogs/:dayLogId)
 
 ==== 요청
 include::{snippets}/trip-controller-test/create-trip/http-request.adoc[]
@@ -48,7 +57,18 @@ include::{snippets}/trip-controller-test/create-trip/http-response.adoc[]
 include::{snippets}/trip-controller-test/create-trip/response-headers.adoc[]
 
 
-=== 단일 여행 수정
+=== 단일 여행 조회 (GET /trips/:tripId)
+
+==== 요청
+include::{snippets}/trip-controller-test/get-trip/http-request.adoc[]
+include::{snippets}/trip-controller-test/get-trip/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/get-trip/http-response.adoc[]
+include::{snippets}/trip-controller-test/get-trip/response-fields.adoc[]
+
+
+=== 단일 여행 수정 (PUT /trips/:tripId)
 
 ==== 요청
 include::{snippets}/trip-controller-test/update-trip/http-request.adoc[]
@@ -59,7 +79,7 @@ include::{snippets}/trip-controller-test/update-trip/request-fields.adoc[]
 include::{snippets}/trip-controller-test/update-trip/http-response.adoc[]
 
 
-=== 단일 여행 삭제
+=== 단일 여행 삭제 (DELETE /trips/:tripId)
 
 ==== 요청
 include::{snippets}/trip-controller-test/delete-trip/http-request.adoc[]
@@ -73,7 +93,7 @@ include::{snippets}/trip-controller-test/delete-trip/http-response.adoc[]
 
 == DayLog API
 
-=== DayLog 조회
+=== DayLog 조회 (GET /trips/:tripId/daylogs/:dayLogId)
 
 ==== 요청
 include::{snippets}/day-log-controller-test/get-day-log/http-request.adoc[]
@@ -84,7 +104,7 @@ include::{snippets}/day-log-controller-test/get-day-log/http-response.adoc[]
 include::{snippets}/day-log-controller-test/get-day-log/response-fields.adoc[]
 
 
-=== DayLog 제목 수정
+=== DayLog 제목 수정 (PATCH /trips/:tripId/daylogs/:dayLogId)
 
 ==== 요청
 include::{snippets}/day-log-controller-test/update-day-log-title/http-request.adoc[]
@@ -98,7 +118,7 @@ include::{snippets}/day-log-controller-test/update-day-log-title/http-response.a
 
 == 여행 아이템 API
 
-=== 단일 아이템 생성
+=== 단일 아이템 생성 (POST /trips/:tripId/items)
 
 ==== 요청
 include::{snippets}/item-controller-test/create-item/http-request.adoc[]
@@ -110,7 +130,7 @@ include::{snippets}/item-controller-test/create-item/http-response.adoc[]
 include::{snippets}/item-controller-test/create-item/response-headers.adoc[]
 
 
-=== 단일 아이템 수정
+=== 단일 아이템 수정 (PUT /trips/:tripId/items/:itemId)
 
 ==== 요청
 include::{snippets}/item-controller-test/update-item/http-request.adoc[]
@@ -121,7 +141,7 @@ include::{snippets}/item-controller-test/update-item/request-fields.adoc[]
 include::{snippets}/item-controller-test/update-item/http-response.adoc[]
 
 
-=== 단일 아이템 삭제
+=== 단일 아이템 삭제 (DELETE /trips/:tripId/items/:itemId)
 
 ==== 요청
 include::{snippets}/item-controller-test/delete-item/http-request.adoc[]
