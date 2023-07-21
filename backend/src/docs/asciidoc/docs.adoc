@@ -149,3 +149,13 @@ include::{snippets}/item-controller-test/delete-item/path-parameters.adoc[]
 
 ==== 응답
 include::{snippets}/item-controller-test/delete-item/http-response.adoc[]
+
+== 도시 API
+
+=== 모든 도시 조회 (GET /cities)
+
+==== 요청
+include::{snippets}/city-controller-test/get-cities/http-request.adoc[]
+
+==== 응답
+include::{snippets}/city-controller-test/get-cities/http-response.adoc[]

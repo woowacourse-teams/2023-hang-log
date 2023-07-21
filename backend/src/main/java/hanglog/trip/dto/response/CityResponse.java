@@ -18,6 +18,6 @@ public class CityResponse {
     public static CityResponse of(final City city) {
         final String country = city.getCountry();
         final String name = city.getName();
-        return new CityResponse(city.getId(), country + CITY_SEPARATOR + name);
+        return new CityResponse(city.getId(), name + CITY_SEPARATOR + country);
     }
 }
