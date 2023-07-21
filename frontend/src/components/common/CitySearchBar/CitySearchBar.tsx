@@ -1,9 +1,9 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
-import { Badge, Input, Menu, useOverlay } from 'hang-log-design-system';
-import type { FormEvent } from 'react';
-import { useRef, useState } from 'react';
+import { Badge, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
+import type { FormEvent, KeyboardEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
 
@@ -20,13 +20,18 @@ import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 interface CitySearchBarProps {
   initialCityTags?: CityData[];
+  setCityData: (cities: CityData[]) => void;
 }
 
-const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
+const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setCityData(cityTags);
+  }, [cityTags]);
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const word = event.currentTarget.value;
@@ -55,9 +60,15 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
     inputRef.current?.focus();
   };
 
-  const handleInputFocus = () => {
+  const handleInputFocus = (e: any) => {
     if (queryWord) {
       openSuggestion();
+    }
+  };
+
+  const preventSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   };
 
@@ -77,6 +88,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
+        <Label>방문 도시</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>
@@ -86,6 +98,7 @@ const CitySearchBar = ({ initialCityTags }: CitySearchBarProps) => {
               value={queryWord}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              onKeyDown={preventSubmit}
               ref={inputRef}
               css={inputStyling}
             />

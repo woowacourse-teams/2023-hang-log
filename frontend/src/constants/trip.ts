@@ -1,3 +1,5 @@
+export const DEFAULT_CURRENCY = 'KRW';
+
 export const CURRENCY_ICON = {
   KRW: '₩',
   USD: '$',

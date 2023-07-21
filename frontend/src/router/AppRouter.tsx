@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripEditPageSkeleton from '@pages/TripEditPage/TripEditPageSkeleton';
 import TripsPage from '@pages/TripsPage/TripsPage';
@@ -28,6 +29,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<TripEditPageSkeleton />}>
             <TripEditPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: PATH.CREATE_TRIP,
+        element: (
+          <Suspense>
+            <TripCreatePage />
           </Suspense>
         ),
       },

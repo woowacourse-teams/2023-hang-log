@@ -7,6 +7,8 @@ export const boxStyling = css({
   width: `calc((100vw - 196px) / 5)`,
   margin: 0,
   padding: 0,
+
+  cursor: 'pointer',
 });
 
 export const imageBoxStyling = css({

@@ -8,6 +8,7 @@ export const END_POINTS = {
   CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   CITIES: '/cities',
+  EXPENSE_CATEGORY: '/expense-category',
 } as const;
 
 export const NETWORK = {

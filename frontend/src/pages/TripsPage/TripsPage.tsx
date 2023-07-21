@@ -1,11 +1,10 @@
+import { useTripsQuery } from '@/hooks/api/useTripsQuery';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
 import { FloatingButton, useSelect } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
 import { sortByStartDate } from '@utils/sortByStartDate';
-
-import { useGetTrips } from '@hooks/api/useGetTrips';
 
 import { addButtonStyling } from '@pages/TripsPage/TripsPage.style';
 
@@ -14,7 +13,7 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 const TripsPage = () => {
   const navigate = useNavigate();
-  const { tripsData } = useGetTrips();
+  const { tripsData } = useTripsQuery();
   const { selected: sortSelected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
 
   const sortedTrips =

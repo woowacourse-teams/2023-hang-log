@@ -16,21 +16,28 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
     width: '400px',
     marginTop: Theme.spacer.spacing2,
 
-    cursor: 'pointer',
-
     '> *': {
-      '> *:nth-child(odd)': {
-        backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray200,
+      '> *:nth-of-type(odd)': {
+        backgroundColor: isCalendarOpen ? Theme.color.white : Theme.color.gray100,
         boxShadow: isCalendarOpen ? Theme.boxShadow.shadow8 : '',
-        border: `1px solid ${Theme.color.gray200}`,
+        cursor: 'pointer',
+      },
+      '> *': {
+        '> input': { cursor: 'pointer' },
       },
     },
   });
 };
 
 export const calendarStyling = css({
+  position: 'absolute',
+  transform: 'translateY(60px)',
   marginTop: Theme.spacer.spacing2,
 
   border: `1px solid ${Theme.color.gray200}`,
   borderRadius: Theme.borderRadius.small,
+  backgroundColor: Theme.color.white,
+  boxShadow: Theme.boxShadow.shadow8,
+
+  zIndex: Theme.zIndex.overlayPeak,
 });
