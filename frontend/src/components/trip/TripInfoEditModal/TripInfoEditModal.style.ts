@@ -5,7 +5,6 @@ export const formStyling = css({
   display: 'flex',
   flexDirection: 'column',
   gap: Theme.spacer.spacing3,
-  padding: Theme.spacer.spacing4,
 
   '> button': {
     width: '400px',

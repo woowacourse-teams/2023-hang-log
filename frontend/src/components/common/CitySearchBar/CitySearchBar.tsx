@@ -21,9 +21,10 @@ import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 interface CitySearchBarProps {
   initialCityTags?: CityData[];
   setCityData: (cities: CityData[]) => void;
+  required?: boolean;
 }
 
-const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => {
+const CitySearchBar = ({ initialCityTags, setCityData, required = false }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
@@ -88,7 +89,7 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
-        <Label>방문 도시</Label>
+        <Label required={required}>방문 도시</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>
