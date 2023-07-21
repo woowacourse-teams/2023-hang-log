@@ -20,7 +20,9 @@ public enum ExceptionCode {
     NOT_FOUNT_IMAGE_URL(1008, "요청한 URL에 해당하는 이미지가 존재하지 않습니다."),
 
     ALREADY_DELETED_TRIP_ITEM(2001, "이미 삭제된 여행 아이템입니다."),
-    ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다.");
+    ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다."),
+
+    INVALID_RATING(3001, "별점은 N.0점이거나 N.5점 형태이어야 합니다.");
 
     private final int code;
     private final String message;

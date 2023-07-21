@@ -1,28 +1,6 @@
 package hanglog.trip.service;
 
-import hanglog.trip.domain.DayLog;
-import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.domain.repository.TripCityRepository;
-import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.dto.request.TripCreateRequest;
-import hanglog.trip.dto.request.TripUpdateRequest;
-import hanglog.trip.dto.response.TripResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -32,6 +10,29 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+
+import hanglog.global.exception.BadRequestException;
+import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.repository.CityRepository;
+import hanglog.trip.domain.repository.TripCityRepository;
+import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripResponse;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -77,7 +78,7 @@ class TripServiceTest {
     @Test
     void save_UnCorrectCites() {
         // given
-        List<Long> invalidCities = List.of(1L, 3L);
+        final List<Long> invalidCities = List.of(1L, 3L);
         final TripCreateRequest tripCreateRequest = new TripCreateRequest(
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
@@ -87,11 +88,13 @@ class TripServiceTest {
         given(cityRepository.findById(1L))
                 .willReturn(Optional.of(LONDON));
         given(cityRepository.findById(3L))
-                .willThrow(new IllegalArgumentException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
+                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
 
         // when & then
         assertThatThrownBy(() -> tripService.save(tripCreateRequest))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(1001);
     }
 
     @DisplayName("tripId에 해당하는 여행을 반환한다.")
@@ -102,7 +105,7 @@ class TripServiceTest {
                 .willReturn(Optional.of(LONDON_TRIP));
 
         // when
-        TripResponse actual = tripService.getTrip(1L);
+        final TripResponse actual = tripService.getTrip(1L);
 
         // then
         assertThat(actual).usingRecursiveComparison()
@@ -130,6 +133,22 @@ class TripServiceTest {
         // then
         verify(tripRepository).findById(LONDON_TRIP.getId());
         verify(tripRepository).save(any(Trip.class));
+    }
+
+    @DisplayName("유효하지 않은 TripId를 삭제할 시 예외가 발생한다.")
+    @Test
+    void delete_InvalidTripId() {
+        // given
+        final Long invalidTripId = 2L;
+
+        given(tripRepository.findById(invalidTripId))
+                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
+
+        // when & then
+        assertThatThrownBy(() -> tripService.delete(invalidTripId))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(1001);
     }
 
     @Nested
@@ -168,7 +187,7 @@ class TripServiceTest {
                     List.of(1L, 2L, 3L)
             );
 
-            Trip updatedTrip = new Trip(
+            final Trip updatedTrip = new Trip(
                     trip.getId(),
                     updateRequest.getTitle(),
                     updateRequest.getStartDate(),
@@ -235,23 +254,10 @@ class TripServiceTest {
                         softly.assertThat(trip.getDayLogs())
                                 .usingRecursiveComparison()
                                 .ignoringFields("trip")
-                                .isEqualTo(List.of(dayLog1, dayLog2, dayLog3, DayLog.generateEmpty(4, trip), extraDayLog));
+                                .isEqualTo(
+                                        List.of(dayLog1, dayLog2, dayLog3, DayLog.generateEmpty(4, trip), extraDayLog));
                     }
             );
         }
-    }
-
-    @DisplayName("유효하지 않은 TripId를 삭제할 시 예외가 발생한다.")
-    @Test
-    void delete_InvalidTripId() {
-        // given
-        final Long invalidTripId = 2L;
-
-        given(tripRepository.findById(invalidTripId))
-                .willThrow(IllegalStateException.class);
-
-        // when & then
-        assertThatThrownBy(() -> tripService.delete(invalidTripId))
-                .isInstanceOf(IllegalStateException.class);
     }
 }
