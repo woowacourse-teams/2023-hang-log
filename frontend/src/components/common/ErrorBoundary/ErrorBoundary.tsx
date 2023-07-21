@@ -3,7 +3,7 @@ import { Component } from 'react';
 
 import { HTTPError } from '@api/HTTPError';
 
-import type { ErrorProps } from '../Error/Error';
+import type { ErrorProps } from '@components/common/Error/Error';
 
 interface ErrorBoundaryProps {
   Fallback: ComponentType<ErrorProps>;

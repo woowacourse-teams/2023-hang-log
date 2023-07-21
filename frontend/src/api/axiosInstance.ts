@@ -2,7 +2,7 @@ import { BASE_URL, HTTP_STATUS_CODE } from '@constants/api';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 
-import { HTTPError } from './HTTPError';
+import { HTTPError } from '@api/HTTPError';
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
