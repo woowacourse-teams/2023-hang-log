@@ -1,12 +1,13 @@
 package hanglog.trip.dto.response;
 
 import hanglog.trip.domain.City;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = PRIVATE)
 public class CityResponse {
 
     private static final String CITY_SEPARATOR =", ";
