@@ -1,4 +1,6 @@
-export const BASE_URL = '/';
+const isProductionMode = process.env.NODE_ENV === 'production';
+
+export const BASE_URL = isProductionMode ? `${process.env.PROD_BASE_URL}/api` : '/';
 
 export const END_POINTS = {
   TRIPS: '/trips',
