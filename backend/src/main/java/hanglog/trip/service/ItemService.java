@@ -1,8 +1,15 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.ALREADY_DELETED_TRIP_ITEM;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUNT_IMAGE_URL;
+
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
+import hanglog.global.exception.BadRequestException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
@@ -34,7 +41,7 @@ public class ItemService {
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
         final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
 
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
@@ -54,16 +61,16 @@ public class ItemService {
     private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
         return itemRequest.getImageUrls().stream()
                 .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
-                        .orElseThrow(() -> new IllegalArgumentException("요청한 URL에 해당하는 이미지가 존재하지 않습니다."))
+                        .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
                 )
                 .toList();
     }
 
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
         final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
         validateAlreadyDeleted(item);
 
         final Item updateditem = new Item(
@@ -108,7 +115,7 @@ public class ItemService {
 
     private Expense createExpenseByExpenseRequest(final ExpenseRequest expenseRequest) {
         final Category expenseCategory = categoryRepository.findById(expenseRequest.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 카테고리가 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
         return new Expense(
                 expenseRequest.getCurrency(),
                 expenseRequest.getAmount(),
@@ -118,21 +125,21 @@ public class ItemService {
 
     private int getNewItemOrdinal(final Long dayLogId) {
         return dayLogRepository.findById(dayLogId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."))
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID))
                 .getItems()
                 .size() + 1;
     }
 
     public void delete(final Long itemId) {
         final Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행 아이템이 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
         validateAlreadyDeleted(item);
         itemRepository.delete(item);
     }
 
     private void validateAlreadyDeleted(final Item item) {
         if (item.getStatus().equals(StatusType.DELETED)) {
-            throw new IllegalArgumentException("이미 삭제된 여행 아이템입니다.");
+            throw new BadRequestException(ALREADY_DELETED_TRIP_ITEM);
         }
     }
 
