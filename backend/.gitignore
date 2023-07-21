@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 docker/
+src/main/resources/static/docs/
