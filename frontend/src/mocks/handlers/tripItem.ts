@@ -8,7 +8,7 @@ export const tripItemHandlers = [
     const response = await req.json<TripItemFormData>();
 
     const newTripItem = {
-      id: 7,
+      id: Number(new Date()),
       itemType: false,
       title: response.title,
       ordinal: 1,
@@ -17,7 +17,7 @@ export const tripItemHandlers = [
       place: response.place
         ? {
             ...response.place,
-            id: 123,
+            id: Number(new Date()),
             category: {
               id: 3,
               name: '명소',
@@ -26,7 +26,7 @@ export const tripItemHandlers = [
         : null,
       expense: response.expense
         ? {
-            id: 4,
+            id: Number(new Date()),
             currency: response.expense.currency as CurrencyType,
             amount: response.expense.amount,
             category: {
