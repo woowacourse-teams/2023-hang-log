@@ -6,12 +6,18 @@ import { memo } from 'react';
 interface TripItemCategoryInputProps {
   itemType: TripItemFormType['itemType'];
   updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  disableError: () => void;
 }
 
-const TripItemCategoryInput = ({ itemType, updateInputValue }: TripItemCategoryInputProps) => {
+const TripItemCategoryInput = ({
+  itemType,
+  updateInputValue,
+  disableError,
+}: TripItemCategoryInputProps) => {
   const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const itemType = event.target.id === '장소';
     updateInputValue('itemType', itemType);
+    disableError();
   };
 
   return (
