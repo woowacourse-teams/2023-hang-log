@@ -1,4 +1,4 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
@@ -6,7 +6,7 @@ import { memo } from 'react';
 interface TripItemTitleInputProps {
   value: string;
   isError: boolean;
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 

@@ -1,10 +1,10 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 export const useTripItemPlaceInput = (
   isError: boolean,
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void,
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
   disableError: () => void
 ) => {
   const [autoCompleteWidget, setAutoCompleteWidget] =

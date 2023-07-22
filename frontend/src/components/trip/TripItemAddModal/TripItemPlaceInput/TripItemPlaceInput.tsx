@@ -1,4 +1,4 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Box, Input } from 'hang-log-design-system';
 import { memo } from 'react';
 
@@ -9,7 +9,7 @@ import { wrapperStyling } from '@components/trip/TripItemAddModal/TripItemPlaceI
 interface TripItemPlaceInputProps {
   value: string;
   isError: boolean;
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 

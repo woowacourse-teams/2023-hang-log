@@ -1,15 +1,15 @@
 import { DEFAULT_CURRENCY } from '@constants/trip';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ExpenseCategoryData } from '@type/expense';
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
 export const useTripItemExpenseInput = (
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void,
-  initialExpenseValue?: TripItemFormType['expense']
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
+  initialExpenseValue?: TripItemFormData['expense']
 ) => {
-  const [_, setExpenseValue] = useState<TripItemFormType['expense']>(
+  const [_, setExpenseValue] = useState<TripItemFormData['expense']>(
     initialExpenseValue ?? {
       currency: DEFAULT_CURRENCY,
       categoryId: 100,

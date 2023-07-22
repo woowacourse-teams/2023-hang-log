@@ -1,5 +1,5 @@
 import { CURRENCY_ICON } from '@constants/trip';
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 import { memo } from 'react';
 
@@ -12,8 +12,8 @@ import {
 } from '@components/trip/TripItemAddModal/TripItemExpenseInput/TripItemExpenseInput.style';
 
 interface TripItemExpenseInputProps {
-  initialExpenseValue?: TripItemFormType['expense'];
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  initialExpenseValue?: TripItemFormData['expense'];
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
 const TripItemExpenseInput = ({

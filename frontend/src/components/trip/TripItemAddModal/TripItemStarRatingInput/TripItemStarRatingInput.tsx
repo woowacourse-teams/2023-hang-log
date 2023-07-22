@@ -1,10 +1,10 @@
-import type { StarRatingData, TripItemFormType } from '@type/tripItem';
+import type { StarRatingData, TripItemFormData } from '@type/tripItem';
 import { StarRatingInput, useStarRatingInput } from 'hang-log-design-system';
 import { memo } from 'react';
 
 interface TripItemStarRatingInputProps {
   rating: StarRatingData | null;
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
 const TripItemStarRatingInput = ({ rating, updateInputValue }: TripItemStarRatingInputProps) => {

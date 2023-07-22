@@ -1,4 +1,4 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
@@ -6,10 +6,10 @@ import { memo } from 'react';
 import { formatMonthDate } from '@utils/formatter';
 
 interface TripItemDateInputProps {
-  currentCategory: TripItemFormType['itemType'];
+  currentCategory: TripItemFormData['itemType'];
   currentDate: string;
   dates: { id: number; date: string }[];
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
 const TripItemDateInput = ({

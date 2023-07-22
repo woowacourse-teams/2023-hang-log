@@ -1,11 +1,11 @@
 import { trip } from '@mocks/data/trip';
-import type { CurrencyType, TripItemFormType } from '@type/tripItem';
+import type { CurrencyType, TripItemFormData } from '@type/tripItem';
 import { rest } from 'msw';
 
 export const tripItemHandlers = [
   rest.post('/trips/:tripId/items', async (req, res, ctx) => {
     const { tripId } = req.params;
-    const response = await req.json<TripItemFormType>();
+    const response = await req.json<TripItemFormData>();
 
     const newTripItem = {
       id: 7,
