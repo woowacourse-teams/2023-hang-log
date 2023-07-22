@@ -1,0 +1,63 @@
+import type { TripItemFormType } from '@type/tripItem';
+import type { ChangeEvent, KeyboardEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+export const useTripItemPlaceInput = (
+  isError: boolean,
+  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void,
+  disableError: () => void
+) => {
+  const [autoCompleteWidget, setAutoCompleteWidget] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleEnterKeyClick = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
+  const handlePlaceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (isError) disableError();
+
+    updateInputValue('title', event.target.value);
+    // onChange가 발생할 때마다 null 값으로 초기화해 주기
+    // 매번 onChange할 때마다 null로 값을 업데이트하지 않아도 되는 방법?
+    updateInputValue('place', null);
+  };
+
+  const handlePlaceChanged = () => {
+    const place = autoCompleteWidget?.getPlace();
+
+    const name = place?.name;
+    const latitude = place?.geometry?.location?.lat();
+    const longitude = place?.geometry?.location?.lng();
+
+    if (!name || !latitude || !longitude) return;
+
+    updateInputValue('title', name);
+    updateInputValue('place', {
+      name,
+      latitude,
+      longitude,
+      apiCategory: place?.types ?? [],
+    });
+  };
+
+  useEffect(() => {
+    // initialize Autocomplete widget
+    const autoComplete = new google.maps.places.Autocomplete(inputRef.current!);
+    autoComplete.setFields(['name', 'geometry', 'types']);
+
+    setAutoCompleteWidget(autoComplete);
+  }, []);
+
+  useEffect(() => {
+    if (autoCompleteWidget) {
+      // 장소를 선택했을 때의 이벤트 추가
+      autoCompleteWidget.addListener('place_changed', handlePlaceChanged);
+    }
+  }, [autoCompleteWidget]);
+
+  return { inputRef, handleEnterKeyClick, handlePlaceChange };
+};

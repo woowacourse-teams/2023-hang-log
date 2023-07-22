@@ -45,13 +45,26 @@ export const useAddTripItemForm = (
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (tripItemInformation.itemType && !tripItemInformation.place) {
+      setIsTitleError(true);
+
+      return;
+    }
+
     if (isEmptyString(tripItemInformation.title)) {
       setIsTitleError(true);
 
       return;
     }
 
-    addTripItemMutation.mutate({ tripId, ...tripItemInformation }, { onSuccess });
+    addTripItemMutation.mutate(
+      {
+        tripId,
+        ...tripItemInformation,
+        place: tripItemInformation.itemType ? tripItemInformation.place : null,
+      },
+      { onSuccess }
+    );
   };
 
   return { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit };

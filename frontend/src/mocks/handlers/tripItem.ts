@@ -14,7 +14,16 @@ export const tripItemHandlers = [
       ordinal: 1,
       rating: response.rating,
       memo: response.memo,
-      place: response.place,
+      place: response.place
+        ? {
+            ...response.place,
+            id: 123,
+            category: {
+              id: 3,
+              name: '명소',
+            },
+          }
+        : null,
       expense: response.expense
         ? {
             id: 4,
