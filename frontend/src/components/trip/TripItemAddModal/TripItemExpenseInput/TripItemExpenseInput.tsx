@@ -1,8 +1,9 @@
-import { useTripItemExpenseInput } from '@/hooks/useTripItemExpenseInput';
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemFormType } from '@type/tripItem';
 import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 import { memo } from 'react';
+
+import { useTripItemExpenseInput } from '@hooks/trip/useTripItemExpenseInput';
 
 import {
   categorySelectStyling,
