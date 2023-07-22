@@ -43,7 +43,12 @@ export interface TripItemFormType {
   itemType: boolean;
   dayLogId: number | null;
   title: string;
-  place: PlaceData | null;
+  place: {
+    name: string;
+    latitude: number;
+    longitude: number;
+    apiCategory: string[];
+  } | null;
   rating: StarRatingData | null;
   expense: {
     currency: string;
