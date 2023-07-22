@@ -5,4 +5,5 @@ export const PATH = {
   EDIT_TRIP: '/trip-edit/:tripId',
   TRIP: '/trip',
   EXPENSE: '/trip/expense',
+  RELOAD: 0,
 } as const;
