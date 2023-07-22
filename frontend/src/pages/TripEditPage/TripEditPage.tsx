@@ -40,13 +40,15 @@ const TripEditPage = () => {
         openAddModal={openAddModal}
       />
       <FloatingButton css={addButtonStyling} onClick={openAddModal} />
-      <TripItemAddModal
-        tripId={Number(tripId)}
-        isOpen={isAddModalOpen}
-        dates={dates}
-        currentDate={{ id: selectedDayLog.id, date: selectedDayLog.date }}
-        onClose={closeAddModal}
-      />
+      {isAddModalOpen && (
+        <TripItemAddModal
+          tripId={Number(tripId)}
+          isOpen={isAddModalOpen}
+          dates={dates}
+          currentDate={{ id: selectedDayLog.id, date: selectedDayLog.date }}
+          onClose={closeAddModal}
+        />
+      )}
     </section>
   );
 };
