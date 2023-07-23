@@ -18,20 +18,14 @@ import TripItemTitleInput from '@components/trip/TripItemAddModal/TripItemTitleI
 interface TripItemAddModalProps {
   isOpen: boolean;
   tripId: number;
-  currentDate: { id: number; date: string };
+  dayLogId: number;
   dates: { id: number; date: string }[];
   onClose: () => void;
 }
 
-const TripItemAddModal = ({
-  isOpen,
-  tripId,
-  dates,
-  currentDate,
-  onClose,
-}: TripItemAddModalProps) => {
+const TripItemAddModal = ({ isOpen, tripId, dates, dayLogId, onClose }: TripItemAddModalProps) => {
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
-    useAddTripItemForm(tripId, currentDate.id, onClose);
+    useAddTripItemForm(tripId, dayLogId, onClose);
 
   return (
     <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -46,7 +40,7 @@ const TripItemAddModal = ({
               />
               <TripItemDateInput
                 currentCategory={tripItemInformation.itemType}
-                currentDate={currentDate.date}
+                dayLogId={dayLogId}
                 dates={dates}
                 updateInputValue={updateInputValue}
               />
