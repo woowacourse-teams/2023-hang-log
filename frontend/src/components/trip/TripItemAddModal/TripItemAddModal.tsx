@@ -1,3 +1,4 @@
+import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
@@ -79,7 +80,7 @@ const TripItemAddModal = ({ isOpen, tripId, dates, dayLogId, onClose }: TripItem
                 imageUrls={tripItemInformation.imageUrls}
                 imageAltText="여행 일정 업르드 이미지"
                 supportingText="사진은 최대 5장 올릴 수 있어요."
-                maxUploadCount={5}
+                maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
                 onRemove={() => {}}
               />
             </Flex>
