@@ -42,7 +42,6 @@ const TripEditPage = () => {
         <TripItemAddModal
           tripId={Number(tripId)}
           dayLogId={selectedDayLog.id}
-          isOpen={isAddModalOpen}
           dates={tripDates}
           onClose={closeAddModal}
         />

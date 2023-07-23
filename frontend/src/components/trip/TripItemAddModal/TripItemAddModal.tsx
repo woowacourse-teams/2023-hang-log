@@ -17,19 +17,18 @@ import {
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
 
 interface TripItemAddModalProps {
-  isOpen: boolean;
   tripId: number;
   dayLogId: number;
   dates: { id: number; date: string }[];
   onClose: () => void;
 }
 
-const TripItemAddModal = ({ isOpen, tripId, dates, dayLogId, onClose }: TripItemAddModalProps) => {
+const TripItemAddModal = ({ tripId, dayLogId, dates, onClose }: TripItemAddModalProps) => {
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm(tripId, dayLogId, onClose);
 
   return (
-    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
+    <Modal css={wrapperStyling} isOpen={true} closeModal={onClose} hasCloseButton>
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ gap: Theme.spacer.spacing4 }}>
