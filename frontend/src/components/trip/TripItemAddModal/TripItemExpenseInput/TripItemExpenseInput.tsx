@@ -12,7 +12,7 @@ import {
 } from '@components/trip/TripItemAddModal/TripItemExpenseInput/TripItemExpenseInput.style';
 
 interface TripItemExpenseInputProps {
-  initialExpenseValue?: TripItemFormData['expense'];
+  initialExpenseValue: TripItemFormData['expense'];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
@@ -27,21 +27,36 @@ const TripItemExpenseInput = ({
     <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing2 }}>
       <Label>비용</Label>
       <Flex styles={{ gap: Theme.spacer.spacing1 }} css={leftContainerStyling}>
-        <Select css={categorySelectStyling} name="expense-category" onChange={handleCategoryChange}>
+        <Select
+          css={categorySelectStyling}
+          name="expense-category"
+          value={initialExpenseValue?.categoryId}
+          onChange={handleCategoryChange}
+        >
           {expenseCategoryData.map(({ id, name }) => (
             <option key={id} value={id}>
               {name}
             </option>
           ))}
         </Select>
-        <Select css={currencySelectStyling} name="expense-currency" onChange={handleCurrencyChange}>
+        <Select
+          css={currencySelectStyling}
+          name="expense-currency"
+          value={initialExpenseValue?.currency}
+          onChange={handleCurrencyChange}
+        >
           {Object.entries(CURRENCY_ICON).map(([key, value], index) => (
             <option key={key} value={key}>
               {value}
             </option>
           ))}
         </Select>
-        <Input type="number" placeholder="0" onChange={handleAmountChange} />
+        <Input
+          type="number"
+          placeholder="0"
+          value={initialExpenseValue?.amount}
+          onChange={handleAmountChange}
+        />
       </Flex>
     </Flex>
   );

@@ -63,7 +63,10 @@ const TripItemAddModal = ({ isOpen, tripId, dates, dayLogId, onClose }: TripItem
                 rating={tripItemInformation.rating}
                 updateInputValue={updateInputValue}
               />
-              <TripItemExpenseInput updateInputValue={updateInputValue} />
+              <TripItemExpenseInput
+                initialExpenseValue={tripItemInformation.expense}
+                updateInputValue={updateInputValue}
+              />
             </Flex>
             <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
               <TripItemMemoInput
