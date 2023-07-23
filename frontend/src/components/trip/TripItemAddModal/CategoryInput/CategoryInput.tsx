@@ -3,17 +3,13 @@ import { RadioButton } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-interface TripItemCategoryInputProps {
+interface CategoryInputProps {
   itemType: TripItemFormData['itemType'];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 
-const TripItemCategoryInput = ({
-  itemType,
-  updateInputValue,
-  disableError,
-}: TripItemCategoryInputProps) => {
+const CategoryInput = ({ itemType, updateInputValue, disableError }: CategoryInputProps) => {
   const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const itemType = event.target.id === '장소';
     updateInputValue('itemType', itemType);
@@ -32,4 +28,4 @@ const TripItemCategoryInput = ({
   );
 };
 
-export default memo(TripItemCategoryInput);
+export default memo(CategoryInput);

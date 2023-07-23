@@ -4,17 +4,17 @@ import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-sy
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
+import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
+import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
+import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
+import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
+import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
+import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
+import TitleInput from '@components/trip/TripItemAddModal/TitleInput/TitleInput';
 import {
   formStyling,
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
-import TripItemCategoryInput from '@components/trip/TripItemAddModal/TripItemCategoryInput/TripItemCategoryInput';
-import TripItemDateInput from '@components/trip/TripItemAddModal/TripItemDateInput/TripItemDateInput';
-import TripItemExpenseInput from '@components/trip/TripItemAddModal/TripItemExpenseInput/TripItemExpenseInput';
-import TripItemMemoInput from '@components/trip/TripItemAddModal/TripItemMemoInput/TripItemMemoInput';
-import TripItemPlaceInput from '@components/trip/TripItemAddModal/TripItemPlaceInput/TripItemPlaceInput';
-import TripItemStarRatingInput from '@components/trip/TripItemAddModal/TripItemStarRatingInput/TripItemStarRatingInput';
-import TripItemTitleInput from '@components/trip/TripItemAddModal/TripItemTitleInput/TripItemTitleInput';
 
 interface TripItemAddModalProps {
   isOpen: boolean;
@@ -34,46 +34,43 @@ const TripItemAddModal = ({ isOpen, tripId, dates, dayLogId, onClose }: TripItem
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ gap: Theme.spacer.spacing4 }}>
             <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-              <TripItemCategoryInput
+              <CategoryInput
                 itemType={tripItemInformation.itemType}
                 updateInputValue={updateInputValue}
                 disableError={disableTitleError}
               />
-              <TripItemDateInput
+              <DateInput
                 currentCategory={tripItemInformation.itemType}
                 dayLogId={dayLogId}
                 dates={dates}
                 updateInputValue={updateInputValue}
               />
               {tripItemInformation.itemType ? (
-                <TripItemPlaceInput
+                <PlaceInput
                   value={tripItemInformation.title}
                   isError={isTitleError}
                   updateInputValue={updateInputValue}
                   disableError={disableTitleError}
                 />
               ) : (
-                <TripItemTitleInput
+                <TitleInput
                   value={tripItemInformation.title}
                   isError={isTitleError}
                   updateInputValue={updateInputValue}
                   disableError={disableTitleError}
                 />
               )}
-              <TripItemStarRatingInput
+              <StarRatingInput
                 rating={tripItemInformation.rating}
                 updateInputValue={updateInputValue}
               />
-              <TripItemExpenseInput
+              <ExpenseInput
                 initialExpenseValue={tripItemInformation.expense}
                 updateInputValue={updateInputValue}
               />
             </Flex>
             <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-              <TripItemMemoInput
-                value={tripItemInformation.memo}
-                updateInputValue={updateInputValue}
-              />
+              <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
               {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
               <ImageUploadInput
                 label="이미지 업로드"

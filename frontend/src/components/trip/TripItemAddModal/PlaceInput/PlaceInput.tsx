@@ -4,21 +4,16 @@ import { memo } from 'react';
 
 import { useTripItemPlaceInput } from '@hooks/trip/useTripItemPlaceInput';
 
-import { wrapperStyling } from '@components/trip/TripItemAddModal/TripItemPlaceInput/TripItemPlaceInput.style';
+import { wrapperStyling } from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput.style';
 
-interface TripItemPlaceInputProps {
+interface PlaceInputProps {
   value: string;
   isError: boolean;
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 
-const TripItemPlaceInput = ({
-  value,
-  isError,
-  updateInputValue,
-  disableError,
-}: TripItemPlaceInputProps) => {
+const PlaceInput = ({ value, isError, updateInputValue, disableError }: PlaceInputProps) => {
   const { inputRef, handleEnterKeyClick, handlePlaceChange } = useTripItemPlaceInput(
     isError,
     updateInputValue,
@@ -44,4 +39,4 @@ const TripItemPlaceInput = ({
   );
 };
 
-export default memo(TripItemPlaceInput);
+export default memo(PlaceInput);

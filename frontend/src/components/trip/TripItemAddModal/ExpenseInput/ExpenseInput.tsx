@@ -9,17 +9,14 @@ import {
   categorySelectStyling,
   currencySelectStyling,
   leftContainerStyling,
-} from '@components/trip/TripItemAddModal/TripItemExpenseInput/TripItemExpenseInput.style';
+} from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput.style';
 
-interface TripItemExpenseInputProps {
+interface ExpenseInputProps {
   initialExpenseValue: TripItemFormData['expense'];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const TripItemExpenseInput = ({
-  initialExpenseValue,
-  updateInputValue,
-}: TripItemExpenseInputProps) => {
+const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputProps) => {
   const { expenseCategoryData, handleCategoryChange, handleCurrencyChange, handleAmountChange } =
     useTripItemExpenseInput(updateInputValue, initialExpenseValue);
 
@@ -62,4 +59,4 @@ const TripItemExpenseInput = ({
   );
 };
 
-export default memo(TripItemExpenseInput);
+export default memo(ExpenseInput);

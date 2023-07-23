@@ -5,19 +5,14 @@ import { memo } from 'react';
 
 import { formatMonthDate } from '@utils/formatter';
 
-interface TripItemDateInputProps {
+interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];
   dayLogId: number;
   dates: { id: number; date: string }[];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const TripItemDateInput = ({
-  currentCategory,
-  dayLogId,
-  dates,
-  updateInputValue,
-}: TripItemDateInputProps) => {
+const DateInput = ({ currentCategory, dayLogId, dates, updateInputValue }: DateInputProps) => {
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
   };
@@ -50,4 +45,4 @@ const TripItemDateInput = ({
   );
 };
 
-export default memo(TripItemDateInput);
+export default memo(DateInput);
