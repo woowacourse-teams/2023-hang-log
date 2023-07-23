@@ -1,5 +1,7 @@
+import { tripDatesState } from '@store/trip';
 import { FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 import { useTripQuery } from '@hooks/api/useTripQuery';
@@ -22,12 +24,8 @@ const TripEditPage = () => {
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
+  const tripDates = useRecoilValue(tripDatesState(Number(tripId)));
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-
-  const dates = tripData.dayLogs.map((data) => ({
-    id: data.id,
-    date: data.date,
-  }));
 
   return (
     <section css={containerStyling}>
@@ -35,7 +33,7 @@ const TripEditPage = () => {
       <DayLogList
         tripId={Number(tripId)}
         selectedDayLog={selectedDayLog}
-        dates={dates}
+        dates={tripDates}
         onTabChange={handleDayLogIdSelectClick}
         openAddModal={openAddModal}
       />
@@ -45,7 +43,7 @@ const TripEditPage = () => {
           tripId={Number(tripId)}
           dayLogId={selectedDayLog.id}
           isOpen={isAddModalOpen}
-          dates={dates}
+          dates={tripDates}
           onClose={closeAddModal}
         />
       )}
