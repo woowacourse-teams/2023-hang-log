@@ -1,3 +1,4 @@
+import { TRIP_ITEM_ADD_CATEGORIES } from '@constants/trip';
 import type { TripItemFormData } from '@type/tripItem';
 import { RadioButton } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -11,7 +12,7 @@ interface CategoryInputProps {
 
 const CategoryInput = ({ itemType, updateInputValue, disableError }: CategoryInputProps) => {
   const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const itemType = event.target.id === '장소';
+    const itemType = event.target.id === TRIP_ITEM_ADD_CATEGORIES.SPOT;
     updateInputValue('itemType', itemType);
     disableError();
   };
@@ -21,8 +22,10 @@ const CategoryInput = ({ itemType, updateInputValue, disableError }: CategoryInp
       label="카테고리"
       required
       name="trip-item-category"
-      options={['장소', '기타']}
-      initialCheckedOption={itemType ? '장소' : '기타'}
+      options={Object.values(TRIP_ITEM_ADD_CATEGORIES)}
+      initialCheckedOption={
+        itemType ? TRIP_ITEM_ADD_CATEGORIES.SPOT : TRIP_ITEM_ADD_CATEGORIES.NON_SPOT
+      }
       onChange={handleCategoryChange}
     />
   );
