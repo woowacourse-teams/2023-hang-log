@@ -42,7 +42,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           value={initialExpenseValue?.currency}
           onChange={handleCurrencyChange}
         >
-          {Object.entries(CURRENCY_ICON).map(([key, value], index) => (
+          {Object.entries(CURRENCY_ICON).map(([key, value]) => (
             <option key={key} value={key}>
               {value}
             </option>
