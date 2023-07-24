@@ -3,6 +3,7 @@ import { PATH } from '@constants/path';
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripEditPageSkeleton from '@pages/TripEditPage/TripEditPageSkeleton';
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: PATH.ROOT,
     element: <App />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: PATH.TRIPS,
