@@ -1,7 +1,7 @@
 import { useEditTripInfo } from '@/hooks/newTrip/useEditTripInfo';
 import type { TripData, TripPutData } from '@type/trip';
 import { Button, ImageUploadInput, Input, Modal } from 'hang-log-design-system';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
@@ -13,11 +13,18 @@ interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
 }
 
 const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModalProps) => {
-  const { tripInfo, updateInputValue, setCityData, setDateData, handleSubmit } =
+  const { tripInfo, updateInputValue, setCityData, setDateData, putEditedInfo } =
     useEditTripInfo(information);
 
   const handleChangeValue = (key: keyof TripPutData) => (e: ChangeEvent<HTMLInputElement>) => {
     updateInputValue(key, e.currentTarget.value);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    putEditedInfo();
+
+    onClose();
   };
 
   return (

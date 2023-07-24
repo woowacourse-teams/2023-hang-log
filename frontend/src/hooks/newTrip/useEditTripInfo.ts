@@ -1,8 +1,8 @@
 import type { TripData, TripPutData } from '@type/trip';
 import { useEffect, useState } from 'react';
-import type { FormEvent } from 'react';
 
-import { useNewTripForm } from './useNewTripForm';
+import { useEditTripMutation } from '@hooks/api/useEditTripMutation';
+import { useNewTripForm } from '@hooks/newTrip/useNewTripForm';
 
 export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
   const { id, title, cities, startDate, endDate, description, imageUrl } = information;
@@ -17,7 +17,7 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
     endDate,
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
-  const [isInputError, setIsInputError] = useState(false);
+  const tripMutation = useEditTripMutation();
 
   useEffect(() => {
     setTripInfo((prevTripInfo) => {
@@ -31,18 +31,18 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!isCityDateValid || !tripInfo.title) {
-      setIsInputError(true);
-      console.log('error');
+  const putEditedInfo = () => {
+    if (isCityDateValid && !!tripInfo.title) {
       return;
     }
 
-    //서버로 보내기
-    console.log(tripInfo);
+    tripMutation.mutate({
+      tripId: id,
+      ...tripInfo,
+      startDate: tripInfo.startDate!,
+      endDate: tripInfo.endDate!,
+    });
   };
 
-  return { tripInfo, updateInputValue, setCityData, setDateData, handleSubmit };
+  return { tripInfo, updateInputValue, setCityData, setDateData, putEditedInfo };
 };

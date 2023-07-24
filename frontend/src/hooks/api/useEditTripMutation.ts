@@ -2,12 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { putTrip } from '@api/trip/putTrip';
 
-export const useTripMutation = () => {
+export const useEditTripMutation = () => {
   const queryClient = useQueryClient();
 
   const tripMutation = useMutation(putTrip(), {
     onSuccess: () => {
-      // 순서 변경 성공 시 Trip 정보 재요청
+      // 여행 정보 수정 성공시 Trip 정보 재요청
       queryClient.invalidateQueries({ queryKey: ['trip'] });
     },
     onError: (err, _, context) => {
