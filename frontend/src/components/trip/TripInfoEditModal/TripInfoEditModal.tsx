@@ -1,7 +1,7 @@
-import type { TripData } from '@type/trip';
+import { useEditTripInfo } from '@/hooks/newTrip/useEditTripInfo';
+import type { TripData, TripPutData } from '@type/trip';
 import { Button, ImageUploadInput, Input, Modal } from 'hang-log-design-system';
-import { useCallback, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
@@ -13,22 +13,36 @@ interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
 }
 
 const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModalProps) => {
-  const { id, title, cities, startDate, endDate, description, imageUrl } = information;
+  const { tripInfo, updateInputValue, setCityData, setDateData, handleSubmit } =
+    useEditTripInfo(information);
+
+  const handleChangeValue = (key: keyof TripPutData) => (e: ChangeEvent<HTMLInputElement>) => {
+    updateInputValue(key, e.currentTarget.value);
+  };
 
   return (
-    <Modal isOpen={isOpen} closeModal={() => {}} hasCloseButton>
-      <form css={formStyling}>
-        <CitySearchBar required initialCityTags={cities} setCityData={() => {}} />
+    <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
+      <form onSubmit={handleSubmit} css={formStyling}>
+        <CitySearchBar required initialCityTags={information.cities} setCityData={setCityData} />
         <DateInput
           required
-          initialDateRange={{ start: startDate, end: endDate }}
-          setDateData={() => {}}
+          initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
+          setDateData={setDateData}
         />
-        <Input label="여행 제목" value={title} required />
-        <Input label="여행 설명" value={description ?? ''} />
+        <Input
+          label="여행 제목"
+          value={tripInfo.title}
+          required
+          onChange={handleChangeValue('title')}
+        />
+        <Input
+          label="여행 설명"
+          value={tripInfo.description ?? ''}
+          onChange={handleChangeValue('description')}
+        />
         <ImageUploadInput
           label="대표 이미지 업로드"
-          imageUrls={imageUrl === null ? null : [imageUrl]}
+          imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
           imageAltText="여행 대표 이미지 업로드"
           maxUploadCount={1}
           onRemove={() => {}}

@@ -8,8 +8,8 @@ const initialNewTripData = {
   cityIds: [],
 };
 
-export const useNewTripForm = () => {
-  const [newTripData, setNewTripData] = useState<NewTripData>(initialNewTripData);
+export const useNewTripForm = (newTrip?: NewTripData) => {
+  const [newTripData, setNewTripData] = useState<NewTripData>(newTrip ?? initialNewTripData);
   const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   useEffect(() => {
