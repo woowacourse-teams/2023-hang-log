@@ -12,7 +12,7 @@ interface TitleInputProps {
 
 const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInputProps) => {
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (isError) disableError();
+    disableError();
 
     updateInputValue('title', event.target.value);
   };

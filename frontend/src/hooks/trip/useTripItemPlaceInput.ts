@@ -18,11 +18,9 @@ export const useTripItemPlaceInput = (
   };
 
   const handlePlaceChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (isError) disableError();
+    disableError();
 
     updateInputValue('title', event.target.value);
-    // onChange가 발생할 때마다 null 값으로 초기화해 주기
-    // 매번 onChange할 때마다 null로 값을 업데이트하지 않아도 되는 방법?
     updateInputValue('place', null);
   };
 
