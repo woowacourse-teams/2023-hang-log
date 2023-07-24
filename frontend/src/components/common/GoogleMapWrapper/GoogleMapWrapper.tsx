@@ -5,7 +5,7 @@ import type { PropsWithChildren } from 'react';
 type GoogleMapWrapperProps = PropsWithChildren;
 
 const render = (status: Status) => {
-  if (status === Status.FAILURE) throw new Error('유류가 발생했습니다.');
+  if (status === Status.FAILURE) throw new Error('오류가 발생했습니다.');
 
   return <Spinner />;
 };
