@@ -1,15 +1,16 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
+
+import hanglog.global.exception.BadRequestException;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class ItemRequest {
 
     @NotNull(message = "여행 아이템의 타입을 입력해주세요.")
@@ -34,4 +35,31 @@ public class ItemRequest {
     private final PlaceRequest place;
 
     private final ExpenseRequest expense;
+
+
+    public ItemRequest(
+            final Boolean itemType,
+            final String title,
+            final Double rating,
+            final String memo,
+            final Long dayLogId,
+            final List<String> imageUrls,
+            final PlaceRequest place, final ExpenseRequest expense
+    ) {
+        validateRatingFormat(rating);
+        this.itemType = itemType;
+        this.title = title;
+        this.rating = rating;
+        this.memo = memo;
+        this.dayLogId = dayLogId;
+        this.imageUrls = imageUrls;
+        this.place = place;
+        this.expense = expense;
+    }
+
+    private void validateRatingFormat(final Double value) {
+        if (value % 0.5 != 0) {
+            throw new BadRequestException(INVALID_RATING);
+        }
+    }
 }

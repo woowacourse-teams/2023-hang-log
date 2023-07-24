@@ -1,5 +1,6 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
@@ -10,6 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
+import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
@@ -37,6 +39,8 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE item SET status = 'DELETED' WHERE id = ?")
 @Where(clause = "status = 'USABLE'")
 public class Item extends BaseEntity {
+
+    private static final double RATING_DECIMAL_UNIT = 0.5;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -174,9 +178,8 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
-        final Double scaleValue = rating % 1;
-        if (scaleValue != 0.0 && scaleValue != 0.5) {
-            throw new IllegalArgumentException("별점은 N.0점이거나 N.5점 형태이어야 합니다.");
+        if (rating % RATING_DECIMAL_UNIT != 0) {
+            throw new InvalidDomainException(INVALID_RATING);
         }
     }
 }

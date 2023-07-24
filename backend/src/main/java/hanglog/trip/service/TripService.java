@@ -1,5 +1,9 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+
+import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
@@ -10,13 +14,12 @@ import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Period;
 import java.util.List;
 import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +35,11 @@ public class TripService {
     public Long save(final TripCreateRequest tripCreateRequest) {
         final List<City> cites = tripCreateRequest.getCityIds().stream()
                 .map(cityId -> cityRepository.findById(cityId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당하는 도시가 존재하지 않습니다.")))
+                        .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip trip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(), tripCreateRequest.getEndDate());
+        final Trip trip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
+                tripCreateRequest.getEndDate());
         final Trip savedTrip = tripRepository.save(trip);
         saveAllTripCities(cites, savedTrip);
         saveDayLogs(savedTrip);
@@ -52,7 +56,7 @@ public class TripService {
     }
 
     public List<TripResponse> getAllTrip() {
-        List<Trip> trips = tripRepository.findAll();
+        final List<Trip> trips = tripRepository.findAll();
         return trips.stream()
                 .map(TripResponse::of)
                 .toList();
@@ -60,15 +64,16 @@ public class TripService {
 
     public TripResponse getTrip(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         return TripResponse.of(trip);
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalStateException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final int currentPeriod = Period.between(trip.getStartDate(), trip.getEndDate()).getDays() + 1;
-        final int requestPeriod = Period.between(updateRequest.getStartDate(), updateRequest.getEndDate()).getDays() + 1;
+        final int requestPeriod =
+                Period.between(updateRequest.getStartDate(), updateRequest.getEndDate()).getDays() + 1;
 
         if (currentPeriod != requestPeriod) {
             changePeriod(trip, currentPeriod, requestPeriod);
@@ -105,7 +110,7 @@ public class TripService {
 
     public void delete(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new IllegalStateException("요청한 ID에 해당하는 여행이 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         tripRepository.delete(trip);
     }
 
