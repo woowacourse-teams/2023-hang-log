@@ -1,3 +1,5 @@
+import { getDayLengthFromDateRange } from '@/utils/calculator';
+import { isEmptyString } from '@/utils/validator';
 import type { TripData, TripPutData } from '@type/trip';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +20,7 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
   const tripMutation = useEditTripMutation();
+  const originalDayLength = getDayLengthFromDateRange(startDate, endDate);
 
   useEffect(() => {
     setTripInfo((prevTripInfo) => {
@@ -32,9 +35,19 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
   };
 
   const putEditedInfo = () => {
-    if (isCityDateValid && !!tripInfo.title) {
+    if (isCityDateValid && isEmptyString(tripInfo.title)) {
       return;
     }
+
+    const changedDayLength = getDayLengthFromDateRange(tripInfo.startDate, tripInfo.endDate);
+
+    if (changedDayLength < originalDayLength) {
+      confirm(
+        '기존 입력한 날짜보다 기간이 짧습니다. \n 줄어든만큼 입력한 여행정보가 삭제됩니다. 그래도 변경하시겠습니까?'
+      );
+    }
+
+    console.log(tripInfo);
 
     tripMutation.mutate({
       tripId: id,
