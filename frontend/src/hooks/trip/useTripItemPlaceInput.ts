@@ -26,7 +26,7 @@ export const useTripItemPlaceInput = (
     updateInputValue('place', null);
   };
 
-  const handlePlaceChanged = () => {
+  const handlePlaceSelect = () => {
     const place = autoCompleteWidget?.getPlace();
 
     const name = place?.name;
@@ -55,7 +55,7 @@ export const useTripItemPlaceInput = (
   useEffect(() => {
     if (autoCompleteWidget) {
       // 장소를 선택했을 때의 이벤트 추가
-      autoCompleteWidget.addListener('place_changed', handlePlaceChanged);
+      autoCompleteWidget.addListener('place_changed', handlePlaceSelect);
     }
   }, [autoCompleteWidget]);
 
