@@ -13,21 +13,21 @@ import {
 
 interface DateInputProps {
   initialDateRange?: DateRangeData;
-  setDateData: (dateRange: DateRangeData) => void;
-  required?:boolean
+  updateDateInfo: (dateRange: DateRangeData) => void;
+  required?: boolean;
 }
 
 const DateInput = ({
   initialDateRange = { start: null, end: null },
-  setDateData,
-  required=false,
+  updateDateInfo,
+  required = false,
 }: DateInputProps) => {
   const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
 
   useEffect(() => {
-    setDateData(selectedDateRange);
+    updateDateInfo(selectedDateRange);
   }, [selectedDateRange]);
 
   const handleDateClick = (dateRange: DateRangeData) => {

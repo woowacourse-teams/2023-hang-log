@@ -1,24 +1,20 @@
+import { useCityDateForm } from '@/hooks/common/useCityDateForm';
 import { getDayLengthFromDateRange } from '@/utils/calculator';
 import { isEmptyString } from '@/utils/validator';
 import type { TripData, TripPutData } from '@type/trip';
 import { useEffect, useState } from 'react';
 
 import { useEditTripMutation } from '@hooks/api/useEditTripMutation';
-import { useNewTripForm } from '@hooks/newTrip/useNewTripForm';
 
-export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
+export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>) => {
   const { id, title, cities, startDate, endDate, description, imageUrl } = information;
-  const {
-    newTripData: cityDateInfo,
-    setCityData,
-    setDateData,
-    isAllInputFilled: isCityDateValid,
-  } = useNewTripForm({
+  const { cityDateInfo, updateCityInfo, updateDateInfo, isCityDateValid } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
     startDate,
     endDate,
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
+
   const tripMutation = useEditTripMutation();
   const originalDayLength = getDayLengthFromDateRange(startDate, endDate);
 
@@ -34,7 +30,7 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
     });
   };
 
-  const putEditedInfo = () => {
+  const submitEditedInfo = () => {
     if (isCityDateValid && isEmptyString(tripInfo.title)) {
       return;
     }
@@ -57,5 +53,5 @@ export const useEditTripInfo = (information: Omit<TripData, 'dayLogs'>) => {
     });
   };
 
-  return { tripInfo, updateInputValue, setCityData, setDateData, putEditedInfo };
+  return { tripInfo, updateInputValue, updateCityInfo, updateDateInfo, submitEditedInfo };
 };

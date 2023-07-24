@@ -19,19 +19,19 @@ import {
 import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 interface CitySearchBarProps {
-  initialCityTags?: CityData[];
-  setCityData: (cities: CityData[]) => void;
+  initialCities?: CityData[];
+  updateCityInfo: (cities: CityData[]) => void;
   required?: boolean;
 }
 
-const CitySearchBar = ({ initialCityTags, setCityData, required = false }: CitySearchBarProps) => {
+const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
-  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
+  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCities ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setCityData(cityTags);
+    updateCityInfo(cityTags);
   }, [cityTags]);
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {

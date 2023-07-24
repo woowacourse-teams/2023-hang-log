@@ -1,4 +1,4 @@
-import { useEditTripInfo } from '@/hooks/newTrip/useEditTripInfo';
+import { useTripInfoForm } from '@/hooks/trip/useTripInfoForm';
 import type { TripData, TripPutData } from '@type/trip';
 import { Button, ImageUploadInput, Input, Modal } from 'hang-log-design-system';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -13,8 +13,8 @@ interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
 }
 
 const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModalProps) => {
-  const { tripInfo, updateInputValue, setCityData, setDateData, putEditedInfo } =
-    useEditTripInfo(information);
+  const { tripInfo, updateInputValue, updateCityInfo, updateDateInfo, submitEditedInfo } =
+    useTripInfoForm(information);
 
   const handleChangeValue = (key: keyof TripPutData) => (e: ChangeEvent<HTMLInputElement>) => {
     updateInputValue(key, e.currentTarget.value);
@@ -22,7 +22,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    putEditedInfo();
+    submitEditedInfo();
 
     onClose();
   };
@@ -30,11 +30,15 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
   return (
     <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
       <form onSubmit={handleSubmit} css={formStyling}>
-        <CitySearchBar required initialCityTags={information.cities} setCityData={setCityData} />
+        <CitySearchBar
+          required
+          initialCities={information.cities}
+          updateCityInfo={updateCityInfo}
+        />
         <DateInput
           required
           initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
-          setDateData={setDateData}
+          updateDateInfo={updateDateInfo}
         />
         <Input
           label="여행 제목"

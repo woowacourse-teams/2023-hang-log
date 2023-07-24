@@ -6,7 +6,7 @@ const meta = {
   title: 'common/CitySearchBar',
   component: CitySearchBar,
   args: {
-    initialCityTags: [
+    initialCities: [
       { id: 16, name: '오사카, 일본' },
       { id: 13, name: '부산, 한국' },
       { id: 20, name: '제주도, 한국' },
