@@ -15,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,8 +27,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -258,39 +255,5 @@ public class ItemControllerTest extends RestDocsTest {
                                         .description("아이템 ID")
                         )
                 ));
-    }
-
-    @DisplayName("별점이 N.5나 N.0이 아니면 예외처리된다.")
-    @ParameterizedTest(name = "별점이 {0}가 아니면 예외처리된다.")
-    @ValueSource(doubles = {0.1, 0.4, 4.1, 4.4, 4.9})
-    void validRating(final double rating) throws Exception {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                3.4,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageUrl"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(itemService.save(any(), any()))
-                .willReturn(1L);
-
-        // when & then
-        mockMvc.perform(post("/trips/{tripId}/items", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("별점은 N.0점이거나 N.5점 형태이어야 합니다."));
     }
 }

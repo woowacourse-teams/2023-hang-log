@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.expense.Expense;
 import hanglog.global.BaseEntity;
-import hanglog.global.exception.BadRequestException;
+import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
@@ -39,6 +39,8 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE item SET status = 'DELETED' WHERE id = ?")
 @Where(clause = "status = 'USABLE'")
 public class Item extends BaseEntity {
+
+    private static final double RATING_DECIMAL_UNIT = 0.5;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -176,9 +178,8 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
-        final Double scaleValue = rating % 1;
-        if (scaleValue != 0.0 && scaleValue != 0.5) {
-            throw new BadRequestException(INVALID_RATING);
+        if (rating % RATING_DECIMAL_UNIT != 0) {
+            throw new InvalidDomainException(INVALID_RATING);
         }
     }
 }
