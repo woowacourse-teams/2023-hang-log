@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.1'
     id 'io.spring.dependency-management' version '1.1.0'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'jacoco'
 }
 
 group = 'hanglog'
@@ -40,8 +41,89 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+jacoco {
+    toolVersion = '0.8.8'
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+    }
+
+    def Qdomains = []
+
+    for(qPattern in "**/QA" .. "**/QZ"){
+        Qdomains.add(qPattern+"*")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            '**/*Application*',
+                            '**/*Exception*',
+                            '**/*Response*',
+                            '**/*Request*',
+                            '**/*Dto*',
+                            '**/*Configuration*',
+                            '**/*Appender*'
+                    ] + Qdomains)
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    violationRules {
+        rule {
+            element = 'METHOD'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.50
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+
+            excludes = [
+                    '*.*Exception*',
+                    '*.*Response*',
+                    '*.*Request*',
+                    '*.*Application*',
+                    '*.*Dto*',
+                    '*.*Configuration*',
+                    '*.*Appender*'
+            ] + Qdomains
+        }
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+task jacocoTestCoverage(type: Test) {
+    group 'verification'
+    description 'Runs the unit tests with coverage'
+
+    dependsOn(':test',
+            ':jacocoTestReport',
+            ':jacocoTestCoverageVerification')
+
+    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
+    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
 }
 
 asciidoctor {
