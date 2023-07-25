@@ -18,6 +18,6 @@ export const dayLogHandlers = [
 
     trip.dayLogs[Number(dayLogId)].title = title;
 
-    return res(ctx.status(400));
+    return res(ctx.status(204));
   }),
 ];
