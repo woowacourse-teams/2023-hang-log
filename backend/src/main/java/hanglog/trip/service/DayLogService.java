@@ -15,7 +15,10 @@ import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogGetResponse;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,10 +73,13 @@ public class DayLogService {
     }
 
     private void validateOrderedItemIds(final List<Item> items, final List<Long> orderedItemIds) {
-        for (final Item item : items) {
-            if (!orderedItemIds.contains(item.getId())) {
-                throw new BadRequestException(INVALID_ORDERED_ITEM_IDS);
-            }
+        final Set<Long> itemIds = items.stream()
+                .map(Item::getId)
+                .collect(Collectors.toSet());
+        final Set<Long> orderedItemIdsSet = new HashSet<>(orderedItemIds);
+
+        if(!itemIds.equals(orderedItemIdsSet)){
+            throw new BadRequestException(INVALID_ORDERED_ITEM_IDS);
         }
     }
 
