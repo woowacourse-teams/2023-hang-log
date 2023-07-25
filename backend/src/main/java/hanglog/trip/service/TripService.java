@@ -41,13 +41,12 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip trip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
+        final Trip newTrip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate());
-        final Trip savedTrip = tripRepository.save(trip);
-        saveAllTripCities(cites, savedTrip);
-        saveDayLogs(savedTrip);
-        tripRepository.save(savedTrip);
-        return savedTrip.getId();
+        saveAllTripCities(cites, newTrip);
+        saveDayLogs(newTrip);
+        final Trip trip = tripRepository.save(newTrip);
+        return trip.getId();
     }
 
     private void saveDayLogs(final Trip savedTrip) {
@@ -56,7 +55,6 @@ public class TripService {
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
-        dayLogRepository.saveAll(dayLogs);
     }
 
     public List<TripResponse> getAllTrip() {
@@ -99,29 +97,40 @@ public class TripService {
         extraDayLog.updateOrdinal(requestPeriod + 1);
 
         if (currentPeriod < requestPeriod) {
-            IntStream.range(currentPeriod, requestPeriod)
-                    .mapToObj(i -> DayLog.generateEmpty(i + 1, trip))
-                    .forEach(trip.getDayLogs()::add);
+            addEmptyDayLogs(trip, currentPeriod, requestPeriod);
         }
 
         if (currentPeriod > requestPeriod) {
-            final List<DayLog> dayLogsToRemove = new ArrayList<>();
-            trip.getDayLogs().removeIf(dayLog -> {
-                final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
-                if (isRemovable) {
-                    dayLogsToRemove.add(dayLog);
-                }
-                return isRemovable;
-            });
-            dayLogRepository.deleteAll(dayLogsToRemove);
+            removeRemainingDayLogs(trip, currentPeriod, requestPeriod);
         }
         trip.getDayLogs().add(extraDayLog);
+    }
+
+    private void addEmptyDayLogs(Trip trip, int currentPeriod, int requestPeriod) {
+        final List<DayLog> emptyDayLogs = new ArrayList<>();
+        for (int i = currentPeriod; i < requestPeriod; i++) {
+            final DayLog emptyDayLog = DayLog.generateEmpty(i + 1, trip);
+            emptyDayLogs.add(emptyDayLog);
+        }
+        trip.getDayLogs().addAll(emptyDayLogs);
+        dayLogRepository.saveAll(emptyDayLogs);
+    }
+
+    private void removeRemainingDayLogs(Trip trip, int currentPeriod, int requestPeriod) {
+        final List<DayLog> dayLogsToRemove = new ArrayList<>();
+        trip.getDayLogs().removeIf(dayLog -> {
+            final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
+            if (isRemovable) {
+                dayLogsToRemove.add(dayLog);
+            }
+            return isRemovable;
+        });
+        dayLogRepository.deleteAll(dayLogsToRemove);
     }
 
     public void delete(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        dayLogRepository.deleteAll(trip.getDayLogs());
         tripRepository.delete(trip);
     }
 

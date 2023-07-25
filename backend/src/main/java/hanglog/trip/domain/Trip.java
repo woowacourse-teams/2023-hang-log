@@ -1,6 +1,8 @@
 package hanglog.trip.domain;
 
 import static hanglog.global.type.StatusType.USABLE;
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -44,7 +46,7 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE})
     private List<DayLog> dayLogs = new ArrayList<>();
 
     private Trip(

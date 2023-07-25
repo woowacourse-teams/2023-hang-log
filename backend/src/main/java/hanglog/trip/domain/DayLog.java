@@ -1,5 +1,6 @@
 package hanglog.trip.domain;
 
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -40,7 +41,7 @@ public class DayLog extends BaseEntity {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    @OneToMany(mappedBy = "dayLog")
+    @OneToMany(mappedBy = "dayLog", cascade = REMOVE)
     private List<Item> items = new ArrayList<>();
 
     public DayLog(
