@@ -13,7 +13,6 @@ import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogGetResponse;
-import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ public class DayLogService {
 
     private final DayLogRepository dayLogRepository;
     private final ItemRepository itemRepository;
-    private final EntityManagerFactory entityManagerFactory;
 
     @Transactional(readOnly = true)
     public DayLogGetResponse getById(final Long id) {
@@ -58,9 +56,10 @@ public class DayLogService {
         }
     }
 
-    public void updateOrdinalOfDayLogItems(final Long dayLogId, final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
-        // TODO: noexist custom exception 적용 필요
-        final DayLog dayLog = dayLogRepository.findById(dayLogId).get();
+    public void updateOrdinalOfDayLogItems(final Long dayLogId,
+                                           final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
+        final DayLog dayLog = dayLogRepository.findById(dayLogId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final List<Item> items = dayLog.getItems();
 
         // TODO: orders가 item들 수만큼 있는지 valid - custom exeption 추가 필요
