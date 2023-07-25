@@ -10,12 +10,3 @@ export const formStyling = css({
     width: '400px',
   },
 });
-
-export const cityInputErrorTextStyling = css({
-  lineHeight: 0,
-  color: Theme.color.red200,
-});
-
-export const dateInputTextStyling = css({
-  maxWidth: '400px',
-});

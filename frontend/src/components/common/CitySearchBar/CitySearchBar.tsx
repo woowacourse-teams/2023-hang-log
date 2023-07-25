@@ -73,19 +73,6 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
     }
   };
 
-  const CityTags = () => {
-    return cityTags.map((cityTag) => (
-      <Badge key={cityTag.id} css={badgeStyling}>
-        {cityTag.name}
-        <CloseIcon
-          aria-label="삭제 아이콘"
-          css={closeIconStyling}
-          onClick={handleDeleteButtonClick(cityTag)}
-        />
-      </Badge>
-    ));
-  };
-
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
@@ -93,7 +80,16 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>
-            <CityTags />
+            {cityTags.map((cityTag) => (
+              <Badge key={cityTag.id} css={badgeStyling}>
+                {cityTag.name}
+                <CloseIcon
+                  aria-label="삭제 아이콘"
+                  css={closeIconStyling}
+                  onClick={handleDeleteButtonClick(cityTag)}
+                />
+              </Badge>
+            ))}
             <Input
               placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
               value={queryWord}

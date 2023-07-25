@@ -1,6 +1,6 @@
 import type { CityData } from '@type/city';
 import type { DateRangeData, NewTripData } from '@type/trips';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const defaultTripData = {
   startDate: null,
@@ -16,17 +16,17 @@ export const useCityDateForm = (initialTripData?: NewTripData) => {
     validateInputs();
   }, [cityDateInfo]);
 
-  const updateCityInfo = (cities: CityData[]) => {
+  const updateCityInfo = useCallback((cities: CityData[]) => {
     const cityIds = cities.map((city) => city.id);
 
     setCityDateInfo((prev) => ({ ...prev, cityIds }));
-  };
+  }, []);
 
-  const updateDateInfo = (dateRange: DateRangeData) => {
+  const updateDateInfo = useCallback((dateRange: DateRangeData): void => {
     const { start: startDate, end: endDate } = dateRange;
 
     setCityDateInfo((prev) => ({ ...prev, startDate, endDate }));
-  };
+  }, []);
 
   const validateInputs = () => {
     const { startDate, endDate, cityIds } = cityDateInfo;
