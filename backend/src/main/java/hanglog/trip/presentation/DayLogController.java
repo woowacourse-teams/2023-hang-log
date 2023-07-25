@@ -44,7 +44,7 @@ public class DayLogController {
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId,
             @RequestBody @Valid final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
-        dayLogService.updateOrdinalOfDayLogItems(dayLogId, itemsOrdinalUpdateRequest);
+        dayLogService.updateOrdinalOfItems(dayLogId, itemsOrdinalUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 }

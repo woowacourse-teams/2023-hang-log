@@ -15,7 +15,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
@@ -132,7 +131,7 @@ class DayLogControllerTest extends RestDocsTest {
         //given
         final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L,2L,1L));
 
-        doNothing().when(dayLogService).updateOrdinalOfDayLogItems( any(), any());
+        doNothing().when(dayLogService).updateOrdinalOfItems( any(), any());
 
         // when & then
         mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)

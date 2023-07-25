@@ -93,7 +93,7 @@ class DayLogServiceTest {
                 .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(2)));
 
         // when
-        dayLogService.updateOrdinalOfDayLogItems(1L, request);
+        dayLogService.updateOrdinalOfItems(1L, request);
 
         // then
         List<Item> items = DAYLOG_FOR_ITEM_FIXTURE.getItems();
