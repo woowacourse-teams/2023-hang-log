@@ -35,10 +35,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
         
+    - name: chmod gradlew
+      run: chmod +x gradlew
+        
     - name: Build with Gradle
       run: ./gradlew build
       
     - name: run jacocoTestCoverage
-      run: |
-        ./gradlew jacocoTestCoverage --info
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.2
+      with:
+        title: 📝 Jacoco Test Coverage
+        paths: build/reports/jacoco/test/jacocoTestReport.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 50
+        min-coverage-changed-files: 50
       
