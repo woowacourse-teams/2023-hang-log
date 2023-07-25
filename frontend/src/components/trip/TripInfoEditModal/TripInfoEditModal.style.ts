@@ -11,6 +11,11 @@ export const formStyling = css({
   },
 });
 
-export const supportingTextStyling = css({
+export const cityInputErrorTextStyling = css({
+  lineHeight: 0,
+  color: Theme.color.red200,
+});
+
+export const dateInputTextStyling = css({
   maxWidth: '400px',
 });

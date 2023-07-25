@@ -1,23 +1,24 @@
 import type { TripData, TripPutData } from '@type/trip';
 import { useEffect, useState } from 'react';
-
-import { isEmptyString } from '@utils/validator';
+import type { FormEvent } from 'react';
 
 import { useEditTripMutation } from '@hooks/api/useEditTripMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
-export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>) => {
+export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>, onClose: () => void) => {
   const { id: tripId, title, cities, startDate, endDate, description, imageUrl } = information;
-  const { cityDateInfo, updateCityInfo, updateDateInfo, isCityDateValid } = useCityDateForm({
+  const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
     startDate,
     endDate,
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
-
+  const [isCityInputError, setCityInputError] = useState(false);
   const tripMutation = useEditTripMutation();
 
   useEffect(() => {
+    validateCityInput();
+
     setTripInfo((prevTripInfo) => {
       return { ...prevTripInfo, ...cityDateInfo };
     });
@@ -29,16 +30,21 @@ export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>) => {
     });
   };
 
-  const validateInfo = () => {
-    if (isCityDateValid && isEmptyString(tripInfo.title)) {
-      return false;
+  const validateCityInput = () => {
+    const cityLength = cityDateInfo.cityIds.length;
+
+    if (cityLength > 0) {
+      setCityInputError(false);
+      return;
     }
 
-    return true;
+    setCityInputError(true);
   };
 
-  const submitEditedInfo = () => {
-    if (!validateInfo()) {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (isCityInputError) {
       return;
     }
 
@@ -48,7 +54,16 @@ export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>) => {
       startDate: tripInfo.startDate!,
       endDate: tripInfo.endDate!,
     });
+
+    onClose();
   };
 
-  return { tripInfo, updateInputValue, updateCityInfo, updateDateInfo, submitEditedInfo };
+  return {
+    tripInfo,
+    isCityInputError,
+    updateInputValue,
+    updateCityInfo,
+    updateDateInfo,
+    handleSubmit,
+  };
 };

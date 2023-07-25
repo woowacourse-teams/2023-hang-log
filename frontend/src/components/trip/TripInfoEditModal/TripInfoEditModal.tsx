@@ -13,8 +13,9 @@ import type { ChangeEvent, FormEvent } from 'react';
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
 import {
+  cityInputErrorTextStyling,
+  dateInputTextStyling,
   formStyling,
-  supportingTextStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
@@ -23,18 +24,17 @@ interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
 }
 
 const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModalProps) => {
-  const { tripInfo, updateInputValue, updateCityInfo, updateDateInfo, submitEditedInfo } =
-    useTripInfoForm(information);
+  const {
+    tripInfo,
+    isCityInputError,
+    updateInputValue,
+    updateCityInfo,
+    updateDateInfo,
+    handleSubmit,
+  } = useTripInfoForm(information, onClose);
 
   const handleChangeValue = (key: keyof TripPutData) => (e: ChangeEvent<HTMLInputElement>) => {
     updateInputValue(key, e.currentTarget.value);
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    submitEditedInfo();
-
-    onClose();
   };
 
   return (
@@ -45,13 +45,18 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           initialCities={information.cities}
           updateCityInfo={updateCityInfo}
         />
+        {isCityInputError && (
+          <SupportingText css={cityInputErrorTextStyling}>
+            방문 도시는 최소 한개 이상 선택해야 합니다
+          </SupportingText>
+        )}
         <DateInput
           required
           initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
           updateDateInfo={updateDateInfo}
         />
-        <SupportingText css={supportingTextStyling}>
-          ⚠︎ 여행 기간을 단축하면 마지막 날짜부터 작성한 기록들이 <br />
+        <SupportingText css={dateInputTextStyling}>
+          ⚠︎ 방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 <br />
           삭제됩니다.
         </SupportingText>
         <Input
