@@ -1,6 +1,11 @@
 package hanglog.trip.service;
 
 
+import static hanglog.global.exception.ExceptionCode.ALREADY_DELETED_DATE;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+
+import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
@@ -26,7 +31,7 @@ public class DayLogService {
     @Transactional(readOnly = true)
     public DayLogGetResponse getById(final Long id) {
         final DayLog dayLog = dayLogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         validateAlreadyDeleted(dayLog);
 
         return DayLogGetResponse.of(dayLog);
@@ -34,7 +39,7 @@ public class DayLogService {
 
     public void updateTitle(final Long id, final DayLogUpdateTitleRequest request) {
         final DayLog dayLog = dayLogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("요청한 ID에 해당하는 데이로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAlreadyDeleted(dayLog);
 
         final DayLog updatedDayLog = new DayLog(
@@ -49,7 +54,7 @@ public class DayLogService {
 
     private void validateAlreadyDeleted(final DayLog dayLog) {
         if (dayLog.isDeleted()) {
-            throw new IllegalStateException("이미 삭제된 날짜입니다.");
+            throw new BadRequestException(ALREADY_DELETED_DATE);
         }
     }
 
