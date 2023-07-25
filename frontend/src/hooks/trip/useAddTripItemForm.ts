@@ -52,6 +52,30 @@ export const useAddTripItemForm = ({
     []
   );
 
+  const isFormError = () => {
+    if (isEmptyString(tripItemInformation.title)) {
+      return true;
+    }
+
+    if (
+      tripItemInformation.itemType &&
+      !tripItemInformation.place &&
+      tripItemInformation.isPlaceUpdated === undefined
+    ) {
+      return true;
+    }
+
+    if (
+      tripItemInformation.itemType &&
+      !tripItemInformation.place &&
+      tripItemInformation.isPlaceUpdated === true
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   const disableTitleError = useCallback(() => {
     setIsTitleError(false);
   }, []);
@@ -59,17 +83,7 @@ export const useAddTripItemForm = ({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (
-      tripItemInformation.itemType &&
-      !tripItemInformation.place &&
-      (!itemId || !tripItemInformation.isPlaceUpdated)
-    ) {
-      setIsTitleError(true);
-
-      return;
-    }
-
-    if (isEmptyString(tripItemInformation.title)) {
+    if (isFormError()) {
       setIsTitleError(true);
 
       return;

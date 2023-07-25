@@ -22,6 +22,9 @@ export const useTripItemPlaceInput = (
 
     updateInputValue('title', event.target.value);
     updateInputValue('place', null);
+
+    // 수정할 때만 실행한다
+    if (isUpdatable) updateInputValue('isPlaceUpdated', true);
   };
 
   const handlePlaceSelect = () => {
@@ -32,9 +35,6 @@ export const useTripItemPlaceInput = (
     const longitude = place?.geometry?.location?.lng();
 
     if (!name || !latitude || !longitude) return;
-
-    // 수정할 때만 실행한다
-    if (isUpdatable) updateInputValue('isPlaceUpdated', true);
 
     updateInputValue('title', name);
     updateInputValue('place', {
