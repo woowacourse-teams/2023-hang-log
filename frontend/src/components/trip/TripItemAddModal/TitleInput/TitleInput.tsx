@@ -1,23 +1,18 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-interface TripItemTitleInputProps {
+interface TitleInputProps {
   value: string;
   isError: boolean;
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 
-const TripItemTitleInput = ({
-  isError,
-  value,
-  updateInputValue,
-  disableError,
-}: TripItemTitleInputProps) => {
+const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInputProps) => {
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (isError) disableError();
+    disableError();
 
     updateInputValue('title', event.target.value);
   };
@@ -36,4 +31,4 @@ const TripItemTitleInput = ({
   );
 };
 
-export default memo(TripItemTitleInput);
+export default memo(TitleInput);

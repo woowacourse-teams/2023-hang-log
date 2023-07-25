@@ -1,23 +1,32 @@
 import { trip } from '@mocks/data/trip';
-import type { CurrencyType, TripItemFormType } from '@type/tripItem';
+import type { CurrencyType, TripItemFormData } from '@type/tripItem';
 import { rest } from 'msw';
 
 export const tripItemHandlers = [
   rest.post('/trips/:tripId/items', async (req, res, ctx) => {
     const { tripId } = req.params;
-    const response = await req.json<TripItemFormType>();
+    const response = await req.json<TripItemFormData>();
 
     const newTripItem = {
-      id: 7,
+      id: Number(new Date()),
       itemType: false,
       title: response.title,
       ordinal: 1,
       rating: response.rating,
       memo: response.memo,
-      place: response.place,
+      place: response.place
+        ? {
+            ...response.place,
+            id: Number(new Date()),
+            category: {
+              id: 3,
+              name: '명소',
+            },
+          }
+        : null,
       expense: response.expense
         ? {
-            id: 4,
+            id: Number(new Date()),
             currency: response.expense.currency as CurrencyType,
             amount: response.expense.amount,
             category: {

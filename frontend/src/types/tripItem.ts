@@ -39,11 +39,16 @@ export interface TripItemData {
 
 export type TripItemCategory = '장소' | '기타';
 
-export interface TripItemFormType {
+export interface TripItemFormData {
   itemType: boolean;
   dayLogId: number | null;
   title: string;
-  place: PlaceData | null;
+  place: {
+    name: string;
+    latitude: number;
+    longitude: number;
+    apiCategory: string[];
+  } | null;
   rating: StarRatingData | null;
   expense: {
     currency: string;

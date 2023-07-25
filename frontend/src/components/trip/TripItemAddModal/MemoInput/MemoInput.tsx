@@ -1,16 +1,16 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Textarea } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-import { textareaStyling } from '@components/trip/TripItemAddModal/TripItemMemoInput/TripItemMemoInput.style';
+import { textareaStyling } from '@components/trip/TripItemAddModal/MemoInput/MemoInput.style';
 
-interface TripItemMemoInputProps {
-  value: TripItemFormType['memo'];
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+interface MemoInputProps {
+  value: TripItemFormData['memo'];
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const TripItemMemoInput = ({ value, updateInputValue }: TripItemMemoInputProps) => {
+const MemoInput = ({ value, updateInputValue }: MemoInputProps) => {
   const handleMemoChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     updateInputValue('memo', event.target.value);
   };
@@ -27,4 +27,4 @@ const TripItemMemoInput = ({ value, updateInputValue }: TripItemMemoInputProps) 
   );
 };
 
-export default memo(TripItemMemoInput);
+export default memo(MemoInput);

@@ -1,23 +1,18 @@
-import type { TripItemFormType } from '@type/tripItem';
+import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
 import { formatMonthDate } from '@utils/formatter';
 
-interface TripItemDateInputProps {
-  currentCategory: TripItemFormType['itemType'];
-  currentDate: string;
+interface DateInputProps {
+  currentCategory: TripItemFormData['itemType'];
+  dayLogId: number;
   dates: { id: number; date: string }[];
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const TripItemDateInput = ({
-  currentCategory,
-  currentDate,
-  dates,
-  updateInputValue,
-}: TripItemDateInputProps) => {
+const DateInput = ({ currentCategory, dayLogId, dates, updateInputValue }: DateInputProps) => {
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
   };
@@ -29,7 +24,7 @@ const TripItemDateInput = ({
           <option
             key={dates[index].id}
             value={dates[index].id}
-            selected={currentDate === dates[index].date}
+            selected={dayLogId === dates[index].id}
           >
             Day {index + 1} - {formatMonthDate(dates[index].date)}
           </option>
@@ -40,7 +35,7 @@ const TripItemDateInput = ({
           <option
             key={dates.at(-1)?.id}
             value={dates.at(-1)?.id}
-            selected={currentDate === dates.at(-1)?.date}
+            selected={dayLogId === dates.at(-1)?.id}
           >
             기타
           </option>
@@ -50,4 +45,4 @@ const TripItemDateInput = ({
   );
 };
 
-export default memo(TripItemDateInput);
+export default memo(DateInput);

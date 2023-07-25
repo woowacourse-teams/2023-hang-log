@@ -1,13 +1,13 @@
-import type { StarRatingData, TripItemFormType } from '@type/tripItem';
-import { StarRatingInput, useStarRatingInput } from 'hang-log-design-system';
+import type { StarRatingData, TripItemFormData } from '@type/tripItem';
+import { StarRatingInput as StarRating, useStarRatingInput } from 'hang-log-design-system';
 import { memo } from 'react';
 
-interface TripItemStarRatingInputProps {
+interface StarRatingInputProps {
   rating: StarRatingData | null;
-  updateInputValue: <K extends keyof TripItemFormType>(key: K, value: TripItemFormType[K]) => void;
+  updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const TripItemStarRatingInput = ({ rating, updateInputValue }: TripItemStarRatingInputProps) => {
+const StarRatingInput = ({ rating, updateInputValue }: StarRatingInputProps) => {
   const handleRatingChange = (rate: StarRatingData) => {
     const newRate = rate || null;
     updateInputValue('rating', newRate);
@@ -19,7 +19,7 @@ const TripItemStarRatingInput = ({ rating, updateInputValue }: TripItemStarRatin
   );
 
   return (
-    <StarRatingInput
+    <StarRating
       label="별점"
       size={32}
       gap={8}
@@ -31,4 +31,4 @@ const TripItemStarRatingInput = ({ rating, updateInputValue }: TripItemStarRatin
   );
 };
 
-export default memo(TripItemStarRatingInput);
+export default memo(StarRatingInput);
