@@ -1,5 +1,3 @@
-import TripItemAddModal from '@/components/trip/TripItemAddModal/TripItemAddModal';
-import { useTripDates } from '@/hooks/trip/useTripDates';
 import MoreIcon from '@assets/svg/more-icon.svg';
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
@@ -20,6 +18,7 @@ import { useState } from 'react';
 import { formatNumberToMoney } from '@utils/formatter';
 
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
+import { useTripDates } from '@hooks/trip/useTripDates';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import {
@@ -33,6 +32,7 @@ import {
   starRatingStyling,
   subInformationStyling,
 } from '@components/common/TripItem/TripItem.style';
+import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 interface TripListItemProps extends TripItemData {
   tripId: number;
