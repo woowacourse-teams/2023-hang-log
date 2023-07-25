@@ -3,9 +3,9 @@ import type { ChangeEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 export const useTripItemPlaceInput = (
-  isError: boolean,
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
-  disableError: () => void
+  disableError: () => void,
+  isUpdatable: boolean
 ) => {
   const [autoCompleteWidget, setAutoCompleteWidget] =
     useState<google.maps.places.Autocomplete | null>(null);
@@ -33,6 +33,9 @@ export const useTripItemPlaceInput = (
 
     if (!name || !latitude || !longitude) return;
 
+    // 수정할 때만 실행한다
+    if (isUpdatable) updateInputValue('isPlaceUpdated', true);
+
     updateInputValue('title', name);
     updateInputValue('place', {
       name,
@@ -43,7 +46,6 @@ export const useTripItemPlaceInput = (
   };
 
   useEffect(() => {
-    // initialize Autocomplete widget
     const autoComplete = new google.maps.places.Autocomplete(inputRef.current!);
     autoComplete.setFields(['name', 'geometry', 'types']);
 
@@ -52,7 +54,6 @@ export const useTripItemPlaceInput = (
 
   useEffect(() => {
     if (autoCompleteWidget) {
-      // 장소를 선택했을 때의 이벤트 추가
       autoCompleteWidget.addListener('place_changed', handlePlaceSelect);
     }
   }, [autoCompleteWidget]);

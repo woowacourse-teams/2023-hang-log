@@ -5,23 +5,37 @@ import { useCallback, useState } from 'react';
 import { isEmptyString } from '@utils/validator';
 
 import { useAddTripItemMutation } from '@hooks/api/useAddTripItemMutation';
+import { useUpdateTripItemMutation } from '@hooks/api/useUpdateTripItemMutation';
 
-export const useAddTripItemForm = (
-  tripId: number,
-  initialDayLogId: number,
-  onSuccess?: () => void
-) => {
+interface UseAddTripItemFormParams {
+  tripId: number;
+  initialDayLogId: number;
+  itemId?: number;
+  initialData?: TripItemFormData;
+  onSuccess?: () => void;
+}
+
+export const useAddTripItemForm = ({
+  tripId,
+  initialDayLogId,
+  itemId,
+  initialData,
+  onSuccess,
+}: UseAddTripItemFormParams) => {
   const addTripItemMutation = useAddTripItemMutation();
-  const [tripItemInformation, setTripItemInformation] = useState<TripItemFormData>({
-    itemType: true,
-    dayLogId: initialDayLogId,
-    title: '',
-    place: null,
-    rating: null,
-    expense: null,
-    memo: null,
-    imageUrls: [],
-  });
+  const updateTripItemMutation = useUpdateTripItemMutation();
+  const [tripItemInformation, setTripItemInformation] = useState<TripItemFormData>(
+    initialData ?? {
+      itemType: true,
+      dayLogId: initialDayLogId,
+      title: '',
+      place: null,
+      rating: null,
+      expense: null,
+      memo: null,
+      imageUrls: [],
+    }
+  );
   const [isTitleError, setIsTitleError] = useState(false);
 
   const updateInputValue = useCallback(
@@ -45,7 +59,11 @@ export const useAddTripItemForm = (
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (tripItemInformation.itemType && !tripItemInformation.place) {
+    if (
+      tripItemInformation.itemType &&
+      !tripItemInformation.place &&
+      (!itemId || tripItemInformation.isPlaceUpdated)
+    ) {
       setIsTitleError(true);
 
       return;
@@ -57,9 +75,25 @@ export const useAddTripItemForm = (
       return;
     }
 
-    addTripItemMutation.mutate(
+    if (!itemId) {
+      addTripItemMutation.mutate(
+        {
+          tripId,
+          ...tripItemInformation,
+          place: tripItemInformation.itemType ? tripItemInformation.place : null,
+        },
+        { onSuccess }
+      );
+
+      return;
+    }
+
+    console.log('first');
+
+    updateTripItemMutation.mutate(
       {
         tripId,
+        itemId,
         ...tripItemInformation,
         place: tripItemInformation.itemType ? tripItemInformation.place : null,
       },

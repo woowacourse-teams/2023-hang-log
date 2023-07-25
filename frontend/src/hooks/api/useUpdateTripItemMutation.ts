@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { postTripItem } from '@api/tripItem/postTripItem';
+import { putTripItem } from '@api/tripItem/putTripItem';
 
-export const useAddTripItemMutation = () => {
+export const useUpdateTripItemMutation = () => {
   const queryClient = useQueryClient();
 
-  const addTripItemMutation = useMutation(postTripItem(), {
+  const updateTripItemMutation = useMutation(putTripItem(), {
     onSuccess: (_, { tripId }) => {
-      // 순서 변경 성공 시 Trip 정보 재요청
+      // TODO : 낙관적 업데이트 적용?
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
     onError: () => {
@@ -15,5 +15,5 @@ export const useAddTripItemMutation = () => {
     },
   });
 
-  return addTripItemMutation;
+  return updateTripItemMutation;
 };

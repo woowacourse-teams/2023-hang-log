@@ -9,15 +9,22 @@ import { wrapperStyling } from '@components/trip/TripItemAddModal/PlaceInput/Pla
 interface PlaceInputProps {
   value: string;
   isError: boolean;
+  isUpdatable: boolean;
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
   disableError: () => void;
 }
 
-const PlaceInput = ({ value, isError, updateInputValue, disableError }: PlaceInputProps) => {
+const PlaceInput = ({
+  value,
+  isError,
+  isUpdatable,
+  updateInputValue,
+  disableError,
+}: PlaceInputProps) => {
   const { inputRef, handleEnterKeyClick, handlePlaceChange } = useTripItemPlaceInput(
-    isError,
     updateInputValue,
-    disableError
+    disableError,
+    isUpdatable
   );
 
   return (
