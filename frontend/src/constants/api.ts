@@ -40,3 +40,5 @@ export const HTTP_ERROR_MESSAGE = {
     BUTTON: '홈으로 가기',
   },
 } as const;
+
+export const ERROR_MESSAGE = '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
