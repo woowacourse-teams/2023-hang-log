@@ -65,7 +65,7 @@ const TripItem = ({
     onDragEnd();
   };
 
-  const handleTripItem = () => {
+  const handleTripItemDelete = () => {
     deleteTripItemMutation.mutate({ tripId, itemId: information.id });
   };
 
@@ -120,7 +120,7 @@ const TripItem = ({
         {isMenuOpen && (
           <MenuList css={moreMenuListStyling}>
             <MenuItem onClick={openModal}>수정</MenuItem>
-            <MenuItem onClick={handleTripItem}>삭제</MenuItem>
+            <MenuItem onClick={handleTripItemDelete}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>
