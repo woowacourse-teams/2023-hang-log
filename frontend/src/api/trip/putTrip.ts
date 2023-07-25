@@ -1,16 +1,16 @@
 import { END_POINTS } from '@constants/api';
-import { TripPutData } from '@type/trip';
+import type { TripFormData } from '@type/trip';
 
 import { axiosInstance } from '@api/axiosInstance';
 
-export interface PutTripParams extends TripPutData {
+export interface PutTripParams extends TripFormData {
   tripId: number;
 }
 
 export const putTrip =
   () =>
   ({ tripId, ...tripInformation }: PutTripParams) => {
-    return axiosInstance.put<TripPutData>(END_POINTS.TRIP(tripId), {
+    return axiosInstance.put<TripFormData>(END_POINTS.TRIP(tripId), {
       ...tripInformation,
     });
   };

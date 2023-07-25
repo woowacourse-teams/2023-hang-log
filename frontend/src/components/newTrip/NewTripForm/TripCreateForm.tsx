@@ -1,24 +1,24 @@
-import { useCityDateForm } from '@/hooks/common/useCityDateForm';
+import { formStyling } from '@/components/newTrip/NewTripForm/TripCreateForm.style';
 import { PATH } from '@constants/path';
 import { Button } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useNewTripMutation } from '@hooks/api/useNewTripMutation';
+import { useCreateTripMutation } from '@hooks/api/useCreateTripMutation';
+import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import { formStyling } from '@components/newTrip/NewTripForm/NewTripForm.style';
 
-const TripAddForm = () => {
+const TripCreateForm = () => {
   const { cityDateInfo, updateCityInfo, updateDateInfo, isCityDateValid } = useCityDateForm();
-  const newTripMutation = useNewTripMutation();
+  const createTripMutation = useCreateTripMutation();
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    newTripMutation.mutate(cityDateInfo, {
+    createTripMutation.mutate(cityDateInfo, {
       onSuccess: goToTripEditPageWithId,
     });
   };
@@ -39,4 +39,4 @@ const TripAddForm = () => {
   );
 };
 
-export default TripAddForm;
+export default TripCreateForm;

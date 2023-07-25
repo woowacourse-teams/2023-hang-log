@@ -29,6 +29,6 @@ export const tripsHandlers = [
   }),
 
   rest.put(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
-    return res(ctx.status(202));
+    return res(ctx.status(204));
   }),
 ];

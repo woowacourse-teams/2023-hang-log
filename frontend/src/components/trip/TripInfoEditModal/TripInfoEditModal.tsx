@@ -1,14 +1,8 @@
-import { useTripInfoForm } from '@/hooks/trip/useTripInfoForm';
-import type { TripData, TripPutData } from '@type/trip';
-import {
-  Button,
-  Flex,
-  ImageUploadInput,
-  Input,
-  Modal,
-  SupportingText,
-} from 'hang-log-design-system';
-import type { ChangeEvent, FormEvent } from 'react';
+import type { TripData, TripFormData } from '@type/trip';
+import { Button, ImageUploadInput, Input, Modal, SupportingText } from 'hang-log-design-system';
+import type { ChangeEvent } from 'react';
+
+import { useTripInfoForm } from '@hooks/trip/useTripInfoForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
@@ -33,7 +27,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     handleSubmit,
   } = useTripInfoForm(information, onClose);
 
-  const handleChangeValue = (key: keyof TripPutData) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeValue = (key: keyof TripFormData) => (e: ChangeEvent<HTMLInputElement>) => {
     updateInputValue(key, e.currentTarget.value);
   };
 
@@ -73,13 +67,11 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <ImageUploadInput
           label="대표 이미지 업로드"
           imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
-          imageAltText="여행 대표 이미지 업로드"
+          imageAltText="여행 대표 업로드 이미지 "
           maxUploadCount={1}
           onRemove={() => {}}
         />
-        <Button variant="primary" type="submit">
-          여행 정보 수정
-        </Button>
+        <Button variant="primary">여행 정보 수정</Button>
       </form>
     </Modal>
   );

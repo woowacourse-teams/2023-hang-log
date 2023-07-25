@@ -1,11 +1,11 @@
-import { postNewTrip } from '@/api/trips/postNewTrip';
 import { NETWORK } from '@constants/api';
 import { useMutation } from '@tanstack/react-query';
 
-export const useNewTripMutation = () => {
+import { postNewTrip } from '@api/trips/postNewTrip';
+
+export const useCreateTripMutation = () => {
   const newTripMutation = useMutation(postNewTrip(), {
-    onError: (err, _, context) => {
-      //toast 띄우기
+    onError: () => {
       alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     },
     retry: NETWORK.RETRY_COUNT,

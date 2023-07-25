@@ -1,8 +1,8 @@
-import type { TripData, TripPutData } from '@type/trip';
+import { createTripMutation } from '@/hooks/api/useTripEditMutation';
+import type { TripData, TripFormData } from '@type/trip';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { useEditTripMutation } from '@hooks/api/useEditTripMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
 export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>, onClose: () => void) => {
@@ -14,7 +14,7 @@ export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>, onClose:
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
   const [isCityInputError, setCityInputError] = useState(false);
-  const tripMutation = useEditTripMutation();
+  const tripEditMutation = createTripMutation();
 
   useEffect(() => {
     validateCityInput();
@@ -24,17 +24,16 @@ export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>, onClose:
     });
   }, [cityDateInfo]);
 
-  const updateInputValue = <K extends keyof TripPutData>(key: K, value: TripPutData[K]) => {
+  const updateInputValue = <K extends keyof TripFormData>(key: K, value: TripFormData[K]) => {
     setTripInfo((prevTripInfo) => {
       return { ...prevTripInfo, [key]: value };
     });
   };
 
   const validateCityInput = () => {
-    const cityLength = cityDateInfo.cityIds.length;
-
-    if (cityLength > 0) {
+    if (cityDateInfo.cityIds.length > 0) {
       setCityInputError(false);
+
       return;
     }
 
@@ -44,11 +43,9 @@ export const useTripInfoForm = (information: Omit<TripData, 'dayLogs'>, onClose:
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (isCityInputError) {
-      return;
-    }
+    if (isCityInputError) return;
 
-    tripMutation.mutate({
+    tripEditMutation.mutate({
       tripId,
       ...tripInfo,
       startDate: tripInfo.startDate!,
