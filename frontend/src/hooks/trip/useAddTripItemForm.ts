@@ -62,7 +62,7 @@ export const useAddTripItemForm = ({
     if (
       tripItemInformation.itemType &&
       !tripItemInformation.place &&
-      (!itemId || tripItemInformation.isPlaceUpdated)
+      (!itemId || !tripItemInformation.isPlaceUpdated)
     ) {
       setIsTitleError(true);
 
@@ -87,8 +87,6 @@ export const useAddTripItemForm = ({
 
       return;
     }
-
-    console.log('first');
 
     updateTripItemMutation.mutate(
       {
