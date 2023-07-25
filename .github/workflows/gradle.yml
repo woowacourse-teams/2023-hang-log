@@ -14,9 +14,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
 
     steps:
-
     - uses: actions/checkout@v3
 
     - name: Set up JDK 17
@@ -25,15 +26,15 @@ jobs:
         java-version: '17'
         distribution: 'corretto'
         
-    - name: cache gradle
-      uses: actions/cache@v2
-      with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+#     - name: cache gradle
+#       uses: actions/cache@v2
+#       with:
+#           path: |
+#             ~/.gradle/caches
+#             ~/.gradle/wrapper
+#           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#           restore-keys: |
+#             ${{ runner.os }}-gradle-
         
     - name: chmod gradlew
       run: chmod +x gradlew
@@ -42,9 +43,7 @@ jobs:
       run: ./gradlew build
       
     - name: Run Coverage
-      run: |
-        chmod +x gradlew
-        ./gradlew testCoverage
+      run: ./gradlew test
       
     - name: run jacocoTestCoverage
       id: jacoco
