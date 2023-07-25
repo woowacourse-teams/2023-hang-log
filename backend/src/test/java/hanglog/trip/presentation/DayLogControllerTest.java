@@ -129,9 +129,9 @@ class DayLogControllerTest extends RestDocsTest {
     @Test
     void updateOrdinalOfItems() throws Exception {
         //given
-        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L,2L,1L));
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L, 2L, 1L));
 
-        doNothing().when(dayLogService).updateOrdinalOfItems( any(), any());
+        doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
 
         // when & then
         mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
@@ -149,7 +149,7 @@ class DayLogControllerTest extends RestDocsTest {
                                 requestFields(
                                         fieldWithPath("itemIds")
                                                 .type(JsonFieldType.ARRAY)
-                                                .description("정렬된 아이템의 IDs")
+                                                .description("새로운 순서의 아이템 IDs")
                                                 .attributes(field("constraint", "ID 배열"))
                                 )
                         )

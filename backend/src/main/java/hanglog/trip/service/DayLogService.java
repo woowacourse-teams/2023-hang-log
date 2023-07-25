@@ -61,8 +61,7 @@ public class DayLogService {
         }
     }
 
-    public void updateOrdinalOfItems(final Long dayLogId,
-                                     final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
+    public void updateOrdinalOfItems(final Long dayLogId, final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
         final DayLog dayLog = dayLogRepository.findById(dayLogId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final List<Item> items = dayLog.getItems();

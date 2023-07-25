@@ -96,7 +96,7 @@ class DayLogServiceTest {
         dayLogService.updateOrdinalOfItems(1L, request);
 
         // then
-        List<Item> items = DAYLOG_FOR_ITEM_FIXTURE.getItems();
+        final List<Item> items = DAYLOG_FOR_ITEM_FIXTURE.getItems();
         assertSoftly(softly -> {
             softly.assertThat(items.get(0).getOrdinal()).isEqualTo(3);
             softly.assertThat(items.get(1).getOrdinal()).isEqualTo(2);
