@@ -77,7 +77,7 @@ public class DayLogService {
                 .collect(Collectors.toSet());
         final Set<Long> orderedItemIdsSet = new HashSet<>(orderedItemIds);
 
-        if(!itemIds.equals(orderedItemIdsSet)){
+        if (!itemIds.equals(orderedItemIdsSet)) {
             throw new BadRequestException(INVALID_ORDERED_ITEM_IDS);
         }
     }
