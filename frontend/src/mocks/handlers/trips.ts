@@ -27,4 +27,7 @@ export const tripsHandlers = [
   rest.get(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(trip));
   }),
+  rest.post(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
+    return res(ctx.status(202));
+  }),
 ];
