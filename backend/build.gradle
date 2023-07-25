@@ -41,6 +41,18 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory = file("$projectDir/build/generated")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$projectDir/build/generated"
+        }
+    }
+}
+
 jacoco {
     toolVersion = '0.8.8'
 }
@@ -143,4 +155,3 @@ tasks.register('copyApiDocument', Copy) {
 build {
     dependsOn copyApiDocument
 }
-
