@@ -116,20 +116,6 @@ public class Item extends BaseEntity {
             final String memo,
             final Place place,
             final DayLog dayLog,
-            final Expense expense
-    ) {
-        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, new ArrayList<>(), USABLE);
-    }
-
-    public Item(
-            final Long id,
-            final ItemType itemType,
-            final String title,
-            final Integer ordinal,
-            final Double rating,
-            final String memo,
-            final Place place,
-            final DayLog dayLog,
             final Expense expense,
             final List<Image> images
     ) {
@@ -143,11 +129,24 @@ public class Item extends BaseEntity {
             final Integer ordinal,
             final Double rating,
             final String memo,
+            final Place place,
             final DayLog dayLog,
-            final Expense expense,
-            final List<Image> images
+            final Expense expense
     ) {
-        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, images, USABLE);
+        this(id, itemType, title, ordinal, rating, memo, place, dayLog, expense, new ArrayList<>(), USABLE);
+    }
+
+    public Item(
+            final Long id,
+            final ItemType itemType,
+            final String title,
+            final Integer ordinal,
+            final Double rating,
+            final String memo,
+            final DayLog dayLog,
+            final Expense expense
+    ) {
+        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, new ArrayList<>());
     }
 
     public Item(
@@ -162,19 +161,6 @@ public class Item extends BaseEntity {
             final List<Image> images
     ) {
         this(null, itemType, title, ordinal, rating, memo, place, dayLog, expense, images);
-    }
-
-    public Item(
-            final Long id,
-            final ItemType itemType,
-            final String title,
-            final Integer ordinal,
-            final Double rating,
-            final String memo,
-            final DayLog dayLog,
-            final Expense expense
-    ) {
-        this(id, itemType, title, ordinal, rating, memo, null, dayLog, expense, new ArrayList<>());
     }
 
     private void validateRatingFormat(final Double rating) {
