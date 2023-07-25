@@ -124,31 +124,32 @@ const TripItem = ({
           </MenuList>
         )}
       </Menu>
-      <TripItemAddModal
-        tripId={tripId}
-        itemId={information.id}
-        dayLogId={dayLogId}
-        isOpen={isModalOpen}
-        dates={tripDates}
-        onClose={closeModal}
-        initialData={{
-          itemType: information.itemType,
-          dayLogId,
-          title: information.title,
-          isPlaceUpdated: false,
-          place: null,
-          rating: information.rating,
-          expense: information.expense
-            ? {
-                currency: information.expense.currency,
-                amount: information.expense.amount,
-                categoryId: information.expense.category.id,
-              }
-            : null,
-          memo: information.memo,
-          imageUrls: information.imageUrls,
-        }}
-      />
+      {isModalOpen && (
+        <TripItemAddModal
+          tripId={tripId}
+          itemId={information.id}
+          dayLogId={dayLogId}
+          dates={tripDates}
+          onClose={closeModal}
+          initialData={{
+            itemType: information.itemType,
+            dayLogId,
+            title: information.title,
+            isPlaceUpdated: false,
+            place: null,
+            rating: information.rating,
+            expense: information.expense
+              ? {
+                  currency: information.expense.currency,
+                  amount: information.expense.amount,
+                  categoryId: information.expense.category.id,
+                }
+              : null,
+            memo: information.memo,
+            imageUrls: information.imageUrls,
+          }}
+        />
+      )}
     </li>
   );
 };
