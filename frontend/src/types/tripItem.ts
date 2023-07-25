@@ -43,6 +43,7 @@ export interface TripItemFormData {
   itemType: boolean;
   dayLogId: number | null;
   title: string;
+  isPlaceUpdated?: boolean;
   place: {
     name: string;
     latitude: number;
