@@ -17,11 +17,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogGetResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +120,37 @@ class DayLogControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("수정된 제목")
                                                 .attributes(field("constraint", "문자열"))
+                                )
+                        )
+                );
+    }
+
+    @DisplayName("데이로그의 아이템들 순서를 변경할 수 있다.")
+    @Test
+    void updateOrdinalOfItems() throws Exception {
+        //given
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L, 2L, 1L));
+
+        doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNoContent())
+                .andDo(
+                        restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID"),
+                                        parameterWithName("dayLogId")
+                                                .description("날짜별 기록 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("itemIds")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("새로운 순서의 아이템 IDs")
+                                                .attributes(field("constraint", "ID 배열"))
                                 )
                         )
                 );
