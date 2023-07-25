@@ -38,18 +38,17 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip trip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
+        final Trip newTrip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate());
-        final Trip savedTrip = tripRepository.save(trip);
-        saveAllTripCities(cites, savedTrip);
-        saveDayLogs(savedTrip);
-        tripRepository.save(savedTrip);
-        return savedTrip.getId();
+        saveAllTripCities(cites, newTrip);
+        saveDayLogs(newTrip);
+        final Trip trip = tripRepository.save(newTrip);
+        return trip.getId();
     }
 
     private void saveDayLogs(final Trip savedTrip) {
-        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate());
-        final List<DayLog> dayLogs = IntStream.range(1, period.getDays() + 1)
+        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate().plusDays(1));
+        final List<DayLog> dayLogs = IntStream.rangeClosed(1, period.getDays() + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
@@ -58,14 +57,17 @@ public class TripService {
     public List<TripResponse> getAllTrip() {
         final List<Trip> trips = tripRepository.findAll();
         return trips.stream()
-                .map(TripResponse::of)
+                .map(trip -> getTrip(trip.getId()))
                 .toList();
     }
 
     public TripResponse getTrip(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        return TripResponse.of(trip);
+        final List<City> cities = tripCityRepository.findByTripId(tripId).stream()
+                .map(TripCity::getCity)
+                .toList();
+        return TripResponse.of(trip, cities);
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {

@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -104,12 +105,15 @@ class TripServiceTest {
         given(tripRepository.findById(1L))
                 .willReturn(Optional.of(LONDON_TRIP));
 
+        given(tripCityRepository.findByTripId(1L))
+                .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
+
         // when
         final TripResponse actual = tripService.getTrip(1L);
 
         // then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripResponse.of(LONDON_TRIP));
+                .isEqualTo(TripResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")

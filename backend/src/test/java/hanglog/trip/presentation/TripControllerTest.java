@@ -1,27 +1,7 @@
 package hanglog.trip.presentation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.dto.request.TripCreateRequest;
-import hanglog.trip.dto.request.TripUpdateRequest;
-import hanglog.trip.dto.response.TripResponse;
-import hanglog.trip.restdocs.RestDocsTest;
-import hanglog.trip.service.TripService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,17 +13,47 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.trip.domain.City;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.trip.service.TripService;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class TripControllerTest extends RestDocsTest {
+
+    private final List<City> CITIES = List.of(PARIS, LONDON);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -209,7 +219,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
         when(tripService.getTrip(1L))
-                .thenReturn(TripResponse.of(LONDON_TRIP));
+                .thenReturn(TripResponse.of(LONDON_TRIP, CITIES));
 
         // when
         final ResultActions resultActions = performGetRequest(1);
@@ -246,6 +256,26 @@ class TripControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.STRING)
                                         .description("대표 이미지")
                                         .attributes(field("constraint", "url")),
+                                fieldWithPath("cities")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("여행 도시 배열")
+                                        .attributes(field("constraint", "1개 이상의 도시 정보")),
+                                fieldWithPath("cities[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행 도시 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("cities[].name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 도시 이름")
+                                        .attributes(field("constraint", "나라, 도시")),
+                                fieldWithPath("cities[].latitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("위도")
+                                        .attributes(field("constraint", "실수")),
+                                fieldWithPath("cities[].longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "실수")),
                                 fieldWithPath("dayLogs")
                                         .type(JsonFieldType.ARRAY)
                                         .description("날짜별 여행 기록 배열")
@@ -279,7 +309,7 @@ class TripControllerTest extends RestDocsTest {
                 TripResponse.class
         );
         assertThat(tripResponse).usingRecursiveComparison()
-                .isEqualTo(TripResponse.of(LONDON_TRIP));
+                .isEqualTo(TripResponse.of(LONDON_TRIP, CITIES));
     }
 
 
@@ -289,7 +319,7 @@ class TripControllerTest extends RestDocsTest {
         // given
         makeTrip();
         when(tripService.getAllTrip())
-                .thenReturn(List.of(TripResponse.of(LONDON_TRIP)));
+                .thenReturn(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
 
         // when
         final ResultActions resultActions = performGetRequest();
@@ -322,6 +352,26 @@ class TripControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.STRING)
                                         .description("대표 이미지")
                                         .attributes(field("constraint", "url")),
+                                fieldWithPath("[].cities")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("여행 도시 배열")
+                                        .attributes(field("constraint", "1개 이상의 도시 정보")),
+                                fieldWithPath("[].cities[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행 도시 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("[].cities[].name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 도시 이름")
+                                        .attributes(field("constraint", "나라, 도시")),
+                                fieldWithPath("[].cities[].latitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("위도")
+                                        .attributes(field("constraint", "실수")),
+                                fieldWithPath("[].cities[].longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "실수")),
                                 fieldWithPath("[].dayLogs")
                                         .type(JsonFieldType.ARRAY)
                                         .description("날짜별 여행 기록 배열")
@@ -356,7 +406,7 @@ class TripControllerTest extends RestDocsTest {
                 }
         );
         assertThat(tripResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(TripResponse.of(LONDON_TRIP)));
+                .isEqualTo(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
     }
 
     @DisplayName("트립의 정보를 변경할 수 있다.")
