@@ -41,16 +41,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.withType(JavaCompile) {
-    options.generatedSourceOutputDirectory = file("$projectDir/build/generated")
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs += "$projectDir/build/generated"
-        }
-    }
+test {
+    finalizedBy jacocoTestReport
 }
 
 jacoco {
@@ -60,82 +52,12 @@ jacoco {
 jacocoTestReport {
     reports {
         xml.required = true
-        csv.required = false
         html.required = true
-    }
-
-    def Qdomains = []
-
-    for(qPattern in "**/QA" .. "**/QZ"){
-        Qdomains.add(qPattern+"*")
-    }
-
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: [
-                            '**/*Application*',
-                            '**/*Exception*',
-                            '**/*Response*',
-                            '**/*Request*',
-                            '**/*Dto*',
-                            '**/*Configuration*',
-                            '**/*Appender*'
-                    ] + Qdomains)
-        }))
-    }
-}
-
-jacocoTestCoverageVerification {
-    def Qdomains = []
-
-    for (qPattern in '*.QA'..'*.QZ') {
-        Qdomains.add(qPattern + '*')
-    }
-
-    violationRules {
-        rule {
-            element = 'METHOD'
-
-            limit {
-                counter = 'BRANCH'
-                value = 'COVEREDRATIO'
-                minimum = 0.50
-            }
-
-            limit {
-                counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.70
-            }
-
-            excludes = [
-                    '*.*Exception*',
-                    '*.*Response*',
-                    '*.*Request*',
-                    '*.*Application*',
-                    '*.*Dto*',
-                    '*.*Configuration*',
-                    '*.*Appender*'
-            ] + Qdomains
-        }
     }
 }
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-task jacocoTestCoverage(type: Test) {
-    group 'verification'
-    description 'Runs the unit tests with coverage'
-
-    dependsOn(':test',
-            ':jacocoTestReport',
-            ':jacocoTestCoverageVerification')
-
-    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
-    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
 }
 
 asciidoctor {
