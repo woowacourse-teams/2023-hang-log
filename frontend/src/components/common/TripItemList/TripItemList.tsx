@@ -45,6 +45,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
       {items.map((item, index) => (
         <Fragment key={item.id}>
           <TripItem
+            tripId={tripId}
             onDragStart={handleDragStart(index)}
             onDragEnter={handleDragEnter(index)}
             onDragEnd={handleDragEnd}

@@ -17,6 +17,8 @@ import { useState } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
+import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
+
 import StarRating from '@components/common/StarRating/StarRating';
 import {
   expenseStyling,
@@ -31,12 +33,20 @@ import {
 } from '@components/common/TripItem/TripItem.style';
 
 interface TripListItemProps extends TripItemData {
+  tripId: number;
   onDragStart: () => void;
   onDragEnter: () => void;
   onDragEnd: () => void;
 }
 
-const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripListItemProps) => {
+const TripItem = ({
+  tripId,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
+  ...information
+}: TripListItemProps) => {
+  const deleteTripItemMutation = useDeleteTripItemMutation();
   const { isOpen, open, close } = useOverlay();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -47,6 +57,10 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
   const handleDragEnd = () => {
     setIsDragging(false);
     onDragEnd();
+  };
+
+  const handleTripItem = () => {
+    deleteTripItemMutation.mutate({ tripId, itemId: information.id });
   };
 
   return (
@@ -100,7 +114,7 @@ const TripItem = ({ onDragStart, onDragEnter, onDragEnd, ...information }: TripL
         {isOpen && (
           <MenuList css={moreMenuListStyling}>
             <MenuItem onClick={() => {}}>수정</MenuItem>
-            <MenuItem onClick={() => {}}>삭제</MenuItem>
+            <MenuItem onClick={handleTripItem}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>

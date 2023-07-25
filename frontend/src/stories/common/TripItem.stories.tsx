@@ -6,6 +6,9 @@ import TripItem from '@components/common/TripItem/TripItem';
 const meta = {
   title: 'common/TripItem',
   component: TripItem,
+  args: {
+    tripId: 1,
+  },
 } satisfies Meta<typeof TripItem>;
 
 export default meta;
