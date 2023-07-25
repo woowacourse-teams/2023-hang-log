@@ -1,11 +1,21 @@
 import { useTripInfoForm } from '@/hooks/trip/useTripInfoForm';
 import type { TripData, TripPutData } from '@type/trip';
-import { Button, ImageUploadInput, Input, Modal } from 'hang-log-design-system';
+import {
+  Button,
+  Flex,
+  ImageUploadInput,
+  Input,
+  Modal,
+  SupportingText,
+} from 'hang-log-design-system';
 import type { ChangeEvent, FormEvent } from 'react';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import { formStyling } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
+import {
+  formStyling,
+  supportingTextStyling,
+} from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
   isOpen: boolean;
@@ -40,6 +50,10 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
           updateDateInfo={updateDateInfo}
         />
+        <SupportingText css={supportingTextStyling}>
+          ⚠︎ 여행 기간을 단축하면 마지막 날짜부터 작성한 기록들이 <br />
+          삭제됩니다.
+        </SupportingText>
         <Input
           label="여행 제목"
           value={tripInfo.title}

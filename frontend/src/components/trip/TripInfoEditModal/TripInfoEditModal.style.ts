@@ -10,3 +10,7 @@ export const formStyling = css({
     width: '400px',
   },
 });
+
+export const supportingTextStyling = css({
+  maxWidth: '400px',
+});
