@@ -2,6 +2,7 @@ package hanglog.trip.presentation;
 
 
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogGetResponse;
 import hanglog.trip.service.DayLogService;
 import jakarta.validation.Valid;
@@ -35,6 +36,15 @@ public class DayLogController {
             @PathVariable final Long dayLogId,
             @RequestBody @Valid final DayLogUpdateTitleRequest request) {
         dayLogService.updateTitle(dayLogId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/order")
+    public ResponseEntity<Void> updateOrdinalOfItems(
+            @PathVariable final Long tripId,
+            @PathVariable final Long dayLogId,
+            @RequestBody @Valid final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
+        dayLogService.updateOrdinalOfDayLogItems(dayLogId, itemsOrdinalUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 }

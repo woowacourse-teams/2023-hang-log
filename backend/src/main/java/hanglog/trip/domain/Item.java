@@ -179,4 +179,8 @@ public class Item extends BaseEntity {
             throw new IllegalArgumentException("별점은 N.0점이거나 N.5점 형태이어야 합니다.");
         }
     }
+
+    public void changeOrdinal(final int ordinal) {
+        this.ordinal = ordinal;
+    }
 }
