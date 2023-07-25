@@ -9,12 +9,14 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CityRepository;
+import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class TripService {
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
+    private final DayLogRepository dayLogRepository;
 
     public Long save(final TripCreateRequest tripCreateRequest) {
         final List<City> cites = tripCreateRequest.getCityIds().stream()
@@ -48,11 +51,12 @@ public class TripService {
     }
 
     private void saveDayLogs(final Trip savedTrip) {
-        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate());
-        final List<DayLog> dayLogs = IntStream.range(1, period.getDays() + 1)
+        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate().plusDays(1));
+        final List<DayLog> dayLogs = IntStream.rangeClosed(1, period.getDays() + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
+        dayLogRepository.saveAll(dayLogs);
     }
 
     public List<TripResponse> getAllTrip() {
@@ -101,9 +105,15 @@ public class TripService {
         }
 
         if (currentPeriod > requestPeriod) {
-            trip.getDayLogs().removeIf(dayLog ->
-                    dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod
-            );
+            final List<DayLog> dayLogsToRemove = new ArrayList<>();
+            trip.getDayLogs().removeIf(dayLog -> {
+                final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
+                if (isRemovable) {
+                    dayLogsToRemove.add(dayLog);
+                }
+                return isRemovable;
+            });
+            dayLogRepository.deleteAll(dayLogsToRemove);
         }
         trip.getDayLogs().add(extraDayLog);
     }
@@ -111,6 +121,7 @@ public class TripService {
     public void delete(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        dayLogRepository.deleteAll(trip.getDayLogs());
         tripRepository.delete(trip);
     }
 
