@@ -21,8 +21,18 @@ jobs:
     steps:
     - name: Access Secrets
       env:
-        google: ${{secrets.GOOGLE}}
-        kakao: ${{secrets.KAKAO}}
+        oauth2.provider.google.client-id: ${{secrets.GOOGLE_CLIENT_ID}}
+        oauth2.provider.google.client-secret: ${{GOOGLE_CLIENT_SECRET}} 
+        oauth2.provider.google.redirect-uri: ${{GOOGLE_REDIRECT_URI}}
+        oauth2.provider.google.token-uri: ${{GOOGLE_TOKEN_URI}}
+        oauth2.provider.google.user-info: ${{GOOGLE_USER_INFO}}
+        
+        oauth2.provider.kakao.client-id: ${{KAKAO_CLIENT_ID}}
+        oauth2.provider.kakao.client-secret: ${{KAKAO_CLIENT_SECRET}}
+        oauth2.provider.kakao.redirect-uri: ${{KAKAO_REDIRECT_URI}}
+        oauth2.provider.kakao.token-uri: ${{KAKAO_TOKEN_URI}}
+        oauth2.provider.kakao.user-info: ${{KAKAO_USER_INFO}}
+        
     
     - uses: actions/checkout@v3
 
