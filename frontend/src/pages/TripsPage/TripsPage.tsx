@@ -24,7 +24,7 @@ const TripsPage = () => {
   return (
     <>
       <TripsHeader />
-      {sortedTrips?.length ? (
+      {sortedTrips.length > 0 ? (
         <TripsItemList
           trips={sortedTrips}
           order={sortSelected}

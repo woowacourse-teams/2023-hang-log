@@ -6,11 +6,11 @@ import type { AxiosError } from 'axios';
 import { getTrips } from '@api/trips/getTrips';
 
 export const useTripsQuery = () => {
-  const { data: tripsData } = useQuery<TripsData[], AxiosError>(['trips'], getTrips, {
+  const { data } = useQuery<TripsData[], AxiosError>(['trips'], getTrips, {
     retry: NETWORK.RETRY_COUNT,
     suspense: true,
     useErrorBoundary: true,
   });
 
-  return { tripsData };
+  return { tripsData: data! };
 };
