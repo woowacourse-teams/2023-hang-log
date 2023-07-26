@@ -40,11 +40,6 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
     const word = event.currentTarget.value;
     setQueryWord(word);
 
-    if (!word) {
-      closeSuggestion();
-      return;
-    }
-
     openSuggestion();
   };
 
