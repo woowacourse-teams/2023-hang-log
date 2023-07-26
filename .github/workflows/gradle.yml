@@ -54,5 +54,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 95
         min-coverage-changed-files: 95  
-    if: ${{ steps.jacoco.outputs.coverage-overall < 95 }}
+      if: ${{ steps.jacoco.outputs.coverage-overall < 95 }}
       
