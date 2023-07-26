@@ -29,33 +29,33 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 
   useEffect(() => {
+    if (!queryWord) return;
+
     setNewSuggestions(queryWord);
   }, [queryWord]);
-
-  const handleItemClick = (city: CityData) => () => {
-    onItemSelect(city);
-  };
 
   useEffect(() => {
     scrollToFocusedItem();
   }, [focusedSuggestionIndex]);
 
+  const handleItemClick = (city: CityData) => () => {
+    onItemSelect(city);
+  };
+
   return (
     <SuggestionList css={containerStyling} ref={listRef}>
-      {suggestions.length ? (
-        suggestions.map((city, index) => (
-          <SuggestionsItem
-            key={city.id}
-            onClick={handleItemClick(city)}
-            css={getItemStyling(isFocused(index))}
-            ref={isFocused(index) ? itemRef : null}
-          >
-            {city.name}
-          </SuggestionsItem>
-        ))
-      ) : (
-        <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
-      )}
+      {suggestions.length
+        ? suggestions.map((city, index) => (
+            <SuggestionsItem
+              key={city.id}
+              onClick={handleItemClick(city)}
+              css={getItemStyling(isFocused(index))}
+              ref={isFocused(index) ? itemRef : null}
+            >
+              {city.name}
+            </SuggestionsItem>
+          ))
+        : !!queryWord && <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>}
     </SuggestionList>
   );
 };

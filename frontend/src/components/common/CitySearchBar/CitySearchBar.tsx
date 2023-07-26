@@ -30,7 +30,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCities ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debouncedQueryWord = useDebounce(queryWord, 300);
+  const debouncedQueryWord = useDebounce(queryWord, 150);
 
   useEffect(() => {
     updateCityInfo(cityTags);
@@ -39,6 +39,11 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const word = event.currentTarget.value;
     setQueryWord(word);
+
+    if (!word) {
+      closeSuggestion();
+      return;
+    }
 
     openSuggestion();
   };
@@ -64,7 +69,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   };
 
   const handleInputFocus = () => {
-    if (queryWord) {
+    if (debouncedQueryWord) {
       openSuggestion();
     }
   };
