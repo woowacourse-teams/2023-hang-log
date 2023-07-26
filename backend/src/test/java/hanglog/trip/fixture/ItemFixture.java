@@ -6,7 +6,7 @@ import hanglog.trip.domain.type.ItemType;
 
 public final class ItemFixture {
 
-    private static final DayLog DAYLOG_FOR_ITEM_FIXTURE = new DayLog(
+    public static final DayLog DAYLOG_FOR_ITEM_FIXTURE = new DayLog(
             "첫날",
             1,
             TripFixture.LONDON_TRIP
@@ -31,6 +31,17 @@ public final class ItemFixture {
             2,
             4.0,
             "런던에서 탄 택시",
+            DAYLOG_FOR_ITEM_FIXTURE,
+            ExpenseFixture.EURO_10000
+    );
+
+    public static final Item AIRPLANE_ITEM = new Item(
+            3L,
+            ItemType.NON_SPOT,
+            "비행기",
+            3,
+            4.5,
+            "런던에서 탄 비행기",
             DAYLOG_FOR_ITEM_FIXTURE,
             ExpenseFixture.EURO_10000
     );

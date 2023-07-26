@@ -4,7 +4,7 @@ import type { TripsData } from '@type/trips';
 import { axiosInstance } from '@api/axiosInstance';
 
 export const getTrips = async () => {
-  const { data } = await axiosInstance.get<{ trips: TripsData[] }>(END_POINTS.TRIPS);
+  const { data } = await axiosInstance.get<TripsData[] | []>(END_POINTS.TRIPS);
 
-  return data?.trips;
+  return data;
 };

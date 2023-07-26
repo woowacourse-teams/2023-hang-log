@@ -1,3 +1,4 @@
+import useDebounce from '@/hooks/common/useDebounce';
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
@@ -29,6 +30,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCities ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
+  const debouncedQueryWord = useDebounce(queryWord, 300);
 
   useEffect(() => {
     updateCityInfo(cityTags);
@@ -61,7 +63,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
     inputRef.current?.focus();
   };
 
-  const handleInputFocus = (e: any) => {
+  const handleInputFocus = () => {
     if (queryWord) {
       openSuggestion();
     }
@@ -102,7 +104,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
           </div>
         </div>
         {isSuggestionOpen && (
-          <CitySuggestion queryWord={queryWord} onItemSelect={handleSuggestionClick} />
+          <CitySuggestion queryWord={debouncedQueryWord} onItemSelect={handleSuggestionClick} />
         )}
       </div>
     </Menu>
