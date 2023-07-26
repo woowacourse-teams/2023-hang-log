@@ -62,6 +62,11 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
         onItemSelect(suggestions[focusedSuggestionIndex]);
       }
     }
+
+    if (e.key === 'Escape') {
+      //이거 onClose 프롭스로 받기 싫어서 꼼수로 일단 구현함....
+      onItemSelect(suggestions[-1]);
+    }
   };
 
   useEffect(() => {

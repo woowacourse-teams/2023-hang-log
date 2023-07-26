@@ -44,6 +44,11 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   };
 
   const handleSuggestionClick = (selectedCity: CityData) => {
+    if (!selectedCity) {
+      closeSuggestion();
+      return;
+    }
+
     addCityTag(selectedCity);
     resetAll();
   };

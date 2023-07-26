@@ -10,3 +10,7 @@ export const formStyling = css({
     width: '400px',
   },
 });
+
+export const dateInputSupportingText = css({
+  wordBreak: 'keep-all',
+});
