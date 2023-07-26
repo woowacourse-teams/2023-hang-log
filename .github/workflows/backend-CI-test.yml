@@ -27,7 +27,7 @@ jobs:
       with:
         files: ./backend/src/main/resources/application.yml 
       env:
-        GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+        GOOGLE_CLIENT_ID: "sdsaf"
 #         GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}} 
 #         GOOGLE_REDIRECT_URI: ${{secrets.GOOGLE_REDIRECT_URI}}
 #         GOOGLE_TOKEN_URI: ${{secrets.GOOGLE_TOKEN_URI}}
