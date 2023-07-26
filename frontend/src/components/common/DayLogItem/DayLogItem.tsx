@@ -27,7 +27,7 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
   }, [information.items]);
 
   return (
-    <Box css={containerStyling}>
+    <Box tag="section" css={containerStyling}>
       <Flex css={headerStyling} styles={{ justify: 'space-between' }}>
         {/* 수정 모드일 때만 보인다 */}
         <TitleInput tripId={tripId} dayLogId={information.id} initialTitle={information.title} />

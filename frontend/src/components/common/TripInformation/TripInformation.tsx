@@ -17,12 +17,12 @@ type TripInformationProps = Omit<TripData, 'dayLogs'>;
 
 const TripInformation = ({ ...information }: TripInformationProps) => {
   return (
-    <section css={sectionStyling}>
+    <header css={sectionStyling}>
       <Box css={imageWrapperStyling}>
         <div />
         <img src={information.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
       </Box>
-      <Box>
+      <Box tag="section">
         <Flex styles={{ gap: Theme.spacer.spacing1 }}>
           {information.cities.map(({ id, name }) => (
             <Badge key={id}>{name}</Badge>
@@ -47,7 +47,7 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
           저장
         </Button>
       </Box>
-    </section>
+    </header>
   );
 };
 

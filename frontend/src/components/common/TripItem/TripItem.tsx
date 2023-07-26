@@ -91,7 +91,7 @@ const TripItem = ({
             images={information.imageUrls}
           />
         )}
-        <Box css={informationContainerStyling}>
+        <Box tag="section" css={informationContainerStyling}>
           <Heading size="xSmall">{information.title}</Heading>
           {information.place && (
             <Text css={subInformationStyling} size="small">
