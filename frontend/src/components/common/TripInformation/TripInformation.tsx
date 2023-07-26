@@ -43,6 +43,7 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
         <Button css={editButtonStyling} variant="outline" size="small">
           여행 정보 수정
         </Button>
+        {/* TODO : 클릭하면 읽기 전용 페이지로 이동 i.e. /trip/1 */}
         <Button variant="primary" size="small">
           저장
         </Button>

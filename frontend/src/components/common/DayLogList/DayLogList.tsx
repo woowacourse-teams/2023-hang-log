@@ -32,7 +32,7 @@ const DayLogList = ({
             return (
               <Tab
                 key={index}
-                text={'기타'}
+                text="기타"
                 variant="outline"
                 tabId={date.id}
                 selectedId={selectedDayLog.id}

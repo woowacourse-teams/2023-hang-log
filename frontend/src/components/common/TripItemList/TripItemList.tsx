@@ -1,8 +1,8 @@
-import { useDayLogOrderMutation } from '@/hooks/api/useDayLogOrderMutation';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
 
+import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
 
 import TripItem from '@components/common/TripItem/TripItem';

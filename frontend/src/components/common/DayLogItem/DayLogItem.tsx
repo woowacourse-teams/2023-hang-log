@@ -22,7 +22,7 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
       : information.items;
 
   useEffect(() => {
-    // ordinal 변경되었을 때 목록 및 선택된 토클 초기화
+    // ! 선택된 날짜 탭이 변경되었을 때 선택된 필터 초기화
     handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
   }, [information.items]);
 
