@@ -37,9 +37,6 @@ jobs:
     - name: Gradle을 통해 빌드합니다.
       run: ./gradlew build
       
-#     - name: Run Coverage
-#       run: ./gradlew test
-      
     - name: jacocoTestCoverage를 실행하고 리포트를 출력합니다.
       id: jacoco
       uses: madrapps/jacoco-report@v1.5
