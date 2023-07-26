@@ -43,20 +43,26 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   };
 
   return (
-    <SuggestionList css={containerStyling} ref={listRef}>
-      {suggestions.length
-        ? suggestions.map((city, index) => (
-            <SuggestionsItem
-              key={city.id}
-              onClick={handleItemClick(city)}
-              css={getItemStyling(isFocused(index))}
-              ref={isFocused(index) ? itemRef : null}
-            >
-              {city.name}
-            </SuggestionsItem>
-          ))
-        : !!queryWord && <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>}
-    </SuggestionList>
+    <>
+      {queryWord && (
+        <SuggestionList css={containerStyling} ref={listRef}>
+          {suggestions.length ? (
+            suggestions.map((city, index) => (
+              <SuggestionsItem
+                key={city.id}
+                onClick={handleItemClick(city)}
+                css={getItemStyling(isFocused(index))}
+                ref={isFocused(index) ? itemRef : null}
+              >
+                {city.name}
+              </SuggestionsItem>
+            ))
+          ) : (
+            <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+          )}
+        </SuggestionList>
+      )}
+    </>
   );
 };
 

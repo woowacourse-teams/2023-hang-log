@@ -11,6 +11,10 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
+  useEffect(() => {
+    focusOnlySuggestion();
+  }, [suggestions]);
+
   const setNewSuggestions = (word: string) => {
     const query = stringToKorean(word);
     const regex = makeRegexByCho(query);
@@ -31,6 +35,12 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     setFocusedSuggestionIndex((prevIndex) =>
       prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
     );
+  };
+
+  const focusOnlySuggestion = () => {
+    if (suggestions.length === 1) {
+      setFocusedSuggestionIndex(0);
+    }
   };
 
   const isFocused = (index: number) => {
