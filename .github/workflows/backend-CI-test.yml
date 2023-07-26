@@ -19,6 +19,9 @@ jobs:
       pull-requests: write
 
     steps:
+    - name: Repository Checkout
+    - uses: actions/checkout@v3
+    
     - name: Access Secrets
       uses: microsoft/variable-substitution@v1
       with:
@@ -37,7 +40,7 @@ jobs:
 #         KAKAO_USER_INFO: ${{secrets.KAKAO_USER_INFO}}
         
     
-    - uses: actions/checkout@v3
+
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3
