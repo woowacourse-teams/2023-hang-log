@@ -14,6 +14,8 @@ export const containerStyling = css({
 export const getItemStyling = (isFocused: boolean) => {
   return css({
     backgroundColor: isFocused ? Theme.color.gray200 : Theme.color.white,
+    fontSize: Theme.text.medium.fontSize,
+    padding: `12px ${Theme.spacer.spacing3}`,
   });
 };
 
