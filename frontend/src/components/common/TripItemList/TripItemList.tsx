@@ -1,5 +1,5 @@
 import type { TripItemData } from '@type/tripItem';
-import { Button, Divider, Heading, Text } from 'hang-log-design-system';
+import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
@@ -20,6 +20,7 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
+  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   useEffect(() => {
     handleItemsUpdate(tripItems);
@@ -31,7 +32,10 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
     dayLogOrderMutation.mutate(
       { tripId, dayLogId, itemIds },
       {
-        onError: () => handleItemsUpdate(tripItems),
+        onError: () => {
+          handleItemsUpdate(tripItems);
+          openErrorToast();
+        },
       }
     );
   };
@@ -40,21 +44,28 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
     useDragAndDrop(tripItems, handlePositionChange);
 
   return (
-    <ol css={containerStyling}>
-      {items.map((item, index) => (
-        <Fragment key={item.id}>
-          <TripItem
-            tripId={tripId}
-            dayLogId={dayLogId}
-            onDragStart={handleDragStart(index)}
-            onDragEnter={handleDragEnter(index)}
-            onDragEnd={handleDragEnd}
-            {...item}
-          />
-          <Divider />
-        </Fragment>
-      ))}
-    </ol>
+    <>
+      <ol css={containerStyling}>
+        {items.map((item, index) => (
+          <Fragment key={item.id}>
+            <TripItem
+              tripId={tripId}
+              dayLogId={dayLogId}
+              onDragStart={handleDragStart(index)}
+              onDragEnter={handleDragEnter(index)}
+              onDragEnd={handleDragEnd}
+              {...item}
+            />
+            <Divider />
+          </Fragment>
+        ))}
+      </ol>
+      {isErrorTostOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          아이템 순서 변경에 실패했습니다.
+        </Toast>
+      )}
+    </>
   );
 };
 
