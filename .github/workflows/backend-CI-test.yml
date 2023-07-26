@@ -45,7 +45,7 @@ jobs:
     - name: test2
       env: 
           APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
-      run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application-dev.yml
+      run: echo $APPLICATION_YML | base64 --decode >> ./src/main/resources/application-dev.yml
     
     - name: test3
       run: cat ./src/main/resources/application-dev.yml
