@@ -2,8 +2,6 @@ import TripCreateForm from '@/components/newTrip/NewTripForm/TripCreateForm';
 import CreatePageImage from '@assets/svg/create-page-image.svg';
 import { Box, Flex, Heading } from 'hang-log-design-system';
 
-import { useCityQuery } from '@hooks/api/useCityQuery';
-
 import {
   backgroundImage,
   boxStyling,
@@ -11,8 +9,6 @@ import {
 } from '@pages/TripCreatePage/TripCreatePage.style';
 
 const TripCreatePage = () => {
-  useCityQuery();
-
   return (
     <Flex css={containerStyling}>
       <Box css={boxStyling}>
