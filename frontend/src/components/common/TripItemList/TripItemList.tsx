@@ -20,7 +20,8 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
-  const handlePositionChange = async (newItems: TripItemData[]) => {
+
+  const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
 
     dayLogOrderMutation.mutate({ tripId, dayLogId, itemIds });
