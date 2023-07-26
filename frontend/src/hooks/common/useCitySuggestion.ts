@@ -3,6 +3,7 @@ import type { CityData } from '@type/city';
 import { useEffect, useState } from 'react';
 
 import { makeRegexByCho } from '@utils/cityFilter';
+import { stringToKorean } from '@utils/formatter';
 
 export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
   const queryClient = useQueryClient();
@@ -11,7 +12,8 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
   const setNewSuggestions = (word: string) => {
-    const regex = makeRegexByCho(word);
+    const query = stringToKorean(word);
+    const regex = makeRegexByCho(query);
 
     if (cityData) {
       const filteredSuggestions = cityData.filter(({ name }) => regex.test(name));

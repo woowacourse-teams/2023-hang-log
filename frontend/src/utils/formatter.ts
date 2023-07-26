@@ -19,3 +19,15 @@ export const dateRangeToString = (dateRange: DateRangeData) => {
 
   return `${formatDate(start)} - ${formatDate(end)}`;
 };
+
+export const stringToKorean = (string: string) => {
+  const koreanCharacterRegex = /[가-힣ㄱ-ㅎ]+/g;
+
+  const matches = string.match(koreanCharacterRegex);
+
+  if (matches) {
+    return matches[0];
+  }
+
+  return '';
+};
