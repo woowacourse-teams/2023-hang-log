@@ -20,40 +20,38 @@ interface TripsItemListProps {
 
 const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
   return (
-    trips && (
-      <>
-        <Flex styles={{ justify: 'right', paddingRight: '50px' }} css={toggleGroupStyling}>
-          <ToggleGroup>
-            <Toggle
-              text={ORDER_BY_REGISTRATION}
-              toggleId={ORDER_BY_REGISTRATION}
-              selectedId={order}
-              changeSelect={changeSelect}
+    <>
+      <Flex styles={{ justify: 'right', paddingRight: '50px' }} css={toggleGroupStyling}>
+        <ToggleGroup>
+          <Toggle
+            text={ORDER_BY_REGISTRATION}
+            toggleId={ORDER_BY_REGISTRATION}
+            selectedId={order}
+            changeSelect={changeSelect}
+          />
+          <Toggle
+            text={ORDER_BY_DATE}
+            toggleId={ORDER_BY_DATE}
+            selectedId={order}
+            changeSelect={changeSelect}
+          />
+        </ToggleGroup>
+      </Flex>
+      <Box css={gridBoxStyling}>
+        {trips.map((trip) => {
+          return (
+            <TripsItem
+              key={trip.id}
+              coverImage={trip.imageUrl}
+              cityTags={trip.cities}
+              itemName={trip.title}
+              duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
+              description={trip.description}
             />
-            <Toggle
-              text={ORDER_BY_DATE}
-              toggleId={ORDER_BY_DATE}
-              selectedId={order}
-              changeSelect={changeSelect}
-            />
-          </ToggleGroup>
-        </Flex>
-        <Box css={gridBoxStyling}>
-          {trips.map((trip) => {
-            return (
-              <TripsItem
-                key={trip.id}
-                coverImage={trip.imageUrl}
-                cityTags={trip.cities}
-                itemName={trip.title}
-                duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
-                description={trip.description}
-              />
-            );
-          })}
-        </Box>
-      </>
-    )
+          );
+        })}
+      </Box>
+    </>
   );
 };
 
