@@ -25,7 +25,7 @@ const TripsPage = () => {
       {sortedTrips?.length ? (
         <TripsItemList trips={sortedTrips} order={sortSelected} changeSelect={handleSelectClick} />
       ) : (
-        tripsData && <TripsItemList.Empty />
+        <TripsItemList.Empty />
       )}
       <FloatingButton css={addButtonStyling} onClick={() => navigate(PATH.CREATE_TRIP)} />
     </>
