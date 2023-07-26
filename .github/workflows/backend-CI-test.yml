@@ -45,7 +45,7 @@ jobs:
     - name: test2
       env: 
           APPLICAION_YML: ${{ secrets.APPLICATION_YML }}
-      run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application.yml
+      run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application_dev.yml
     
 
 
@@ -64,7 +64,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-        
+    
+    - name: Build with Custom YAML
+      run: application_dev.yml ./src/main/resources/application_dev.yml
+    
     - name: chmod gradlew
       run: chmod +x gradlew
         
