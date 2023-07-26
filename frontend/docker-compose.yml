@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /home/ubuntu/hang-log-frontend:/usr/share/nginx/html
+      - /home/ubuntu/hang-log-images:/usr/share/nginx/html/img
