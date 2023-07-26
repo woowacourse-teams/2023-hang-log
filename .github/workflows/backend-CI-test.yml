@@ -30,7 +30,7 @@ jobs:
       uses: microsoft/variable-substitution@v1
       with:
         files: ./backend/src/main/resources/application.yml 
-#       env:
+      env:
 #         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 #         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} 
 #         GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
