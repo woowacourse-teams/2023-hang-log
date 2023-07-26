@@ -24,7 +24,7 @@ jobs:
       
     - name: test
       run : |
-          echo "Secrets: ${base64 --decode >{secrets.KAKAO_CLIENT_ID}}"
+          echo "Secrets: base64 --decode > ${{secrets.KAKAO_CLIENT_ID}}"
     
     - name: Access Secrets
       uses: microsoft/variable-substitution@v1
