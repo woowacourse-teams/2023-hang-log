@@ -20,6 +20,9 @@ jobs:
 
     steps:
     - name: Access Secrets
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./src/main/resources/application.yml 
       env:
         oauth2.provider.google.client-id: ${{secrets.GOOGLE_CLIENT_ID}}
         oauth2.provider.google.client-secret: ${{GOOGLE_CLIENT_SECRET}} 
