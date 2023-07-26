@@ -32,8 +32,8 @@ const TripsItemListSkeleton = () => {
         </ToggleGroup>
       </Flex>
       <Box tag="ol" css={gridBoxStyling}>
-        {Array.from({ length: 10 }, () => {
-          return <TripsItemSkeleton />;
+        {Array.from({ length: 10 }, (_, index) => {
+          return <TripsItemSkeleton key={index} />;
         })}
       </Box>
     </>
