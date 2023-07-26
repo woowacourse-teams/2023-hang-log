@@ -1,4 +1,3 @@
-import { useTripsQuery } from '@/hooks/api/useTripsQuery';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
 import { FloatingButton, useSelect } from 'hang-log-design-system';
@@ -14,7 +13,8 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 const TripsPage = () => {
   const navigate = useNavigate();
   const { tripsData } = useTripsQuery();
-  const { selected: sortSelected, handleSelectClick } = useSelect(ORDER_BY_REGISTRATION);
+  const { selected: sortSelected, handleSelectClick: handleSortSelectClick } =
+    useSelect(ORDER_BY_REGISTRATION);
 
   const sortedTrips =
     sortSelected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
@@ -23,7 +23,11 @@ const TripsPage = () => {
     <>
       <TripsHeader />
       {sortedTrips?.length ? (
-        <TripsItemList trips={sortedTrips} order={sortSelected} changeSelect={handleSelectClick} />
+        <TripsItemList
+          trips={sortedTrips}
+          order={sortSelected}
+          changeSelect={handleSortSelectClick}
+        />
       ) : (
         <TripsItemList.Empty />
       )}

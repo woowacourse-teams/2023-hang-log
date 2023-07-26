@@ -1,4 +1,4 @@
-import TripsHeaderSVG from '@assets/svg/TripsHeader.svg';
+import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 import { Box, Flex, Heading, Theme } from 'hang-log-design-system';
 
 const TripsHeader = () => {
@@ -18,7 +18,7 @@ const TripsHeader = () => {
           </Flex>
         </Box>
         <Flex styles={{ paddingRight: '50px' }}>
-          <TripsHeaderSVG />
+          <TripsHeaderImage />
         </Flex>
       </Flex>
     </>
