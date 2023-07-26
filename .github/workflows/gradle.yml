@@ -53,6 +53,6 @@ jobs:
         paths: ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 85
-        min-coverage-changed-files: 85  
+        min-coverage-changed-files: 85
+        echo: ${{ steps.jacoco.outputs.coverage-overall < 85 }}
       if: ${{ steps.jacoco.outputs.coverage-overall < 85 }}
-      
