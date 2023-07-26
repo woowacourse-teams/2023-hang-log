@@ -106,7 +106,7 @@ public class TripService {
         trip.getDayLogs().add(extraDayLog);
     }
 
-    private void addEmptyDayLogs(Trip trip, int currentPeriod, int requestPeriod) {
+    private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         final List<DayLog> emptyDayLogs = new ArrayList<>();
         for (int i = currentPeriod; i < requestPeriod; i++) {
             final DayLog emptyDayLog = DayLog.generateEmpty(i + 1, trip);
@@ -116,10 +116,11 @@ public class TripService {
         dayLogRepository.saveAll(emptyDayLogs);
     }
 
-    private void removeRemainingDayLogs(Trip trip, int currentPeriod, int requestPeriod) {
+    private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         final List<DayLog> dayLogsToRemove = new ArrayList<>();
         trip.getDayLogs().removeIf(dayLog -> {
-            final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
+            final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod
+                    + 1 && dayLog.getOrdinal() <= currentPeriod;
             if (isRemovable) {
                 dayLogsToRemove.add(dayLog);
             }
