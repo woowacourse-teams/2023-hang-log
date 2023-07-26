@@ -72,7 +72,7 @@ jobs:
       run: chmod +x gradlew
         
     - name: Build with Gradle
-      run: ./gradlew devbuild
+      run: ./gradlew build
       
     - name: Run Coverage
       run: ./gradlew test
