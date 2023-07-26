@@ -44,7 +44,7 @@ jobs:
 #         KAKAO_USER_INFO: ${ {secrets.KAKAO_USER_INFO} }
     - name: test2
       env: 
-          APPLICAION_YML: ${{ secrets.APPLICATION_YML }}
+          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
       run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application-dev.yml
     
     - name: test3
