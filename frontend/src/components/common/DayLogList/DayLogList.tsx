@@ -25,7 +25,7 @@ const DayLogList = ({ tripId, selectedDayLog, onTabChange, openAddModal }: DayLo
           if (index === dates.length - 1) {
             return (
               <Tab
-                key={index}
+                key={date.id}
                 text="기타"
                 variant="outline"
                 tabId={date.id}
@@ -37,7 +37,7 @@ const DayLogList = ({ tripId, selectedDayLog, onTabChange, openAddModal }: DayLo
 
           return (
             <Tab
-              key={index}
+              key={date.id}
               text={
                 date.id === selectedDayLog.id
                   ? `Day ${index + 1} - ${formatMonthDate(date.date)} `
