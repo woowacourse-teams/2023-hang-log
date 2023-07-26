@@ -55,24 +55,24 @@ jobs:
         java-version: '17'
         distribution: 'corretto'
         
-    - name: cache gradle
-      uses: actions/cache@v2
-      with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+#     - name: cache gradle
+#       uses: actions/cache@v2
+#       with:
+#           path: |
+#             ~/.gradle/caches
+#             ~/.gradle/wrapper
+#           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#           restore-keys: |
+#             ${{ runner.os }}-gradle-
     
-    - name: Build with Custom YAML
-      run: application_dev.yml ./src/main/resources/application_dev.yml
+#     - name: Build with Custom YAML
+#       run: application_dev.yml ./src/main/resources/application_dev.yml
     
     - name: chmod gradlew
       run: chmod +x gradlew
         
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew devbuild
       
     - name: Run Coverage
       run: ./gradlew test
