@@ -19,6 +19,11 @@ jobs:
       pull-requests: write
 
     steps:
+    - name: Access Secrets
+      env:
+        google: ${{secrets.GOOGLE}}
+        kakao: ${{secrets.KAKAO}}
+    
     - uses: actions/checkout@v3
 
     - name: Set up JDK 17
