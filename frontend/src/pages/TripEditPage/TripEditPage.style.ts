@@ -11,8 +11,12 @@ export const containerStyling = css({
 
 export const addButtonStyling = css({
   position: 'fixed',
-  right: 'calc(50vw + 50px)',
+  left: 'calc(50vw - 114px)',
   bottom: '50px',
+
+  '@media screen and (max-width: 1200px)': {
+    left: 'calc(60vw - 114px)',
+  },
 });
 
 export const skeletonContainerStyling = css({
