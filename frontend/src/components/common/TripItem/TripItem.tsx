@@ -13,7 +13,6 @@ import {
   Theme,
   useOverlay,
 } from 'hang-log-design-system';
-import { useState } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -54,7 +53,7 @@ const TripItem = ({
   const deleteTripItemMutation = useDeleteTripItemMutation();
   const { tripDates } = useTripDates(tripId);
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
-  const { isOpen: isModalOpen, open: openModal, close: closeModal } = useOverlay();
+  const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
 
   const handleTripItemDelete = () => {
@@ -111,18 +110,18 @@ const TripItem = ({
         </button>
         {isMenuOpen && (
           <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={openModal}>수정</MenuItem>
+            <MenuItem onClick={openEditModal}>수정</MenuItem>
             <MenuItem onClick={handleTripItemDelete}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>
-      {isModalOpen && (
+      {isEditModalOpen && (
         <TripItemAddModal
           tripId={tripId}
           itemId={information.id}
           dayLogId={dayLogId}
           dates={tripDates}
-          onClose={closeModal}
+          onClose={closeEditModal}
           initialData={{
             itemType: information.itemType,
             dayLogId,
