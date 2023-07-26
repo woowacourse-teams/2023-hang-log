@@ -22,9 +22,9 @@ jobs:
     - name: Repository Checkout
       uses: actions/checkout@v3
       
-    - name: test
-      run : |
-          echo "Secrets: ${{secrets.KAKAO_CLIENT_ID}}"
+#     - name: test
+#       run : |
+#           echo "Secrets: ${{secrets.KAKAO_CLIENT_ID}}"
     
 #     - name: Access Secrets
 #       uses: microsoft/variable-substitution@v1
