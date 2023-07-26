@@ -25,16 +25,16 @@ jobs:
         files: ./src/main/resources/application.yml 
       env:
         oauth2.provider.google.client-id: ${{secrets.GOOGLE_CLIENT_ID}}
-        oauth2.provider.google.client-secret: ${{GOOGLE_CLIENT_SECRET}} 
-        oauth2.provider.google.redirect-uri: ${{GOOGLE_REDIRECT_URI}}
-        oauth2.provider.google.token-uri: ${{GOOGLE_TOKEN_URI}}
-        oauth2.provider.google.user-info: ${{GOOGLE_USER_INFO}}
+        oauth2.provider.google.client-secret: ${{secrets.GOOGLE_CLIENT_SECRET}} 
+        oauth2.provider.google.redirect-uri: ${{secrets.GOOGLE_REDIRECT_URI}}
+        oauth2.provider.google.token-uri: ${{secrets.GOOGLE_TOKEN_URI}}
+        oauth2.provider.google.user-info: ${{secrets.GOOGLE_USER_INFO}}
         
-        oauth2.provider.kakao.client-id: ${{KAKAO_CLIENT_ID}}
-        oauth2.provider.kakao.client-secret: ${{KAKAO_CLIENT_SECRET}}
-        oauth2.provider.kakao.redirect-uri: ${{KAKAO_REDIRECT_URI}}
-        oauth2.provider.kakao.token-uri: ${{KAKAO_TOKEN_URI}}
-        oauth2.provider.kakao.user-info: ${{KAKAO_USER_INFO}}
+        oauth2.provider.kakao.client-id: ${{secrets.KAKAO_CLIENT_ID}}
+        oauth2.provider.kakao.client-secret: ${{secrets.KAKAO_CLIENT_SECRET}}
+        oauth2.provider.kakao.redirect-uri: ${{secrets.KAKAO_REDIRECT_URI}}
+        oauth2.provider.kakao.token-uri: ${{secrets.KAKAO_TOKEN_URI}}
+        oauth2.provider.kakao.user-info: ${{secrets.KAKAO_USER_INFO}}
         
     
     - uses: actions/checkout@v3
