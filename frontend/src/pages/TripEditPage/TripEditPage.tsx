@@ -14,7 +14,7 @@ import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal
 const TripEditPage = () => {
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error(`tripId doesn't exist`);
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
 
   const { tripData } = useTripQuery(Number(tripId));
   useExpenseCategoryQuery();
