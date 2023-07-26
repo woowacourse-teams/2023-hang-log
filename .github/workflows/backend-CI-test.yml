@@ -22,9 +22,9 @@ jobs:
     - name: Repository Checkout
       uses: actions/checkout@v3
       
-    - name: test
-      run : |
-          echo "Secrets: ${{secrets.KAKAO_CLIENT_ID}}"
+#     - name: test
+#       run : |
+#           echo "Secrets: ${{secrets.KAKAO_CLIENT_ID}}"
     
 #     - name: Access Secrets
 #       uses: microsoft/variable-substitution@v1
@@ -43,11 +43,10 @@ jobs:
 #         KAKAO_TOKEN_URI: ${ {secrets.KAKAO_TOKEN_URI} }
 #         KAKAO_USER_INFO: ${ {secrets.KAKAO_USER_INFO} }
     - name: test2
-      env: 
-          APPLICAION_YML: ${{ secrets.APPLICATION_YML }}
-      run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application-dev.yml
+      run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application-dev.yml
     
-
+    - name: test3
+      run: cat ./src/main/resources/application-dev.yml
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -72,7 +71,7 @@ jobs:
       run: chmod +x gradlew
         
     - name: Build with Gradle
-      run: ./gradlew devbuild
+      run: ./gradlew build
       
     - name: Run Coverage
       run: ./gradlew test
