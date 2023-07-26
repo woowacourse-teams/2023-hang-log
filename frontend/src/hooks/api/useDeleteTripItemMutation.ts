@@ -11,9 +11,6 @@ export const useDeleteTripItemMutation = () => {
       // TODO : 낙관적 업데이트 적용하기
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
-    onError: () => {
-      alert(ERROR_MESSAGE);
-    },
   });
 
   return deleteTripItemMutation;

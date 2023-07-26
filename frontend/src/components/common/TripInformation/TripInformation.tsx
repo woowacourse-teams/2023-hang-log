@@ -1,6 +1,7 @@
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 import type { TripData } from '@type/trip';
 import { Badge, Box, Button, Flex, Heading, Text, Theme } from 'hang-log-design-system';
+import { memo } from 'react';
 
 import { formatDate } from '@utils/formatter';
 
@@ -52,4 +53,4 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
   );
 };
 
-export default TripInformation;
+export default memo(TripInformation);
