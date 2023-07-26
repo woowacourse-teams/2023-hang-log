@@ -1,0 +1,38 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+      show-sql: true
+    open-in-view: false
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    username: sa
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+oauth2:
+  provider:
+    google:
+      client-id: ${ GOOGLE_CLIENT_ID }
+      client-secret: ${ GOOGLE_CLIENT_SECRET }
+      redirect-uri: ${ GOOGLE_REDIRECT_URI }
+      token-uri: ${ GOOGLE_TOKEN_URI }
+      user-info: ${ GOOGLE_USER_INFO }
+    kakao:
+      client-id: ${ KAKAO_CLIENT_ID }
+      client-secret: ${ KAKAO_CLIENT_SECRET }
+      redirect-uri: ${ KAKAO_REDIRECT_URI }
+      token-uri: ${ KAKAO_TOKEN_URI }
+      user-info: ${ KAKAO_USER_INFO }
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
