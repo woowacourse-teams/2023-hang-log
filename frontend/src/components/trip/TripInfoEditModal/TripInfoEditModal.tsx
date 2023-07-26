@@ -26,6 +26,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
   const {
     tripInfo,
     isCityInputError,
+    isTitleError,
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
@@ -66,12 +67,18 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             </SupportingText>
           </Flex>
         </Flex>
-        <Input
-          label="여행 제목"
-          value={tripInfo.title}
-          required
-          onChange={handleChangeValue('title')}
-        />
+        <Flex styles={{ direction: 'column', gap: '4px' }}>
+          <Input
+            label="여행 제목"
+            value={tripInfo.title}
+            required
+            isError={isTitleError}
+            onChange={handleChangeValue('title')}
+          />
+          {isTitleError && (
+            <SupportingText isError={isTitleError}>여행 제목을 입력하세요</SupportingText>
+          )}
+        </Flex>
         <Textarea
           label="여행 설명"
           value={tripInfo.description ?? ''}
@@ -80,7 +87,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <ImageUploadInput
           label="대표 이미지 업로드"
           imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
-          imageAltText="여행 대표 업로드 이미지 "
+          imageAltText="여행 대표 업로드 이미지"
           maxUploadCount={1}
           onRemove={() => {}}
         />

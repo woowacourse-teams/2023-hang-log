@@ -52,7 +52,9 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
           </Button>
         </Box>
       </section>
-      <TripInfoEditModal isOpen={isEditModalOpen} onClose={closeEditModal} {...information} />
+      {isEditModalOpen && (
+        <TripInfoEditModal isOpen={isEditModalOpen} onClose={closeEditModal} {...information} />
+      )}
     </>
   );
 };

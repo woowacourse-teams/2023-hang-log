@@ -14,12 +14,11 @@ export const useTripEditForm = (information: Omit<TripData, 'dayLogs'>, onClose:
     endDate,
   });
   const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
-  const [isCityInputError, setCityInputError] = useState(false);
+  const [isCityError, setIsCityError] = useState(false);
+  const [isTitleError, setIsTitleError] = useState(false);
   const tripEditMutation = useTripEditMutation();
 
   useEffect(() => {
-    validateCityInput();
-
     setTripInfo((prevTripInfo) => {
       return { ...prevTripInfo, ...cityDateInfo };
     });
@@ -33,32 +32,57 @@ export const useTripEditForm = (information: Omit<TripData, 'dayLogs'>, onClose:
 
   const validateCityInput = () => {
     if (cityDateInfo.cityIds.length > 0) {
-      setCityInputError(false);
+      setIsCityError(false);
 
-      return;
+      return true;
     }
 
-    setCityInputError(true);
+    setIsCityError(true);
+
+    return false;
+  };
+
+  const validateTitle = () => {
+    if (!isEmptyString(tripInfo.title)) {
+      setIsTitleError(false);
+
+      return true;
+    }
+
+    setIsTitleError(true);
+
+    return false;
+  };
+
+  const submitEditedTrip = () => {
+    tripEditMutation.mutate(
+      {
+        ...tripInfo,
+        tripId,
+        startDate: tripInfo.startDate!,
+        endDate: tripInfo.endDate!,
+      },
+      {
+        onSuccess: onClose,
+      }
+    );
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (isCityInputError) return;
+    const cityInputValidity = validateCityInput();
+    const titleValidity = validateTitle();
 
-    tripEditMutation.mutate({
-      tripId,
-      ...tripInfo,
-      startDate: tripInfo.startDate!,
-      endDate: tripInfo.endDate!,
-    });
+    if (!cityInputValidity || !titleValidity) return;
 
-    onClose();
+    submitEditedTrip();
   };
 
   return {
     tripInfo,
-    isCityInputError,
+    isCityInputError: isCityError,
+    isTitleError,
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
