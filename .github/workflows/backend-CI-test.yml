@@ -47,7 +47,8 @@ jobs:
           APPLICAION_YML: ${{ secrets.APPLICATION_YML }}
       run: echo $APPLICATION_YML | base64 --decode > ./src/main/resources/application-dev.yml
     
-
+    - name: test3
+      run: cat ./src/main/resources/application-dev.yml
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3
