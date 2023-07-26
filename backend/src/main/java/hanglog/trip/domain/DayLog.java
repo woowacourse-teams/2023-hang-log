@@ -41,7 +41,7 @@ public class DayLog extends BaseEntity {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    @OneToMany(mappedBy = "dayLog", cascade = REMOVE)
+    @OneToMany(mappedBy = "dayLog", cascade = REMOVE, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
     public DayLog(

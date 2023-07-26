@@ -15,7 +15,6 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -50,9 +49,6 @@ class TripServiceTest {
 
     @Mock
     private TripCityRepository tripCityRepository;
-
-    @Mock
-    private DayLogRepository dayLogRepository;
 
     @DisplayName("여행을 생성한 후 tripId를 반환한다.")
     @Test
