@@ -20,8 +20,8 @@ export const dateRangeToString = (dateRange: DateRangeData) => {
   return `${formatDate(start)} - ${formatDate(end)}`;
 };
 
-export const stringToKorean = (string: string) => {
-  const koreanCharacterRegex = /[가-힣ㄱ-ㅎ]+/g;
+export const stringToOnlyLetter = (string: string) => {
+  const koreanCharacterRegex = /^[A-Za-z가-힣ㄱ-ㅎ]+$/g;
 
   const matches = string.match(koreanCharacterRegex);
 
