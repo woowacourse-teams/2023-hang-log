@@ -3,27 +3,21 @@ import { Tab, Tabs } from 'hang-log-design-system';
 
 import { formatMonthDate } from '@utils/formatter';
 
+import { useTripDates } from '@hooks/trip/useTripDates';
+
 import DayLogItem from '@components/common/DayLogItem/DayLogItem';
 import { containerStyling } from '@components/common/DayLogList/DayLogList.style';
 
 interface DayLogListProps {
   tripId: number;
   selectedDayLog: DayLogData;
-  dates: {
-    id: number;
-    date: string;
-  }[];
   onTabChange: (selectedId: string | number) => void;
   openAddModal: () => void;
 }
 
-const DayLogList = ({
-  tripId,
-  selectedDayLog,
-  dates,
-  onTabChange,
-  openAddModal,
-}: DayLogListProps) => {
+const DayLogList = ({ tripId, selectedDayLog, onTabChange, openAddModal }: DayLogListProps) => {
+  const { dates } = useTripDates(tripId);
+
   return (
     <section css={containerStyling}>
       <Tabs>

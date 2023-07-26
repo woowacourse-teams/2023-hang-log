@@ -19,7 +19,6 @@ import { formatNumberToMoney } from '@utils/formatter';
 
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
 import { useDraggedItem } from '@hooks/common/useDraggedItem';
-import { useTripDates } from '@hooks/trip/useTripDates';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import {
@@ -52,7 +51,6 @@ const TripItem = ({
   ...information
 }: TripListItemProps) => {
   const deleteTripItemMutation = useDeleteTripItemMutation();
-  const { tripDates } = useTripDates(tripId);
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
@@ -131,7 +129,6 @@ const TripItem = ({
             tripId={tripId}
             itemId={information.id}
             dayLogId={dayLogId}
-            dates={tripDates}
             onClose={closeEditModal}
             initialData={{
               itemType: information.itemType,

@@ -46,17 +46,17 @@ export const tripItemHandlers = [
   rest.delete('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
     const { tripId, itemId } = req.params;
 
-    const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
-      return dayLog.items.findIndex((item) => item.id === Number(itemId)) !== -1;
-    })!;
+    // const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
+    //   return dayLog.items.findIndex((item) => item.id === Number(itemId)) !== -1;
+    // })!;
 
-    const itemIndex = trip.dayLogs[dayLogIndex].items.findIndex(
-      (item) => item.id === Number(itemId)
-    )!;
+    // const itemIndex = trip.dayLogs[dayLogIndex].items.findIndex(
+    //   (item) => item.id === Number(itemId)
+    // )!;
 
-    trip.dayLogs[dayLogIndex].items.splice(itemIndex, 1);
+    // trip.dayLogs[dayLogIndex].items.splice(itemIndex, 1);
 
-    return res(ctx.status(204));
+    return res(ctx.delay(40000), ctx.status(204));
   }),
 
   rest.put('/trips/:tripId/items/:itemId', async (req, res, ctx) => {

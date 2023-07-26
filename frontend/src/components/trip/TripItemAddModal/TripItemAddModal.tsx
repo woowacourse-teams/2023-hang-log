@@ -3,6 +3,7 @@ import type { TripItemFormData } from '@type/tripItem';
 import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
+import { useTripDates } from '@hooks/trip/useTripDates';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
@@ -21,7 +22,6 @@ interface TripItemAddModalProps {
   tripId: number;
   dayLogId: number;
   itemId?: number;
-  dates: { id: number; date: string }[];
   initialData?: TripItemFormData;
   isOpen?: boolean;
   onClose: () => void;
@@ -31,11 +31,11 @@ const TripItemAddModal = ({
   tripId,
   dayLogId,
   itemId,
-  dates,
   initialData,
   isOpen = true,
   onClose,
 }: TripItemAddModalProps) => {
+  const { dates } = useTripDates(tripId);
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
       tripId,
