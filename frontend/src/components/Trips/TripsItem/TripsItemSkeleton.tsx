@@ -3,7 +3,7 @@ import { Flex, Skeleton } from 'hang-log-design-system';
 import {
   badgeBoxStyling,
   boxStyling,
-  imageBoxStyling,
+  imageStyling,
   nameStyling,
   skeletonDurationTextStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
@@ -11,7 +11,7 @@ import {
 const TripsItemSkeleton = () => {
   return (
     <Flex styles={{ direction: 'column' }} css={boxStyling}>
-      <Skeleton css={imageBoxStyling} />
+      <Skeleton css={imageStyling} />
       <Skeleton css={badgeBoxStyling} />
       <Skeleton css={nameStyling} height="20px" />
       <Skeleton css={skeletonDurationTextStyling} height="18px" width="60%" />

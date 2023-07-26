@@ -94,8 +94,7 @@ export const trips = [
   {
     id: 5,
     title: '어바인 여행',
-    imageUrl:
-      'https://youimg1.tripcdn.com/target/10060n000000e4c6nEB47_D_1180_558.jpg?proc=source%2Ftrip',
+    imageUrl: null,
     cities: [
       {
         id: 1,
