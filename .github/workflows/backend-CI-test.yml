@@ -22,7 +22,7 @@ jobs:
     - name: Access Secrets
       uses: microsoft/variable-substitution@v1
       with:
-        files: src/main/resources/application.yml 
+        files: ./src/main/resources/application.yml 
       env:
         GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
         GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}} 
