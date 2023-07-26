@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'BE') 
     runs-on: ubuntu-22.04
     permissions:
       pull-requests: write
