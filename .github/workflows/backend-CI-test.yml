@@ -26,22 +26,22 @@ jobs:
       run : |
           echo "Secrets: ${{secrets.KAKAO_CLIENT_ID}}"
     
-#     - name: Access Secrets
-#       uses: microsoft/variable-substitution@v1
-#       with:
-#         files: ./backend/src/main/resources/application.yml 
-#       env:
-#         GOOGLE_CLIENT_ID: "sdsaf"
-#         GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}} 
-#         GOOGLE_REDIRECT_URI: ${{secrets.GOOGLE_REDIRECT_URI}}
-#         GOOGLE_TOKEN_URI: ${{secrets.GOOGLE_TOKEN_URI}}
-#         GOOGLE_USER_INFO: ${{secrets.GOOGLE_USER_INFO}}
+    - name: Access Secrets
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./backend/src/main/resources/application.yml 
+      env:
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} 
+        GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+        GOOGLE_TOKEN_URI: ${{ secrets.GOOGLE_TOKEN_URI }}
+        GOOGLE_USER_INFO: ${{ secrets.GOOGLE_USER_INFO }}
         
-#         KAKAO_CLIENT_ID: ${{secrets.KAKAO_CLIENT_ID}}
-#         KAKAO_CLINET_SECRET: ${{secrets.KAKAO_CLIENT_SECRET}}
-#         KAKAO_REDIRECT_URI: ${{secrets.KAKAO_REDIRECT_URI}}
-#         KAKAO_TOKEN_URI: ${{secrets.KAKAO_TOKEN_URI}}
-#         KAKAO_USER_INFO: ${{secrets.KAKAO_USER_INFO}}
+        KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
+        KAKAO_CLINET_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+        KAKAO_REDIRECT_URI: ${{ secrets.KAKAO_REDIRECT_URI }}
+        KAKAO_TOKEN_URI: ${{ secrets.KAKAO_TOKEN_URI }}
+        KAKAO_USER_INFO: ${{ secrets.KAKAO_USER_INFO }}
         
     
 
