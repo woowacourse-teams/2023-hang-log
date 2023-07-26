@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { sortByStartDate } from '@utils/sortByStartDate';
 
+import { useTripsQuery } from '@hooks/api/useTripsQuery';
+
 import { addButtonStyling } from '@pages/TripsPage/TripsPage.style';
 
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
