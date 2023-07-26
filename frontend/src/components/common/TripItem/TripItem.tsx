@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { formatNumberToMoney } from '@utils/formatter';
 
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
+import { useDraggedItem } from '@hooks/common/useDraggedItem';
 import { useTripDates } from '@hooks/trip/useTripDates';
 
 import StarRating from '@components/common/StarRating/StarRating';
@@ -54,16 +55,7 @@ const TripItem = ({
   const { tripDates } = useTripDates(tripId);
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isModalOpen, open: openModal, close: closeModal } = useOverlay();
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleDrag = () => {
-    setIsDragging(true);
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    onDragEnd();
-  };
+  const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
 
   const handleTripItemDelete = () => {
     deleteTripItemMutation.mutate({ tripId, itemId: information.id });
