@@ -21,25 +21,23 @@ interface TripItemListProps {
 const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
 
-  const handlePositionChange = (newItems: TripItemData[]) => {
-    const itemIds = newItems.map((item) => item.id);
-
-    dayLogOrderMutation.mutate({ tripId, dayLogId, itemIds });
-  };
-
-  const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
-    useDragAndDrop(tripItems, handlePositionChange);
-
   useEffect(() => {
     handleItemsUpdate(tripItems);
   }, [tripItems]);
 
-  // useEffect를 안 사용하고 롤백할 수 있는 방법??
-  useEffect(() => {
-    if (dayLogOrderMutation.isError) {
-      handleItemsUpdate(tripItems);
-    }
-  }, [dayLogOrderMutation.isError]);
+  const handlePositionChange = (newItems: TripItemData[]) => {
+    const itemIds = newItems.map((item) => item.id);
+
+    dayLogOrderMutation.mutate(
+      { tripId, dayLogId, itemIds },
+      {
+        onError: () => handleItemsUpdate(tripItems),
+      }
+    );
+  };
+
+  const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
+    useDragAndDrop(tripItems, handlePositionChange);
 
   return (
     <ol css={containerStyling}>
