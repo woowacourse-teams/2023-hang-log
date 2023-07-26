@@ -9,7 +9,7 @@ export const tripItemHandlers = [
 
     const newTripItem = {
       id: Number(new Date()),
-      itemType: false,
+      itemType: response.itemType,
       title: response.title,
       ordinal: 1,
       rating: response.rating,
@@ -41,5 +41,70 @@ export const tripItemHandlers = [
     trip.dayLogs[2].items.push(newTripItem);
 
     return res(ctx.status(200));
+  }),
+
+  rest.delete('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
+    const { tripId, itemId } = req.params;
+
+    const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
+      return dayLog.items.findIndex((item) => item.id === Number(itemId)) !== -1;
+    })!;
+
+    const itemIndex = trip.dayLogs[dayLogIndex].items.findIndex(
+      (item) => item.id === Number(itemId)
+    )!;
+
+    trip.dayLogs[dayLogIndex].items.splice(itemIndex, 1);
+
+    return res(ctx.status(204));
+  }),
+
+  rest.put('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
+    const { tripId, itemId } = req.params;
+    const response = await req.json<TripItemFormData>();
+
+    const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
+      return dayLog.items.findIndex((item) => item.id === Number(itemId)) !== -1;
+    });
+
+    const itemIndex = trip.dayLogs[dayLogIndex].items.findIndex(
+      (item) => item.id === Number(itemId)
+    );
+
+    // 이거 약간 읽기 더러운듯.... 누구 해결책있나요?
+    trip.dayLogs[dayLogIndex].items[itemIndex] = {
+      id: Number(itemId),
+      itemType: response.itemType,
+      title: response.title,
+      ordinal: trip.dayLogs[dayLogIndex].items[itemIndex].ordinal,
+      rating: response.rating,
+      memo: response.memo,
+      place: response.place
+        ? {
+            ...response.place,
+            id: trip.dayLogs[dayLogIndex].items[itemIndex].place?.id ?? Number(new Date()),
+            category: {
+              id: 3,
+              name: '명소',
+            },
+          }
+        : response.itemType
+        ? trip.dayLogs[dayLogIndex].items[itemIndex].place
+        : response.place,
+      expense: response.expense
+        ? {
+            id: Number(new Date()),
+            currency: response.expense.currency as CurrencyType,
+            amount: response.expense.amount,
+            category: {
+              id: 500,
+              name: '교통',
+            },
+          }
+        : null,
+      imageUrls: response.imageUrls,
+    };
+
+    return res(ctx.status(204));
   }),
 ];

@@ -1,14 +1,14 @@
 import { ERROR_MESSAGE } from '@constants/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { postTripItem } from '@api/tripItem/postTripItem';
+import { deleteTripItem } from '@api/tripItem/deleteTripItem';
 
-export const useAddTripItemMutation = () => {
+export const useDeleteTripItemMutation = () => {
   const queryClient = useQueryClient();
 
-  const addTripItemMutation = useMutation(postTripItem(), {
+  const deleteTripItemMutation = useMutation(deleteTripItem(), {
     onSuccess: (_, { tripId }) => {
-      // 순서 변경 성공 시 Trip 정보 재요청
+      // TODO : 낙관적 업데이트 적용하기
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
     onError: () => {
@@ -16,5 +16,5 @@ export const useAddTripItemMutation = () => {
     },
   });
 
-  return addTripItemMutation;
+  return deleteTripItemMutation;
 };

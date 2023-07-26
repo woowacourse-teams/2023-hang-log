@@ -1,4 +1,5 @@
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
+import type { TripItemFormData } from '@type/tripItem';
 import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
@@ -19,16 +20,33 @@ import {
 interface TripItemAddModalProps {
   tripId: number;
   dayLogId: number;
+  itemId?: number;
   dates: { id: number; date: string }[];
+  initialData?: TripItemFormData;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
-const TripItemAddModal = ({ tripId, dayLogId, dates, onClose }: TripItemAddModalProps) => {
+const TripItemAddModal = ({
+  tripId,
+  dayLogId,
+  itemId,
+  dates,
+  initialData,
+  isOpen = true,
+  onClose,
+}: TripItemAddModalProps) => {
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
-    useAddTripItemForm(tripId, dayLogId, onClose);
+    useAddTripItemForm({
+      tripId,
+      initialDayLogId: dayLogId,
+      itemId,
+      onSuccess: onClose,
+      initialData,
+    });
 
   return (
-    <Modal css={wrapperStyling} isOpen={true} closeModal={onClose} hasCloseButton>
+    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ gap: Theme.spacer.spacing4 }}>
@@ -48,6 +66,7 @@ const TripItemAddModal = ({ tripId, dayLogId, dates, onClose }: TripItemAddModal
                 <PlaceInput
                   value={tripItemInformation.title}
                   isError={isTitleError}
+                  isUpdatable={tripItemInformation.isPlaceUpdated !== undefined}
                   updateInputValue={updateInputValue}
                   disableError={disableTitleError}
                 />
