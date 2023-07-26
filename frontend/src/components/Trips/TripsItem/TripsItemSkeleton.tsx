@@ -10,7 +10,7 @@ import {
 
 const TripsItemSkeleton = () => {
   return (
-    <Flex styles={{ direction: 'column' }} css={boxStyling}>
+    <Flex tag="li" styles={{ direction: 'column' }} css={boxStyling}>
       <Skeleton css={imageStyling} />
       <Skeleton css={badgeBoxStyling} />
       <Skeleton css={nameStyling} height="20px" />

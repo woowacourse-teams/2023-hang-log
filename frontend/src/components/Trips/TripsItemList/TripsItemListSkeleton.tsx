@@ -11,7 +11,11 @@ import TripsItemSkeleton from '../TripsItem/TripsItemSkeleton';
 const TripsItemListSkeleton = () => {
   return (
     <>
-      <Flex styles={{ justify: 'right', paddingRight: '50px' }} css={toggleGroupStyling}>
+      <Flex
+        tag="section"
+        styles={{ justify: 'right', paddingRight: '50px' }}
+        css={toggleGroupStyling}
+      >
         <ToggleGroup>
           <Toggle
             text={ORDER_BY_REGISTRATION}
@@ -27,7 +31,7 @@ const TripsItemListSkeleton = () => {
           />
         </ToggleGroup>
       </Flex>
-      <Box css={gridBoxStyling}>
+      <Box tag="ol" css={gridBoxStyling}>
         {Array.from({ length: 10 }, () => {
           return <TripsItemSkeleton />;
         })}
