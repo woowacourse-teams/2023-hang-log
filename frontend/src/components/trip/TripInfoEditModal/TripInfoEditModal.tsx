@@ -1,5 +1,6 @@
+import { useTripEditForm } from '@/hooks/trip/useTripEditForm';
 import WarningIcon from '@assets/svg/warning-icon.svg';
-import type { TripData, TripFormData } from '@type/trip';
+import type { TripData } from '@type/trip';
 import {
   Button,
   Flex,
@@ -9,9 +10,6 @@ import {
   SupportingText,
   Textarea,
 } from 'hang-log-design-system';
-import type { ChangeEvent } from 'react';
-
-import { useTripEditForm } from '@hooks/trip/useTripInfoForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
@@ -32,11 +30,6 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateDateInfo,
     handleSubmit,
   } = useTripEditForm(information, onClose);
-
-  const handleChangeValue =
-    (key: keyof TripFormData) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      updateInputValue(key, e.currentTarget.value);
-    };
 
   return (
     <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -73,7 +66,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             value={tripInfo.title}
             required
             isError={isTitleError}
-            onChange={handleChangeValue('title')}
+            onChange={updateInputValue('title')}
           />
           {isTitleError && (
             <SupportingText isError={isTitleError}>여행 제목을 입력하세요</SupportingText>
@@ -82,7 +75,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Textarea
           label="여행 설명"
           value={tripInfo.description ?? ''}
-          onChange={handleChangeValue('description')}
+          onChange={updateInputValue('description')}
         />
         <ImageUploadInput
           label="대표 이미지 업로드"
