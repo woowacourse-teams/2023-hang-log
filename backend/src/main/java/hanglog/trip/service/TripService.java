@@ -9,14 +9,12 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,6 @@ public class TripService {
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
-    private final DayLogRepository dayLogRepository;
 
     public Long save(final TripCreateRequest tripCreateRequest) {
         final List<City> cites = tripCreateRequest.getCityIds().stream()
@@ -41,8 +38,7 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip newTrip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
-                tripCreateRequest.getEndDate());
+        final Trip newTrip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(), tripCreateRequest.getEndDate());
         saveAllTripCities(cites, newTrip);
         saveDayLogs(newTrip);
         final Trip trip = tripRepository.save(newTrip);
@@ -107,26 +103,15 @@ public class TripService {
     }
 
     private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        final List<DayLog> emptyDayLogs = new ArrayList<>();
-        for (int i = currentPeriod; i < requestPeriod; i++) {
-            final DayLog emptyDayLog = DayLog.generateEmpty(i + 1, trip);
-            emptyDayLogs.add(emptyDayLog);
-        }
+        final List<DayLog> emptyDayLogs = IntStream.range(currentPeriod, requestPeriod)
+                .mapToObj(i -> DayLog.generateEmpty(i + 1, trip))
+                .toList();
         trip.getDayLogs().addAll(emptyDayLogs);
-        dayLogRepository.saveAll(emptyDayLogs);
     }
 
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        final List<DayLog> dayLogsToRemove = new ArrayList<>();
-        trip.getDayLogs().removeIf(dayLog -> {
-            final boolean isRemovable = dayLog.getOrdinal() >= requestPeriod
-                    + 1 && dayLog.getOrdinal() <= currentPeriod;
-            if (isRemovable) {
-                dayLogsToRemove.add(dayLog);
-            }
-            return isRemovable;
-        });
-        dayLogRepository.deleteAll(dayLogsToRemove);
+        trip.getDayLogs()
+                .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod + 1);
     }
 
     public void delete(final Long tripId) {
