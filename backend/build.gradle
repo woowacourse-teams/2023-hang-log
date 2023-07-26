@@ -80,5 +80,5 @@ build {
 
 task devBuild(type: Exec) {
     workingDir '.'
-    commandLine './gradlew', 'build', '--spring.config.location=src/main/resources/application_dev.yml'
+    commandLine './gradlew', 'build', '--spring.config.location=src/main/resources/application-dev.yml'
 }
