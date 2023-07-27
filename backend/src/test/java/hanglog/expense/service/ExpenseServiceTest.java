@@ -3,6 +3,8 @@ package hanglog.expense.service;
 import static hanglog.category.fixture.CategoryFixture.CULTURE;
 import static hanglog.category.fixture.CategoryFixture.LODGING;
 import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCIES;
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
@@ -21,6 +23,8 @@ import hanglog.expense.dto.response.DayLogInExpenseResponse;
 import hanglog.expense.dto.response.ExpenseGetResponse;
 import hanglog.expense.dto.response.ItemInDayLogResponse;
 import hanglog.expense.repository.CurrenciesRepository;
+import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -50,14 +54,21 @@ class ExpenseServiceTest {
     @Mock
     private CurrenciesRepository currenciesRepository;
 
+    @Mock
+    private TripCityRepository tripCityRepository;
+
+
     @DisplayName("경비를 반환한다")
     @Test
     void getAllExpenses() {
         // given
+
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TO_JAPAN));
         when(currenciesRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
                 .thenReturn(Optional.of(DEFAULT_CURRENCIES));
+        when(tripCityRepository.findByTripId(1L))
+                .thenReturn(List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)));
         final List<ItemInDayLogResponse> expectItemList = List.of(
                 ItemInDayLogResponse.of(LONDON_EYE_ITEM),
                 ItemInDayLogResponse.of(JAPAN_HOTEL),
@@ -73,6 +84,7 @@ class ExpenseServiceTest {
                     .isEqualTo(
                             ExpenseGetResponse.of(LONDON_TO_JAPAN,
                                     28009000,
+                                    List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                                     Map.of(LODGING, 9000, CULTURE, 28000000),
                                     DEFAULT_CURRENCIES,
                                     Map.of(EXPENSE_JAPAN_DAYLOG, 9000, EXPENSE_LONDON_DAYLOG, 28000000)
@@ -123,10 +135,13 @@ class ExpenseServiceTest {
     @Test
     void getNoExpenseTrip() {
         // given
+
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TRIP));
         when(currenciesRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
                 .thenReturn(Optional.of(DEFAULT_CURRENCIES));
+        when(tripCityRepository.findByTripId(1L))
+                .thenReturn(List.of());
 
         // when
         final ExpenseGetResponse actual = expenseService.getAllExpenses(1L);
@@ -136,15 +151,11 @@ class ExpenseServiceTest {
                 .isEqualTo(
                         ExpenseGetResponse.of(LONDON_TRIP,
                                 0,
+                                List.of(),
                                 Map.of(),
                                 DEFAULT_CURRENCIES,
                                 Map.of()
                         )
                 );
-    }
-
-
-    private BigDecimal roundUp(final int value, final int total) {
-        return BigDecimal.valueOf(value / total);
     }
 }

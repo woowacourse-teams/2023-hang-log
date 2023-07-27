@@ -2,6 +2,8 @@ package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.CULTURE;
 import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCIES;
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
 import static hanglog.trip.fixture.ItemFixture.TAXI_ITEM;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -15,6 +17,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import hanglog.expense.dto.response.ExpenseGetResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.TripCity;
 import hanglog.trip.restdocs.RestDocsTest;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +39,14 @@ class ExpenseControllerTest extends RestDocsTest {
     @Test
     void getExpenses() throws Exception {
         // given
-        final DayLog LONDON = new DayLog(1L, "런던추워", 1, LONDON_TRIP, List.of(LONDON_EYE_ITEM, TAXI_ITEM));
+        final DayLog LONDON_DAY = new DayLog(1L, "런던추워", 1, LONDON_TRIP, List.of(LONDON_EYE_ITEM, TAXI_ITEM));
         final ExpenseGetResponse expenseGetResponse = ExpenseGetResponse.of(
                 LONDON_TRIP,
                 10000,
+                List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                 Map.of(CULTURE, 1000),
                 DEFAULT_CURRENCIES,
-                Map.of(LONDON, 1000)
+                Map.of(LONDON_DAY, 1000)
         );
 
         // when & then
@@ -68,6 +72,18 @@ class ExpenseControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 종료 날짜")
                                                 .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("cities")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("도시 목록")
+                                                .attributes(field("constraint", "1개 이상의 city")),
+                                        fieldWithPath("cities[].id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("도시 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("cities[].name")
+                                                .type(JsonFieldType.STRING)
+                                                .description("도시 명")
+                                                .attributes(field("constraint", "20자 이하의 문자열")),
                                         fieldWithPath("totalAmount")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("총 경비")

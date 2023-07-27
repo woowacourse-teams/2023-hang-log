@@ -12,8 +12,11 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ public class ExpenseService {
     private static final Currencies DEFAULT_CURRENCIES = Currencies.ofDefault();
     private final TripRepository tripRepository;
     private final CurrenciesRepository currenciesRepository;
+    private final TripCityRepository tripCityRepository;
 
     public ExpenseGetResponse getAllExpenses(final long tripId) {
         final Trip trip = tripRepository.findById(tripId)
@@ -34,7 +38,7 @@ public class ExpenseService {
 
         final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
         final Map<Category, Integer> categoryTotalAmounts = new HashMap<>();
-
+        final List<TripCity> cities = tripCityRepository.findByTripId(tripId);
         for (final DayLog dayLog : trip.getDayLogs()) {
             calculateAmounts(dayLog, currencies, dayLogTotalAmounts, categoryTotalAmounts);
         }
@@ -45,6 +49,7 @@ public class ExpenseService {
         return ExpenseGetResponse.of(
                 trip,
                 totalAmount,
+                cities,
                 categoryTotalAmounts,
                 currencies,
                 dayLogTotalAmounts
