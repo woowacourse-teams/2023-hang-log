@@ -47,6 +47,10 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
+    @Column(nullable = false)
+    @ColumnDefault("https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0")
+    private String imageUrl;
+
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     private List<DayLog> dayLogs = new ArrayList<>();
 
