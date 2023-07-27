@@ -1,12 +1,12 @@
 import { ERROR_MESSAGE, NETWORK } from '@constants/api';
 import { useMutation } from '@tanstack/react-query';
 
-import { postNewTrip } from '@api/trips/newTrip';
+import { postNewTrip } from '@api/trips/postNewTrip';
 
-export const useNewTripMutation = () => {
+export const useCreateTripMutation = () => {
   const newTripMutation = useMutation(postNewTrip(), {
     onError: (err, _, context) => {
-      //toast 띄우기
+      //TODO:toast 띄우기
       alert(ERROR_MESSAGE);
     },
     retry: NETWORK.RETRY_COUNT,

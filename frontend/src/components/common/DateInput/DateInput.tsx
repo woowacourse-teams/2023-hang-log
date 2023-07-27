@@ -13,19 +13,21 @@ import {
 
 interface DateInputProps {
   initialDateRange?: DateRangeData;
-  setDateData: (dateRange: DateRangeData) => void;
+  updateDateInfo: (dateRange: DateRangeData) => void;
+  required?: boolean;
 }
 
 const DateInput = ({
   initialDateRange = { start: null, end: null },
-  setDateData,
+  updateDateInfo,
+  required = false,
 }: DateInputProps) => {
   const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
 
   useEffect(() => {
-    setDateData(selectedDateRange);
+    updateDateInfo(selectedDateRange);
   }, [selectedDateRange]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
@@ -37,7 +39,7 @@ const DateInput = ({
 
   return (
     <Flex styles={{ direction: 'column', width: '400px', margin: '0 auto', align: 'flex-start' }}>
-      <Label>방문 기간</Label>
+      <Label required={required}>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
           <Input
