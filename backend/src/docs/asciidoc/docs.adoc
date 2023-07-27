@@ -178,3 +178,4 @@ include::{snippets}/Expense-controller-test/get-expenses/http-request.adoc[]
 
 ==== 응답
 include::{snippets}/Expense-controller-test/get-expenses/http-response.adoc[]
+include::{snippets}/Expense-controller-test/get-expenses/response-fields.adoc[]
