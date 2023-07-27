@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CategoryInExpenseResponse {
+
     private final long id;
     private final String name;
 

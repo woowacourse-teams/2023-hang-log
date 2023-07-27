@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CitiesInExpenseResponse {
+
     private final long id;
     private final String name;
 
