@@ -28,13 +28,13 @@ public class TripController {
 
     @GetMapping
     public ResponseEntity<List<TripResponse>> getTrips() {
-        List<TripResponse> tripResponses = tripService.getAllTrips();
+        final List<TripResponse> tripResponses = tripService.getAllTrips();
         return ResponseEntity.ok().body(tripResponses);
     }
 
     @GetMapping("/{tripId}")
     public ResponseEntity<TripDetailResponse> getTrip(@PathVariable final Long tripId) {
-        TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+        final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
         return ResponseEntity.ok().body(tripDetailResponse);
     }
 
