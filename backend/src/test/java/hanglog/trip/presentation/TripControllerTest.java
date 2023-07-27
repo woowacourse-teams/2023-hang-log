@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
@@ -218,8 +219,8 @@ class TripControllerTest extends RestDocsTest {
     void getTrip() throws Exception {
         // given
         makeTrip();
-        when(tripService.getTrip(1L))
-                .thenReturn(TripResponse.of(LONDON_TRIP, CITIES));
+        when(tripService.getTripDetail(1L))
+                .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
 
         // when
         final ResultActions resultActions = performGetRequest(1);
@@ -318,7 +319,7 @@ class TripControllerTest extends RestDocsTest {
     void getTrips() throws Exception {
         // given
         makeTrip();
-        when(tripService.getAllTrip())
+        when(tripService.getAllTrips())
                 .thenReturn(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
 
         // when
@@ -371,31 +372,7 @@ class TripControllerTest extends RestDocsTest {
                                 fieldWithPath("[].cities[].longitude")
                                         .type(JsonFieldType.NUMBER)
                                         .description("경도")
-                                        .attributes(field("constraint", "실수")),
-                                fieldWithPath("[].dayLogs")
-                                        .type(JsonFieldType.ARRAY)
-                                        .description("날짜별 여행 기록 배열")
-                                        .attributes(field("constraint", "2개 이상의 데이 로그")),
-                                fieldWithPath("[].dayLogs[].id")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("날짜별 기록 ID")
-                                        .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].dayLogs[].title")
-                                        .type(JsonFieldType.STRING)
-                                        .description("소제목")
-                                        .attributes(field("constraint", "문자열")),
-                                fieldWithPath("[].dayLogs[].ordinal")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("여행에서의 날짜 순서")
-                                        .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].dayLogs[].date")
-                                        .type(JsonFieldType.STRING)
-                                        .description("실제 날짜")
-                                        .attributes(field("constraint", "yyyy-MM-dd")),
-                                fieldWithPath("[].dayLogs[].items")
-                                        .type(JsonFieldType.ARRAY)
-                                        .description("아이템 목록")
-                                        .attributes(field("constraint", "배열"))
+                                        .attributes(field("constraint", "실수"))
                         )
                 ))
                 .andReturn();

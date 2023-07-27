@@ -13,6 +13,7 @@ import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.Period;
 import java.util.List;
@@ -57,20 +58,27 @@ public class TripService {
         savedTrip.getDayLogs().addAll(dayLogs);
     }
 
-    public List<TripResponse> getAllTrip() {
+    public List<TripResponse> getAllTrips() {
         final List<Trip> trips = tripRepository.findAll();
         return trips.stream()
-                .map(trip -> getTrip(trip.getId()))
+                .map(this::getTrip)
                 .toList();
     }
 
-    public TripResponse getTrip(final Long tripId) {
+    private TripResponse getTrip(final Trip trip) {
+        final List<City> cities = tripCityRepository.findByTripId(trip.getId()).stream()
+                .map(TripCity::getCity)
+                .toList();
+        return TripResponse.of(trip, cities);
+    }
+
+    public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = tripCityRepository.findByTripId(tripId).stream()
                 .map(TripCity::getCity)
                 .toList();
-        return TripResponse.of(trip, cities);
+        return TripDetailResponse.of(trip, cities);
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {

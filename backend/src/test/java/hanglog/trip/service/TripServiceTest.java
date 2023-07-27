@@ -20,7 +20,7 @@ import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
-import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,11 +109,11 @@ class TripServiceTest {
                 .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
 
         // when
-        final TripResponse actual = tripService.getTrip(1L);
+        final TripDetailResponse actual = tripService.getTripDetail(1L);
 
         // then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
+                .isEqualTo(TripDetailResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
