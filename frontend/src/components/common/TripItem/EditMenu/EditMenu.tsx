@@ -75,7 +75,7 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
       )}
       {isErrorTostOpen && (
         <Toast variant="error" closeToast={closeErrorToast}>
-          아이템 삭제에 실패했습니다.
+          아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.
         </Toast>
       )}
     </>

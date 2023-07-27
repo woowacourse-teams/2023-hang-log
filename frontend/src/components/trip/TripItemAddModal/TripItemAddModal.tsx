@@ -117,7 +117,7 @@ const TripItemAddModal = ({
       </Modal>
       {isErrorTostOpen && (
         <Toast variant="error" closeToast={closeErrorToast}>
-          소제목 변경을 실패했습니다.
+          아이템 {itemId ? '수정을' : '추가를'} 실패했습니다. 잠시 후 다시 시도해 주세요.
         </Toast>
       )}
     </>
