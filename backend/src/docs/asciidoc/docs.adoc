@@ -178,3 +178,4 @@ include::{snippets}/category-controller-test/get-expense-categories/http-request
 
 ==== 응답
 include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]
