@@ -1,4 +1,4 @@
-import type { TripData, TripFormData } from '@type/trip';
+import type { TripData } from '@type/trip';
 import { useEffect, useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -7,8 +7,18 @@ import { isEmptyString } from '@utils/validator';
 import { useTripEditMutation } from '@hooks/api/useTripEditMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
-export const useTripEditForm = (information: Omit<TripData, 'dayLogs'>, onClose: () => void) => {
-  const { id: tripId, title, cities, startDate, endDate, description, imageUrl } = information;
+export const useTripEditForm = (
+  {
+    id: tripId,
+    title,
+    cities,
+    startDate,
+    endDate,
+    description,
+    imageUrl,
+  }: Omit<TripData, 'dayLogs'>,
+  onClose: () => void
+) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
     startDate,
