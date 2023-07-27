@@ -30,7 +30,7 @@ class CategoryServiceTest {
     void getExpenseCategories() {
         // given
         final List<CategoryResponse> expectResponses = EXPENSE_CATEGORIES.stream()
-                .map(category -> new CategoryResponse(category.getId(), category.getKorName(), category.getEngName()))
+                .map(CategoryResponse::of)
                 .toList();
 
         given(categoryRepository.findExpenseCategory())

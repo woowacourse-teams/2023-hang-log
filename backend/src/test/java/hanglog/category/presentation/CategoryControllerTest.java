@@ -42,7 +42,7 @@ class CategoryControllerTest extends RestDocsTest {
     void getExpenseCategories() throws Exception {
         // given
         final List<CategoryResponse> expectResponses = EXPENSE_CATEGORIES.stream()
-                .map(category -> new CategoryResponse(category.getId(), category.getKorName(), category.getEngName()))
+                .map(CategoryResponse::of)
                 .toList();
 
         when(categoryService.getExpenseCategories())
