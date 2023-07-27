@@ -1,9 +1,9 @@
 package hanglog.category.service;
 
+import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import java.util.List;
@@ -29,21 +29,12 @@ class CategoryServiceTest {
     @Test
     void getExpenseCategories() {
         // given
-        final List<Category> expenseCategory = List.of(
-                new Category(100L, "food", "음식"),
-                new Category(200L, "culture", "문화"),
-                new Category(300L, "shopping", "쇼핑"),
-                new Category(400L, "accommodation", "숙박"),
-                new Category(500L, "transportation", "교통"),
-                new Category(600L, "etc", "기타")
-        );
-
-        final List<CategoryResponse> expectResponse = expenseCategory.stream()
+        final List<CategoryResponse> expectResponse = EXPENSE_CATEGORIES.stream()
                 .map(category -> new CategoryResponse(category.getId(), category.getKorName(), category.getEngName()))
                 .toList();
 
         given(categoryRepository.findExpenseCategory())
-                .willReturn(expenseCategory);
+                .willReturn(EXPENSE_CATEGORIES);
 
         // when
         final List<CategoryResponse> actualResponses = categoryService.getExpenseCategories();
