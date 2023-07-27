@@ -68,8 +68,8 @@ export const trips = [
         name: '강릉',
       },
     ],
-    startDate: '2021.01.13',
-    endDate: '2021.01.17',
+    startDate: '2021-01-13',
+    endDate: '2021-01-17',
     description: null,
   },
   {
@@ -87,15 +87,14 @@ export const trips = [
         name: '바르셀로나',
       },
     ],
-    startDate: '2015.07.13',
-    endDate: '2021.-0.-28',
+    startDate: '2021.07.13',
+    endDate: '2021-07-28',
     description: '어쩌구 저쩌구 좌충우돌 레고의 바르셀로나 여행기',
   },
   {
     id: 5,
     title: '어바인 여행',
-    imageUrl:
-      'https://youimg1.tripcdn.com/target/10060n000000e4c6nEB47_D_1180_558.jpg?proc=source%2Ftrip',
+    imageUrl: null,
     cities: [
       {
         id: 1,

@@ -5,7 +5,19 @@ services:
     restart: always
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - /home/ubuntu/hang-log-frontend:/usr/share/nginx/html
       - /home/ubuntu/hang-log-images:/usr/share/nginx/html/img
+      - /home/ubuntu/hang-log-frontend/storybook:/usr/share/nginx/html/storybook
+      - /etc/letsencrypt/live/hanglog.com/fullchain.pem:/etc/nginx/cert/fullchain.pem
+      - /etc/letsencrypt/live/hanglog.com/privkey.pem:/etc/nginx/cert/privkey.pem
+  certbot:
+    image: certbot/certbot
+    command: certonly --webroot -w /usr/share/nginx/html -d hanglog.com
+    volumes:
+      - /home/ubuntu/hang-log-frontend:/usr/share/nginx/html
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - web

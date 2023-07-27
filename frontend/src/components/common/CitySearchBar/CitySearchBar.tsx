@@ -1,4 +1,3 @@
-import useDebounce from '@/hooks/common/useDebounce';
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
@@ -7,6 +6,7 @@ import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
+import { useDebounce } from '@hooks/common/useDebounce';
 
 import {
   badgeStyling,
