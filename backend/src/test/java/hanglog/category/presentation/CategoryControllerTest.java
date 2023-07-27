@@ -58,11 +58,7 @@ class CategoryControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("카테고리 ID")
                                         .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].engName")
-                                        .type(JsonFieldType.STRING)
-                                        .description("카테고리 영문명")
-                                        .attributes(field("constraint", "50자 이하의 문자열")),
-                                fieldWithPath("[].korName")
+                                fieldWithPath("[].name")
                                         .type(JsonFieldType.STRING)
                                         .description("카테고리 한글명")
                                         .attributes(field("constraint", "50자 이하의 문자열"))
