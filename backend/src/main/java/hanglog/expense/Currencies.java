@@ -20,7 +20,7 @@ public class Currencies {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private long id;
+    private Long id;
 
     private LocalDate searchDate;
 
