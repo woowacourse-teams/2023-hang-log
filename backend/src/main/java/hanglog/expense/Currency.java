@@ -29,7 +29,8 @@ public enum Currency {
     }
 
     public static double mappingCurrency(final String currency, final Currencies currencies) {
-        return Arrays.stream(values()).filter(value -> value.is(currency.toLowerCase()))
+        return Arrays.stream(values())
+                .filter(value -> value.is(currency.toLowerCase()))
                 .findAny().orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
                 .getRate.apply(currencies);
     }
