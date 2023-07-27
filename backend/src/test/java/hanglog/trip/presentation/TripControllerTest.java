@@ -54,7 +54,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureRestDocs
 class TripControllerTest extends RestDocsTest {
 
-    private final List<City> CITIES = List.of(PARIS, LONDON);
+    private static final List<City> CITIES = List.of(PARIS, LONDON);
 
     @Autowired
     private ObjectMapper objectMapper;
