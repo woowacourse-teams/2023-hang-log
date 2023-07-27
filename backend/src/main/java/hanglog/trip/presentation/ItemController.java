@@ -1,6 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.service.ItemService;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -24,7 +25,8 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<Void> createItem(
             @PathVariable final Long tripId,
-            @RequestBody @Valid final ItemRequest itemRequest) {
+            @RequestBody @Valid final ItemRequest itemRequest
+    ) {
         final Long itemId = itemService.save(tripId, itemRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + itemId)).build();
     }
@@ -33,8 +35,9 @@ public class ItemController {
     public ResponseEntity<Void> updateItem(
             @PathVariable final Long tripId,
             @PathVariable final Long itemId,
-            @RequestBody final ItemRequest itemRequest) {
-        itemService.update(tripId, itemId, itemRequest);
+            @RequestBody final ItemUpdateRequest itemUpdateRequest
+    ) {
+        itemService.update(tripId, itemId, itemUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 

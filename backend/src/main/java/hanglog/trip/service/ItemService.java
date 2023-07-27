@@ -21,6 +21,7 @@ import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
@@ -49,9 +50,9 @@ public class ItemService {
                 getNewItemOrdinal(tripId),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                getPlaceByItemRequest(itemRequest),
+                getPlaceByItemRequest(itemRequest.getPlace()),
                 dayLog,
-                getExpenseByItemRequest(itemRequest),
+                getExpenseByItemRequest(itemRequest.getExpense()),
                 getImagesByItemRequest(itemRequest)
         );
         validateAlreadyDeleted(item);
@@ -66,32 +67,38 @@ public class ItemService {
                 .toList();
     }
 
-    public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
-        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+    public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
+        final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
         validateAlreadyDeleted(item);
 
-        final Item updateditem = new Item(
+        Place updatedPlace = item.getPlace();
+        if (itemUpdateRequest.getIsPlaceUpdated()) {
+            updatedPlace = getPlaceByItemRequest(itemUpdateRequest.getPlace());
+        }
+
+        final Item updatedItem = new Item(
                 itemId,
-                ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
-                itemRequest.getTitle(),
+                ItemType.getItemTypeByIsSpot(itemUpdateRequest.getItemType()),
+                itemUpdateRequest.getTitle(),
                 item.getOrdinal(),
-                itemRequest.getRating(),
-                itemRequest.getMemo(),
-                getPlaceByItemRequest(itemRequest),
+                itemUpdateRequest.getRating(),
+                itemUpdateRequest.getMemo(),
+                updatedPlace,
                 dayLog,
-                getExpenseByItemRequest(itemRequest)
+                getExpenseByItemRequest(itemUpdateRequest.getExpense())
         );
-        itemRepository.save(updateditem);
+
+        itemRepository.save(updatedItem);
     }
 
-    private Place getPlaceByItemRequest(final ItemRequest itemRequest) {
-        if (itemRequest.getPlace() == null) {
+    private Place getPlaceByItemRequest(final PlaceRequest placeRequest) {
+        if (placeRequest == null) {
             return null;
         }
-        return createPlaceByPlaceRequest(itemRequest.getPlace());
+        return createPlaceByPlaceRequest(placeRequest);
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
@@ -106,11 +113,11 @@ public class ItemService {
         );
     }
 
-    private Expense getExpenseByItemRequest(final ItemRequest itemRequest) {
-        if (itemRequest.getExpense() == null) {
+    private Expense getExpenseByItemRequest(final ExpenseRequest expenseRequest) {
+        if (expenseRequest == null) {
             return null;
         }
-        return createExpenseByExpenseRequest(itemRequest.getExpense());
+        return createExpenseByExpenseRequest(expenseRequest);
     }
 
     private Expense createExpenseByExpenseRequest(final ExpenseRequest expenseRequest) {
