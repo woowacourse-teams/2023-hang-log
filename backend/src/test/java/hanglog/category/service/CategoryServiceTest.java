@@ -29,7 +29,7 @@ class CategoryServiceTest {
     @Test
     void getExpenseCategories() {
         // given
-        final List<CategoryResponse> expectResponse = EXPENSE_CATEGORIES.stream()
+        final List<CategoryResponse> expectResponses = EXPENSE_CATEGORIES.stream()
                 .map(category -> new CategoryResponse(category.getId(), category.getKorName(), category.getEngName()))
                 .toList();
 
@@ -40,6 +40,6 @@ class CategoryServiceTest {
         final List<CategoryResponse> actualResponses = categoryService.getExpenseCategories();
 
         // then
-        assertThat(actualResponses).usingRecursiveComparison().isEqualTo(expectResponse);
+        assertThat(actualResponses).usingRecursiveComparison().isEqualTo(expectResponses);
     }
 }
