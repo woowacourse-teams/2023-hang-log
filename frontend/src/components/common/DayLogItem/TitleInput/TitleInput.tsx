@@ -1,3 +1,4 @@
+import { Toast, useOverlay } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -13,6 +14,7 @@ interface TitleInputProps {
 
 const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
   const dayLogTitleMutation = useDayLogTitleMutation();
+  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
   const [title, setTitle] = useState(initialTitle);
 
   useEffect(() => {
@@ -28,21 +30,28 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
       { tripId, dayLogId, title },
       {
         onError: () => {
-          // ! 에러 발생 시 기존 값으로 롤백
           setTitle(initialTitle);
+          openErrorToast();
         },
       }
     );
   };
 
   return (
-    <input
-      css={inputStyling}
-      value={title}
-      placeholder="소제목"
-      onChange={handleTitleChange}
-      onBlur={handleInputBlur}
-    />
+    <>
+      <input
+        css={inputStyling}
+        value={title}
+        placeholder="소제목"
+        onChange={handleTitleChange}
+        onBlur={handleInputBlur}
+      />
+      {isErrorTostOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          소제목 변경을 실패했습니다.
+        </Toast>
+      )}
+    </>
   );
 };
 
