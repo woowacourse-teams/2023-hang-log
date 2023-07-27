@@ -40,7 +40,7 @@ public class TripService {
                 .toList();
 
         final Trip newTrip = Trip.of(
-                getInitTitle(cites),
+                generateInitialTitle(cites),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
@@ -68,24 +68,26 @@ public class TripService {
     public List<TripResponse> getAllTrips() {
         final List<Trip> trips = tripRepository.findAll();
         return trips.stream()
-                .map(this::getTrip)
+                .map(this::getTripResponse)
                 .toList();
     }
 
-    private TripResponse getTrip(final Trip trip) {
-        final List<City> cities = tripCityRepository.findByTripId(trip.getId()).stream()
-                .map(TripCity::getCity)
-                .toList();
+    private TripResponse getTripResponse(final Trip trip) {
+        final List<City> cities = getCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
 
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = tripCityRepository.findByTripId(tripId).stream()
+        final List<City> cities = getCitiesByTripId(tripId);
+        return TripDetailResponse.of(trip, cities);
+    }
+
+    private List<City> getCitiesByTripId(final Long tripId) {
+        return tripCityRepository.findByTripId(tripId).stream()
                 .map(TripCity::getCity)
                 .toList();
-        return TripDetailResponse.of(trip, cities);
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
@@ -150,7 +152,7 @@ public class TripService {
         tripRepository.delete(trip);
     }
 
-    private String getInitTitle(final List<City> cites) {
+    private String generateInitialTitle(final List<City> cites) {
         return cites.get(0).getName() + TITLE_POSTFIX;
     }
 }
