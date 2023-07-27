@@ -1,4 +1,4 @@
-import { NETWORK } from '@constants/api';
+import { ERROR_MESSAGE, NETWORK } from '@constants/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchDayLogItemOrder } from '@api/dayLog/patchDayLogItemOrder';
@@ -13,7 +13,7 @@ export const useDayLogOrderMutation = () => {
     },
     onError: (err, _, context) => {
       // ? 에러 발생 했을 때 롤백하기??
-      alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      alert(ERROR_MESSAGE);
     },
     retry: NETWORK.RETRY_COUNT,
   });

@@ -13,6 +13,20 @@ spring:
   h2:
     console:
       enabled: true
+oauth2:
+  provider:
+    google:
+      client-id: ${ GOOGLE_CLIENT_ID }
+      client-secret: ${ GOOGLE_CLIENT_SECRET }
+      redirect-uri: ${ GOOGLE_REDIRECT_URI }
+      token-uri: ${ GOOGLE_TOKEN_URI }
+      user-info: ${ GOOGLE_USER_INFO }
+    kakao:
+      client-id: ${ KAKAO_CLIENT_ID }
+      client-secret: ${ KAKAO_CLIENT_SECRET }
+      redirect-uri: ${ KAKAO_REDIRECT_URI }
+      token-uri: ${ KAKAO_TOKEN_URI }
+      user-info: ${ KAKAO_USER_INFO }
 
 logging:
   level:

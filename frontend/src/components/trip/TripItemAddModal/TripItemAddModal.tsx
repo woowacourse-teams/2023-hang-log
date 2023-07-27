@@ -1,82 +1,108 @@
-import { Button, Flex, ImageUploadInput, Input, Modal, Theme } from 'hang-log-design-system';
+import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
+import type { TripItemFormData } from '@type/tripItem';
+import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
 
-import { useAddTripItemForm } from '@hooks/useAddTripItemForm';
+import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 
-import { formStyling } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
-import TripItemCategoryInput from '@components/trip/TripItemAddModal/TripItemCategoryInput/TripItemCategoryInput';
-import TripItemDateInput from '@components/trip/TripItemAddModal/TripItemDateInput/TripItemDateInput';
-import TripItemExpenseInput from '@components/trip/TripItemAddModal/TripItemExpenseInput/TripItemExpenseInput';
-import TripItemMemoInput from '@components/trip/TripItemAddModal/TripItemMemoInput/TripItemMemoInput';
-import TripItemStarRatingInput from '@components/trip/TripItemAddModal/TripItemStarRatingInput/TripItemStarRatingInput';
-import TripItemTitleInput from '@components/trip/TripItemAddModal/TripItemTitleInput/TripItemTitleInput';
+import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
+import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
+import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
+import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
+import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
+import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
+import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
+import TitleInput from '@components/trip/TripItemAddModal/TitleInput/TitleInput';
+import {
+  formStyling,
+  wrapperStyling,
+} from '@components/trip/TripItemAddModal/TripItemAddModal.style';
 
 interface TripItemAddModalProps {
-  isOpen: boolean;
   tripId: number;
-  currentDate: { id: number; date: string };
+  dayLogId: number;
+  itemId?: number;
   dates: { id: number; date: string }[];
+  initialData?: TripItemFormData;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
 const TripItemAddModal = ({
-  isOpen,
   tripId,
+  dayLogId,
+  itemId,
   dates,
-  currentDate,
+  initialData,
+  isOpen = true,
   onClose,
 }: TripItemAddModalProps) => {
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
-    useAddTripItemForm(tripId, currentDate.id, onClose);
+    useAddTripItemForm({
+      tripId,
+      initialDayLogId: dayLogId,
+      itemId,
+      onSuccess: onClose,
+      initialData,
+    });
 
   return (
-    <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
-      <form css={formStyling} onSubmit={handleSubmit} noValidate>
-        <Flex styles={{ gap: Theme.spacer.spacing4 }}>
-          <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-            <TripItemCategoryInput
-              itemType={tripItemInformation.itemType}
-              updateInputValue={updateInputValue}
-            />
-            <TripItemDateInput
-              currentCategory={tripItemInformation.itemType}
-              currentDate={currentDate.date}
-              dates={dates}
-              updateInputValue={updateInputValue}
-            />
-            {tripItemInformation.itemType ? (
-              <Input label="장소" name="title" required placeholder="장소를 입력해 주세요" />
-            ) : (
-              <TripItemTitleInput
-                isError={isTitleError}
-                value={tripItemInformation.title}
+    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
+      <GoogleMapWrapper>
+        <form css={formStyling} onSubmit={handleSubmit} noValidate>
+          <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+              <CategoryInput
+                itemType={tripItemInformation.itemType}
                 updateInputValue={updateInputValue}
                 disableError={disableTitleError}
               />
-            )}
-            <TripItemStarRatingInput
-              rating={tripItemInformation.rating}
-              updateInputValue={updateInputValue}
-            />
-            <TripItemExpenseInput updateInputValue={updateInputValue} />
+              <DateInput
+                currentCategory={tripItemInformation.itemType}
+                dayLogId={dayLogId}
+                dates={dates}
+                updateInputValue={updateInputValue}
+              />
+              {tripItemInformation.itemType ? (
+                <PlaceInput
+                  value={tripItemInformation.title}
+                  isError={isTitleError}
+                  isUpdatable={tripItemInformation.isPlaceUpdated !== undefined}
+                  updateInputValue={updateInputValue}
+                  disableError={disableTitleError}
+                />
+              ) : (
+                <TitleInput
+                  value={tripItemInformation.title}
+                  isError={isTitleError}
+                  updateInputValue={updateInputValue}
+                  disableError={disableTitleError}
+                />
+              )}
+              <StarRatingInput
+                rating={tripItemInformation.rating}
+                updateInputValue={updateInputValue}
+              />
+              <ExpenseInput
+                initialExpenseValue={tripItemInformation.expense}
+                updateInputValue={updateInputValue}
+              />
+            </Flex>
+            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+              <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
+              {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
+              <ImageUploadInput
+                label="이미지 업로드"
+                imageUrls={tripItemInformation.imageUrls}
+                imageAltText="여행 일정 업르드 이미지"
+                supportingText="사진은 최대 5장 올릴 수 있어요."
+                maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
+                onRemove={() => {}}
+              />
+            </Flex>
           </Flex>
-          <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-            <TripItemMemoInput
-              value={tripItemInformation.memo}
-              updateInputValue={updateInputValue}
-            />
-            {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
-            <ImageUploadInput
-              label="이미지 업로드"
-              imageUrls={tripItemInformation.imageUrls}
-              imageAltText="여행 일정 업르드 이미지"
-              supportingText="사진은 최대 5장 올릴 수 있어요."
-              maxUploadCount={5}
-              onRemove={() => {}}
-            />
-          </Flex>
-        </Flex>
-        <Button variant="primary">일정 기록 추가하기</Button>
-      </form>
+          <Button variant="primary">일정 기록 추가하기</Button>
+        </form>
+      </GoogleMapWrapper>
     </Modal>
   );
 };
