@@ -2,7 +2,7 @@ package hanglog.expense.dto.response;
 
 
 import hanglog.category.domain.Category;
-import hanglog.expense.Currencies;
+import hanglog.expense.domain.Currency;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
@@ -20,7 +20,7 @@ public class ExpenseGetResponse {
     private final String title;
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final List<CitiesInExpenseResponse> cities;
+    private final List<CityInExpenseResponse> cities;
     private final int totalAmount;
     private final List<CategoriesInExpenseResponse> categories;
     private final RatesInExpenseResponse rates;
@@ -31,7 +31,7 @@ public class ExpenseGetResponse {
             final int totalAmount,
             final List<TripCity> cities,
             final Map<Category, Integer> categories,
-            final Currencies currencies,
+            final Currency currency,
             final Map<DayLog, Integer> dayLogs
     ) {
         return new ExpenseGetResponse(
@@ -39,10 +39,10 @@ public class ExpenseGetResponse {
                 trip.getTitle(),
                 trip.getStartDate(),
                 trip.getEndDate(),
-                CitiesInExpenseResponse.of(cities),
+                CityInExpenseResponse.of(cities),
                 totalAmount,
                 CategoriesInExpenseResponse.of(categories),
-                RatesInExpenseResponse.of(currencies),
+                RatesInExpenseResponse.of(currency),
                 DayLogInExpenseResponse.of(dayLogs)
         );
     }

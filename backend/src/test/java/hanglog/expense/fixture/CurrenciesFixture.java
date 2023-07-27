@@ -1,11 +1,11 @@
 package hanglog.expense.fixture;
 
-import hanglog.expense.Currencies;
+import hanglog.expense.domain.Currency;
 import java.time.LocalDate;
 
 public class CurrenciesFixture {
 
-    public static final Currencies DEFAULT_CURRENCIES = new Currencies(
+    public static final Currency DEFAULT_CURRENCY = new Currency(
             1L,
             LocalDate.of(2023, 1, 1),
             1300.0,

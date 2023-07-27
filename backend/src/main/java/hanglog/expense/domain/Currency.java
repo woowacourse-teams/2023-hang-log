@@ -1,4 +1,4 @@
-package hanglog.expense;
+package hanglog.expense.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class Currencies {
+public class Currency {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -54,8 +54,9 @@ public class Currencies {
     @Column(nullable = false)
     private Double krw;
 
-    public static Currencies ofDefault() {
-        return new Currencies();
+    // TODO : 추후 currency 데이터 입력 후 default 값 생성시 삭제
+    public static Currency ofDefault() {
+        return new Currency();
     }
 
     public double getUnitRateOfJpy() {

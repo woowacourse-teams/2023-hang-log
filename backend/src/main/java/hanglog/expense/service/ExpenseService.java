@@ -3,11 +3,11 @@ package hanglog.expense.service;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
-import hanglog.expense.Currencies;
-import hanglog.expense.Currency;
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Currency;
+import hanglog.expense.domain.Expense;
+import hanglog.expense.domain.repository.CurrencyRepository;
+import hanglog.expense.domain.type.CurrencyCodeType;
 import hanglog.expense.dto.response.ExpenseGetResponse;
-import hanglog.expense.repository.CurrenciesRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -28,23 +28,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExpenseService {
 
     //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
-    private static final Currencies DEFAULT_CURRENCIES = Currencies.ofDefault();
+    private static final Currency DEFAULT_CURRENCY = Currency.ofDefault();
     private final TripRepository tripRepository;
-    private final CurrenciesRepository currenciesRepository;
+    private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
 
     public ExpenseGetResponse getAllExpenses(final long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final Currencies currencies = currenciesRepository.findCurrenciesBySearchDate(trip.getStartDate())
-                .orElse(DEFAULT_CURRENCIES);
+        final Currency currency = currencyRepository.findCurrenciesBySearchDate(trip.getStartDate())
+                .orElse(DEFAULT_CURRENCY);
 
         final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
         final Map<Category, Integer> categoryTotalAmounts = new HashMap<>();
         final List<TripCity> cities = tripCityRepository.findByTripId(tripId);
 
         for (final DayLog dayLog : trip.getDayLogs()) {
-            calculateAmounts(dayLog, currencies, dayLogTotalAmounts, categoryTotalAmounts);
+            calculateAmounts(dayLog, currency, dayLogTotalAmounts, categoryTotalAmounts);
         }
 
         final int totalAmount = dayLogTotalAmounts.values().stream().reduce(Integer::sum).orElse(0);
@@ -54,29 +54,29 @@ public class ExpenseService {
                 totalAmount,
                 cities,
                 categoryTotalAmounts,
-                currencies,
+                currency,
                 dayLogTotalAmounts
         );
     }
 
     private void calculateAmounts(
             final DayLog dayLog,
-            final Currencies currencies,
+            final Currency currency,
             final Map<DayLog, Integer> dayLogTotalAmounts,
             final Map<Category, Integer> categoryTotalAmounts
     ) {
         for (final Item item : dayLog.getItems()) {
             final Expense expense = item.getExpense();
-            putKeyAndValue(dayLogTotalAmounts, dayLog, changeToKRW(expense, currencies));
-            putKeyAndValue(categoryTotalAmounts, expense.getCategory(), changeToKRW(expense, currencies));
+            putKeyAndValue(dayLogTotalAmounts, dayLog, changeToKRW(expense, currency));
+            putKeyAndValue(categoryTotalAmounts, expense.getCategory(), changeToKRW(expense, currency));
         }
     }
 
-    private int changeToKRW(final Expense expense, final Currencies currencies) {
+    private int changeToKRW(final Expense expense, final Currency currency) {
         if (expense == null) {
             return 0;
         }
-        final double rate = Currency.mappingCurrency(expense.getCurrency(), currencies);
+        final double rate = CurrencyCodeType.mappingCurrency(expense.getCurrency(), currency);
         return (int) (expense.getAmount() * rate);
     }
 

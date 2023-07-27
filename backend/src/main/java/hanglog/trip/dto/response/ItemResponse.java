@@ -1,6 +1,6 @@
 package hanglog.trip.dto.response;
 
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;

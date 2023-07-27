@@ -1,7 +1,7 @@
 package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCIES;
+import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCY;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
@@ -45,7 +45,7 @@ class ExpenseControllerTest extends RestDocsTest {
                 10000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                 Map.of(EXPENSE_CATEGORIES.get(1), 1000),
-                DEFAULT_CURRENCIES,
+                DEFAULT_CURRENCY,
                 Map.of(LONDON_DAY, 1000)
         );
 

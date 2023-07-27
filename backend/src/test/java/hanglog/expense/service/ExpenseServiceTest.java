@@ -2,7 +2,7 @@ package hanglog.expense.service;
 
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCIES;
+import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCY;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
@@ -19,12 +19,12 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import hanglog.category.dto.CategoryResponse;
+import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.dto.response.CategoriesInExpenseResponse;
-import hanglog.expense.dto.response.CategoryInExpenseResponse;
 import hanglog.expense.dto.response.DayLogInExpenseResponse;
 import hanglog.expense.dto.response.ExpenseGetResponse;
 import hanglog.expense.dto.response.ItemInDayLogResponse;
-import hanglog.expense.repository.CurrenciesRepository;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -54,7 +54,7 @@ class ExpenseServiceTest {
     private TripRepository tripRepository;
 
     @Mock
-    private CurrenciesRepository currenciesRepository;
+    private CurrencyRepository currencyRepository;
 
     @Mock
     private TripCityRepository tripCityRepository;
@@ -67,8 +67,8 @@ class ExpenseServiceTest {
 
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TO_JAPAN));
-        when(currenciesRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
-                .thenReturn(Optional.of(DEFAULT_CURRENCIES));
+        when(currencyRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
+                .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(tripCityRepository.findByTripId(1L))
                 .thenReturn(List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)));
         final List<ItemInDayLogResponse> expectItemList = List.of(
@@ -76,8 +76,8 @@ class ExpenseServiceTest {
                 ItemInDayLogResponse.of(JAPAN_HOTEL),
                 ItemInDayLogResponse.of(AIRPLANE_ITEM)
         );
-        final int japanAmount = (int) (JPY_10000.getAmount() * DEFAULT_CURRENCIES.getUnitRateOfJpy());
-        final int londonAmount = (int) (EURO_10000.getAmount() * DEFAULT_CURRENCIES.getEur());
+        final int japanAmount = (int) (JPY_10000.getAmount() * DEFAULT_CURRENCY.getUnitRateOfJpy());
+        final int londonAmount = (int) (EURO_10000.getAmount() * DEFAULT_CURRENCY.getEur());
         final int totalAmount = japanAmount + londonAmount * 2;
 
         // when
@@ -95,7 +95,7 @@ class ExpenseServiceTest {
                                             EXPENSE_CATEGORIES.get(3),
                                             japanAmount, EXPENSE_CATEGORIES.get(1),
                                             londonAmount * 2),
-                                    DEFAULT_CURRENCIES,
+                                    DEFAULT_CURRENCY,
                                     Map.of(EXPENSE_JAPAN_DAYLOG, japanAmount, EXPENSE_LONDON_DAYLOG, londonAmount * 2)
                             )
                     );
@@ -103,12 +103,12 @@ class ExpenseServiceTest {
                     .usingRecursiveFieldByFieldElementComparator()
                     .contains(
                             new CategoriesInExpenseResponse(
-                                    CategoryInExpenseResponse.of(EXPENSE_CATEGORIES.get(3)),
+                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(3)),
                                     japanAmount,
                                     BigDecimal.valueOf((double) 100 * japanAmount / totalAmount)
                                             .setScale(2, RoundingMode.CEILING)),
                             new CategoriesInExpenseResponse(
-                                    CategoryInExpenseResponse.of(EXPENSE_CATEGORIES.get(1)),
+                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(1)),
                                     londonAmount * 2,
                                     BigDecimal.valueOf((double) 100 * londonAmount * 2 / totalAmount)
                                             .setScale(2, RoundingMode.CEILING))
@@ -147,8 +147,8 @@ class ExpenseServiceTest {
 
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TRIP));
-        when(currenciesRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
-                .thenReturn(Optional.of(DEFAULT_CURRENCIES));
+        when(currencyRepository.findCurrenciesBySearchDate(any(LocalDate.class)))
+                .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(tripCityRepository.findByTripId(1L))
                 .thenReturn(List.of());
 
@@ -162,7 +162,7 @@ class ExpenseServiceTest {
                                 0,
                                 List.of(),
                                 Map.of(),
-                                DEFAULT_CURRENCIES,
+                                DEFAULT_CURRENCY,
                                 Map.of()
                         )
                 );

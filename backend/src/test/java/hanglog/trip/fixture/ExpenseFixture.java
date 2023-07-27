@@ -2,7 +2,7 @@ package hanglog.trip.fixture;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 
 public final class ExpenseFixture {
 

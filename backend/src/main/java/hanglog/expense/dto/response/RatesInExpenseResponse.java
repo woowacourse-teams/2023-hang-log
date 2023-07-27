@@ -1,6 +1,6 @@
 package hanglog.expense.dto.response;
 
-import hanglog.expense.Currencies;
+import hanglog.expense.domain.Currency;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
@@ -13,10 +13,10 @@ public class RatesInExpenseResponse {
     private final LocalDate date;
     private final List<CurrencyInExpenseResponse> values;
 
-    public static RatesInExpenseResponse of(final Currencies currencies) {
+    public static RatesInExpenseResponse of(final Currency currency) {
         return new RatesInExpenseResponse(
-                currencies.getSearchDate(),
-                CurrencyInExpenseResponse.of(currencies)
+                currency.getSearchDate(),
+                CurrencyInExpenseResponse.of(currency)
         );
     }
 }

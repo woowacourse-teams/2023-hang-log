@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CitiesInExpenseResponse {
+public class CityInExpenseResponse {
 
     private final long id;
     private final String name;
 
-    public static List<CitiesInExpenseResponse> of(final List<TripCity> cities) {
+    public static List<CityInExpenseResponse> of(final List<TripCity> cities) {
         return cities.stream().map(city ->
-                new CitiesInExpenseResponse(
+                new CityInExpenseResponse(
                         city.getCity().getId(),
                         city.getCity().getName()
                 )
