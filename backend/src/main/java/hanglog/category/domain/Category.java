@@ -1,4 +1,4 @@
-package hanglog.category;
+package hanglog.category.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -24,8 +24,8 @@ public class Category extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String korName;
+    private String engName;
 
     @Column(nullable = false, length = 50)
-    private String engName;
+    private String korName;
 }

@@ -1,3 +1,4 @@
+import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
 import type { CityData } from '@type/city';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
@@ -20,8 +21,8 @@ interface TripsItemProps {
 
 const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripsItemProps) => {
   return (
-    <Flex styles={{ direction: 'column' }} css={boxStyling}>
-      <Box css={imageBoxStyling}>{coverImage && <img src={coverImage} css={imageStyling} />}</Box>
+    <Flex tag="li" styles={{ direction: 'column' }} css={boxStyling}>
+      <img src={coverImage ?? DefaultThumbnail} css={imageStyling} />
       <Box css={badgeBoxStyling}>
         {cityTags.map((cityTag) => {
           return <Badge key={cityTag.id}>{cityTag.name}</Badge>;

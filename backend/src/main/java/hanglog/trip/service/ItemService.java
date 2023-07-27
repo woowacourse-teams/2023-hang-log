@@ -6,8 +6,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUNT_IMAGE_URL;
 
-import hanglog.category.Category;
-import hanglog.category.repository.CategoryRepository;
+import hanglog.category.domain.Category;
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.expense.Expense;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.type.StatusType;

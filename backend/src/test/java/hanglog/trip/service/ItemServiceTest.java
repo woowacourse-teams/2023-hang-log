@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import hanglog.category.Category;
-import hanglog.category.repository.CategoryRepository;
+import hanglog.category.domain.Category;
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
