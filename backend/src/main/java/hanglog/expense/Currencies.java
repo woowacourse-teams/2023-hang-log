@@ -57,4 +57,8 @@ public class Currencies {
     public static Currencies ofDefault() {
         return new Currencies();
     }
+
+    public double getUnitRateOfJpy() {
+        return this.jpy / 100;
+    }
 }

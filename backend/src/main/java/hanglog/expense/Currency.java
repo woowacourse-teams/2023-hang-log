@@ -12,7 +12,7 @@ public enum Currency {
     usd("usd", Currencies::getUsd),
     eur("eur", Currencies::getEur),
     gbp("gbp", Currencies::getGbp),
-    jpy("jpy", Currencies::getJpy),
+    jpy("jpy", Currencies::getUnitRateOfJpy),
     cny("cny", Currencies::getCny),
     chf("chf", Currencies::getChf),
     sgd("sgd", Currencies::getSgd),
@@ -28,7 +28,7 @@ public enum Currency {
     }
 
     public static double mappingCurrency(final String currency, final Currencies currencies) {
-        return Arrays.stream(values()).filter(it -> it.is(currency))
+        return Arrays.stream(values()).filter(it -> it.is(currency.toLowerCase()))
                 .findAny().orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_RATING))
                 .getRate.apply(currencies);
     }
