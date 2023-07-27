@@ -18,7 +18,7 @@ public class CategoryService {
     public List<CategoryResponse> getExpenseCategories() {
         final List<Category> expenseCategories = categoryRepository.findExpenseCategory();
         return expenseCategories.stream()
-                .map(category -> new CategoryResponse(category.getId(), category.getEngName()))
+                .map(CategoryResponse::of)
                 .toList();
     }
 }

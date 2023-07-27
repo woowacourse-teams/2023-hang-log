@@ -14,7 +14,7 @@ public class CategoryResponse {
     public static CategoryResponse of(final Category category) {
         return new CategoryResponse(
                 category.getId(),
-                category.getEngName()
+                category.getKorName()
         );
     }
 }
