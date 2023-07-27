@@ -161,7 +161,7 @@ class TripServiceTest {
     class UpdateTripTests {
 
         TripUpdateRequest updateRequest;
-        Trip trip = new Trip(
+        Trip trip = Trip.of(
                 "파리 여행",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 3)

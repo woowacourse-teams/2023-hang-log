@@ -38,7 +38,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                "https://a.cdn-hotels.com/gdcs/production153/d1371/e6c1f55e-51ac-41d5-8c63-2d0c63faf59e.jpg",
+                trip.getImageUrl(),
                 dayLogGetResponses
         );
     }

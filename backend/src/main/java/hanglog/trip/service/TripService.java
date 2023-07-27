@@ -39,7 +39,7 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip newTrip = new Trip(
+        final Trip newTrip = Trip.of(
                 getInitTitle(cites),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
@@ -101,6 +101,7 @@ public class TripService {
                 updateRequest.getDescription(),
                 trip.getDayLogs()
         );
+        System.out.println(updatedTrip.getImageUrl());
         tripRepository.save(updatedTrip);
     }
 
