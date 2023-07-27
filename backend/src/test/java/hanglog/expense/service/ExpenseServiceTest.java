@@ -22,6 +22,8 @@ import hanglog.expense.dto.response.ExpenseGetResponse;
 import hanglog.expense.dto.response.ItemInDayLogResponse;
 import hanglog.expense.repository.CurrenciesRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -77,16 +79,18 @@ class ExpenseServiceTest {
                             )
                     );
             softly.assertThat(actual.getCategories())
-                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("percentage")
+                    .usingRecursiveFieldByFieldElementComparator()
                     .contains(
                             new CategoriesInExpenseResponse(
                                     CategoryInExpenseResponse.of(LODGING),
                                     9000,
-                                    (double) 9000 / 28000000),
+                                    BigDecimal.valueOf((double) 100 * 9000 / 28009000)
+                                            .setScale(2, RoundingMode.CEILING)),
                             new CategoriesInExpenseResponse(
                                     CategoryInExpenseResponse.of(CULTURE),
                                     28000000,
-                                    (double) 28000000 / 28009000)
+                                    BigDecimal.valueOf((double) 100 * 28000000 / 28009000)
+                                            .setScale(2, RoundingMode.CEILING))
                     );
             softly.assertThat(actual.getDayLogs()).usingRecursiveFieldByFieldElementComparatorIgnoringFields("items")
                     .contains(
@@ -140,4 +144,7 @@ class ExpenseServiceTest {
     }
 
 
+    private BigDecimal roundUp(final int value, final int total) {
+        return BigDecimal.valueOf(value / total);
+    }
 }

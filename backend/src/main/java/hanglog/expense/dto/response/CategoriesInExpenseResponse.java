@@ -1,6 +1,8 @@
 package hanglog.expense.dto.response;
 
 import hanglog.category.Category;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,7 +17,7 @@ public class CategoriesInExpenseResponse {
 
     private final CategoryInExpenseResponse category;
     private final int amount;
-    private final double percentage;
+    private final BigDecimal percentage;
 
     public static List<CategoriesInExpenseResponse> of(final Map<Category, Integer> categories) {
         final int totalAmount = categories.values().stream().reduce(Integer::sum).orElse(0);
@@ -36,7 +38,7 @@ public class CategoriesInExpenseResponse {
         return new CategoriesInExpenseResponse(
                 CategoryInExpenseResponse.of(entry.getKey()),
                 entry.getValue(),
-                amount
+                BigDecimal.valueOf(amount * 100).setScale(2, RoundingMode.CEILING)//.setScale(2)
         );
     }
 }
