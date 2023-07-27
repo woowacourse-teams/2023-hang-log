@@ -126,11 +126,15 @@ class TripServiceTest {
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 5),
                 "추가된 여행 설명",
-                List.of(1L, 2L, 3L)
+                List.of(1L, 2L)
         );
 
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(PARIS));
+        given(cityRepository.findById(2L))
+                .willReturn(Optional.of(LONDON));
 
         // when
         tripService.update(LONDON_TRIP.getId(), updateRequest);
@@ -191,7 +195,7 @@ class TripServiceTest {
                     LocalDate.of(2023, 7, startDay),
                     LocalDate.of(2023, 7, endDay),
                     "추가된 여행 설명",
-                    List.of(1L, 2L, 3L)
+                    List.of(1L, 2L)
             );
 
             final Trip updatedTrip = new Trip(
@@ -208,6 +212,10 @@ class TripServiceTest {
                     .willReturn(Optional.of(trip));
             given(tripRepository.save(any(Trip.class)))
                     .willReturn(updatedTrip);
+            given(cityRepository.findById(1L))
+                    .willReturn(Optional.of(PARIS));
+            given(cityRepository.findById(2L))
+                    .willReturn(Optional.of(LONDON));
         }
 
         @DisplayName("변경된 일정이 같은 경우")
