@@ -1,6 +1,6 @@
-package hanglog.category.repository;
+package hanglog.category.domain.repository;
 
-import hanglog.category.Category;
+import hanglog.category.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

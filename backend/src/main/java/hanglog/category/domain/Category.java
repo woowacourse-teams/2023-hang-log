@@ -1,4 +1,4 @@
-package hanglog.category;
+package hanglog.category.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 

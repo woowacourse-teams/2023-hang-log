@@ -1,6 +1,6 @@
 package hanglog.trip.fixture;
 
-import hanglog.category.Category;
+import hanglog.category.domain.Category;
 import hanglog.trip.domain.Place;
 import java.math.BigDecimal;
 

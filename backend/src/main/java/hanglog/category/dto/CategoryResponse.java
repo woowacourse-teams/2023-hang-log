@@ -1,5 +1,6 @@
-package hanglog.category;
+package hanglog.category.dto;
 
+import hanglog.category.domain.Category;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
