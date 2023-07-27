@@ -1,4 +1,3 @@
-import { useTripEditForm } from '@/hooks/trip/useTripEditForm';
 import WarningIcon from '@assets/svg/warning-icon.svg';
 import type { TripData } from '@type/trip';
 import {
@@ -11,9 +10,15 @@ import {
   Textarea,
 } from 'hang-log-design-system';
 
+import { useTripEditForm } from '@hooks/trip/useTripEditForm';
+
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import { formStyling } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
+import {
+  formStyling,
+  textareaStyling,
+  titleStyling,
+} from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
   isOpen: boolean;
@@ -55,16 +60,15 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>
             <WarningIcon />
             <SupportingText>
-              방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 <br />
-              삭제됩니다.
+              방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 삭제됩니다.
             </SupportingText>
           </Flex>
         </Flex>
-        <Flex styles={{ direction: 'column', gap: '4px' }}>
+        <Flex css={titleStyling}>
           <Input
+            required
             label="여행 제목"
             value={tripInfo.title}
-            required
             isError={isTitleError}
             onChange={updateInputValue('title')}
           />
@@ -76,6 +80,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           label="여행 설명"
           value={tripInfo.description ?? ''}
           onChange={updateInputValue('description')}
+          css={textareaStyling}
         />
         <ImageUploadInput
           label="대표 이미지 업로드"
