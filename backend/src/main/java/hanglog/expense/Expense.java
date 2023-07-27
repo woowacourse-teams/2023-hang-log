@@ -4,7 +4,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.category.Category;
+import hanglog.category.domain.Category;
 import hanglog.global.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

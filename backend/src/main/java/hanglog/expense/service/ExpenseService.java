@@ -2,7 +2,7 @@ package hanglog.expense.service;
 
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
-import hanglog.category.Category;
+import hanglog.category.domain.Category;
 import hanglog.expense.Currencies;
 import hanglog.expense.Currency;
 import hanglog.expense.Expense;

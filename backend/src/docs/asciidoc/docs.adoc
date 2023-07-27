@@ -169,13 +169,13 @@ include::{snippets}/city-controller-test/get-cities/http-request.adoc[]
 ==== 응답
 include::{snippets}/city-controller-test/get-cities/http-response.adoc[]
 
-== 경비 API
+== 카테고리 API
 
-=== 경비 조회 (/trips/:tripId/expense)
+=== 경비 카테고리 조회 (GET /categories)
 
 ==== 요청
-include::{snippets}/Expense-controller-test/get-expenses/http-request.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/http-request.adoc[]
 
 ==== 응답
-include::{snippets}/Expense-controller-test/get-expenses/http-response.adoc[]
-include::{snippets}/Expense-controller-test/get-expenses/response-fields.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]

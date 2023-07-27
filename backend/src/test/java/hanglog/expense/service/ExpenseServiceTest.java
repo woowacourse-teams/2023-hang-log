@@ -1,12 +1,14 @@
 package hanglog.expense.service;
 
-import static hanglog.category.fixture.CategoryFixture.CULTURE;
-import static hanglog.category.fixture.CategoryFixture.LODGING;
+
+import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCIES;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
+import static hanglog.trip.fixture.ExpenseFixture.EURO_10000;
+import static hanglog.trip.fixture.ExpenseFixture.JPY_10000;
 import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
 import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
@@ -74,6 +76,10 @@ class ExpenseServiceTest {
                 ItemInDayLogResponse.of(JAPAN_HOTEL),
                 ItemInDayLogResponse.of(AIRPLANE_ITEM)
         );
+        final int japanAmount = (int) (JPY_10000.getAmount() * DEFAULT_CURRENCIES.getUnitRateOfJpy());
+        final int londonAmount = (int) (EURO_10000.getAmount() * DEFAULT_CURRENCIES.getEur());
+        final int totalAmount = japanAmount + londonAmount * 2;
+
         // when
         final ExpenseGetResponse actual = expenseService.getAllExpenses(1L);
 
@@ -83,25 +89,28 @@ class ExpenseServiceTest {
                     .ignoringFields("categories", "dayLogs")
                     .isEqualTo(
                             ExpenseGetResponse.of(LONDON_TO_JAPAN,
-                                    28009000,
+                                    totalAmount,
                                     List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                                    Map.of(LODGING, 9000, CULTURE, 28000000),
+                                    Map.of(
+                                            EXPENSE_CATEGORIES.get(3),
+                                            japanAmount, EXPENSE_CATEGORIES.get(1),
+                                            londonAmount * 2),
                                     DEFAULT_CURRENCIES,
-                                    Map.of(EXPENSE_JAPAN_DAYLOG, 9000, EXPENSE_LONDON_DAYLOG, 28000000)
+                                    Map.of(EXPENSE_JAPAN_DAYLOG, japanAmount, EXPENSE_LONDON_DAYLOG, londonAmount * 2)
                             )
                     );
             softly.assertThat(actual.getCategories())
                     .usingRecursiveFieldByFieldElementComparator()
                     .contains(
                             new CategoriesInExpenseResponse(
-                                    CategoryInExpenseResponse.of(LODGING),
-                                    9000,
-                                    BigDecimal.valueOf((double) 100 * 9000 / 28009000)
+                                    CategoryInExpenseResponse.of(EXPENSE_CATEGORIES.get(3)),
+                                    japanAmount,
+                                    BigDecimal.valueOf((double) 100 * japanAmount / totalAmount)
                                             .setScale(2, RoundingMode.CEILING)),
                             new CategoriesInExpenseResponse(
-                                    CategoryInExpenseResponse.of(CULTURE),
-                                    28000000,
-                                    BigDecimal.valueOf((double) 100 * 28000000 / 28009000)
+                                    CategoryInExpenseResponse.of(EXPENSE_CATEGORIES.get(1)),
+                                    londonAmount * 2,
+                                    BigDecimal.valueOf((double) 100 * londonAmount * 2 / totalAmount)
                                             .setScale(2, RoundingMode.CEILING))
                     );
             softly.assertThat(actual.getDayLogs()).usingRecursiveFieldByFieldElementComparatorIgnoringFields("items")
@@ -110,14 +119,14 @@ class ExpenseServiceTest {
                                     1L,
                                     1,
                                     LocalDate.of(2023, 7, 1),
-                                    28000000,
+                                    londonAmount * 2,
                                     List.of()
                             ),
                             new DayLogInExpenseResponse(
                                     1L,
                                     2,
                                     LocalDate.of(2023, 7, 2),
-                                    9000,
+                                    japanAmount,
                                     List.of()
                             )
                     );

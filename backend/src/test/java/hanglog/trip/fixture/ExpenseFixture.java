@@ -1,7 +1,6 @@
 package hanglog.trip.fixture;
 
-import static hanglog.category.fixture.CategoryFixture.CULTURE;
-import static hanglog.category.fixture.CategoryFixture.LODGING;
+import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 
 import hanglog.expense.Expense;
 
@@ -11,13 +10,13 @@ public final class ExpenseFixture {
             1L,
             "EUR",
             10000.0,
-            CULTURE
+            EXPENSE_CATEGORIES.get(1)
     );
 
-    public static final Expense JPY_1000 = new Expense(
+    public static final Expense JPY_10000 = new Expense(
             1L,
             "JPY",
-            1000.0,
-            LODGING
+            10000.0,
+            EXPENSE_CATEGORIES.get(3)
     );
 }

@@ -1,6 +1,6 @@
 package hanglog.trip.dto.response;
 
-import hanglog.category.CategoryResponse;
+import hanglog.category.dto.CategoryResponse;
 import hanglog.expense.Expense;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

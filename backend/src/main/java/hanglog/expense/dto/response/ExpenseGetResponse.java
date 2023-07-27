@@ -1,6 +1,7 @@
 package hanglog.expense.dto.response;
 
-import hanglog.category.Category;
+
+import hanglog.category.domain.Category;
 import hanglog.expense.Currencies;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;

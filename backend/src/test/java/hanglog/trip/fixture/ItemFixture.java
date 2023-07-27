@@ -56,6 +56,6 @@ public final class ItemFixture {
                     "이동",
                     1,
                     TripFixture.LONDON_TRIP),
-            ExpenseFixture.JPY_1000
+            ExpenseFixture.JPY_10000
     );
 }

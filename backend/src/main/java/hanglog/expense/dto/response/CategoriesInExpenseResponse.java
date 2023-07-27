@@ -1,6 +1,7 @@
 package hanglog.expense.dto.response;
 
-import hanglog.category.Category;
+
+import hanglog.category.domain.Category;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
