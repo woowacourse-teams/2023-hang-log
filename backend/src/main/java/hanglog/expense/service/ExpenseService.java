@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExpenseService {
 
+    //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
     private static final Currencies DEFAULT_CURRENCIES = Currencies.ofDefault();
     private final TripRepository tripRepository;
     private final CurrenciesRepository currenciesRepository;
@@ -61,13 +62,13 @@ public class ExpenseService {
     private void calculateAmounts(
             final DayLog dayLog,
             final Currencies currencies,
-            final Map<DayLog, Integer> dayLogIntegerMap,
-            final Map<Category, Integer> categoryIntegerMap
+            final Map<DayLog, Integer> dayLogTotalAmounts,
+            final Map<Category, Integer> categoryTotalAmounts
     ) {
         for (final Item item : dayLog.getItems()) {
             final Expense expense = item.getExpense();
-            add(dayLogIntegerMap, dayLog, changeToKRW(expense, currencies));
-            add(categoryIntegerMap, expense.getCategory(), changeToKRW(expense, currencies));
+            putKeyAndValue(dayLogTotalAmounts, dayLog, changeToKRW(expense, currencies));
+            putKeyAndValue(categoryTotalAmounts, expense.getCategory(), changeToKRW(expense, currencies));
         }
     }
 
@@ -79,7 +80,7 @@ public class ExpenseService {
         return (int) (expense.getAmount() * rate);
     }
 
-    private <T> void add(final Map<T, Integer> map, final T key, final int value) {
+    private <T> void putKeyAndValue(final Map<T, Integer> map, final T key, final int value) {
         if (map.containsKey(key)) {
             map.put(key, map.get(key) + value);
             return;
