@@ -39,12 +39,12 @@ public class ExpenseService {
         final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
         final Map<Category, Integer> categoryTotalAmounts = new HashMap<>();
         final List<TripCity> cities = tripCityRepository.findByTripId(tripId);
+
         for (final DayLog dayLog : trip.getDayLogs()) {
             calculateAmounts(dayLog, currencies, dayLogTotalAmounts, categoryTotalAmounts);
         }
 
-        final int totalAmount = dayLogTotalAmounts.values().stream()
-                .reduce(Integer::sum).orElse(0);
+        final int totalAmount = dayLogTotalAmounts.values().stream().reduce(Integer::sum).orElse(0);
 
         return ExpenseGetResponse.of(
                 trip,

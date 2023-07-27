@@ -1,7 +1,8 @@
 package hanglog.expense;
 
-import hanglog.global.exception.BadRequestException;
-import hanglog.global.exception.ExceptionCode;
+import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY;
+
+import hanglog.global.exception.InvalidDomainException;
 import java.util.Arrays;
 import java.util.function.Function;
 import lombok.Getter;
@@ -28,8 +29,8 @@ public enum Currency {
     }
 
     public static double mappingCurrency(final String currency, final Currencies currencies) {
-        return Arrays.stream(values()).filter(it -> it.is(currency.toLowerCase()))
-                .findAny().orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_RATING))
+        return Arrays.stream(values()).filter(value -> value.is(currency.toLowerCase()))
+                .findAny().orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
                 .getRate.apply(currencies);
     }
 
