@@ -38,7 +38,11 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip newTrip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(), tripCreateRequest.getEndDate());
+        final Trip newTrip = new Trip(
+                getInitTitle(cites),
+                tripCreateRequest.getStartDate(),
+                tripCreateRequest.getEndDate()
+        );
         saveAllTripCities(cites, newTrip);
         saveDayLogs(newTrip);
         final Trip trip = tripRepository.save(newTrip);
@@ -104,7 +108,7 @@ public class TripService {
 
     private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         final List<DayLog> emptyDayLogs = IntStream.range(currentPeriod, requestPeriod)
-                .mapToObj(i -> DayLog.generateEmpty(i + 1, trip))
+                .mapToObj(ordinal -> DayLog.generateEmpty(ordinal + 1, trip))
                 .toList();
         trip.getDayLogs().addAll(emptyDayLogs);
     }
