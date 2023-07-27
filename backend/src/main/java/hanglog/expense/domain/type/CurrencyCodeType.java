@@ -30,9 +30,9 @@ public enum CurrencyCodeType {
         this.getRate = getRate;
     }
 
-    public static double mappingCurrency(final String currency, final Currency currencies) {
+    public static double mappingCurrency(final String currencyCode, final Currency currencies) {
         return Arrays.stream(values())
-                .filter(value -> value.code.equals(currency.toLowerCase()))
+                .filter(value -> value.code.equals(currencyCode.toLowerCase()))
                 .findAny().orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
                 .getRate.apply(currencies);
     }
