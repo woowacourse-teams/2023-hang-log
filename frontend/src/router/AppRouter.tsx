@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: PATH.TRIPS,
+        path: '',
         element: (
           <Suspense fallback={<TripsPageSkeleton />}>
             <TripsPage />
