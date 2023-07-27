@@ -255,8 +255,8 @@ class TripControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "200자 이하의 문자열")),
                                 fieldWithPath("imageUrl")
                                         .type(JsonFieldType.STRING)
-                                        .description("대표 이미지")
-                                        .attributes(field("constraint", "url")),
+                                        .description("여행 대표 이미지")
+                                        .attributes(field("constraint", "이미지 URL")),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -351,8 +351,8 @@ class TripControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "200자 이하의 문자열")),
                                 fieldWithPath("[].imageUrl")
                                         .type(JsonFieldType.STRING)
-                                        .description("대표 이미지")
-                                        .attributes(field("constraint", "url")),
+                                        .description("여행 대표 이미지")
+                                        .attributes(field("constraint", "이미지 URL")),
                                 fieldWithPath("[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
