@@ -12,7 +12,7 @@ export const useAddTripItemMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
     onError: () => {
-      alert(ERROR_MESSAGE);
+      // alert(ERROR_MESSAGE);
     },
   });
 

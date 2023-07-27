@@ -1,6 +1,14 @@
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 import type { TripItemFormData } from '@type/tripItem';
-import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
+import {
+  Button,
+  Flex,
+  ImageUploadInput,
+  Modal,
+  Theme,
+  Toast,
+  useOverlay,
+} from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 import { useTripDates } from '@hooks/trip/useTripDates';
@@ -36,74 +44,83 @@ const TripItemAddModal = ({
   onClose,
 }: TripItemAddModalProps) => {
   const { dates } = useTripDates(tripId);
+  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
       tripId,
       initialDayLogId: dayLogId,
       itemId,
-      onSuccess: onClose,
       initialData,
+      onSuccess: onClose,
+      onError: openErrorToast,
     });
 
   return (
-    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
-      <GoogleMapWrapper>
-        <form css={formStyling} onSubmit={handleSubmit} noValidate>
-          <Flex styles={{ gap: Theme.spacer.spacing4 }}>
-            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-              <CategoryInput
-                itemType={tripItemInformation.itemType}
-                updateInputValue={updateInputValue}
-                disableError={disableTitleError}
-              />
-              <DateInput
-                currentCategory={tripItemInformation.itemType}
-                dayLogId={dayLogId}
-                dates={dates}
-                updateInputValue={updateInputValue}
-              />
-              {tripItemInformation.itemType ? (
-                <PlaceInput
-                  value={tripItemInformation.title}
-                  isError={isTitleError}
-                  isUpdatable={tripItemInformation.isPlaceUpdated !== undefined}
+    <>
+      <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
+        <GoogleMapWrapper>
+          <form css={formStyling} onSubmit={handleSubmit} noValidate>
+            <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+              <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+                <CategoryInput
+                  itemType={tripItemInformation.itemType}
                   updateInputValue={updateInputValue}
                   disableError={disableTitleError}
                 />
-              ) : (
-                <TitleInput
-                  value={tripItemInformation.title}
-                  isError={isTitleError}
+                <DateInput
+                  currentCategory={tripItemInformation.itemType}
+                  dayLogId={dayLogId}
+                  dates={dates}
                   updateInputValue={updateInputValue}
-                  disableError={disableTitleError}
                 />
-              )}
-              <StarRatingInput
-                rating={tripItemInformation.rating}
-                updateInputValue={updateInputValue}
-              />
-              <ExpenseInput
-                initialExpenseValue={tripItemInformation.expense}
-                updateInputValue={updateInputValue}
-              />
+                {tripItemInformation.itemType ? (
+                  <PlaceInput
+                    value={tripItemInformation.title}
+                    isError={isTitleError}
+                    isUpdatable={tripItemInformation.isPlaceUpdated !== undefined}
+                    updateInputValue={updateInputValue}
+                    disableError={disableTitleError}
+                  />
+                ) : (
+                  <TitleInput
+                    value={tripItemInformation.title}
+                    isError={isTitleError}
+                    updateInputValue={updateInputValue}
+                    disableError={disableTitleError}
+                  />
+                )}
+                <StarRatingInput
+                  rating={tripItemInformation.rating}
+                  updateInputValue={updateInputValue}
+                />
+                <ExpenseInput
+                  initialExpenseValue={tripItemInformation.expense}
+                  updateInputValue={updateInputValue}
+                />
+              </Flex>
+              <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+                <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
+                {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
+                <ImageUploadInput
+                  label="이미지 업로드"
+                  imageUrls={tripItemInformation.imageUrls}
+                  imageAltText="여행 일정 업르드 이미지"
+                  supportingText="사진은 최대 5장 올릴 수 있어요."
+                  maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
+                  onRemove={() => {}}
+                />
+              </Flex>
             </Flex>
-            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
-              <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
-              {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
-              <ImageUploadInput
-                label="이미지 업로드"
-                imageUrls={tripItemInformation.imageUrls}
-                imageAltText="여행 일정 업르드 이미지"
-                supportingText="사진은 최대 5장 올릴 수 있어요."
-                maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
-                onRemove={() => {}}
-              />
-            </Flex>
-          </Flex>
-          <Button variant="primary">일정 기록 추가하기</Button>
-        </form>
-      </GoogleMapWrapper>
-    </Modal>
+            <Button variant="primary">일정 기록 추가하기</Button>
+          </form>
+        </GoogleMapWrapper>
+      </Modal>
+      {isErrorTostOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          소제목 변경을 실패했습니다.
+        </Toast>
+      )}
+    </>
   );
 };
 
