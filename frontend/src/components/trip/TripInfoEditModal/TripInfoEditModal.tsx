@@ -1,5 +1,5 @@
 import WarningIcon from '@assets/svg/warning-icon.svg';
-import type { TripData, TripFormData } from '@type/trip';
+import type { TripData } from '@type/trip';
 import {
   Button,
   Flex,
@@ -9,15 +9,16 @@ import {
   SupportingText,
   Textarea,
 } from 'hang-log-design-system';
-import type { ChangeEvent } from 'react';
 
-import { useTripEditForm } from '@hooks/trip/useTripInfoForm';
+import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
 import {
   dateInputSupportingText,
   formStyling,
+  textareaStyling,
+  titleStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
@@ -35,11 +36,6 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateDateInfo,
     handleSubmit,
   } = useTripEditForm(information, onClose);
-
-  const handleChangeValue =
-    (key: keyof TripFormData) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      updateInputValue(key, e.currentTarget.value);
-    };
 
   return (
     <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -65,18 +61,17 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>
             <WarningIcon />
             <SupportingText css={dateInputSupportingText}>
-              방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 <br />
-              삭제됩니다.
+              방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 삭제됩니다.
             </SupportingText>
           </Flex>
         </Flex>
-        <Flex styles={{ direction: 'column', gap: '4px' }}>
+        <Flex css={titleStyling}>
           <Input
+            required
             label="여행 제목"
             value={tripInfo.title}
-            required
             isError={isTitleError}
-            onChange={handleChangeValue('title')}
+            onChange={updateInputValue('title')}
           />
           {isTitleError && (
             <SupportingText isError={isTitleError}>여행 제목을 입력하세요</SupportingText>
@@ -85,7 +80,8 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Textarea
           label="여행 설명"
           value={tripInfo.description ?? ''}
-          onChange={handleChangeValue('description')}
+          onChange={updateInputValue('description')}
+          css={textareaStyling}
         />
         <ImageUploadInput
           label="대표 이미지 업로드"

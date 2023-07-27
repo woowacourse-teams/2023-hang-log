@@ -16,17 +16,17 @@ spring:
 oauth2:
   provider:
     google:
-      client-id: { googleClientId }
-      client-secret: { googleClientSecret }
-      redirect-uri: { googleRedirectUri }
-      token-uri: https://oauth2.googleapis.com/token
-      user-info: https://www.googleapis.com/oauth2/v2/userinfo
+      client-id: ${ GOOGLE_CLIENT_ID }
+      client-secret: ${ GOOGLE_CLIENT_SECRET }
+      redirect-uri: ${ GOOGLE_REDIRECT_URI }
+      token-uri: ${ GOOGLE_TOKEN_URI }
+      user-info: ${ GOOGLE_USER_INFO }
     kakao:
-      client-id: { kakaoClientId }
-      client-secret: { kakaoClientSecret }
-      redirect-uri: { kakaoRedirectUri }
-      token-uri: https://kauth.kakao.com/oauth/token
-      user-info: https://kapi.kakao.com/v2/user/me
+      client-id: ${ KAKAO_CLIENT_ID }
+      client-secret: ${ KAKAO_CLIENT_SECRET }
+      redirect-uri: ${ KAKAO_REDIRECT_URI }
+      token-uri: ${ KAKAO_TOKEN_URI }
+      user-info: ${ KAKAO_USER_INFO }
 
 logging:
   level:

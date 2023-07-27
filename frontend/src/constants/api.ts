@@ -1,6 +1,8 @@
 const PROD = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = PROD ? `${process.env.PROD_BASE_URL}/api` : '/';
+export const BASE_URL = PROD
+  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  : '/';
 
 export const END_POINTS = {
   TRIPS: '/trips',

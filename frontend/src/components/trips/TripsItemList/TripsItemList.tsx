@@ -20,46 +20,48 @@ interface TripsItemListProps {
 
 const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
   return (
-    trips && (
-      <>
-        <Flex styles={{ justify: 'right', paddingRight: '50px' }} css={toggleGroupStyling}>
-          <ToggleGroup>
-            <Toggle
-              text={ORDER_BY_REGISTRATION}
-              toggleId={ORDER_BY_REGISTRATION}
-              selectedId={order}
-              changeSelect={changeSelect}
+    <>
+      <Flex
+        tag="section"
+        styles={{ justify: 'right', paddingRight: '50px' }}
+        css={toggleGroupStyling}
+      >
+        <ToggleGroup>
+          <Toggle
+            text={ORDER_BY_REGISTRATION}
+            toggleId={ORDER_BY_REGISTRATION}
+            selectedId={order}
+            changeSelect={changeSelect}
+          />
+          <Toggle
+            text={ORDER_BY_DATE}
+            toggleId={ORDER_BY_DATE}
+            selectedId={order}
+            changeSelect={changeSelect}
+          />
+        </ToggleGroup>
+      </Flex>
+      <Box tag="ol" css={gridBoxStyling}>
+        {trips.map((trip) => {
+          return (
+            <TripsItem
+              key={trip.id}
+              coverImage={trip.imageUrl}
+              cityTags={trip.cities}
+              itemName={trip.title}
+              duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
+              description={trip.description}
             />
-            <Toggle
-              text={ORDER_BY_DATE}
-              toggleId={ORDER_BY_DATE}
-              selectedId={order}
-              changeSelect={changeSelect}
-            />
-          </ToggleGroup>
-        </Flex>
-        <Box css={gridBoxStyling}>
-          {trips.map((trip) => {
-            return (
-              <TripsItem
-                key={trip.id}
-                coverImage={trip.imageUrl}
-                cityTags={trip.cities}
-                itemName={trip.title}
-                duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
-                description={trip.description}
-              />
-            );
-          })}
-        </Box>
-      </>
-    )
+          );
+        })}
+      </Box>
+    </>
   );
 };
 
 TripsItemList.Empty = () => {
   return (
-    <Box css={emptyBoxStyling}>
+    <Box tag="section" css={emptyBoxStyling}>
       <Heading size="small">아직 기록된 여행이 없습니다!</Heading>
       <Text css={{ padding: '8px 0 16px' }} size="large">
         여행 가방에 쌓인 먼지를 털어내고 여행을 기록해 보세요.

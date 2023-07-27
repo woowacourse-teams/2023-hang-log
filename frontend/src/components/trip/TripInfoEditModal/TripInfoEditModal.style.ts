@@ -14,3 +14,18 @@ export const formStyling = css({
 export const dateInputSupportingText = css({
   wordBreak: 'keep-all',
 });
+
+export const titleStyling = css({
+  flexDirection: 'column',
+  width: '400px',
+  gap: '4px',
+
+  '> div': {
+    width: '100%',
+  },
+});
+
+export const textareaStyling = css({
+  resize: 'none',
+  fontFamily: 'none',
+});

@@ -1,13 +1,24 @@
-import { isEmptyString } from '@/utils/validator';
-import type { TripData, TripFormData } from '@type/trip';
+import type { TripData } from '@type/trip';
 import { useEffect, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
+
+import { isEmptyString } from '@utils/validator';
 
 import { useTripEditMutation } from '@hooks/api/useTripEditMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
-export const useTripEditForm = (information: Omit<TripData, 'dayLogs'>, onClose: () => void) => {
-  const { id: tripId, title, cities, startDate, endDate, description, imageUrl } = information;
+export const useTripEditForm = (
+  {
+    id: tripId,
+    title,
+    cities,
+    startDate,
+    endDate,
+    description,
+    imageUrl,
+  }: Omit<TripData, 'dayLogs'>,
+  onClose: () => void
+) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
     startDate,
@@ -24,11 +35,13 @@ export const useTripEditForm = (information: Omit<TripData, 'dayLogs'>, onClose:
     });
   }, [cityDateInfo]);
 
-  const updateInputValue = <K extends keyof TripFormData>(key: K, value: TripFormData[K]) => {
-    setTripInfo((prevTripInfo) => {
-      return { ...prevTripInfo, [key]: value };
-    });
-  };
+  const updateInputValue =
+    (key: keyof TripData) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = e.currentTarget.value;
+      setTripInfo((prevTripInfo) => {
+        return { ...prevTripInfo, [key]: value };
+      });
+    };
 
   const validateCityInput = () => {
     if (cityDateInfo.cityIds.length > 0) {

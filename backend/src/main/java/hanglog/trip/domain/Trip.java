@@ -1,21 +1,27 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.type.StatusType.USABLE;
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
+
 import hanglog.global.BaseEntity;
 import hanglog.global.type.StatusType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static hanglog.global.type.StatusType.USABLE;
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -41,7 +47,7 @@ public class Trip extends BaseEntity {
     @ColumnDefault("''")
     private String description;
 
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     private List<DayLog> dayLogs = new ArrayList<>();
 
     private Trip(

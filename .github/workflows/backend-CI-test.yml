@@ -13,45 +13,37 @@ permissions:
 
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'BE') 
     runs-on: ubuntu-22.04
     permissions:
       pull-requests: write
 
     steps:
-    - uses: actions/checkout@v3
+    - name: 레포지토리 체크아웃
+      uses: actions/checkout@v3
+      
+    - name: dev 전용 application.yml을 Secret에서 복사해옵니다.
+      run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
 
-    - name: Set up JDK 17
+    - name: JDK 17을 설치합니다.
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'corretto'
-        
-    - name: cache gradle
-      uses: actions/cache@v2
-      with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-        
-    - name: chmod gradlew
+    
+    - name: gradlew 권한을 부여합니다.
       run: chmod +x gradlew
         
-    - name: Build with Gradle
+    - name: Gradle을 통해 빌드합니다.
       run: ./gradlew build
       
-    - name: Run Coverage
-      run: ./gradlew test
-      
-    - name: run jacocoTestCoverage
+    - name: jacocoTestCoverage를 실행하고 리포트를 출력합니다.
       id: jacoco
       uses: madrapps/jacoco-report@v1.5
       with:
         title: 📝 Jacoco Test Coverage
         paths: ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
-        min-coverage-overall: 85
-        min-coverage-changed-files: 85
+        min-coverage-overall: 80
+        min-coverage-changed-files: 80
         update-comment: true

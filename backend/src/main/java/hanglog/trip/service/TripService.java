@@ -38,18 +38,20 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip trip = new Trip(getInitTitle(cites), tripCreateRequest.getStartDate(),
-                tripCreateRequest.getEndDate());
-        final Trip savedTrip = tripRepository.save(trip);
-        saveAllTripCities(cites, savedTrip);
-        saveDayLogs(savedTrip);
-        tripRepository.save(savedTrip);
-        return savedTrip.getId();
+        final Trip newTrip = new Trip(
+                getInitTitle(cites),
+                tripCreateRequest.getStartDate(),
+                tripCreateRequest.getEndDate()
+        );
+        saveAllTripCities(cites, newTrip);
+        saveDayLogs(newTrip);
+        final Trip trip = tripRepository.save(newTrip);
+        return trip.getId();
     }
 
     private void saveDayLogs(final Trip savedTrip) {
-        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate());
-        final List<DayLog> dayLogs = IntStream.range(1, period.getDays() + 1)
+        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate().plusDays(1));
+        final List<DayLog> dayLogs = IntStream.rangeClosed(1, period.getDays() + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
@@ -95,17 +97,25 @@ public class TripService {
         extraDayLog.updateOrdinal(requestPeriod + 1);
 
         if (currentPeriod < requestPeriod) {
-            IntStream.range(currentPeriod, requestPeriod)
-                    .mapToObj(i -> DayLog.generateEmpty(i + 1, trip))
-                    .forEach(trip.getDayLogs()::add);
+            addEmptyDayLogs(trip, currentPeriod, requestPeriod);
         }
 
         if (currentPeriod > requestPeriod) {
-            trip.getDayLogs().removeIf(dayLog ->
-                    dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod
-            );
+            removeRemainingDayLogs(trip, currentPeriod, requestPeriod);
         }
         trip.getDayLogs().add(extraDayLog);
+    }
+
+    private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
+        final List<DayLog> emptyDayLogs = IntStream.range(currentPeriod, requestPeriod)
+                .mapToObj(ordinal -> DayLog.generateEmpty(ordinal + 1, trip))
+                .toList();
+        trip.getDayLogs().addAll(emptyDayLogs);
+    }
+
+    private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
+        trip.getDayLogs()
+                .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod + 1);
     }
 
     public void delete(final Long tripId) {

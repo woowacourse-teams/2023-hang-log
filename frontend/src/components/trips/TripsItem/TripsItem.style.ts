@@ -21,9 +21,11 @@ export const imageStyling = css({
 
   width: '100%',
   height: '100%',
-  minHeight: '176px',
-  maxHeight: '176px',
+  minHeight: `calc(((100vw - 196px) / 24) * 3)`,
+  maxHeight: `calc(((100vw - 196px) / 24) * 3)`,
   borderRadius: Theme.borderRadius.medium,
+
+  backgroundColor: Theme.color.gray200,
 });
 
 export const nameStyling = css({
