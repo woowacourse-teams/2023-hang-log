@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class CategoriesInExpenseResponse {
 
     private final CategoryInExpenseResponse category;
@@ -23,12 +25,12 @@ public class CategoriesInExpenseResponse {
                     .toList();
         }
         return categories.entrySet().stream()
-                .map(entry -> getResponse(entry.getValue() / totalAmount, entry))
+                .map(entry -> getResponse((double) entry.getValue() / totalAmount, entry))
                 .toList();
     }
 
     private static CategoriesInExpenseResponse getResponse(
-            final int amount,
+            final double amount,
             final Entry<Category, Integer> entry
     ) {
         return new CategoriesInExpenseResponse(

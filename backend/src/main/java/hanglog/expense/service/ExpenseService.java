@@ -7,7 +7,6 @@ import hanglog.expense.Currencies;
 import hanglog.expense.Currency;
 import hanglog.expense.Expense;
 import hanglog.expense.dto.response.ExpenseGetResponse;
-import hanglog.expense.dto.response.RatesInExpenseResponse;
 import hanglog.expense.repository.CurrenciesRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
@@ -32,11 +31,14 @@ public class ExpenseService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currencies currencies = currenciesRepository.findCurrenciesBySearchDate(trip.getStartDate())
                 .orElse(DEFAULT_CURRENCIES);
+
         final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
         final Map<Category, Integer> categoryTotalAmounts = new HashMap<>();
+
         for (final DayLog dayLog : trip.getDayLogs()) {
             calculateAmounts(dayLog, currencies, dayLogTotalAmounts, categoryTotalAmounts);
         }
+
         final int totalAmount = dayLogTotalAmounts.values().stream()
                 .reduce(Integer::sum).orElse(0);
 
@@ -44,7 +46,7 @@ public class ExpenseService {
                 trip,
                 totalAmount,
                 categoryTotalAmounts,
-                RatesInExpenseResponse.of(currencies),
+                currencies,
                 dayLogTotalAmounts
         );
     }

@@ -1,14 +1,23 @@
 package hanglog.trip.fixture;
 
-import hanglog.category.Category;
+import static hanglog.category.fixture.CategoryFixture.CULTURE;
+import static hanglog.category.fixture.CategoryFixture.LODGING;
+
 import hanglog.expense.Expense;
 
 public final class ExpenseFixture {
 
     public static final Expense EURO_10000 = new Expense(
             1L,
-            "EURO",
+            "EUR",
             10000.0,
-            new Category(1L, "문화", "culture")
+            CULTURE
+    );
+
+    public static final Expense JPY_1000 = new Expense(
+            1L,
+            "JPY",
+            1000.0,
+            LODGING
     );
 }

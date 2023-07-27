@@ -13,7 +13,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 import hanglog.expense.dto.response.ExpenseGetResponse;
-import hanglog.expense.dto.response.RatesInExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.restdocs.RestDocsTest;
@@ -33,18 +32,20 @@ class ExpenseControllerTest extends RestDocsTest {
     @MockBean
     private ExpenseService expenseService;
 
-    @DisplayName("")
+    @DisplayName("모든 경비를 가져온다.")
     @Test
     void getExpenses() throws Exception {
+        // given
         final DayLog LONDON = new DayLog(1L, "런던추워", 1, LONDON_TRIP, List.of(LONDON_EYE_ITEM, TAXI_ITEM));
         final ExpenseGetResponse expenseGetResponse = ExpenseGetResponse.of(
                 LONDON_TRIP,
                 10000,
                 Map.of(CULTURE, 1000),
-                RatesInExpenseResponse.of(DEFAULT_CURRENCIES),
+                DEFAULT_CURRENCIES,
                 Map.of(LONDON, 1000)
         );
 
+        // when & then
         when(expenseService.getAllExpenses(1L)).thenReturn(expenseGetResponse);
 
         mockMvc.perform(get("/trips/{tripId}/expense", 1).contentType(APPLICATION_JSON))

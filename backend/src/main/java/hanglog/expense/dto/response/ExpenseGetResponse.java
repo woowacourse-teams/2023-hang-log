@@ -1,6 +1,7 @@
 package hanglog.expense.dto.response;
 
 import hanglog.category.Category;
+import hanglog.expense.Currencies;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
@@ -8,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @RequiredArgsConstructor
-@ToString
 public class ExpenseGetResponse {
 
     private final Long id;
@@ -28,7 +27,7 @@ public class ExpenseGetResponse {
             final Trip trip,
             final int totalAmount,
             final Map<Category, Integer> categories,
-            final RatesInExpenseResponse rates,
+            final Currencies currencies,
             final Map<DayLog, Integer> dayLogs
     ) {
         return new ExpenseGetResponse(
@@ -38,7 +37,7 @@ public class ExpenseGetResponse {
                 trip.getEndDate(),
                 totalAmount,
                 CategoriesInExpenseResponse.of(categories),
-                rates,
+                RatesInExpenseResponse.of(currencies),
                 DayLogInExpenseResponse.of(dayLogs)
         );
     }
