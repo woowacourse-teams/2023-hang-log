@@ -95,6 +95,7 @@ public class TripService {
         final Trip updatedTrip = new Trip(
                 trip.getId(),
                 trip.getTitle(),
+                updateRequest.getImageUrl(),
                 updateRequest.getStartDate(),
                 updateRequest.getEndDate(),
                 updateRequest.getDescription(),

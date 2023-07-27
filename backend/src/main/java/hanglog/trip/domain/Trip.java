@@ -38,6 +38,9 @@ public class Trip extends BaseEntity {
     private String title;
 
     @Column(nullable = false)
+    @ColumnDefault("https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0")
+    private String imageUrl;
+    @Column(nullable = false)
     private LocalDate startDate;
 
     @Column(nullable = false)
@@ -46,10 +49,6 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     @ColumnDefault("''")
     private String description;
-
-    @Column(nullable = false)
-    @ColumnDefault("https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0")
-    private String imageUrl;
 
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     private List<DayLog> dayLogs = new ArrayList<>();
@@ -83,6 +82,7 @@ public class Trip extends BaseEntity {
     public Trip(
             final Long id,
             final String title,
+            final String imageUrl,
             final LocalDate startDate,
             final LocalDate endDate,
             final String description,
@@ -91,6 +91,7 @@ public class Trip extends BaseEntity {
         super(USABLE);
         this.id = id;
         this.title = title;
+        this.imageUrl = imageUrl;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;

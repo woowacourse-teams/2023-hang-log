@@ -394,6 +394,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -416,6 +417,10 @@ class TripControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 제목")
                                                 .attributes(field("constraint", "50자 이하의 문자열")),
+                                        fieldWithPath("imageUrl")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 이미지")
+                                                .attributes(field("constraint", "이미지 URL")),
                                         fieldWithPath("startDate")
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 시작 날짜")
@@ -447,6 +452,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -471,6 +477,7 @@ class TripControllerTest extends RestDocsTest {
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -495,6 +502,7 @@ class TripControllerTest extends RestDocsTest {
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "updatedTite",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 updateDescription,
@@ -517,6 +525,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 null,
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -539,6 +548,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 null,
                 "추가된 여행 설명",
@@ -561,6 +571,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -583,6 +594,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
