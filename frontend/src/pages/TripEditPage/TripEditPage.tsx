@@ -1,5 +1,3 @@
-import GoogleMapWrapper from '@/components/common/GoogleMapWrapper/GoogleMapWrapper';
-import TripMap from '@/components/common/TripMap/TripMap';
 import { FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +11,9 @@ import {
 } from '@pages/TripEditPage/TripEditPage.style';
 
 import DayLogList from '@components/common/DayLogList/DayLogList';
+import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import TripInformation from '@components/common/TripInformation/TripInformation';
+import TripMap from '@components/common/TripMap/TripMap';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 const TripEditPage = () => {
@@ -58,7 +58,6 @@ const TripEditPage = () => {
       </section>
       <section css={mapContainerStyling}>
         <GoogleMapWrapper>
-          {/* map 좌표를 뽑아서 넘겨줘야 함 -> 좌표 중에서 place lat lng */}
           <TripMap places={places} />
         </GoogleMapWrapper>
       </section>
