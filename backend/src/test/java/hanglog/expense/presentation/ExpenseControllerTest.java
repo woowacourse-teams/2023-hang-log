@@ -13,6 +13,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 import hanglog.category.dto.CategoryResponse;
 import hanglog.expense.dto.response.CategoryExpenseResponse;
@@ -59,6 +61,10 @@ class ExpenseControllerTest extends RestDocsTest {
         mockMvc.perform(get("/trips/{tripId}/expense", 1).contentType(APPLICATION_JSON))
                 .andDo(
                         restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
                                 responseFields(
                                         fieldWithPath("id")
                                                 .type(JsonFieldType.NUMBER)
