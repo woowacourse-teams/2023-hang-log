@@ -3,13 +3,12 @@ package hanglog.expense.service;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
-import hanglog.category.dto.CategoryResponse;
+import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.Currency;
+import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.type.CurrencyCodeType;
-import hanglog.expense.dto.response.CategoryExpenseResponse;
-import hanglog.expense.dto.response.DayLogExpenseResponse;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
@@ -18,8 +17,6 @@ import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ExpenseService {
-
-    private static final int PERCENTAGE_CONSTANT = 100;
 
     //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
     private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
@@ -57,34 +52,23 @@ public class ExpenseService {
         final int totalAmount = dayLogTotalAmounts.values().stream()
                 .reduce(Integer::sum)
                 .orElse(0);
-        final List<CategoryExpenseResponse> categoryExpenseResponses = categoryTotalAmounts.entrySet().stream()
-                .map(entry -> new CategoryExpenseResponse(
-                                CategoryResponse.of(entry.getKey()),
-                                entry.getValue(),
-                                getCategoryAmountPercentage(totalAmount, entry.getValue())
-                        )
-                )
+
+        final List<CategoryExpense> categoryExpenses = categoryTotalAmounts.entrySet().stream()
+                .map(entry -> new CategoryExpense(entry.getKey(), entry.getValue(), totalAmount))
                 .toList();
-        final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogTotalAmounts.entrySet().stream()
-                .map(entry -> DayLogExpenseResponse.of(entry.getKey(), entry.getValue()))
+
+        final List<DayLogExpense> dayLogExpenses = dayLogTotalAmounts.entrySet().stream()
+                .map(entry -> new DayLogExpense(entry.getKey(), entry.getValue()))
                 .toList();
 
         return TripExpenseResponse.of(
                 trip,
                 totalAmount,
                 cities,
-                categoryExpenseResponses,
+                categoryExpenses,
                 currency,
-                dayLogExpenseResponses
+                dayLogExpenses
         );
-    }
-
-    private BigDecimal getCategoryAmountPercentage(final int totalAmount, final int categoryAmount) {
-        if (totalAmount == 0) {
-            return BigDecimal.ZERO;
-        }
-        return BigDecimal.valueOf((double) PERCENTAGE_CONSTANT * categoryAmount / totalAmount)
-                .setScale(2, RoundingMode.CEILING);
     }
 
     private void calculateAmounts(

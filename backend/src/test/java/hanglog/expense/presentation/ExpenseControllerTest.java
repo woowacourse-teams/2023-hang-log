@@ -4,8 +4,8 @@ import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCY;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
-import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
-import static hanglog.trip.fixture.ItemFixture.TAXI_ITEM;
+import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
+import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.Mockito.when;
@@ -16,15 +16,12 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
-import hanglog.category.dto.CategoryResponse;
-import hanglog.expense.dto.response.CategoryExpenseResponse;
-import hanglog.expense.dto.response.DayLogExpenseResponse;
+import hanglog.expense.domain.CategoryExpense;
+import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
-import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.restdocs.RestDocsTest;
-import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,15 +41,12 @@ class ExpenseControllerTest extends RestDocsTest {
     @Test
     void getExpenses() throws Exception {
         // given
-        final DayLog LONDON_DAY = new DayLog(1L, "런던추워", 1, LONDON_TRIP, List.of(LONDON_EYE_ITEM, TAXI_ITEM));
-        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
-                LONDON_TRIP,
-                10000,
+        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(LONDON_TO_JAPAN,
+                20000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                List.of(new CategoryExpenseResponse(CategoryResponse.of(EXPENSE_CATEGORIES.get(1)), 1000,
-                        BigDecimal.ZERO)),
+                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), 20000, 20000)),
                 DEFAULT_CURRENCY,
-                List.of(DayLogExpenseResponse.of(LONDON_DAY, 1000))
+                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, 20000))
         );
 
         // when & then

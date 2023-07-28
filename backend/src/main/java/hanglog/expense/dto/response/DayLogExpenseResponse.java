@@ -1,14 +1,13 @@
 package hanglog.expense.dto.response;
 
+import hanglog.expense.domain.DayLogExpense;
 import hanglog.trip.domain.DayLog;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
 @RequiredArgsConstructor
 public class DayLogExpenseResponse {
 
@@ -20,16 +19,16 @@ public class DayLogExpenseResponse {
     private final int totalAmount;
     private final List<ItemDetailResponse> items;
 
-    public static DayLogExpenseResponse of(final DayLog dayLog, final int totalAmount) {
-        final List<ItemDetailResponse> itemResponses = dayLog.getItems().stream()
+    public static DayLogExpenseResponse of(final DayLogExpense dayLogExpense) {
+        final List<ItemDetailResponse> itemResponses = dayLogExpense.getDayLog().getItems().stream()
                 .map(ItemDetailResponse::of)
                 .toList();
 
         return new DayLogExpenseResponse(
-                dayLog.getId(),
-                dayLog.getOrdinal(),
-                calculateDate(dayLog),
-                totalAmount,
+                dayLogExpense.getDayLog().getId(),
+                dayLogExpense.getDayLog().getOrdinal(),
+                calculateDate(dayLogExpense.getDayLog()),
+                dayLogExpense.getAmount(),
                 itemResponses
         );
     }

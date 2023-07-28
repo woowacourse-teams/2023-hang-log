@@ -20,6 +20,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import hanglog.category.dto.CategoryResponse;
+import hanglog.expense.domain.CategoryExpense;
+import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.dto.response.CategoryExpenseResponse;
 import hanglog.expense.dto.response.DayLogExpenseResponse;
@@ -74,6 +76,7 @@ class ExpenseServiceTest {
                 ItemDetailResponse.of(JAPAN_HOTEL),
                 ItemDetailResponse.of(AIRPLANE_ITEM)
         );
+
         final int japanAmount = (int) (JPY_10000.getAmount() * DEFAULT_CURRENCY.getUnitRateOfJpy());
         final int londonAmount = (int) (EURO_10000.getAmount() * DEFAULT_CURRENCY.getEur());
         final int totalAmount = japanAmount + londonAmount * 2;
@@ -90,21 +93,21 @@ class ExpenseServiceTest {
                                     totalAmount,
                                     List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                                     List.of(
-                                            new CategoryExpenseResponse(
-                                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(3)),
-                                                    japanAmount,
-                                                    BigDecimal.valueOf((double) 100 * japanAmount / totalAmount)
-                                                            .setScale(2, RoundingMode.CEILING)),
-                                            new CategoryExpenseResponse(
-                                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(1)),
+                                            new CategoryExpense(
+                                                    EXPENSE_CATEGORIES.get(1),
                                                     londonAmount * 2,
-                                                    BigDecimal.valueOf((double) 100 * londonAmount * 2 / totalAmount)
-                                                            .setScale(2, RoundingMode.CEILING))
+                                                    totalAmount
+                                            ),
+                                            new CategoryExpense(
+                                                    EXPENSE_CATEGORIES.get(1),
+                                                    londonAmount * 2,
+                                                    totalAmount
+                                            )
                                     ),
                                     DEFAULT_CURRENCY,
                                     List.of(
-                                            DayLogExpenseResponse.of(EXPENSE_JAPAN_DAYLOG, japanAmount),
-                                            DayLogExpenseResponse.of(EXPENSE_LONDON_DAYLOG, londonAmount * 2)
+                                            new DayLogExpense(EXPENSE_JAPAN_DAYLOG, japanAmount),
+                                            new DayLogExpense(EXPENSE_LONDON_DAYLOG, londonAmount * 2)
                                     )
                             )
                     );
