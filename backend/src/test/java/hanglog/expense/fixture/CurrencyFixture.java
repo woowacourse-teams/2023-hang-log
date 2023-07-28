@@ -3,7 +3,7 @@ package hanglog.expense.fixture;
 import hanglog.expense.domain.Currency;
 import java.time.LocalDate;
 
-public class CurrenciesFixture {
+public class CurrencyFixture {
 
     public static final Currency DEFAULT_CURRENCY = new Currency(
             1L,
