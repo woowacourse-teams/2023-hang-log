@@ -1,6 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.ALREADY_DELETED_TRIP_ITEM;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
@@ -10,7 +9,6 @@ import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
 import hanglog.expense.Expense;
 import hanglog.global.exception.BadRequestException;
-import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -50,16 +48,16 @@ public class ItemService {
                 getNewItemOrdinal(tripId),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                getPlaceByItemRequest(itemRequest.getPlace()),
+                makePlace(itemRequest.getPlace()),
                 dayLog,
-                getExpenseByItemRequest(itemRequest.getExpense()),
-                getImagesByItemRequest(itemRequest)
+                makeExpense(itemRequest.getExpense()),
+                makeImages(itemRequest)
         );
         validateAlreadyDeleted(item);
         return itemRepository.save(item).getId();
     }
 
-    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
+    private List<Image> makeImages(final ItemRequest itemRequest) {
         return itemRequest.getImageUrls().stream()
                 .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
                         .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
@@ -76,7 +74,7 @@ public class ItemService {
 
         Place updatedPlace = item.getPlace();
         if (itemUpdateRequest.getIsPlaceUpdated()) {
-            updatedPlace = getPlaceByItemRequest(itemUpdateRequest.getPlace());
+            updatedPlace = makePlace(itemUpdateRequest.getPlace());
         }
 
         final Item updatedItem = new Item(
@@ -94,7 +92,7 @@ public class ItemService {
         itemRepository.save(updatedItem);
     }
 
-    private Place getPlaceByItemRequest(final PlaceRequest placeRequest) {
+    private Place makePlace(final PlaceRequest placeRequest) {
         if (placeRequest == null) {
             return null;
         }
@@ -113,7 +111,7 @@ public class ItemService {
         );
     }
 
-    private Expense getExpenseByItemRequest(final ExpenseRequest expenseRequest) {
+    private Expense makeExpense(final ExpenseRequest expenseRequest) {
         if (expenseRequest == null) {
             return null;
         }
