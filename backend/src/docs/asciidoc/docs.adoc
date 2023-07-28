@@ -186,6 +186,7 @@ include::{snippets}/category-controller-test/get-expense-categories/response-fie
 
 ==== 요청
 include::{snippets}/Expense-controller-test/get-expenses/http-request.adoc[]
+include::{snippets}/Expense-controller-test/get-expenses/path-parameters.adoc[]
 
 ==== 응답
 include::{snippets}/Expense-controller-test/get-expenses/http-response.adoc[]
