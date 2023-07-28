@@ -8,7 +8,7 @@ import hanglog.expense.domain.Currency;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.CurrencyRepository;
-import hanglog.expense.domain.type.CurrencyCodeType;
+import hanglog.expense.domain.type.CurrencyType;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
@@ -31,7 +31,7 @@ public class ExpenseService {
 
     //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
     private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
-    
+
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
@@ -93,7 +93,7 @@ public class ExpenseService {
         if (expense == null) {
             return 0;
         }
-        final double rate = CurrencyCodeType.mappingCurrency(expense.getCurrency(), currency);
+        final double rate = CurrencyType.mappingCurrency(expense.getCurrency(), currency);
         return (int) (expense.getAmount() * rate);
     }
 }

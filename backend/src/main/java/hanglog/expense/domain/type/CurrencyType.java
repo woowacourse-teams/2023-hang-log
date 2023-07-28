@@ -9,7 +9,7 @@ import java.util.function.Function;
 import lombok.Getter;
 
 @Getter
-public enum CurrencyCodeType {
+public enum CurrencyType {
 
     USD("usd", Currency::getUsd),
     EUR("eur", Currency::getEur),
@@ -25,7 +25,7 @@ public enum CurrencyCodeType {
     private final String code;
     private final Function<Currency, Double> getRate;
 
-    CurrencyCodeType(final String code, final Function<Currency, Double> getRate) {
+    CurrencyType(final String code, final Function<Currency, Double> getRate) {
         this.code = code;
         this.getRate = getRate;
     }
