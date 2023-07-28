@@ -36,36 +36,40 @@ public class ExpenseService {
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
 
+    private static Integer calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
+        return dayLogAmounts.values().stream()
+                .reduce(Integer::sum)
+                .orElse(0);
+    }
+
     public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findByDate(trip.getStartDate())
                 .orElse(DEFAULT_CURRENCY);
 
-        final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
-        final Map<Category, Integer> categoryTotalAmounts = new HashMap<>();
-        final List<TripCity> cities = tripCityRepository.findByTripId(tripId);
+        final Map<DayLog, Integer> dayLogAmounts = new HashMap<>();
+        final Map<Category, Integer> categoryAmounts = new HashMap<>();
+        final List<TripCity> tripCities = tripCityRepository.findByTripId(tripId);
 
         for (final DayLog dayLog : trip.getDayLogs()) {
-            calculateAmounts(dayLog, currency, dayLogTotalAmounts, categoryTotalAmounts);
+            calculateAmounts(dayLog, currency, dayLogAmounts, categoryAmounts);
         }
 
-        final int totalAmount = dayLogTotalAmounts.values().stream()
-                .reduce(Integer::sum)
-                .orElse(0);
+        final int totalAmount = calculateTotalAmount(dayLogAmounts);
 
-        final List<CategoryExpense> categoryExpenses = categoryTotalAmounts.entrySet().stream()
+        final List<CategoryExpense> categoryExpenses = categoryAmounts.entrySet().stream()
                 .map(entry -> new CategoryExpense(entry.getKey(), entry.getValue(), totalAmount))
                 .toList();
 
-        final List<DayLogExpense> dayLogExpenses = dayLogTotalAmounts.entrySet().stream()
+        final List<DayLogExpense> dayLogExpenses = dayLogAmounts.entrySet().stream()
                 .map(entry -> new DayLogExpense(entry.getKey(), entry.getValue()))
                 .toList();
 
         return TripExpenseResponse.of(
                 trip,
                 totalAmount,
-                cities,
+                tripCities,
                 categoryExpenses,
                 currency,
                 dayLogExpenses
@@ -75,17 +79,17 @@ public class ExpenseService {
     private void calculateAmounts(
             final DayLog dayLog,
             final Currency currency,
-            final Map<DayLog, Integer> dayLogTotalAmounts,
-            final Map<Category, Integer> categoryTotalAmounts
+            final Map<DayLog, Integer> dayLogAmounts,
+            final Map<Category, Integer> categoryAmounts
     ) {
         for (final Item item : dayLog.getItems()) {
             final Expense expense = item.getExpense();
 
-            final int dayLogTotalAmount = dayLogTotalAmounts.getOrDefault(dayLog, 0);
-            dayLogTotalAmounts.put(dayLog, dayLogTotalAmount + changeToKRW(expense, currency));
+            final int dayLogAmount = dayLogAmounts.getOrDefault(dayLog, 0);
+            dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense, currency));
 
-            final int categoryTotalAmount = categoryTotalAmounts.getOrDefault(expense.getCategory(), 0);
-            categoryTotalAmounts.put(expense.getCategory(), categoryTotalAmount + changeToKRW(expense, currency));
+            final int categoryAmount = categoryAmounts.getOrDefault(expense.getCategory(), 0);
+            categoryAmounts.put(expense.getCategory(), categoryAmount + changeToKRW(expense, currency));
         }
     }
 
