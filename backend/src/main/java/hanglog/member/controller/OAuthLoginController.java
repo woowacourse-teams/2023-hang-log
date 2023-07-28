@@ -2,7 +2,7 @@ package hanglog.member.controller;
 
 import hanglog.member.provider.Provider;
 import hanglog.member.service.OAuthLoginService;
-import hanglog.member.service.dto.UserInfoDto;
+import hanglog.member.dto.UserInfoDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

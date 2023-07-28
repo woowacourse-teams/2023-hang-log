@@ -1,8 +1,8 @@
 package hanglog.member.provider;
 
 
-import hanglog.member.service.dto.GoogleUserInfoResponseDto;
-import hanglog.member.service.dto.KakaoUserInfoResponseDto;
+import hanglog.member.dto.GoogleUserInfoResponseDto;
+import hanglog.member.dto.KakaoUserInfoResponseDto;
 import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
 import lombok.Getter;

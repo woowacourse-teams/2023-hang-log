@@ -1,6 +1,6 @@
-package hanglog.member;
+package hanglog.member.domain;
 
-import static hanglog.member.MemberState.ACTIVE;
+import static hanglog.member.domain.MemberState.ACTIVE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 

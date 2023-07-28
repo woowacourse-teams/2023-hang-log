@@ -1,11 +1,11 @@
 package hanglog.member.service;
 
-import hanglog.member.Member;
+import hanglog.member.domain.Member;
 import hanglog.member.provider.Provider;
 import hanglog.member.provider.ProviderProperties;
-import hanglog.member.repository.MemberRepository;
-import hanglog.member.service.dto.AccessTokenResponseDto;
-import hanglog.member.service.dto.UserInfoDto;
+import hanglog.member.domain.repository.MemberRepository;
+import hanglog.member.dto.AccessTokenResponseDto;
+import hanglog.member.dto.UserInfoDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
