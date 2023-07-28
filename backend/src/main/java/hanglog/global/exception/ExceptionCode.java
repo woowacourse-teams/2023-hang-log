@@ -24,7 +24,13 @@ public enum ExceptionCode {
 
     INVALID_RATING(3001, "별점은 N.0점이거나 N.5점 형태이어야 합니다."),
 
-    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다.");
+    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
+
+    IMAGE_SIZE_EXCEED(5001, "업로드 가능한 이미지 용량을 초과했습니다."),
+    IMAGE_NULL(5002, "업로드한 이미지 파일이 NULL입니다."),
+    IMAGE_LIST_EMPTY(5003, "최소 한 장 이상의 이미지를 업로드해야합니다."),
+    IMAGE_LIST_SIZE_EXCEED(5004, "업로드 가능한 이미지 개수를 초과했습니다."),
+    IMAGE_PATH_INVALID(5100, "이미지를 저장할 경로가 올바르지 않습니다.");
 
     private final int code;
     private final String message;
