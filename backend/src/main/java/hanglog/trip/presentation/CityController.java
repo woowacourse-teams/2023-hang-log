@@ -1,6 +1,6 @@
 package hanglog.trip.presentation;
 
-import hanglog.trip.dto.response.CityResponse;
+import hanglog.city.dto.response.CityResponse;
 import hanglog.trip.service.CityService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

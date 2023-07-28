@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.dto.response.CityResponse;
+import hanglog.city.dto.response.CityResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.CityService;
 import java.util.List;
@@ -39,7 +39,8 @@ class CityControllerTest extends RestDocsTest {
     @Test
     void getCities() throws Exception {
         // given
-        when(cityService.getAllCities()).thenReturn(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
+        when(cityService.getAllCities()).thenReturn(
+                List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON)));
 
         // when
         final ResultActions resultActions = mockMvc.perform(get("/cities")
@@ -57,6 +58,6 @@ class CityControllerTest extends RestDocsTest {
         );
 
         assertThat(cityResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
+                .isEqualTo(List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON)));
     }
 }
