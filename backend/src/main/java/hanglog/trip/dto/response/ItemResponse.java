@@ -52,7 +52,7 @@ public class ItemResponse {
 
     private static List<String> getImageUrls(final List<Image> images) {
         return images.stream()
-                .map(Image::getImageUrl)
+                .map(Image::getImageName)
                 .toList();
     }
 }

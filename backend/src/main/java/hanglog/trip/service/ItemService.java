@@ -60,7 +60,7 @@ public class ItemService {
 
     private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
         return itemRequest.getImageUrls().stream()
-                .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
+                .map(imageName -> imageRepository.findByImageName(imageName)
                         .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
                 )
                 .toList();

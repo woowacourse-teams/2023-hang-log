@@ -78,8 +78,8 @@ public class ItemServiceTest {
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-        given(imageRepository.findByImageUrl(any()))
-                .willReturn(Optional.of(new Image("imageUrl")));
+        given(imageRepository.findByImageName(any()))
+                .willReturn(Optional.of(new Image("imageName")));
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);

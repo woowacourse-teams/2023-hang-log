@@ -25,18 +25,18 @@ public class Image extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String imageUrl;
+    private String imageName;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public Image(final String imageUrl, final Item item) {
-        this.imageUrl = imageUrl;
+    public Image(final String imageName, final Item item) {
+        this.imageName = imageName;
         this.item = item;
     }
 
-    public Image(final String imageUrl) {
-        this(imageUrl, null);
+    public Image(final String imageName) {
+        this(imageName, null);
     }
 }
