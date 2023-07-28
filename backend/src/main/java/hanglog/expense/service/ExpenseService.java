@@ -56,8 +56,12 @@ public class ExpenseService {
         final int totalAmount = dayLogTotalAmounts.values().stream()
                 .reduce(Integer::sum)
                 .orElse(0);
-        final List<CategoryExpenseResponse> categoryExpenseResponses = getCategoryExpenseResponses(totalAmount,
-                categoryTotalAmounts);
+        final List<CategoryExpenseResponse> categoryExpenseResponses = categoryTotalAmounts.entrySet().stream()
+                .map(entry -> new CategoryExpenseResponse(
+                        CategoryResponse.of(entry.getKey()),
+                        entry.getValue(),
+                        getCategoryAmountPercentage(totalAmount, entry.getValue())
+                )).toList();
         final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogTotalAmounts.entrySet().stream()
                 .map(entry -> DayLogExpenseResponse.of(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
@@ -72,26 +76,12 @@ public class ExpenseService {
         );
     }
 
-    private List<CategoryExpenseResponse> getCategoryExpenseResponses(
-            final int totalAmount,
-            final Map<Category, Integer> categoryTotalAmounts
-    ) {
+    private BigDecimal getCategoryAmountPercentage(final int totalAmount, final int categoryAmount) {
         if (totalAmount == 0) {
-            return categoryTotalAmounts.entrySet().stream()
-                    .map(entry -> new CategoryExpenseResponse(
-                            CategoryResponse.of(entry.getKey()),
-                            entry.getValue(),
-                            BigDecimal.ZERO
-                    )).toList();
+            return BigDecimal.ZERO;
         }
-
-        return categoryTotalAmounts.entrySet().stream()
-                .map(entry -> new CategoryExpenseResponse(
-                        CategoryResponse.of(entry.getKey()),
-                        entry.getValue(),
-                        BigDecimal.valueOf((double) 100 * entry.getValue() / totalAmount)
-                                .setScale(2, RoundingMode.CEILING)
-                )).toList();
+        return BigDecimal.valueOf((double) 100 * categoryAmount / totalAmount)
+                .setScale(2, RoundingMode.CEILING);
     }
 
     private void calculateAmounts(
