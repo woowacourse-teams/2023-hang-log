@@ -2,7 +2,7 @@ package hanglog.member.controller;
 
 import hanglog.member.provider.Provider;
 import hanglog.member.service.OAuthLoginService;
-import hanglog.member.dto.UserInfoDto;
+import hanglog.member.dto.UserInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ public class OAuthLoginController {
     public void googleLoginOAuth(@RequestParam final String code, @PathVariable final String oAuthProvider) {
         final Provider provider = Provider.mappingProvider(oAuthProvider);
         final String accessCode = oAuthLoginService.getAccessToken(code, provider.getProperties());
-        final UserInfoDto userInfo = oAuthLoginService.getUserInfo(accessCode, provider);
+        final UserInfo userInfo = oAuthLoginService.getUserInfo(accessCode, provider);
         oAuthLoginService.socialLogin(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
     }
 }

@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class KakaoUserInfoResponseDto implements UserInfoDto {
+public class GoogleUserInfoResponse implements UserInfo {
 
     @JsonProperty("id")
     private String id;
-    @JsonProperty("properties")
-    private Properties properties;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("picture")
+    private String picture;
 
     @Override
     public String getId() {
@@ -20,20 +22,11 @@ public class KakaoUserInfoResponseDto implements UserInfoDto {
 
     @Override
     public String getNickname() {
-        return properties.name;
+        return name;
     }
 
     @Override
     public String getImageUrl() {
-        return properties.image;
-    }
-
-    @NoArgsConstructor(access = PRIVATE)
-    private static class Properties {
-
-        @JsonProperty("nickname")
-        private String name;
-        @JsonProperty("profile_image")
-        private String image;
+        return picture;
     }
 }

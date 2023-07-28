@@ -4,8 +4,8 @@ import hanglog.member.domain.Member;
 import hanglog.member.provider.Provider;
 import hanglog.member.provider.ProviderProperties;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.AccessTokenResponseDto;
-import hanglog.member.dto.UserInfoDto;
+import hanglog.member.dto.AccessTokenResponse;
+import hanglog.member.dto.UserInfo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,21 +29,21 @@ public class OAuthLoginService {
 
     public String getAccessToken(final String code, final ProviderProperties properties) {
         System.out.println(properties.getTokenUri());
-        final ResponseEntity<AccessTokenResponseDto> accessTokenResponse = restTemplate.exchange(
+        final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
                 properties.getTokenUri(),
                 HttpMethod.POST,
                 getEntity(code, properties),
-                AccessTokenResponseDto.class
+                AccessTokenResponse.class
         );
         // TODO : token get 실패시 에러처리
         return accessTokenResponse.getBody().getAccessToken();
     }
 
-    public UserInfoDto getUserInfo(final String accessToken, final Provider provider) {
+    public UserInfo getUserInfo(final String accessToken, final Provider provider) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         final HttpEntity entity = new HttpEntity(headers);
-        return (UserInfoDto) restTemplate.exchange(
+        return (UserInfo) restTemplate.exchange(
                 provider.getProperties().getUserUri(),
                 HttpMethod.GET,
                 entity,

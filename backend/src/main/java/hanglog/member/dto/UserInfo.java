@@ -1,6 +1,6 @@
 package hanglog.member.dto;
 
-public interface UserInfoDto {
+public interface UserInfo {
     String getId();
 
     String getNickname();

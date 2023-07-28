@@ -1,8 +1,8 @@
 package hanglog.member.provider;
 
 
-import hanglog.member.dto.GoogleUserInfoResponseDto;
-import hanglog.member.dto.KakaoUserInfoResponseDto;
+import hanglog.member.dto.GoogleUserInfoResponse;
+import hanglog.member.dto.KakaoUserInfoResponse;
 import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
 import lombok.Getter;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Getter
 public enum Provider {
 
-    GOOGLE("google", GoogleUserInfoResponseDto.class),
-    KAKAO("kakao", KakaoUserInfoResponseDto.class);
+    GOOGLE("google", GoogleUserInfoResponse.class),
+    KAKAO("kakao", KakaoUserInfoResponse.class);
     private final String provider;
     private final Class<?> responseDto;
     private ProviderProperties properties;

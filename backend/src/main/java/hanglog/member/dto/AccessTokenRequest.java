@@ -5,7 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class AccessTokenRequestDto {
+public class AccessTokenRequest {
     private String code;
     private String clientId;
     private String clientSecret;
