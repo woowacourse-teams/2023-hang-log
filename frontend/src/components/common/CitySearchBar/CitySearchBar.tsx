@@ -44,11 +44,6 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   };
 
   const handleSuggestionClick = (selectedCity: CityData) => {
-    if (!selectedCity) {
-      closeSuggestion();
-      return;
-    }
-
     addCityTag(selectedCity);
     resetAll();
   };
@@ -109,7 +104,11 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
           </div>
         </div>
         {isSuggestionOpen && (
-          <CitySuggestion queryWord={debouncedQueryWord} onItemSelect={handleSuggestionClick} />
+          <CitySuggestion
+            queryWord={debouncedQueryWord}
+            onItemSelect={handleSuggestionClick}
+            closeSuggestion={closeSuggestion}
+          />
         )}
       </div>
     </Menu>

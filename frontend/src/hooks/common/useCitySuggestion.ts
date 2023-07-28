@@ -5,7 +5,12 @@ import { useEffect, useState } from 'react';
 import { makeRegexByCho } from '@utils/cityFilter';
 import { stringToOnlyLetter } from '@utils/formatter';
 
-export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
+interface useCitySuggestionProps {
+  onItemSelect: (city: CityData) => void;
+  closeSuggestion: () => void;
+}
+
+export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySuggestionProps) => {
   const queryClient = useQueryClient();
   const cityData = queryClient.getQueryData<CityData[]>(['city']);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
@@ -64,8 +69,7 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     }
 
     if (e.key === 'Escape') {
-      //이거 onClose 프롭스로 받기 싫어서 꼼수로 일단 구현함....
-      onItemSelect(suggestions[-1]);
+      closeSuggestion();
     }
   };
 
