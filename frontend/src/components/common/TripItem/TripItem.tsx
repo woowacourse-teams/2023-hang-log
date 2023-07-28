@@ -1,38 +1,21 @@
-import MoreIcon from '@assets/svg/more-icon.svg';
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
-import {
-  Box,
-  Flex,
-  Heading,
-  ImageCarousel,
-  Menu,
-  MenuItem,
-  MenuList,
-  Text,
-  Theme,
-  useOverlay,
-} from 'hang-log-design-system';
-import { useState } from 'react';
+import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
-import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
-import { useTripDates } from '@hooks/trip/useTripDates';
+import { useDraggedItem } from '@hooks/common/useDraggedItem';
 
 import StarRating from '@components/common/StarRating/StarRating';
+import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
 import {
   expenseStyling,
   getContainerStyling,
   informationContainerStyling,
   memoStyling,
-  moreButtonStyling,
-  moreMenuListStyling,
-  moreMenuStyling,
   starRatingStyling,
   subInformationStyling,
 } from '@components/common/TripItem/TripItem.style';
-import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 interface TripListItemProps extends TripItemData {
   tripId: number;
@@ -50,27 +33,10 @@ const TripItem = ({
   onDragEnd,
   ...information
 }: TripListItemProps) => {
-  const deleteTripItemMutation = useDeleteTripItemMutation();
-  const { tripDates } = useTripDates(tripId);
-  const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
-  const { isOpen: isModalOpen, open: openModal, close: closeModal } = useOverlay();
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleDrag = () => {
-    setIsDragging(true);
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    onDragEnd();
-  };
-
-  const handleTripItemDelete = () => {
-    deleteTripItemMutation.mutate({ tripId, itemId: information.id });
-  };
+  const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
 
   return (
-    // 수정 모드에서만 drag할 수 있다
+    // ! 수정 모드에서만 drag할 수 있다
     <li
       css={getContainerStyling(isDragging)}
       draggable
@@ -91,7 +57,7 @@ const TripItem = ({
             images={information.imageUrls}
           />
         )}
-        <Box css={informationContainerStyling}>
+        <Box tag="section" css={informationContainerStyling}>
           <Heading size="xSmall">{information.title}</Heading>
           {information.place && (
             <Text css={subInformationStyling} size="small">
@@ -112,44 +78,8 @@ const TripItem = ({
           )}
         </Box>
       </Flex>
-      {/* 로그인 + 수정 모드일 떄만 볼 수 있다 */}
-      <Menu css={moreMenuStyling} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" onClick={openMenu}>
-          <MoreIcon />
-        </button>
-        {isMenuOpen && (
-          <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={openModal}>수정</MenuItem>
-            <MenuItem onClick={handleTripItemDelete}>삭제</MenuItem>
-          </MenuList>
-        )}
-      </Menu>
-      {isModalOpen && (
-        <TripItemAddModal
-          tripId={tripId}
-          itemId={information.id}
-          dayLogId={dayLogId}
-          dates={tripDates}
-          onClose={closeModal}
-          initialData={{
-            itemType: information.itemType,
-            dayLogId,
-            title: information.title,
-            isPlaceUpdated: false,
-            place: null,
-            rating: information.rating,
-            expense: information.expense
-              ? {
-                  currency: information.expense.currency,
-                  amount: information.expense.amount,
-                  categoryId: information.expense.category.id,
-                }
-              : null,
-            memo: information.memo,
-            imageUrls: information.imageUrls,
-          }}
-        />
-      )}
+      {/* ! 로그인 + 수정 모드일 떄만 볼 수 있다 */}
+      <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} />
     </li>
   );
 };

@@ -71,7 +71,6 @@ export const tripItemHandlers = [
       (item) => item.id === Number(itemId)
     );
 
-    // 이거 약간 읽기 더러운듯.... 누구 해결책있나요?
     trip.dayLogs[dayLogIndex].items[itemIndex] = {
       id: Number(itemId),
       itemType: response.itemType,
