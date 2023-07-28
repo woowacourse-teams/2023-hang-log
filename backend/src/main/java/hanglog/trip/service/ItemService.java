@@ -53,7 +53,6 @@ public class ItemService {
                 makeExpense(itemRequest.getExpense()),
                 makeImages(itemRequest)
         );
-        validateAlreadyDeleted(item);
         return itemRepository.save(item).getId();
     }
 
@@ -70,7 +69,6 @@ public class ItemService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-        validateAlreadyDeleted(item);
 
         Place updatedPlace = item.getPlace();
         if (itemUpdateRequest.getIsPlaceUpdated()) {
@@ -86,7 +84,7 @@ public class ItemService {
                 itemUpdateRequest.getMemo(),
                 updatedPlace,
                 dayLog,
-                getExpenseByItemRequest(itemUpdateRequest.getExpense())
+                makeExpense(itemUpdateRequest.getExpense())
         );
 
         itemRepository.save(updatedItem);
@@ -138,14 +136,7 @@ public class ItemService {
     public void delete(final Long itemId) {
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-        validateAlreadyDeleted(item);
         itemRepository.delete(item);
-    }
-
-    private void validateAlreadyDeleted(final Item item) {
-        if (item.getStatus().equals(StatusType.DELETED)) {
-            throw new BadRequestException(ALREADY_DELETED_TRIP_ITEM);
-        }
     }
 
     public List<ItemResponse> getItems() {
