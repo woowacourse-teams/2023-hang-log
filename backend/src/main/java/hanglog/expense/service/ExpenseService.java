@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExpenseService {
 
+    private static final int PERCENTAGE_CONSTANT = 100;
+
     //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
     private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
     private final TripRepository tripRepository;
@@ -80,7 +82,7 @@ public class ExpenseService {
         if (totalAmount == 0) {
             return BigDecimal.ZERO;
         }
-        return BigDecimal.valueOf((double) 100 * categoryAmount / totalAmount)
+        return BigDecimal.valueOf((double) PERCENTAGE_CONSTANT * categoryAmount / totalAmount)
                 .setScale(2, RoundingMode.CEILING);
     }
 
