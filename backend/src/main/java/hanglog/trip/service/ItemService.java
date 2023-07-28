@@ -1,16 +1,14 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.ALREADY_DELETED_TRIP_ITEM;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUNT_IMAGE_URL;
 
-import hanglog.category.Category;
-import hanglog.category.repository.CategoryRepository;
+import hanglog.category.domain.Category;
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.expense.Expense;
 import hanglog.global.exception.BadRequestException;
-import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -21,6 +19,7 @@ import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
@@ -49,16 +48,15 @@ public class ItemService {
                 getNewItemOrdinal(tripId),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                getPlaceByItemRequest(itemRequest),
+                makePlace(itemRequest.getPlace()),
                 dayLog,
-                getExpenseByItemRequest(itemRequest),
-                getImagesByItemRequest(itemRequest)
+                makeExpense(itemRequest.getExpense()),
+                makeImages(itemRequest)
         );
-        validateAlreadyDeleted(item);
         return itemRepository.save(item).getId();
     }
 
-    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
+    private List<Image> makeImages(final ItemRequest itemRequest) {
         return itemRequest.getImageUrls().stream()
                 .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
                         .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
@@ -66,32 +64,37 @@ public class ItemService {
                 .toList();
     }
 
-    public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
-        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+    public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
+        final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-        validateAlreadyDeleted(item);
 
-        final Item updateditem = new Item(
+        Place updatedPlace = item.getPlace();
+        if (itemUpdateRequest.getIsPlaceUpdated()) {
+            updatedPlace = makePlace(itemUpdateRequest.getPlace());
+        }
+
+        final Item updatedItem = new Item(
                 itemId,
-                ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
-                itemRequest.getTitle(),
+                ItemType.getItemTypeByIsSpot(itemUpdateRequest.getItemType()),
+                itemUpdateRequest.getTitle(),
                 item.getOrdinal(),
-                itemRequest.getRating(),
-                itemRequest.getMemo(),
-                getPlaceByItemRequest(itemRequest),
+                itemUpdateRequest.getRating(),
+                itemUpdateRequest.getMemo(),
+                updatedPlace,
                 dayLog,
-                getExpenseByItemRequest(itemRequest)
+                makeExpense(itemUpdateRequest.getExpense())
         );
-        itemRepository.save(updateditem);
+
+        itemRepository.save(updatedItem);
     }
 
-    private Place getPlaceByItemRequest(final ItemRequest itemRequest) {
-        if (itemRequest.getPlace() == null) {
+    private Place makePlace(final PlaceRequest placeRequest) {
+        if (placeRequest == null) {
             return null;
         }
-        return createPlaceByPlaceRequest(itemRequest.getPlace());
+        return createPlaceByPlaceRequest(placeRequest);
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
@@ -106,11 +109,11 @@ public class ItemService {
         );
     }
 
-    private Expense getExpenseByItemRequest(final ItemRequest itemRequest) {
-        if (itemRequest.getExpense() == null) {
+    private Expense makeExpense(final ExpenseRequest expenseRequest) {
+        if (expenseRequest == null) {
             return null;
         }
-        return createExpenseByExpenseRequest(itemRequest.getExpense());
+        return createExpenseByExpenseRequest(expenseRequest);
     }
 
     private Expense createExpenseByExpenseRequest(final ExpenseRequest expenseRequest) {
@@ -133,14 +136,7 @@ public class ItemService {
     public void delete(final Long itemId) {
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-        validateAlreadyDeleted(item);
         itemRepository.delete(item);
-    }
-
-    private void validateAlreadyDeleted(final Item item) {
-        if (item.getStatus().equals(StatusType.DELETED)) {
-            throw new BadRequestException(ALREADY_DELETED_TRIP_ITEM);
-        }
     }
 
     public List<ItemResponse> getItems() {

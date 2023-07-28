@@ -28,4 +28,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest()
                 .body(new ExceptionResponse(e.getCode(), e.getMessage()));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(final Exception e) {
+        return ResponseEntity.internalServerError()
+                .body(new ExceptionResponse(9999, e.getMessage()));
+    }
 }

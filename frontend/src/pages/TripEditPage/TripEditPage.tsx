@@ -13,7 +13,7 @@ import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal
 const TripEditPage = () => {
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error(`tripId doesn't exist`);
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
 
   const { tripData } = useTripQuery(Number(tripId));
   useExpenseCategoryQuery();
@@ -24,29 +24,23 @@ const TripEditPage = () => {
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
-  const dates = tripData.dayLogs.map((data) => ({
-    id: data.id,
-    date: data.date,
-  }));
-
   return (
     <section css={containerStyling}>
       <TripInformation {...tripData} />
       <DayLogList
         tripId={Number(tripId)}
         selectedDayLog={selectedDayLog}
-        dates={dates}
         onTabChange={handleDayLogIdSelectClick}
         openAddModal={openAddModal}
       />
       <FloatingButton css={addButtonStyling} onClick={openAddModal} />
-      <TripItemAddModal
-        tripId={Number(tripId)}
-        isOpen={isAddModalOpen}
-        dates={dates}
-        currentDate={{ id: selectedDayLog.id, date: selectedDayLog.date }}
-        onClose={closeAddModal}
-      />
+      {isAddModalOpen && (
+        <TripItemAddModal
+          tripId={Number(tripId)}
+          dayLogId={selectedDayLog.id}
+          onClose={closeAddModal}
+        />
+      )}
     </section>
   );
 };

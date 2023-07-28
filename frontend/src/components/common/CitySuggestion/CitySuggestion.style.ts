@@ -14,11 +14,13 @@ export const containerStyling = css({
 export const getItemStyling = (isFocused: boolean) => {
   return css({
     backgroundColor: isFocused ? Theme.color.gray200 : Theme.color.white,
+    fontSize: Theme.text.medium.fontSize,
+    padding: `12px ${Theme.spacer.spacing3}`,
   });
 };
 
 export const emptyTextStyling = css({
-  margin: Theme.spacer.spacing2,
+  padding: `12px ${Theme.spacer.spacing3}`,
 
   color: Theme.color.gray500,
 });

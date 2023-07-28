@@ -44,9 +44,9 @@ include::{snippets}/trip-controller-test/get-trips/http-request.adoc[]
 
 ==== 응답
 include::{snippets}/trip-controller-test/get-trips/http-response.adoc[]
-include::{snippets}/day-log-controller-test/get-trip/response-fields.adoc[]
+include::{snippets}/trip-controller-test/get-trips/response-fields.adoc[]
 
-=== 단일 여행 생성 (POST /trips/:tripId/daylogs/:dayLogId)
+=== 단일 여행 생성 (POST /trips)
 
 ==== 요청
 include::{snippets}/trip-controller-test/create-trip/http-request.adoc[]
@@ -115,6 +115,15 @@ include::{snippets}/day-log-controller-test/update-day-log-title/request-fields.
 include::{snippets}/day-log-controller-test/update-day-log-title/http-response.adoc[]
 
 
+=== DayLog 아이템들 순서 수정 (PATCH /trips/:tripId/daylogs/:dayLogId/order)
+
+==== 요청
+include::{snippets}/day-log-controller-test/update-ordinal-of-items/http-request.adoc[]
+include::{snippets}/day-log-controller-test/update-ordinal-of-items/path-parameters.adoc[]
+include::{snippets}/day-log-controller-test/update-ordinal-of-items/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/day-log-controller-test/update-day-log-title/http-response.adoc[]
 
 == 여행 아이템 API
 
@@ -159,3 +168,14 @@ include::{snippets}/city-controller-test/get-cities/http-request.adoc[]
 
 ==== 응답
 include::{snippets}/city-controller-test/get-cities/http-response.adoc[]
+
+== 카테고리 API
+
+=== 경비 카테고리 조회 (GET /categories)
+
+==== 요청
+include::{snippets}/category-controller-test/get-expense-categories/http-request.adoc[]
+
+==== 응답
+include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]

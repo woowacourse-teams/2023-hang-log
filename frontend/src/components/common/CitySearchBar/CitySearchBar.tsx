@@ -6,6 +6,7 @@ import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCityTags } from '@hooks/common/useCityTags';
+import { useDebounce } from '@hooks/common/useDebounce';
 
 import {
   badgeStyling,
@@ -19,18 +20,20 @@ import {
 import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
 
 interface CitySearchBarProps {
-  initialCityTags?: CityData[];
-  setCityData: (cities: CityData[]) => void;
+  initialCities?: CityData[];
+  updateCityInfo: (cities: CityData[]) => void;
+  required?: boolean;
 }
 
-const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => {
+const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: CitySearchBarProps) => {
   const [queryWord, setQueryWord] = useState('');
-  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCityTags ?? []);
+  const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCities ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
+  const debouncedQueryWord = useDebounce(queryWord, 300);
 
   useEffect(() => {
-    setCityData(cityTags);
+    updateCityInfo(cityTags);
   }, [cityTags]);
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
@@ -60,7 +63,7 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
     inputRef.current?.focus();
   };
 
-  const handleInputFocus = (e: any) => {
+  const handleInputFocus = () => {
     if (queryWord) {
       openSuggestion();
     }
@@ -72,27 +75,23 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
     }
   };
 
-  const CityTags = () => {
-    return cityTags.map((cityTag) => (
-      <Badge key={cityTag.id} css={badgeStyling}>
-        {cityTag.name}
-        <CloseIcon
-          aria-label="삭제 아이콘"
-          css={closeIconStyling}
-          onClick={handleDeleteButtonClick(cityTag)}
-        />
-      </Badge>
-    ));
-  };
-
   return (
     <Menu closeMenu={closeSuggestion}>
       <div css={containerStyling} onClick={focusInput}>
-        <Label>방문 도시</Label>
+        <Label required={required}>방문 도시</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
           <div css={tagListStyling}>
-            <CityTags />
+            {cityTags.map((cityTag) => (
+              <Badge key={cityTag.id} css={badgeStyling}>
+                {cityTag.name}
+                <CloseIcon
+                  aria-label="삭제 아이콘"
+                  css={closeIconStyling}
+                  onClick={handleDeleteButtonClick(cityTag)}
+                />
+              </Badge>
+            ))}
             <Input
               placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
               value={queryWord}
@@ -105,7 +104,7 @@ const CitySearchBar = ({ initialCityTags, setCityData }: CitySearchBarProps) => 
           </div>
         </div>
         {isSuggestionOpen && (
-          <CitySuggestion queryWord={queryWord} onItemSelect={handleSuggestionClick} />
+          <CitySuggestion queryWord={debouncedQueryWord} onItemSelect={handleSuggestionClick} />
         )}
       </div>
     </Menu>
