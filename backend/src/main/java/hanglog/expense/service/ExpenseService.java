@@ -40,7 +40,7 @@ public class ExpenseService {
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
 
-    public TripExpenseResponse getAllExpenses(final long tripId) {
+    public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findByDate(trip.getStartDate())

@@ -17,7 +17,7 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @GetMapping
-    public ResponseEntity<TripExpenseResponse> getExpenses(@PathVariable final long tripId) {
+    public ResponseEntity<TripExpenseResponse> getExpenses(@PathVariable final Long tripId) {
         final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
         return ResponseEntity.ok().body(tripExpenseResponse);
     }
