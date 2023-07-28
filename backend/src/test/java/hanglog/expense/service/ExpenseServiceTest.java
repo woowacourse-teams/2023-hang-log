@@ -2,7 +2,7 @@ package hanglog.expense.service;
 
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CurrenciesFixture.DEFAULT_CURRENCY;
+import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
@@ -89,7 +89,8 @@ class ExpenseServiceTest {
             softly.assertThat(actual).usingRecursiveComparison()
                     .ignoringFields("categories", "categoryExpense", "dayLogs")
                     .isEqualTo(
-                            TripExpenseResponse.of(LONDON_TO_JAPAN,
+                            TripExpenseResponse.of(
+                                    LONDON_TO_JAPAN,
                                     totalAmount,
                                     List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                                     List.of(
@@ -170,7 +171,8 @@ class ExpenseServiceTest {
         // then
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(
-                        TripExpenseResponse.of(LONDON_TRIP,
+                        TripExpenseResponse.of(
+                                LONDON_TRIP,
                                 0,
                                 List.of(),
                                 List.of(),

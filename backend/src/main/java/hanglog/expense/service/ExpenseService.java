@@ -31,6 +31,7 @@ public class ExpenseService {
 
     //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
     private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
+    
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
