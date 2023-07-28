@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
-    Optional<Currency> findCurrenciesBySearchDate(final LocalDate searchDate);
+    Optional<Currency> findByDate(final LocalDate date);
 }

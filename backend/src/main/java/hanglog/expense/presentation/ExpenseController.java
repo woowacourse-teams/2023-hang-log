@@ -1,6 +1,6 @@
 package hanglog.expense.presentation;
 
-import hanglog.expense.dto.response.ExpenseGetResponse;
+import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @GetMapping
-    public ResponseEntity<ExpenseGetResponse> getExpenses(@PathVariable final long tripId) {
-        final ExpenseGetResponse expenseGetResponse = expenseService.getAllExpenses(tripId);
-        return ResponseEntity.ok().body(expenseGetResponse);
+    public ResponseEntity<TripExpenseResponse> getExpenses(@PathVariable final long tripId) {
+        final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(tripExpenseResponse);
     }
 }

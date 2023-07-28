@@ -182,7 +182,7 @@ include::{snippets}/category-controller-test/get-expense-categories/response-fie
 
 == 경비 API
 
-=== 경비 조회 (/trips/:tripId/expense)
+=== 경비 조회 (GET /trips/:tripId/expense)
 
 ==== 요청
 include::{snippets}/Expense-controller-test/get-expenses/http-request.adoc[]

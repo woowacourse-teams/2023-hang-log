@@ -14,13 +14,16 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
-import hanglog.expense.dto.response.ExpenseGetResponse;
+import hanglog.category.dto.CategoryResponse;
+import hanglog.expense.dto.response.CategoryExpenseResponse;
+import hanglog.expense.dto.response.DayLogExpenseResponse;
+import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.restdocs.RestDocsTest;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,17 +43,18 @@ class ExpenseControllerTest extends RestDocsTest {
     void getExpenses() throws Exception {
         // given
         final DayLog LONDON_DAY = new DayLog(1L, "런던추워", 1, LONDON_TRIP, List.of(LONDON_EYE_ITEM, TAXI_ITEM));
-        final ExpenseGetResponse expenseGetResponse = ExpenseGetResponse.of(
+        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TRIP,
                 10000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                Map.of(EXPENSE_CATEGORIES.get(1), 1000),
+                List.of(new CategoryExpenseResponse(CategoryResponse.of(EXPENSE_CATEGORIES.get(1)), 1000,
+                        BigDecimal.ZERO)),
                 DEFAULT_CURRENCY,
-                Map.of(LONDON_DAY, 1000)
+                List.of(DayLogExpenseResponse.of(LONDON_DAY, 1000))
         );
 
         // when & then
-        when(expenseService.getAllExpenses(1L)).thenReturn(expenseGetResponse);
+        when(expenseService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
 
         mockMvc.perform(get("/trips/{tripId}/expense", 1).contentType(APPLICATION_JSON))
                 .andDo(
@@ -112,23 +116,23 @@ class ExpenseControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("카테고리 백분율")
                                                 .attributes(field("constraint", "100이하의 백분율")),
-                                        fieldWithPath("rates")
+                                        fieldWithPath("exchangeRate")
                                                 .type(JsonFieldType.OBJECT)
                                                 .description("적용된 환율")
                                                 .attributes(field("constraint", "적용된 환율")),
-                                        fieldWithPath("rates.date")
+                                        fieldWithPath("exchangeRate.date")
                                                 .type(JsonFieldType.STRING)
                                                 .description("환율 날짜")
                                                 .attributes(field("constraint", "yyyy-MM-dd")),
-                                        fieldWithPath("rates.values")
+                                        fieldWithPath("exchangeRate.currencyRates")
                                                 .type(JsonFieldType.ARRAY)
                                                 .description("통화별 환율")
                                                 .attributes(field("constraint", "currency")),
-                                        fieldWithPath("rates.values[].currency")
+                                        fieldWithPath("exchangeRate.currencyRates[].currency")
                                                 .type(JsonFieldType.STRING)
                                                 .description("통화")
                                                 .attributes(field("constraint", "3자의 문자열")),
-                                        fieldWithPath("rates.values[].rate")
+                                        fieldWithPath("exchangeRate.currencyRates[].rate")
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("환율")
                                                 .attributes(field("constraint", "양의 유리수")),

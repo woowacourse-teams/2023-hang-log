@@ -3,11 +3,14 @@ package hanglog.expense.service;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
+import hanglog.category.dto.CategoryResponse;
 import hanglog.expense.domain.Currency;
 import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.type.CurrencyCodeType;
-import hanglog.expense.dto.response.ExpenseGetResponse;
+import hanglog.expense.dto.response.CategoryExpenseResponse;
+import hanglog.expense.dto.response.DayLogExpenseResponse;
+import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -15,9 +18,12 @@ import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +39,10 @@ public class ExpenseService {
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
 
-    public ExpenseGetResponse getAllExpenses(final long tripId) {
+    public TripExpenseResponse getAllExpenses(final long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final Currency currency = currencyRepository.findCurrenciesBySearchDate(trip.getStartDate())
+        final Currency currency = currencyRepository.findByDate(trip.getStartDate())
                 .orElse(DEFAULT_CURRENCY);
 
         final Map<DayLog, Integer> dayLogTotalAmounts = new HashMap<>();
@@ -50,15 +56,40 @@ public class ExpenseService {
         final int totalAmount = dayLogTotalAmounts.values().stream()
                 .reduce(Integer::sum)
                 .orElse(0);
+        final List<CategoryExpenseResponse> categoryExpenseResponses = getCategoryExpenseResponses(totalAmount,
+                categoryTotalAmounts);
+        final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogTotalAmounts.entrySet().stream()
+                .map(entry -> DayLogExpenseResponse.of(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
 
-        return ExpenseGetResponse.of(
+        return TripExpenseResponse.of(
                 trip,
                 totalAmount,
                 cities,
-                categoryTotalAmounts,
+                categoryExpenseResponses,
                 currency,
-                dayLogTotalAmounts
+                dayLogExpenseResponses
         );
+    }
+
+    private List<CategoryExpenseResponse> getCategoryExpenseResponses(final int totalAmount,
+                                                                      final Map<Category, Integer> categoryTotalAmounts) {
+        if (totalAmount == 0) {
+            return categoryTotalAmounts.entrySet().stream()
+                    .map(entry -> new CategoryExpenseResponse(
+                            CategoryResponse.of(entry.getKey()),
+                            entry.getValue(),
+                            BigDecimal.ZERO
+                    )).toList();
+        }
+
+        return categoryTotalAmounts.entrySet().stream()
+                .map(entry -> new CategoryExpenseResponse(
+                        CategoryResponse.of(entry.getKey()),
+                        entry.getValue(),
+                        BigDecimal.valueOf((double) 100 * entry.getValue() / totalAmount)
+                                .setScale(2, RoundingMode.CEILING)
+                )).toList();
     }
 
     private void calculateAmounts(
@@ -69,8 +100,12 @@ public class ExpenseService {
     ) {
         for (final Item item : dayLog.getItems()) {
             final Expense expense = item.getExpense();
-            putKeyAndValue(dayLogTotalAmounts, dayLog, changeToKRW(expense, currency));
-            putKeyAndValue(categoryTotalAmounts, expense.getCategory(), changeToKRW(expense, currency));
+
+            final int dayLogTotalAmount = dayLogTotalAmounts.getOrDefault(dayLog, 0);
+            dayLogTotalAmounts.put(dayLog, dayLogTotalAmount + changeToKRW(expense, currency));
+
+            final int categoryTotalAmount = categoryTotalAmounts.getOrDefault(expense.getCategory(), 0);
+            categoryTotalAmounts.put(expense.getCategory(), categoryTotalAmount + changeToKRW(expense, currency));
         }
     }
 
@@ -80,13 +115,5 @@ public class ExpenseService {
         }
         final double rate = CurrencyCodeType.mappingCurrency(expense.getCurrency(), currency);
         return (int) (expense.getAmount() * rate);
-    }
-
-    private <T> void putKeyAndValue(final Map<T, Integer> map, final T key, final int value) {
-        if (map.containsKey(key)) {
-            map.put(key, map.get(key) + value);
-            return;
-        }
-        map.put(key, value);
     }
 }

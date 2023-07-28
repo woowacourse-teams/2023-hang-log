@@ -22,7 +22,8 @@ public class Currency {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private LocalDate searchDate;
+    @Column(nullable = false)
+    private LocalDate date;
 
     @Column(nullable = false)
     private Double usd;
