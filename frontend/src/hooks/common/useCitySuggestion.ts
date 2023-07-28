@@ -3,15 +3,27 @@ import type { CityData } from '@type/city';
 import { useEffect, useState } from 'react';
 
 import { makeRegexByCho } from '@utils/cityFilter';
+import { formatStringToLetter } from '@utils/formatter';
 
-export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityData) => void }) => {
+interface useCitySuggestionProps {
+  onItemSelect: (city: CityData) => void;
+  closeSuggestion: () => void;
+}
+
+export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySuggestionProps) => {
   const queryClient = useQueryClient();
   const cityData = queryClient.getQueryData<CityData[]>(['city']);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
+  useEffect(() => {
+    setFocusedSuggestionIndex(-1);
+    focusOnlySuggestion();
+  }, [suggestions]);
+
   const setNewSuggestions = (word: string) => {
-    const regex = makeRegexByCho(word);
+    const query = formatStringToLetter(word);
+    const regex = makeRegexByCho(query);
 
     if (cityData) {
       const filteredSuggestions = cityData.filter(({ name }) => regex.test(name));
@@ -31,6 +43,12 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
     );
   };
 
+  const focusOnlySuggestion = () => {
+    if (suggestions.length === 1) {
+      setFocusedSuggestionIndex(0);
+    }
+  };
+
   const isFocused = (index: number) => {
     return index === focusedSuggestionIndex;
   };
@@ -48,6 +66,10 @@ export const useCitySuggestion = ({ onItemSelect }: { onItemSelect: (item: CityD
       if (focusedSuggestionIndex >= 0) {
         onItemSelect(suggestions[focusedSuggestionIndex]);
       }
+    }
+
+    if (e.key === 'Escape') {
+      closeSuggestion();
     }
   };
 

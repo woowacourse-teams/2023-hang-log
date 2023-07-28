@@ -15,6 +15,7 @@ import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
 import {
+  dateInputSupportingText,
   formStyling,
   textareaStyling,
   titleStyling,
@@ -59,7 +60,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           />
           <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>
             <WarningIcon />
-            <SupportingText>
+            <SupportingText css={dateInputSupportingText}>
               방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 삭제됩니다.
             </SupportingText>
           </Flex>
