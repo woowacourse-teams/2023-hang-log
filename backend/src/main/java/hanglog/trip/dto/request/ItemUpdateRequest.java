@@ -32,6 +32,7 @@ public class ItemUpdateRequest {
     @Size(max = 10, message = "여행 아이템의 이미지는 최대 10개까지 첨부할 수 있습니다.")
     private final List<String> imageUrls;
 
+    @NotNull(message = "장소의 업데이트 여부를 입력해 주세요.")
     private final Boolean isPlaceUpdated;
 
     private final PlaceRequest place;
