@@ -6,19 +6,18 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ItemInDayLogResponse {
-
-    private final long id;
+public class ItemDetailResponse {
+    private final Long id;
     private final String title;
     private final int ordinal;
-    private final ExpenseInItemResponse expense;
+    private final ItemExpenseResponse expense;
 
-    public static ItemInDayLogResponse of(final Item item) {
-        return new ItemInDayLogResponse(
+    public static ItemDetailResponse of(final Item item) {
+        return new ItemDetailResponse(
                 item.getId(),
                 item.getTitle(),
                 item.getOrdinal(),
-                ExpenseInItemResponse.of(item.getExpense())
+                ItemExpenseResponse.of(item.getExpense())
         );
     }
 }

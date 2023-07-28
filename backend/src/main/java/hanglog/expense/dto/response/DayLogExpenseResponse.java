@@ -3,7 +3,6 @@ package hanglog.expense.dto.response;
 import hanglog.trip.domain.DayLog;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -11,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class DayLogInExpenseResponse {
+public class DayLogExpenseResponse {
 
     private static final int DEFAULT_DAY = 1;
 
@@ -19,19 +18,13 @@ public class DayLogInExpenseResponse {
     private final Integer ordinal;
     private final LocalDate date;
     private final int totalAmount;
-    private final List<ItemInDayLogResponse> items;
+    private final List<ItemDetailResponse> items;
 
-    public static List<DayLogInExpenseResponse> of(final Map<DayLog, Integer> dayLogTotalAmounts) {
-        return dayLogTotalAmounts.entrySet().stream()
-                .map(entry -> getDayLogResponse(entry.getKey(), entry.getValue())).
-                toList();
-    }
-
-    private static DayLogInExpenseResponse getDayLogResponse(final DayLog dayLog, final int totalAmount) {
-        final List<ItemInDayLogResponse> itemResponses = dayLog.getItems().stream()
-                .map(ItemInDayLogResponse::of)
+    public static DayLogExpenseResponse of(final DayLog dayLog, final int totalAmount) {
+        final List<ItemDetailResponse> itemResponses = dayLog.getItems().stream()
+                .map(ItemDetailResponse::of)
                 .toList();
-        return new DayLogInExpenseResponse(
+        return new DayLogExpenseResponse(
                 dayLog.getId(),
                 dayLog.getOrdinal(),
                 calculateDate(dayLog),

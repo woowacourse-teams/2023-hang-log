@@ -9,14 +9,14 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CurrencyInExpenseResponse {
+public class CurrencyRateResponse {
 
     private final String currency;
     private final double rate;
 
-    public static List<CurrencyInExpenseResponse> of(final Currency currency) {
+    public static List<CurrencyRateResponse> of(final Currency currency) {
         return Arrays.stream(CurrencyCodeType.values())
-                .map(value -> new CurrencyInExpenseResponse(value.getCode(), value.getGetRate().apply(currency)))
+                .map(value -> new CurrencyRateResponse(value.getCode(), value.getGetRate().apply(currency)))
                 .toList();
     }
 }
