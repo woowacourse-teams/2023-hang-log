@@ -23,7 +23,6 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,13 +59,15 @@ public class ExpenseService {
                 .orElse(0);
         final List<CategoryExpenseResponse> categoryExpenseResponses = categoryTotalAmounts.entrySet().stream()
                 .map(entry -> new CategoryExpenseResponse(
-                        CategoryResponse.of(entry.getKey()),
-                        entry.getValue(),
-                        getCategoryAmountPercentage(totalAmount, entry.getValue())
-                )).toList();
+                                CategoryResponse.of(entry.getKey()),
+                                entry.getValue(),
+                                getCategoryAmountPercentage(totalAmount, entry.getValue())
+                        )
+                )
+                .toList();
         final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogTotalAmounts.entrySet().stream()
                 .map(entry -> DayLogExpenseResponse.of(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .toList();
 
         return TripExpenseResponse.of(
                 trip,
