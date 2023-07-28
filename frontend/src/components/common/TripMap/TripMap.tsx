@@ -1,16 +1,17 @@
+import { Theme } from 'hang-log-design-system';
 import { useEffect, useRef, useState } from 'react';
+
+import TripItemMarker from '../TripItemMarker/TripItemMarker';
 
 interface TripMapProps {
   places: { id: number; coordinate: { lat: number; lng: number } }[];
 }
 
 const TripMap = ({ places }: TripMapProps) => {
-  // 구글 지도 만들어야 함 이거 상태로 저장해야 함 왜냐하면 마커에서도 사용해야함 라인 그릴떄도
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // center 좌표 뽑기
     const bounds = new google.maps.LatLngBounds();
     places.forEach((place) =>
       bounds.extend(new google.maps.LatLng(place.coordinate.lat, place.coordinate.lng))
@@ -20,15 +21,55 @@ const TripMap = ({ places }: TripMapProps) => {
     const initialMap = new google.maps.Map(wrapperRef.current!, {
       center,
       disableDefaultUI: true,
-      mapId: '30895ea02d4d1639',
+      mapId: process.env.GOOGLE_MAP_ID,
     });
 
     initialMap.fitBounds(bounds);
 
-    setMap(initialMap);
-  }, []);
+    const lineSymbol = {
+      path: 'M 0,-1 0,1',
+      strokeOpacity: 1,
+      scale: 4,
+    };
 
-  return <div id="map" ref={wrapperRef} css={{ minHeight: '100vh' }} />;
+    const coordinates = places.map((place) => ({
+      lat: place.coordinate.lat,
+      lng: place.coordinate.lng,
+    }));
+
+    new google.maps.Polyline({
+      path: coordinates,
+      strokeOpacity: 0,
+      icons: [
+        {
+          icon: lineSymbol,
+          offset: '0',
+          repeat: '20px',
+        },
+      ],
+      map: initialMap,
+    });
+
+    setMap(initialMap);
+  }, [places]);
+
+  return (
+    <>
+      <div id="map" ref={wrapperRef} css={{ minHeight: '100vh' }} />
+      {map && (
+        <>
+          {places.map((place) => (
+            <TripItemMarker
+              map={map}
+              id={place.id}
+              lat={place.coordinate.lat}
+              lng={place.coordinate.lng}
+            />
+          ))}
+        </>
+      )}
+    </>
+  );
 };
 
 export default TripMap;

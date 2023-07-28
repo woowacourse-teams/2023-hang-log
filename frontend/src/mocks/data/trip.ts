@@ -101,6 +101,36 @@ export const trip: TripData = {
           },
           imageUrls: [],
         },
+        {
+          id: 10,
+          itemType: true,
+          title: 'covertGarden',
+          ordinal: 1,
+          rating: 4.5,
+          memo: null,
+          place: {
+            id: 1,
+            name: 'covertGarden',
+            latitude: 51.5117,
+            longitude: -0.1226,
+            category: {
+              id: 2,
+              name: '공원',
+            },
+          },
+          expense: {
+            id: 3,
+            currency: 'GBP',
+            amount: 50,
+            category: {
+              id: 2,
+              name: '음식',
+            },
+          },
+          imageUrls: [
+            'https://lh3.googleusercontent.com/p/AF1QipOirgDoMN4u1mwho_3Nh_4hS6IehGlewiHtcQLI=s1360-w1360-h1020',
+          ],
+        },
       ],
     },
     {
