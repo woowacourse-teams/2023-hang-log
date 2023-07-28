@@ -1,6 +1,6 @@
 package hanglog.image.presentation;
 
-import hanglog.image.dto.ImageResponse;
+import hanglog.image.dto.ImagesResponse;
 import hanglog.image.service.ImageService;
 import java.net.URI;
 import java.util.List;
@@ -20,9 +20,9 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping
-    public ResponseEntity<ImageResponse> uploadImage(@RequestPart final List<MultipartFile> images) {
-        final ImageResponse imageResponse = imageService.save(images);
-        final String firstImageUrl = imageResponse.getImageUrls().get(0);
-        return ResponseEntity.created(URI.create(firstImageUrl)).body(imageResponse);
+    public ResponseEntity<ImagesResponse> uploadImage(@RequestPart final List<MultipartFile> images) {
+        final ImagesResponse imagesResponse = imageService.save(images);
+        final String firstImageUrl = imagesResponse.getImageUrls().get(0);
+        return ResponseEntity.created(URI.create(firstImageUrl)).body(imagesResponse);
     }
 }

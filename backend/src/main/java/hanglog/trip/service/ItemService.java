@@ -4,7 +4,7 @@ import static hanglog.global.exception.ExceptionCode.ALREADY_DELETED_TRIP_ITEM;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.global.exception.ExceptionCode.NOT_FOUNT_IMAGE_URL;
+import static hanglog.image.util.ImageNameUrlConverter.convertUrlToName;
 
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
@@ -23,6 +23,7 @@ import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,18 +53,22 @@ public class ItemService {
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
                 getExpenseByItemRequest(itemRequest),
-                getImagesByItemRequest(itemRequest)
+                new ArrayList<>()
         );
         validateAlreadyDeleted(item);
-        return itemRepository.save(item).getId();
+        
+        final Item savedItem = itemRepository.save(item);
+        saveImages(itemRequest, savedItem);
+
+        return itemRepository.save(savedItem).getId();
     }
 
-    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
-        return itemRequest.getImageUrls().stream()
-                .map(imageName -> imageRepository.findByImageName(imageName)
-                        .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
-                )
+    private void saveImages(final ItemRequest itemRequest, final Item savedItem) {
+        final List<Image> images = itemRequest.getImageUrls().stream()
+                .map(imageUrl -> new Image(convertUrlToName(imageUrl), savedItem))
                 .toList();
+
+        savedItem.getImages().addAll(images);
     }
 
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
@@ -82,9 +87,18 @@ public class ItemService {
                 itemRequest.getMemo(),
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
-                getExpenseByItemRequest(itemRequest)
+                getExpenseByItemRequest(itemRequest),
+                getImagesByItemRequest(itemRequest)
         );
         itemRepository.save(updateditem);
+    }
+
+    private List<Image> getImagesByItemRequest(final ItemRequest itemRequest) {
+        final List<Image> images = itemRequest.getImageUrls().stream()
+                .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
+                .toList();
+
+        return imageRepository.saveAll(images);
     }
 
     private Place getPlaceByItemRequest(final ItemRequest itemRequest) {

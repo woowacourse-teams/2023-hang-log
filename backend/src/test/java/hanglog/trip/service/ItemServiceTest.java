@@ -1,6 +1,7 @@
 package hanglog.trip.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -8,7 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.category.Category;
 import hanglog.category.repository.CategoryRepository;
-import hanglog.image.domain.Image;
+import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -60,14 +61,14 @@ public class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("imageUrl"),
+                List.of("https://hanglog.com/img/imageName.png"),
                 placeRequest,
                 expenseRequest
         );
@@ -78,14 +79,74 @@ public class ItemServiceTest {
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-        given(imageRepository.findByImageName(any()))
-                .willReturn(Optional.of(new Image("imageName")));
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
 
         // then
         assertThat(actualId).isEqualTo(1L);
+    }
+
+    @DisplayName("URL이 Base Url을 포함하고 있지 않으면 예외가 발생한다.")
+    @Test
+    void save_NotContainBaseUrl() {
+        // given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "에펠탑",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                List.of("culture")
+        );
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                List.of("https://invalid-url/img/imageName.png"),
+                placeRequest,
+                expenseRequest
+        );
+
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when & then
+        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("URL의 형식이 잘못되면 예외가 발생한다.")
+    @Test
+    void save_InvalidParsedUrl() {
+        // given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "에펠탑",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                List.of("culture")
+        );
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                List.of("https://hanglog.com/img/https://hanglog.com/img/imageName.png"),
+                placeRequest,
+                expenseRequest
+        );
+
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when & then
+        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("여행 아이템의 정보를 수정한다.")
@@ -98,14 +159,14 @@ public class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("imageUrl"),
+                List.of("https://hanglog.com/img/imageName.png"),
                 placeRequest,
                 expenseRequest
         );

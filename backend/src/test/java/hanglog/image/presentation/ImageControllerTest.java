@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import hanglog.image.dto.ImageResponse;
+import hanglog.image.dto.ImagesResponse;
 import hanglog.image.service.ImageService;
 import hanglog.trip.restdocs.RestDocsTest;
 import java.io.FileInputStream;
@@ -44,9 +44,9 @@ class ImageControllerTest extends RestDocsTest {
                 "image/png",
                 new FileInputStream("./src/test/resources/static/images/logo.png"));
 
-        final ImageResponse imageResponse = new ImageResponse(List.of(""));
+        final ImagesResponse imagesResponse = new ImagesResponse(List.of(""));
 
-        when(imageService.save(any())).thenReturn(imageResponse);
+        when(imageService.save(any())).thenReturn(imagesResponse);
 
         // when & then
         mockMvc.perform(

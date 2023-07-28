@@ -1,5 +1,6 @@
 package hanglog.image.domain;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -27,7 +28,7 @@ public class Image extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String imageName;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST})
     @JoinColumn(name = "item_id")
     private Item item;
 
