@@ -63,7 +63,6 @@ class ExpenseServiceTest {
     @Test
     void getAllExpenses() {
         // given
-
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TO_JAPAN));
         when(currencyRepository.findByDate(any(LocalDate.class)))
