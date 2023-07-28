@@ -3,7 +3,7 @@ import type { CityData } from '@type/city';
 import { useEffect, useState } from 'react';
 
 import { makeRegexByCho } from '@utils/cityFilter';
-import { stringToOnlyLetter } from '@utils/formatter';
+import { formatStringToLetter } from '@utils/formatter';
 
 interface useCitySuggestionProps {
   onItemSelect: (city: CityData) => void;
@@ -22,7 +22,7 @@ export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySugg
   }, [suggestions]);
 
   const setNewSuggestions = (word: string) => {
-    const query = stringToOnlyLetter(word);
+    const query = formatStringToLetter(word);
     const regex = makeRegexByCho(query);
 
     if (cityData) {
