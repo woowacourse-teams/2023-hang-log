@@ -18,7 +18,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Transactional
 public class OAuthLoginService {
+
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
 
@@ -27,8 +29,14 @@ public class OAuthLoginService {
         this.restTemplate = new RestTemplate();
     }
 
-    public String getAccessToken(final String code, final ProviderProperties properties) {
-        System.out.println(properties.getTokenUri());
+    public Long login(final Provider provider, final String code) {
+        final String accessToken = getAccessToken(code, provider.getProperties());
+        final UserInfo userInfo = getUserInfo(accessToken, provider);
+        final Member member = save(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
+        return member.getId();
+    }
+
+    private String getAccessToken(final String code, final ProviderProperties properties) {
         final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
                 properties.getTokenUri(),
                 HttpMethod.POST,
@@ -39,7 +47,7 @@ public class OAuthLoginService {
         return accessTokenResponse.getBody().getAccessToken();
     }
 
-    public UserInfo getUserInfo(final String accessToken, final Provider provider) {
+    private UserInfo getUserInfo(final String accessToken, final Provider provider) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         final HttpEntity entity = new HttpEntity(headers);
@@ -50,13 +58,6 @@ public class OAuthLoginService {
                 provider.getResponseDto()
         ).getBody();
 
-    }
-
-    // TODO : 토큰 받기
-    @Transactional
-    public Member socialLogin(final String socialLoginId, final String nickname, final String image) {
-        return memberRepository.findBySocialLoginId(socialLoginId)
-                .orElseGet(() -> saveMember(socialLoginId, nickname, image));
     }
 
     private HttpEntity getEntity(final String code, final ProviderProperties properties) {
@@ -73,8 +74,10 @@ public class OAuthLoginService {
         return new HttpEntity(params, headers);
     }
 
-    private Member saveMember(final String socialLoginId, final String nickname, final String image) {
+    // TODO : 토큰 받기
+    private Member save(final String socialLoginId, final String nickname, final String image) {
         final Member member = new Member(socialLoginId, nickname, image);
-        return memberRepository.save(member);
+        return memberRepository.findBySocialLoginId(socialLoginId)
+                .orElseGet(() -> memberRepository.save(member));
     }
 }

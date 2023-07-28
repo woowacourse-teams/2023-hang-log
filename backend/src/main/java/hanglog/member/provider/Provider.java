@@ -13,6 +13,7 @@ public enum Provider {
 
     GOOGLE("google", GoogleUserInfoResponse.class),
     KAKAO("kakao", KakaoUserInfoResponse.class);
+
     private final String provider;
     private final Class<?> responseDto;
     private ProviderProperties properties;
@@ -23,7 +24,8 @@ public enum Provider {
     }
 
     public static Provider mappingProvider(final String provider) {
-        return Arrays.stream(values()).filter(value -> value.provider.equals(provider))
+        return Arrays.stream(values())
+                .filter(value -> value.provider.equals(provider))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당 OAuth 서비스는 제공하지 않습니다."));
     }

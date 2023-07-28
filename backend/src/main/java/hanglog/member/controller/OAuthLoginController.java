@@ -2,7 +2,7 @@ package hanglog.member.controller;
 
 import hanglog.member.provider.Provider;
 import hanglog.member.service.OAuthLoginService;
-import hanglog.member.dto.UserInfo;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/login/oauth2")
+@RequestMapping("/login/oauth")
 public class OAuthLoginController {
 
     private final OAuthLoginService oAuthLoginService;
@@ -19,11 +19,10 @@ public class OAuthLoginController {
         this.oAuthLoginService = oAuthLoginService;
     }
 
-    @GetMapping("/code/{oAuthProvider}")
-    public void googleLoginOAuth(@RequestParam final String code, @PathVariable final String oAuthProvider) {
-        final Provider provider = Provider.mappingProvider(oAuthProvider);
-        final String accessCode = oAuthLoginService.getAccessToken(code, provider.getProperties());
-        final UserInfo userInfo = oAuthLoginService.getUserInfo(accessCode, provider);
-        oAuthLoginService.socialLogin(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
+    @GetMapping("/{provider}")
+    public ResponseEntity<Void> loginOAuth(@PathVariable final String provider, @RequestParam final String code) {
+        final Provider oAuthProvider = Provider.mappingProvider(provider);
+        final Long memberId = oAuthLoginService.login(oAuthProvider, code);
+        return ResponseEntity.ok().build();
     }
 }
