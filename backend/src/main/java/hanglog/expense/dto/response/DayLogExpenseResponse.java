@@ -24,6 +24,7 @@ public class DayLogExpenseResponse {
         final List<ItemDetailResponse> itemResponses = dayLog.getItems().stream()
                 .map(ItemDetailResponse::of)
                 .toList();
+
         return new DayLogExpenseResponse(
                 dayLog.getId(),
                 dayLog.getOrdinal(),

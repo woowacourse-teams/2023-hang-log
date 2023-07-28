@@ -35,6 +35,7 @@ public class TripExpenseResponse {
         final List<CityExpenseResponse> cityExpenseResponses = cities.stream()
                 .map(CityExpenseResponse::of)
                 .toList();
+
         return new TripExpenseResponse(
                 trip.getId(),
                 trip.getTitle(),

@@ -72,8 +72,10 @@ public class ExpenseService {
         );
     }
 
-    private List<CategoryExpenseResponse> getCategoryExpenseResponses(final int totalAmount,
-                                                                      final Map<Category, Integer> categoryTotalAmounts) {
+    private List<CategoryExpenseResponse> getCategoryExpenseResponses(
+            final int totalAmount,
+            final Map<Category, Integer> categoryTotalAmounts
+    ) {
         if (totalAmount == 0) {
             return categoryTotalAmounts.entrySet().stream()
                     .map(entry -> new CategoryExpenseResponse(
