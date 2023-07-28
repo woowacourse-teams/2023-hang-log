@@ -13,6 +13,7 @@ interface UseAddTripItemFormParams {
   itemId?: number;
   initialData?: TripItemFormData;
   onSuccess?: () => void;
+  onError?: () => void;
 }
 
 export const useAddTripItemForm = ({
@@ -21,6 +22,7 @@ export const useAddTripItemForm = ({
   itemId,
   initialData,
   onSuccess,
+  onError,
 }: UseAddTripItemFormParams) => {
   const addTripItemMutation = useAddTripItemMutation();
   const updateTripItemMutation = useUpdateTripItemMutation();
@@ -96,7 +98,7 @@ export const useAddTripItemForm = ({
           ...tripItemInformation,
           place: tripItemInformation.itemType ? tripItemInformation.place : null,
         },
-        { onSuccess }
+        { onSuccess, onError }
       );
 
       return;
@@ -109,7 +111,7 @@ export const useAddTripItemForm = ({
         ...tripItemInformation,
         place: tripItemInformation.itemType ? tripItemInformation.place : null,
       },
-      { onSuccess }
+      { onSuccess, onError }
     );
   };
 

@@ -8,11 +8,7 @@ export const useUpdateTripItemMutation = () => {
 
   const updateTripItemMutation = useMutation(putTripItem(), {
     onSuccess: (_, { tripId }) => {
-      // TODO : 낙관적 업데이트 적용?
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
-    },
-    onError: () => {
-      alert(ERROR_MESSAGE);
     },
   });
 

@@ -10,7 +10,6 @@ const meta = {
   argTypes: {
     tripId: { control: false },
     selectedDayLog: { control: false },
-    dates: { control: false },
   },
 } satisfies Meta<typeof DayLogList>;
 
@@ -22,16 +21,10 @@ export const Default: Story = {
     const { selected, handleSelectClick } = useSelect(trip.dayLogs[0].id);
     const selectedDayLog = trip.dayLogs.find((log) => log.id === selected)!;
 
-    const dates = trip.dayLogs.map((data) => ({
-      id: data.id,
-      date: data.date,
-    }));
-
     return (
       <DayLogList
         tripId={1}
         selectedDayLog={selectedDayLog}
-        dates={dates}
         onTabChange={handleSelectClick}
         openAddModal={() => {}}
       />
@@ -40,7 +33,6 @@ export const Default: Story = {
   args: {
     tripId: 1,
     selectedDayLog: trip.dayLogs[0],
-    dates: [],
     onTabChange: () => {},
   },
 };

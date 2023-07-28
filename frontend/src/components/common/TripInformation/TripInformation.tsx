@@ -1,6 +1,7 @@
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 import type { TripData } from '@type/trip';
 import { Badge, Box, Button, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
+import { memo } from 'react';
 
 import { formatDate } from '@utils/formatter';
 
@@ -21,12 +22,12 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
 
   return (
     <>
-      <section css={sectionStyling}>
+      <header css={sectionStyling}>
         <Box css={imageWrapperStyling}>
           <div />
           <img src={information.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
         </Box>
-        <Box>
+        <Box tag="section">
           <Flex styles={{ gap: Theme.spacer.spacing1 }}>
             {information.cities.map(({ id, name }) => (
               <Badge key={id}>{name}</Badge>
@@ -47,11 +48,12 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
           <Button onClick={openEditModal} css={editButtonStyling} variant="outline" size="small">
             여행 정보 수정
           </Button>
+          {/* TODO : 클릭하면 읽기 전용 페이지로 이동 i.e. /trip/1 */}
           <Button variant="primary" size="small">
             저장
           </Button>
         </Box>
-      </section>
+      </header>
       {isEditModalOpen && (
         <TripInfoEditModal isOpen={isEditModalOpen} onClose={closeEditModal} {...information} />
       )}
@@ -59,4 +61,4 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
   );
 };
 
-export default TripInformation;
+export default memo(TripInformation);

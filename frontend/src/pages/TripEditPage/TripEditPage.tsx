@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 import { useTripQuery } from '@hooks/api/useTripQuery';
-import { useTripDates } from '@hooks/trip/useTripDates';
 
 import { addButtonStyling, containerStyling } from '@pages/TripEditPage/TripEditPage.style';
 
@@ -14,7 +13,7 @@ import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal
 const TripEditPage = () => {
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error(`tripId doesn't exist`);
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
 
   const { tripData } = useTripQuery(Number(tripId));
   useExpenseCategoryQuery();
@@ -23,7 +22,6 @@ const TripEditPage = () => {
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
-  const { tripDates } = useTripDates(Number(tripId));
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
   return (
@@ -32,7 +30,6 @@ const TripEditPage = () => {
       <DayLogList
         tripId={Number(tripId)}
         selectedDayLog={selectedDayLog}
-        dates={tripDates}
         onTabChange={handleDayLogIdSelectClick}
         openAddModal={openAddModal}
       />
@@ -41,7 +38,6 @@ const TripEditPage = () => {
         <TripItemAddModal
           tripId={Number(tripId)}
           dayLogId={selectedDayLog.id}
-          dates={tripDates}
           onClose={closeAddModal}
         />
       )}
