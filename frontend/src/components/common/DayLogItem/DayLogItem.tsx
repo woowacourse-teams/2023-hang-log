@@ -37,12 +37,14 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
             toggleId={DAY_LOG_ITEM_FILTERS.ALL}
             selectedId={selectedFilter}
             changeSelect={handleFilterSelectClick}
+            aria-label={`${DAY_LOG_ITEM_FILTERS.ALL} 필터`}
           />
           <Toggle
             text={DAY_LOG_ITEM_FILTERS.SPOT}
             toggleId={DAY_LOG_ITEM_FILTERS.SPOT}
             selectedId={selectedFilter}
             changeSelect={handleFilterSelectClick}
+            aria-label={`${DAY_LOG_ITEM_FILTERS.SPOT} 필터`}
           />
         </ToggleGroup>
       </Flex>

@@ -93,6 +93,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
               </Badge>
             ))}
             <Input
+              aria-label="방문 도시"
               placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
               value={queryWord}
               onChange={handleInputChange}

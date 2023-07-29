@@ -33,7 +33,7 @@ const TripEditPage = () => {
         onTabChange={handleDayLogIdSelectClick}
         openAddModal={openAddModal}
       />
-      <FloatingButton css={addButtonStyling} onClick={openAddModal} />
+      <FloatingButton css={addButtonStyling} aria-label="여행 아이템 추가" onClick={openAddModal} />
       {isAddModalOpen && (
         <TripItemAddModal
           tripId={Number(tripId)}
