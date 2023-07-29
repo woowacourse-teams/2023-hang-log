@@ -1,4 +1,4 @@
-package hanglog.member.controller;
+package hanglog.member.presentation;
 
 import hanglog.member.provider.Provider;
 import hanglog.member.service.OAuthLoginService;
