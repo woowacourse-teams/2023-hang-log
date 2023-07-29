@@ -1,6 +1,9 @@
 package hanglog.member.provider;
 
 
+import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
+
+import hanglog.global.exception.AuthException;
 import hanglog.member.dto.GoogleUserInfoResponse;
 import hanglog.member.dto.KakaoUserInfoResponse;
 import jakarta.annotation.PostConstruct;
@@ -27,7 +30,7 @@ public enum Provider {
         return Arrays.stream(values())
                 .filter(value -> value.provider.equals(provider))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("해당 OAuth 서비스는 제공하지 않습니다."));
+                .orElseThrow(() -> new AuthException(NOT_SUPPORTED_OAUTH_SERVICE));
     }
 
     @Component
