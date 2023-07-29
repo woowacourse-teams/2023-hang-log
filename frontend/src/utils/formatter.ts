@@ -13,12 +13,10 @@ export const formatNumberToMoney = (number: number) => {
   return number === 0 ? 0 : number.toLocaleString();
 };
 
-export const formatDateRange = (dateRange: DateRangeData) => {
-  const { start, end } = dateRange;
+export const formatDateRange = ({ startDate, endDate }: DateRangeData) => {
+  if (!startDate || !endDate) return '';
 
-  if (!start || !end) return '';
-
-  return `${formatDate(start)} - ${formatDate(end)}`;
+  return `${formatDate(startDate)} - ${formatDate(endDate)}`;
 };
 
 export const formatStringToLetter = (string: string) => {

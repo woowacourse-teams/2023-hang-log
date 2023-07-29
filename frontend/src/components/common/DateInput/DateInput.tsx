@@ -18,7 +18,7 @@ interface DateInputProps {
 }
 
 const DateInput = ({
-  initialDateRange = { start: null, end: null },
+  initialDateRange = { startDate: null, endDate: null },
   updateDateInfo,
   required = false,
 }: DateInputProps) => {
@@ -31,7 +31,7 @@ const DateInput = ({
   }, [selectedDateRange]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
-    if (!dateRange.end) return;
+    if (!dateRange.endDate) return;
 
     setSelectedDateRange(dateRange);
     setInputValue(formatDateRange(dateRange));
@@ -56,7 +56,7 @@ const DateInput = ({
               maxDateRange={60}
               hasRangeRestriction={true}
               initialSelectedDateRange={
-                selectedDateRange.start !== null ? selectedDateRange : undefined
+                selectedDateRange.startDate !== null ? selectedDateRange : undefined
               }
             />
           </Box>

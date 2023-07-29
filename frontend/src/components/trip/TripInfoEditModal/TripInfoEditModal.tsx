@@ -55,7 +55,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Flex styles={{ direction: 'column', gap: '4px' }}>
           <DateInput
             required
-            initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
+            initialDateRange={{ startDate: tripInfo.startDate, endDate: tripInfo.endDate }}
             updateDateInfo={updateDateInfo}
           />
           <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>

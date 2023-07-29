@@ -6,7 +6,7 @@ const meta = {
   title: 'common/DateInput',
   component: DateInput,
   args: {
-    initialDateRange: { start: null, end: null },
+    initialDateRange: { startDate: null, endDate: null },
   },
 } satisfies Meta<typeof DateInput>;
 
@@ -17,6 +17,6 @@ export const Default: Story = {};
 
 export const InitialDateRage: Story = {
   args: {
-    initialDateRange: { start: '2023-03-12', end: '2023-04-01' },
+    initialDateRange: { startDate: '2023-03-12', endDate: '2023-04-01' },
   },
 };
