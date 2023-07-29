@@ -44,3 +44,5 @@ src/main/resources/static/docs/
 
 ### Ignore .DS_Store ###
 **/.DS_Store
+
+log/
