@@ -3,8 +3,10 @@ import { NewTripData } from '@type/trips';
 
 import { axiosInstance } from '@api/axiosInstance';
 
-export const postNewTrip = () => async (newTripData: NewTripData) => {
+export const postTrip = () => async (newTripData: NewTripData) => {
   const response = await axiosInstance.post(END_POINTS.TRIPS, newTripData);
 
-  return response.headers.location;
+  const tripId = response.headers.location.replace(`${END_POINTS.TRIPS}/`, '');
+
+  return tripId;
 };
