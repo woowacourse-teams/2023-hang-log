@@ -36,12 +36,6 @@ public class ExpenseService {
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
 
-    private static Integer calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
-        return dayLogAmounts.values().stream()
-                .reduce(Integer::sum)
-                .orElse(0);
-    }
-
     public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
@@ -84,7 +78,9 @@ public class ExpenseService {
     ) {
         for (final Item item : dayLog.getItems()) {
             final Expense expense = item.getExpense();
-
+            if (expense == null) {
+                continue;
+            }
             final int dayLogAmount = dayLogAmounts.getOrDefault(dayLog, 0);
             dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense, currency));
 
@@ -94,10 +90,13 @@ public class ExpenseService {
     }
 
     private int changeToKRW(final Expense expense, final Currency currency) {
-        if (expense == null) {
-            return 0;
-        }
         final double rate = CurrencyType.mappingCurrency(expense.getCurrency(), currency);
         return (int) (expense.getAmount() * rate);
+    }
+
+    private Integer calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
+        return dayLogAmounts.values().stream()
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 }
