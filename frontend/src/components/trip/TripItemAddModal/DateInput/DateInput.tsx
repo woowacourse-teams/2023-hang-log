@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';

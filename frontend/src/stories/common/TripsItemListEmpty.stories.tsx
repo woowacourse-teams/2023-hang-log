@@ -11,4 +11,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SortBy_Register: Story = {};
+export const SortByRegister: Story = {};

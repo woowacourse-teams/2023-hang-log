@@ -12,10 +12,10 @@ const TutorialModal = () => {
 
   useEffect(() => {
     openTutorial();
-  }, []);
+  }, [openTutorial]);
 
   return (
-    <Modal isOpen={isTutorialOpen} closeModal={closeTutorial} hasCloseButton={true}>
+    <Modal isOpen={isTutorialOpen} closeModal={closeTutorial} hasCloseButton>
       <Flex css={boxStyling}>
         <SVGCarousel
           width={385}

@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import type { CityData } from '@type/city';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { makeRegexByCho } from '@utils/cityFilter';
 import { formatStringToLetter } from '@utils/formatter';
@@ -16,11 +16,6 @@ export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySugg
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
 
-  useEffect(() => {
-    setFocusedSuggestionIndex(-1);
-    focusOnlySuggestion();
-  }, [suggestions]);
-
   const setNewSuggestions = (word: string) => {
     const query = formatStringToLetter(word);
     const regex = makeRegexByCho(query);
@@ -31,53 +26,68 @@ export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySugg
     }
   };
 
-  const focusUpperSuggestion = () => {
+  const focusUpperSuggestion = useCallback(() => {
     setFocusedSuggestionIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : suggestions.length - 1
     );
-  };
+  }, [suggestions.length]);
 
-  const focusLowerSuggestion = () => {
+  const focusLowerSuggestion = useCallback(() => {
     setFocusedSuggestionIndex((prevIndex) =>
       prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0
     );
-  };
+  }, [suggestions.length]);
 
-  const focusOnlySuggestion = () => {
+  const focusOnlySuggestion = useCallback(() => {
     if (suggestions.length === 1) {
       setFocusedSuggestionIndex(0);
     }
-  };
+  }, [suggestions.length]);
 
   const isFocused = (index: number) => {
     return index === focusedSuggestionIndex;
   };
 
-  const handleKeyPress = (e: globalThis.KeyboardEvent) => {
-    if (e.key === 'ArrowUp') {
-      focusUpperSuggestion();
-    }
-
-    if (e.key === 'ArrowDown') {
-      focusLowerSuggestion();
-    }
-
-    if (e.key === 'Enter') {
-      if (focusedSuggestionIndex >= 0) {
-        onItemSelect(suggestions[focusedSuggestionIndex]);
+  const handleKeyPress = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'ArrowUp') {
+        focusUpperSuggestion();
       }
-    }
 
-    if (e.key === 'Escape') {
-      closeSuggestion();
-    }
-  };
+      if (e.key === 'ArrowDown') {
+        focusLowerSuggestion();
+      }
+
+      if (e.key === 'Enter') {
+        if (focusedSuggestionIndex >= 0) {
+          onItemSelect(suggestions[focusedSuggestionIndex]);
+        }
+      }
+
+      if (e.key === 'Escape') {
+        closeSuggestion();
+      }
+    },
+    [
+      closeSuggestion,
+      focusLowerSuggestion,
+      focusUpperSuggestion,
+      focusedSuggestionIndex,
+      onItemSelect,
+      suggestions,
+    ]
+  );
+
+  useEffect(() => {
+    setFocusedSuggestionIndex(-1);
+    focusOnlySuggestion();
+  }, [focusOnlySuggestion, suggestions]);
 
   useEffect(() => {
     window.addEventListener('keyup', handleKeyPress);
 
     return () => window.removeEventListener('keyup', handleKeyPress);
-  }, [focusedSuggestionIndex]);
+  }, [focusedSuggestionIndex, handleKeyPress]);
 
   return {
     suggestions,
