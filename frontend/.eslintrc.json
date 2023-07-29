@@ -1,12 +1,18 @@
 {
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "airbnb",
     "airbnb/hooks",
     "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:jsx-a11y/recommended",
     "plugin:storybook/recommended",
     "plugin:prettier/recommended",
     "prettier"
@@ -16,7 +22,12 @@
     "no-useless-constructor": "off",
     "no-use-before-define": "off",
     "no-shadow": "off",
-    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports"
+      }
+    ],
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
@@ -36,7 +47,8 @@
       {
         "namedComponents": "arrow-function"
       }
-    ]
+    ],
+    "react/no-unknown-property": ["error", { "ignore": ["css"] }]
   },
   "overrides": [
     {
@@ -46,5 +58,9 @@
         "react-hooks/rules-of-hooks": "off"
       }
     }
-  ]
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  }
 }
