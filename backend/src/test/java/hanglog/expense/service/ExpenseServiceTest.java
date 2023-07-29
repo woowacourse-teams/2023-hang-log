@@ -86,7 +86,8 @@ class ExpenseServiceTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(actual).usingRecursiveComparison()
+            softly.assertThat(actual)
+                    .usingRecursiveComparison()
                     .ignoringFields("categories", "categoryExpense", "dayLogs")
                     .isEqualTo(
                             TripExpenseResponse.of(
@@ -147,7 +148,8 @@ class ExpenseServiceTest {
 
             for (final DayLogExpenseResponse response : actual.getDayLogs()) {
                 for (final ItemDetailResponse item : response.getItems()) {
-                    softly.assertThat(expectItemList).usingRecursiveFieldByFieldElementComparator().
+                    softly.assertThat(expectItemList)
+                            .usingRecursiveFieldByFieldElementComparator().
                             contains(item);
                 }
             }
@@ -169,7 +171,8 @@ class ExpenseServiceTest {
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
 
         // then
-        assertThat(actual).usingRecursiveComparison()
+        assertThat(actual)
+                .usingRecursiveComparison()
                 .isEqualTo(
                         TripExpenseResponse.of(
                                 LONDON_TRIP,

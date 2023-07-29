@@ -40,7 +40,8 @@ class CityControllerTest extends RestDocsTest {
     void getCities() throws Exception {
         // given
         when(cityService.getAllCities()).thenReturn(
-                List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON)));
+                List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON))
+        );
 
         // when
         final ResultActions resultActions = mockMvc.perform(get("/cities")

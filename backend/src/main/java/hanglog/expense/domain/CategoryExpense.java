@@ -14,11 +14,7 @@ public class CategoryExpense {
     private final int amount;
     private final BigDecimal percentage;
 
-    public CategoryExpense(
-            final Category category,
-            final int amount,
-            final int totalAmount
-    ) {
+    public CategoryExpense(final Category category, final int amount, final int totalAmount) {
         this.category = category;
         this.amount = amount;
         this.percentage = calculatePercentage(amount, totalAmount);
