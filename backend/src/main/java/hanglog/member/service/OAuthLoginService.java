@@ -1,5 +1,8 @@
 package hanglog.member.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
+
+import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.member.dto.AccessTokenRequest;
@@ -48,7 +51,7 @@ public class OAuthLoginService {
         );
 
         return Optional.ofNullable(accessTokenResponse.getBody())
-                .orElseThrow(() -> new RuntimeException("Access token is null"))
+                .orElseThrow(() -> new AuthException(INVALID_AUTHORIZATION_CODE))
                 .getAccessToken();
     }
 

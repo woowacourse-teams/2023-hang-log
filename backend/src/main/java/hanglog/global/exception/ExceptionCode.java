@@ -24,7 +24,9 @@ public enum ExceptionCode {
 
     INVALID_RATING(3001, "별점은 N.0점이거나 N.5점 형태이어야 합니다."),
 
-    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다.");
+    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
+
+    INVALID_AUTHORIZATION_CODE(9000, "유효하지 않은 인증 코드입니다.");
 
     private final int code;
     private final String message;
