@@ -1,19 +1,19 @@
 package hanglog.member.service;
 
 import hanglog.member.domain.Member;
-import hanglog.member.provider.Provider;
-import hanglog.member.provider.ProviderProperties;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.member.dto.AccessTokenRequest;
 import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.UserInfo;
+import hanglog.member.provider.Provider;
+import hanglog.member.provider.ProviderProperties;
+import java.util.Optional;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,41 +37,32 @@ public class OAuthLoginService {
     }
 
     private String getAccessToken(final String code, final ProviderProperties properties) {
+        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(code, properties);
+        final HttpEntity<AccessTokenRequest> accessTokenRequestEntity = new HttpEntity<>(accessTokenRequest);
+
         final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
                 properties.getTokenUri(),
                 HttpMethod.POST,
-                getEntity(code, properties),
+                accessTokenRequestEntity,
                 AccessTokenResponse.class
         );
-        // TODO : token get 실패시 에러처리
-        return accessTokenResponse.getBody().getAccessToken();
+
+        return Optional.ofNullable(accessTokenResponse.getBody())
+                .orElseThrow(() -> new RuntimeException("Access token is null"))
+                .getAccessToken();
     }
 
     private UserInfo getUserInfo(final String accessToken, final Provider provider) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
-        final HttpEntity entity = new HttpEntity(headers);
+        final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
+
         return (UserInfo) restTemplate.exchange(
                 provider.getProperties().getUserUri(),
                 HttpMethod.GET,
-                entity,
+                userInfoRequestEntity,
                 provider.getResponseDto()
         ).getBody();
-
-    }
-
-    private HttpEntity getEntity(final String code, final ProviderProperties properties) {
-        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
-        params.add("client_id", properties.getClientId());
-        params.add("client_secret", properties.getClientSecret());
-        params.add("redirect_uri", properties.getRedirectUri());
-        params.add("grant_type", "authorization_code");
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        return new HttpEntity(params, headers);
     }
 
     // TODO : 토큰 받기
