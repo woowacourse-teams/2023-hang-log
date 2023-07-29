@@ -1,7 +1,7 @@
 package hanglog.trip.presentation;
 
-import static hanglog.trip.fixture.CityFixture.LONDON;
-import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.expense.fixture.CityFixture.LONDON;
+import static hanglog.expense.fixture.CityFixture.PARIS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

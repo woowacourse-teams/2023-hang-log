@@ -1,9 +1,9 @@
 package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
+import static hanglog.expense.fixture.CityFixture.LONDON;
+import static hanglog.expense.fixture.CityFixture.TOKYO;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
-import static hanglog.trip.fixture.CityFixture.LONDON;
-import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -15,6 +15,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
@@ -39,7 +40,7 @@ class ExpenseControllerTest extends RestDocsTest {
 
     @DisplayName("모든 경비를 가져온다.")
     @Test
-    void getExpenses() throws Exception {
+    void getExpensesTest() throws Exception {
         // given
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(LONDON_TO_JAPAN,
                 20000,
@@ -202,6 +203,7 @@ class ExpenseControllerTest extends RestDocsTest {
                                                 .attributes(field("constraint", "2자 문자열"))
                                 )
                         )
-                );
+                )
+                .andExpect(status().isOk());
     }
 }
