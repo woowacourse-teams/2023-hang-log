@@ -96,7 +96,7 @@ public class ExpenseService {
         return (int) (expense.getAmount() * rate);
     }
 
-    private Integer calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
+    private int calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
         return dayLogAmounts.values().stream()
                 .reduce(Integer::sum)
                 .orElse(0);
