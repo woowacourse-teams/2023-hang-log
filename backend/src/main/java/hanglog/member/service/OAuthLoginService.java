@@ -37,7 +37,7 @@ public class OAuthLoginService {
     }
 
     private String getAccessToken(final String code, final ProviderProperties properties) {
-        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(code, properties);
+        final AccessTokenRequest accessTokenRequest = AccessTokenRequest.of(code, properties);
         final HttpEntity<AccessTokenRequest> accessTokenRequestEntity = new HttpEntity<>(accessTokenRequest);
 
         final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
@@ -66,8 +66,8 @@ public class OAuthLoginService {
     }
 
     // TODO : 토큰 받기
-    private Member save(final String socialLoginId, final String nickname, final String image) {
-        final Member member = new Member(socialLoginId, nickname, image);
+    private Member save(final String socialLoginId, final String nickname, final String imageUrl) {
+        final Member member = new Member(socialLoginId, nickname, imageUrl);
         return memberRepository.findBySocialLoginId(socialLoginId)
                 .orElseGet(() -> memberRepository.save(member));
     }
