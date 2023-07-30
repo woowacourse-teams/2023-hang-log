@@ -12,14 +12,20 @@ export const trip: TripData = {
     {
       id: 1,
       name: '런던',
+      latitude: 51.509865,
+      longitude: -0.118092,
     },
     {
       id: 2,
       name: '애든버러',
+      latitude: 55.953251,
+      longitude: -3.188267,
     },
     {
       id: 3,
       name: '파리',
+      latitude: 48.864716,
+      longitude: 2.338629,
     },
   ],
   dayLogs: [
