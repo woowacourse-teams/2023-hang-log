@@ -10,11 +10,12 @@ export const containerStyling = css({
 });
 
 export const mapContainerStyling = css({
-  position: 'fixed',
-  width: '50vw',
-  height: '100vh',
+  position: 'sticky',
+  top: '81px',
   left: '50vw',
-  top: 0,
+
+  width: '50vw',
+  height: 'calc(100vh - 81px)',
 });
 
 export const addButtonStyling = css({

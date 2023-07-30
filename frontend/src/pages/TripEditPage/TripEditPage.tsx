@@ -1,4 +1,4 @@
-import { FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
+import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
@@ -38,7 +38,7 @@ const TripEditPage = () => {
     }));
 
   return (
-    <>
+    <Flex>
       <section css={containerStyling}>
         <TripInformation {...tripData} />
         <DayLogList
@@ -61,7 +61,7 @@ const TripEditPage = () => {
           <TripMap places={places} />
         </GoogleMapWrapper>
       </section>
-    </>
+    </Flex>
   );
 };
 
