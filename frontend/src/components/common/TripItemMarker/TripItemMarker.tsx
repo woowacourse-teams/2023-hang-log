@@ -1,15 +1,18 @@
+import { focusedIdState } from '@/store/scrollFocus';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 interface TripItemMarkerProps {
   map: google.maps.Map;
   id: number;
   lat: number;
   lng: number;
-  isSelected: boolean;
+  isSelected?: boolean;
 }
 
 const TripItemMarker = ({ map, id, lat, lng, isSelected }: TripItemMarkerProps) => {
   const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const focusedId = useRecoilValue(focusedIdState);
 
   useEffect(() => {
     const marker = new google.maps.marker.AdvancedMarkerElement({
@@ -26,21 +29,25 @@ const TripItemMarker = ({ map, id, lat, lng, isSelected }: TripItemMarkerProps) 
 
   useEffect(() => {
     if (marker) {
-      const pin = isSelected
-        ? new google.maps.marker.PinElement({
-            glyphColor: '#D83AA2',
-            background: '#EA73C1',
-            borderColor: '#D83AA2',
-          })
-        : new google.maps.marker.PinElement({
-            glyphColor: '#0083BB',
-            background: '#26A8E0',
-            borderColor: '#0083BB',
-          });
+      const pin =
+        focusedId === id
+          ? new google.maps.marker.PinElement({
+              scale: 1.2,
+              glyphColor: '#D83AA2',
+              background: '#EA73C1',
+              borderColor: '#D83AA2',
+            })
+          : new google.maps.marker.PinElement({
+              glyphColor: '#0083BB',
+              background: '#26A8E0',
+              borderColor: '#0083BB',
+            });
+
+      marker.addListener('click', () => console.log(id));
 
       marker.content = pin.element;
     }
-  }, [isSelected, marker]);
+  }, [focusedId, id, isSelected, marker]);
 
   return null;
 };

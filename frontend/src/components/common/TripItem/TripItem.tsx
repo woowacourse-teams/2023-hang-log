@@ -1,6 +1,7 @@
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
 import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
+import { useEffect, useRef } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -20,6 +21,7 @@ import {
 interface TripListItemProps extends TripItemData {
   tripId: number;
   dayLogId: number;
+  observer?: IntersectionObserver | null;
   onDragStart: () => void;
   onDragEnter: () => void;
   onDragEnd: () => void;
@@ -28,17 +30,27 @@ interface TripListItemProps extends TripItemData {
 const TripItem = ({
   tripId,
   dayLogId,
+  observer,
   onDragStart,
   onDragEnter,
   onDragEnd,
   ...information
 }: TripListItemProps) => {
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
+  const itemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (itemRef.current) {
+      observer?.observe(itemRef.current);
+    }
+  }, [observer]);
 
   return (
     // ! 수정 모드에서만 drag할 수 있다
     <li
+      ref={itemRef}
       css={getContainerStyling(isDragging)}
+      data-id={information.id}
       draggable
       onDragStart={onDragStart}
       onDrag={handleDrag}

@@ -55,13 +55,13 @@ const TripMap = ({ centerLat, centerLng, places }: TripMapProps) => {
       <div id="map" ref={wrapperRef} css={{ height: 'calc(100vh - 81px)' }} />
       {map && (
         <>
-          {places.map((place, index) => (
+          {places.map((place) => (
             <TripItemMarker
               map={map}
               id={place.id}
               lat={place.coordinate.lat}
               lng={place.coordinate.lng}
-              isSelected={index === 0}
+              // isSelected={index === 0}
             />
           ))}
           <MapDashedLine map={map} coordinates={coordinates} />
