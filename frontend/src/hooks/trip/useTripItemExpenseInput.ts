@@ -9,7 +9,7 @@ export const useTripItemExpenseInput = (
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
   initialExpenseValue?: TripItemFormData['expense']
 ) => {
-  const [_, setExpenseValue] = useState<TripItemFormData['expense']>(
+  const [, setExpenseValue] = useState<TripItemFormData['expense']>(
     initialExpenseValue ?? {
       currency: DEFAULT_CURRENCY,
       categoryId: 100,

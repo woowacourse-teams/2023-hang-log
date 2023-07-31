@@ -1,8 +1,9 @@
-import { useDayLogOrderMutation } from '@/hooks/api/useDayLogOrderMutation';
+import { useScrollFocus } from '@/hooks/common/useScrollFocus';
 import type { TripItemData } from '@type/tripItem';
-import { Button, Divider, Heading, Text } from 'hang-log-design-system';
+import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
 
+import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
 
 import TripItem from '@components/common/TripItem/TripItem';
@@ -20,10 +21,21 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
-  const handlePositionChange = async (newItems: TripItemData[]) => {
+  const { observer } = useScrollFocus();
+  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
+
+  const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
 
-    dayLogOrderMutation.mutate({ tripId, dayLogId, itemIds });
+    dayLogOrderMutation.mutate(
+      { tripId, dayLogId, itemIds },
+      {
+        onError: () => {
+          handleItemsUpdate(tripItems);
+          openErrorToast();
+        },
+      }
+    );
   };
 
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
@@ -31,31 +43,32 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
 
   useEffect(() => {
     handleItemsUpdate(tripItems);
-  }, [tripItems]);
-
-  // useEffect를 안 사용하고 롤백할 수 있는 방법??
-  useEffect(() => {
-    if (dayLogOrderMutation.isError) {
-      handleItemsUpdate(tripItems);
-    }
-  }, [dayLogOrderMutation.isError]);
+  }, [handleItemsUpdate, tripItems]);
 
   return (
-    <ol css={containerStyling}>
-      {items.map((item, index) => (
-        <Fragment key={item.id}>
-          <TripItem
-            tripId={tripId}
-            dayLogId={dayLogId}
-            onDragStart={handleDragStart(index)}
-            onDragEnter={handleDragEnter(index)}
-            onDragEnd={handleDragEnd}
-            {...item}
-          />
-          <Divider />
-        </Fragment>
-      ))}
-    </ol>
+    <>
+      <ol css={containerStyling}>
+        {items.map((item, index) => (
+          <Fragment key={item.id}>
+            <TripItem
+              tripId={tripId}
+              dayLogId={dayLogId}
+              observer={observer}
+              onDragStart={handleDragStart(index)}
+              onDragEnter={handleDragEnter(index)}
+              onDragEnd={handleDragEnd}
+              {...item}
+            />
+            <Divider />
+          </Fragment>
+        ))}
+      </ol>
+      {isErrorTostOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          아이템 순서 변경을 실패했습니다. 잠시 후 다시 시도해 주세요.
+        </Toast>
+      )}
+    </>
   );
 };
 

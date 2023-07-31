@@ -3,7 +3,7 @@ import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import { useEffect, useState } from 'react';
 
-import { dateRangeToString } from '@utils/formatter';
+import { formatDateRange } from '@utils/formatter';
 
 import {
   calendarStyling,
@@ -13,31 +13,33 @@ import {
 
 interface DateInputProps {
   initialDateRange?: DateRangeData;
-  setDateData: (dateRange: DateRangeData) => void;
+  updateDateInfo: (dateRange: DateRangeData) => void;
+  required?: boolean;
 }
 
 const DateInput = ({
-  initialDateRange = { start: null, end: null },
-  setDateData,
+  initialDateRange = { startDate: null, endDate: null },
+  updateDateInfo,
+  required = false,
 }: DateInputProps) => {
-  const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
+  const [inputValue, setInputValue] = useState(formatDateRange(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
 
   useEffect(() => {
-    setDateData(selectedDateRange);
-  }, [selectedDateRange]);
+    updateDateInfo(selectedDateRange);
+  }, [selectedDateRange, updateDateInfo]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
-    if (!dateRange.end) return;
+    if (!dateRange.endDate) return;
 
     setSelectedDateRange(dateRange);
-    setInputValue(dateRangeToString(dateRange));
+    setInputValue(formatDateRange(dateRange));
   };
 
   return (
     <Flex styles={{ direction: 'column', width: '400px', margin: '0 auto', align: 'flex-start' }}>
-      <Label>방문 기간</Label>
+      <Label required={required}>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
           <Input
@@ -52,9 +54,9 @@ const DateInput = ({
             <DateRangePicker
               onDateSelect={handleDateClick}
               maxDateRange={60}
-              hasRangeRestriction={true}
+              hasRangeRestriction
               initialSelectedDateRange={
-                selectedDateRange.start !== null ? selectedDateRange : undefined
+                selectedDateRange.startDate !== null ? selectedDateRange : undefined
               }
             />
           </Box>

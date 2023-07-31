@@ -20,7 +20,7 @@ export const getItemStyling = (isFocused: boolean) => {
 };
 
 export const emptyTextStyling = css({
-  margin: Theme.spacer.spacing2,
+  padding: `12px ${Theme.spacer.spacing3}`,
 
   color: Theme.color.gray500,
 });

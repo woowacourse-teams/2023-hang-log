@@ -11,7 +11,9 @@ export const useExpenseCategoryQuery = () => {
     getExpenseCategory,
     {
       retry: NETWORK.RETRY_COUNT,
+      suspense: true,
       useErrorBoundary: true,
+      cacheTime: Infinity,
     }
   );
 

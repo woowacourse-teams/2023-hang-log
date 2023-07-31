@@ -8,7 +8,8 @@
     "dev": "webpack serve --mode development --open --hot",
     "build": "webpack --mode production",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "lint": "eslint src"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,7 @@
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
-    "hang-log-design-system": "^1.2.1",
+    "hang-log-design-system": "^1.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
@@ -45,6 +46,8 @@
     "@types/google.maps": "^3.53.5",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
     "babel-plugin-react-require": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "dotenv-webpack": "^8.0.1",

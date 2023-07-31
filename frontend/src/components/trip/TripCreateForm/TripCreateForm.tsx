@@ -3,22 +3,22 @@ import { Button } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useNewTripMutation } from '@hooks/api/useNewTripMutation';
-import { useNewTripForm } from '@hooks/newTrip/useNewTripForm';
+import { useCreateTripMutation } from '@hooks/api/useCreateTripMutation';
+import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import { formStyling } from '@components/newTrip/NewTripForm/NewTripForm.style';
+import { formStyling } from '@components/trip/TripCreateForm/TripCreateForm.style';
 
-const NewTripForm = () => {
-  const { newTripData, setCityData, setDateData, isAllInputFilled } = useNewTripForm();
-  const newTripMutation = useNewTripMutation();
+const TripCreateForm = () => {
+  const { cityDateInfo, updateCityInfo, updateDateInfo, isCityDateValid } = useCityDateForm();
+  const createTripMutation = useCreateTripMutation();
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    newTripMutation.mutate(newTripData, {
+    createTripMutation.mutate(cityDateInfo, {
       onSuccess: goToTripEditPageWithId,
     });
   };
@@ -30,13 +30,13 @@ const NewTripForm = () => {
 
   return (
     <form css={formStyling} onSubmit={handleSubmit}>
-      <CitySearchBar setCityData={setCityData} />
-      <DateInput setDateData={setDateData} />
-      <Button variant="primary" disabled={!isAllInputFilled}>
+      <CitySearchBar updateCityInfo={updateCityInfo} />
+      <DateInput updateDateInfo={updateDateInfo} />
+      <Button variant="primary" disabled={!isCityDateValid}>
         기록하기
       </Button>
     </form>
   );
 };
 
-export default NewTripForm;
+export default TripCreateForm;

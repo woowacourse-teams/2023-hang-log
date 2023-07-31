@@ -189,3 +189,14 @@ include::{snippets}/city-controller-test/get-cities/http-request.adoc[]
 
 ==== 응답
 include::{snippets}/city-controller-test/get-cities/http-response.adoc[]
+
+== 카테고리 API
+
+=== 경비 카테고리 조회 (GET /categories)
+
+==== 요청
+include::{snippets}/category-controller-test/get-expense-categories/http-request.adoc[]
+
+==== 응답
+include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
+include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]
