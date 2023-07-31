@@ -38,7 +38,7 @@ export const tripItemHandlers = [
       imageUrls: [],
     };
 
-    trip.dayLogs[2].items.push(newTripItem);
+    trip.dayLogs[0].items.push(newTripItem);
 
     return res(ctx.status(200));
   }),

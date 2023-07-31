@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = PRIVATE)
-public class TripResponse {
+public class TripDetailResponse {
 
     private final Long id;
     private final List<CityWithPositionResponse> cities;
@@ -20,20 +20,26 @@ public class TripResponse {
     private final LocalDate endDate;
     private final String description;
     private final String imageUrl;
+    private final List<DayLogGetResponse> dayLogs;
 
-    public static TripResponse of(final Trip trip, final List<City> cities) {
+    public static TripDetailResponse of(final Trip trip, final List<City> cities) {
+        final List<DayLogGetResponse> dayLogGetResponses = trip.getDayLogs().stream()
+                .map(DayLogGetResponse::of)
+                .toList();
+
         final List<CityWithPositionResponse> cityWithPositionResponses = cities.stream()
                 .map(CityWithPositionResponse::of)
                 .toList();
 
-        return new TripResponse(
+        return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
                 trip.getTitle(),
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                trip.getImageUrl()
+                trip.getImageUrl(),
+                dayLogGetResponses
         );
     }
 }
