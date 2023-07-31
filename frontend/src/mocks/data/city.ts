@@ -1,6 +1,6 @@
 import type { CityData } from '@type/city';
 
-export const cities: CityData[] = [
+export const city: CityData[] = [
   { id: 1, name: '서울, 한국' },
   { id: 2, name: '도쿄, 일본' },
   { id: 3, name: '뉴욕, 미국' },
