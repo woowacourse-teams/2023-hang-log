@@ -61,6 +61,14 @@ export const expense: ExpenseData = {
       amount: 500000,
       percentage: 2,
     },
+    {
+      category: {
+        id: 600,
+        name: '기타',
+      },
+      amount: 0,
+      percentage: 0,
+    },
   ],
   exchangeRate: {
     date: '2023-07-31',
