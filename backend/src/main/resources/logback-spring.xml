@@ -50,7 +50,7 @@
     </appender>
 
     <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>../../logs/info/${BY_DATE}.log</file>
+        <file>../logs/info/${BY_DATE}.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
@@ -61,7 +61,7 @@
             <charset>utf8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>../../logs/backup/info/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>../logs/backup/info/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>10</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
