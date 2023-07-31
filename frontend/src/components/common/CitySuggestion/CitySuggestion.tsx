@@ -26,7 +26,7 @@ const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: Suggestion
     onItemSelect,
     closeSuggestion,
   });
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 

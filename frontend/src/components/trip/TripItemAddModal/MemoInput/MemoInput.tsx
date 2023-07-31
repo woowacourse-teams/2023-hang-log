@@ -18,6 +18,7 @@ const MemoInput = ({ value, updateInputValue }: MemoInputProps) => {
   return (
     <Textarea
       css={textareaStyling}
+      id="memo"
       label="메모"
       name="memo"
       value={value ?? ''}

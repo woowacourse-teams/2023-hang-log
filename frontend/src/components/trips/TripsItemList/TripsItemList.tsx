@@ -32,17 +32,21 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
             toggleId={ORDER_BY_REGISTRATION}
             selectedId={order}
             changeSelect={changeSelect}
+            tabIndex={3}
+            aria-label="등록순 정렬 버튼"
           />
           <Toggle
             text={ORDER_BY_DATE}
             toggleId={ORDER_BY_DATE}
             selectedId={order}
             changeSelect={changeSelect}
+            tabIndex={4}
+            aria-label="날짜순 정렬 버튼"
           />
         </ToggleGroup>
       </Flex>
       <Box tag="ol" css={gridBoxStyling}>
-        {trips.map((trip) => {
+        {trips.map((trip, index) => {
           return (
             <TripsItem
               key={trip.id}
@@ -51,6 +55,7 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
               itemName={trip.title}
               duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
               description={trip.description}
+              index={index}
             />
           );
         })}
