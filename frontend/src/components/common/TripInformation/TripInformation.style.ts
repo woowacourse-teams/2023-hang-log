@@ -54,13 +54,3 @@ export const buttonContainerStyling = css({
   display: 'flex',
   gap: Theme.spacer.spacing1,
 });
-
-export const editButtonStyling = css({
-  backgroundColor: 'transparent',
-
-  color: Theme.color.white,
-
-  '&:hover:enabled': {
-    backgroundColor: 'rgba(255, 255, 255, .2)',
-  },
-});
