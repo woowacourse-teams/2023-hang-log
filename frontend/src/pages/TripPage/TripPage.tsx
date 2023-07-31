@@ -1,12 +1,14 @@
-import { useSelect } from 'hang-log-design-system';
+import { Flex, useSelect } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
 
-import { containerStyling } from '@pages/TripPage/TripPage.style';
+import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
 
 import DayLogList from '@components/common/DayLogList/DayLogList';
+import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import TripInformation from '@components/common/TripInformation/TripInformation';
+import TripMap from '@components/common/TripMap/TripMap';
 
 const TripPage = () => {
   const { tripId } = useParams();
@@ -20,16 +22,34 @@ const TripPage = () => {
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
+  const places = selectedDayLog.items
+    .filter((item) => item.itemType)
+    .map((item) => ({
+      id: item.id,
+      coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
+    }));
+
   return (
-    <section css={containerStyling}>
-      <TripInformation isEditable={false} {...tripData} />
-      <DayLogList
-        tripId={Number(tripId)}
-        selectedDayLog={selectedDayLog}
-        isEditable={false}
-        onTabChange={handleDayLogIdSelectClick}
-      />
-    </section>
+    <Flex>
+      <section css={containerStyling}>
+        <TripInformation isEditable={false} {...tripData} />
+        <DayLogList
+          tripId={Number(tripId)}
+          selectedDayLog={selectedDayLog}
+          isEditable={false}
+          onTabChange={handleDayLogIdSelectClick}
+        />
+      </section>
+      <section css={mapContainerStyling}>
+        <GoogleMapWrapper>
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
+        </GoogleMapWrapper>
+      </section>
+    </Flex>
   );
 };
 
