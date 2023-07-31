@@ -6,6 +6,7 @@ import { memo } from 'react';
 import { formatDate } from '@utils/formatter';
 
 import {
+  badgeStyling,
   buttonContainerStyling,
   descriptionStyling,
   imageWrapperStyling,
@@ -34,7 +35,9 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
         <Box tag="section">
           <Flex styles={{ gap: Theme.spacer.spacing1 }}>
             {information.cities.map(({ id, name }) => (
-              <Badge key={id}>{name}</Badge>
+              <Badge key={id} css={badgeStyling}>
+                {name}
+              </Badge>
             ))}
           </Flex>
           <Heading css={titleStyling} size="large">

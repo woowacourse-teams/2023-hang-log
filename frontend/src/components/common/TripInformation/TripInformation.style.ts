@@ -54,3 +54,7 @@ export const buttonContainerStyling = css({
   display: 'flex',
   gap: Theme.spacer.spacing1,
 });
+
+export const badgeStyling = css({
+  color: `${Theme.color.blue700} !important`,
+});

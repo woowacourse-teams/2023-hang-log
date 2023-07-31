@@ -1,6 +1,7 @@
 import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
 import type { CityData } from '@type/city';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
+import { useNavigate } from 'react-router-dom';
 
 import {
   badgeBoxStyling,
@@ -11,6 +12,7 @@ import {
 } from '@components/trips/TripsItem/TripsItem.style';
 
 interface TripsItemProps {
+  id: number;
   coverImage: string | null;
   cityTags: CityData[];
   itemName: string;
@@ -20,6 +22,7 @@ interface TripsItemProps {
 }
 
 const TripsItem = ({
+  id,
   coverImage,
   cityTags,
   itemName,
@@ -27,13 +30,16 @@ const TripsItem = ({
   description,
   index,
 }: TripsItemProps) => {
+  const navigate = useNavigate();
+
   return (
     <Flex
       tag="li"
       styles={{ direction: 'column' }}
       css={boxStyling}
       tabIndex={index + 5}
-      aria-label={index + 1 + '번째 trip,' + itemName}
+      aria-label={`${index + 1}번째 trip, ${itemName}`}
+      onClick={() => navigate(`trip/${id}`)}
     >
       <img
         src={coverImage ?? DefaultThumbnail}
