@@ -11,8 +11,8 @@ export interface TripsData {
 }
 
 export interface DateRangeData {
-  start: string | null;
-  end: string | null;
+  startDate: string | null;
+  endDate: string | null;
 }
 
 export interface NewTripData {

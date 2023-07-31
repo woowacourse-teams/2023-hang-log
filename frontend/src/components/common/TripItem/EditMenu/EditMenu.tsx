@@ -38,7 +38,7 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
   return (
     <>
       <Menu css={moreMenuStyling} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" onClick={openMenu}>
+        <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
           <MoreIcon />
         </button>
         {isMenuOpen && (

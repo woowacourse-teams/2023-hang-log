@@ -55,7 +55,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Flex styles={{ direction: 'column', gap: '4px' }}>
           <DateInput
             required
-            initialDateRange={{ start: tripInfo.startDate, end: tripInfo.endDate }}
+            initialDateRange={{ startDate: tripInfo.startDate, endDate: tripInfo.endDate }}
             updateDateInfo={updateDateInfo}
           />
           <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>
@@ -65,25 +65,23 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             </SupportingText>
           </Flex>
         </Flex>
-        <Flex css={titleStyling}>
-          <Input
-            required
-            label="여행 제목"
-            value={tripInfo.title}
-            isError={isTitleError}
-            onChange={updateInputValue('title')}
-          />
-          {isTitleError && (
-            <SupportingText isError={isTitleError}>여행 제목을 입력하세요</SupportingText>
-          )}
-        </Flex>
+        <Input
+          required
+          label="여행 제목"
+          value={tripInfo.title}
+          isError={isTitleError}
+          supportingText={isTitleError ? '여행 제목을 입력하세요' : undefined}
+          onChange={updateInputValue('title')}
+        />
         <Textarea
+          id="description"
           label="여행 설명"
           value={tripInfo.description ?? ''}
           onChange={updateInputValue('description')}
           css={textareaStyling}
         />
         <ImageUploadInput
+          id="image-upload"
           label="대표 이미지 업로드"
           imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
           imageAltText="여행 대표 업로드 이미지"
