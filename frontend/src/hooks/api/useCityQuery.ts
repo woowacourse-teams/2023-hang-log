@@ -7,7 +7,6 @@ import { AxiosError } from 'axios';
 export const useCityQuery = () => {
   const { data } = useQuery<CityData[], AxiosError>(['city'], getCity, {
     retry: NETWORK.RETRY_COUNT,
-    // cacheTime: Infinity,
     suspense: true,
     useErrorBoundary: true,
   });

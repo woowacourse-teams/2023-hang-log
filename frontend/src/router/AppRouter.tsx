@@ -13,11 +13,7 @@ import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 const router = createBrowserRouter([
   {
     path: PATH.ROOT,
-    element: (
-      <Suspense>
-        <App />
-      </Suspense>
-    ),
+    element: <App />,
     errorElement: <NotFoundPage />,
     children: [
       {
