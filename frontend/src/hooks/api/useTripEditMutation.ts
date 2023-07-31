@@ -11,7 +11,8 @@ export const useTripEditMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['trip'] });
     },
     onError: () => {
-      //TODO: toast 띄우기
+      // TODO: toast 띄우기
+      // eslint-disable-next-line no-alert
       alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     },
   });

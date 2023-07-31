@@ -1,5 +1,5 @@
 import { END_POINTS } from '@constants/api';
-import { NewTripData } from '@type/trips';
+import type { NewTripData } from '@type/trips';
 
 import { axiosInstance } from '@api/axiosInstance';
 

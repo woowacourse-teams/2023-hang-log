@@ -24,7 +24,7 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
   useEffect(() => {
     // ! 선택된 날짜 탭이 변경되었을 때 선택된 필터 초기화
     handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
-  }, [information.items]);
+  }, [handleFilterSelectClick, information.items]);
 
   return (
     <Box tag="section" css={containerStyling}>
