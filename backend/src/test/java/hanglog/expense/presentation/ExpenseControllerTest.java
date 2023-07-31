@@ -1,9 +1,9 @@
 package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CityFixture.LONDON;
-import static hanglog.expense.fixture.CityFixture.TOKYO;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;

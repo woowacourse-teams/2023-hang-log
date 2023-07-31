@@ -1,4 +1,4 @@
-import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
+import type { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
 
 export interface DayLogData {

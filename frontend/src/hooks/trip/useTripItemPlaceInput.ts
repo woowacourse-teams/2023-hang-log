@@ -1,6 +1,6 @@
 import type { TripItemFormData } from '@type/tripItem';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useTripItemPlaceInput = (
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
@@ -27,7 +27,7 @@ export const useTripItemPlaceInput = (
     if (isUpdatable) updateInputValue('isPlaceUpdated', true);
   };
 
-  const handlePlaceSelect = () => {
+  const handlePlaceSelect = useCallback(() => {
     const place = autoCompleteWidget?.getPlace();
 
     const name = place?.name;
@@ -43,7 +43,7 @@ export const useTripItemPlaceInput = (
       longitude,
       apiCategory: place?.types ?? [],
     });
-  };
+  }, [autoCompleteWidget, updateInputValue]);
 
   useEffect(() => {
     const autoComplete = new google.maps.places.Autocomplete(inputRef.current!);
@@ -56,7 +56,7 @@ export const useTripItemPlaceInput = (
     if (autoCompleteWidget) {
       autoCompleteWidget.addListener('place_changed', handlePlaceSelect);
     }
-  }, [autoCompleteWidget]);
+  }, [autoCompleteWidget, handlePlaceSelect]);
 
   return { inputRef, handleEnterKeyClick, handlePlaceChange };
 };

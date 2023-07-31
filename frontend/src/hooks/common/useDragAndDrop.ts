@@ -40,7 +40,7 @@ export const useDragAndDrop = <T>(
     setDragOverIndex(-1);
     setItems(newItems);
     onPositionChange?.(newItems);
-  }, [dragOverIndex, draggingIndex, items]);
+  }, [dragOverIndex, draggingIndex, items, onPositionChange]);
 
   return {
     items,

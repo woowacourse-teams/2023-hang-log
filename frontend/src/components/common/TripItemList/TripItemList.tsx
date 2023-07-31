@@ -1,3 +1,4 @@
+import { useScrollFocus } from '@/hooks/common/useScrollFocus';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
@@ -20,11 +21,8 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
+  const { observer } = useScrollFocus();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
-
-  useEffect(() => {
-    handleItemsUpdate(tripItems);
-  }, [tripItems]);
 
   const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
@@ -43,6 +41,10 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
 
+  useEffect(() => {
+    handleItemsUpdate(tripItems);
+  }, [handleItemsUpdate, tripItems]);
+
   return (
     <>
       <ol css={containerStyling}>
@@ -51,6 +53,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
             <TripItem
               tripId={tripId}
               dayLogId={dayLogId}
+              observer={observer}
               onDragStart={handleDragStart(index)}
               onDragEnter={handleDragEnter(index)}
               onDragEnd={handleDragEnd}

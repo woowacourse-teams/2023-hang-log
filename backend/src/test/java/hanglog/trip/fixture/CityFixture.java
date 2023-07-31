@@ -1,4 +1,4 @@
-package hanglog.expense.fixture;
+package hanglog.trip.fixture;
 
 import hanglog.trip.domain.City;
 import java.math.BigDecimal;

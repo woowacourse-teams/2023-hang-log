@@ -13,6 +13,7 @@ import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.Period;
 import java.util.List;
@@ -38,15 +39,22 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        final Trip newTrip = new Trip(
-                getInitTitle(cites),
+        final Trip newTrip = Trip.of(
+                generateInitialTitle(cites),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
-        saveAllTripCities(cites, newTrip);
+        saveTripCities(cites, newTrip);
         saveDayLogs(newTrip);
         final Trip trip = tripRepository.save(newTrip);
         return trip.getId();
+    }
+
+    private void saveTripCities(final List<City> cites, final Trip trip) {
+        final List<TripCity> tripCities = cites.stream()
+                .map(city -> new TripCity(trip, city))
+                .toList();
+        tripCityRepository.saveAll(tripCities);
     }
 
     private void saveDayLogs(final Trip savedTrip) {
@@ -57,22 +65,41 @@ public class TripService {
         savedTrip.getDayLogs().addAll(dayLogs);
     }
 
-    public List<TripResponse> getAllTrip() {
+    public List<TripResponse> getAllTrips() {
         final List<Trip> trips = tripRepository.findAll();
         return trips.stream()
-                .map(TripResponse::of)
+                .map(this::getTripResponse)
                 .toList();
     }
 
-    public TripResponse getTrip(final Long tripId) {
+    private TripResponse getTripResponse(final Trip trip) {
+        final List<City> cities = getCitiesByTripId(trip.getId());
+        return TripResponse.of(trip, cities);
+    }
+
+    public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        return TripResponse.of(trip);
+        final List<City> cities = getCitiesByTripId(tripId);
+        return TripDetailResponse.of(trip, cities);
+    }
+
+    private List<City> getCitiesByTripId(final Long tripId) {
+        return tripCityRepository.findByTripId(tripId).stream()
+                .map(TripCity::getCity)
+                .toList();
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        final List<City> cities = updateRequest.getCityIds().stream()
+                .map(cityId -> cityRepository.findById(cityId)
+                        .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
+                .toList();
+        tripCityRepository.deleteAllByTripId(tripId);
+        saveTripCities(cities, trip);
+
         final int currentPeriod = Period.between(trip.getStartDate(), trip.getEndDate()).getDays() + 1;
         final int requestPeriod =
                 Period.between(updateRequest.getStartDate(), updateRequest.getEndDate()).getDays() + 1;
@@ -84,6 +111,7 @@ public class TripService {
         final Trip updatedTrip = new Trip(
                 trip.getId(),
                 trip.getTitle(),
+                updateRequest.getImageUrl(),
                 updateRequest.getStartDate(),
                 updateRequest.getEndDate(),
                 updateRequest.getDescription(),
@@ -124,14 +152,7 @@ public class TripService {
         tripRepository.delete(trip);
     }
 
-    private String getInitTitle(final List<City> cites) {
+    private String generateInitialTitle(final List<City> cites) {
         return cites.get(0).getName() + TITLE_POSTFIX;
-    }
-
-    private void saveAllTripCities(final List<City> cites, final Trip trip) {
-        final List<TripCity> tripCities = cites.stream()
-                .map(city -> new TripCity(trip, city))
-                .toList();
-        tripCityRepository.saveAll(tripCities);
     }
 }

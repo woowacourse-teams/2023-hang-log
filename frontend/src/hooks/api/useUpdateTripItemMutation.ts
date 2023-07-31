@@ -1,4 +1,3 @@
-import { ERROR_MESSAGE } from '@constants/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { putTripItem } from '@api/tripItem/putTripItem';

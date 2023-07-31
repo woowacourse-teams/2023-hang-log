@@ -24,7 +24,7 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
   useEffect(() => {
     // ! 선택된 날짜 탭이 변경되었을 때 선택된 필터 초기화
     handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
-  }, [information.items]);
+  }, [handleFilterSelectClick, information.items]);
 
   return (
     <Box tag="section" css={containerStyling}>
@@ -37,12 +37,14 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
             toggleId={DAY_LOG_ITEM_FILTERS.ALL}
             selectedId={selectedFilter}
             changeSelect={handleFilterSelectClick}
+            aria-label={`${DAY_LOG_ITEM_FILTERS.ALL} 필터`}
           />
           <Toggle
             text={DAY_LOG_ITEM_FILTERS.SPOT}
             toggleId={DAY_LOG_ITEM_FILTERS.SPOT}
             selectedId={selectedFilter}
             changeSelect={handleFilterSelectClick}
+            aria-label={`${DAY_LOG_ITEM_FILTERS.SPOT} 필터`}
           />
         </ToggleGroup>
       </Flex>

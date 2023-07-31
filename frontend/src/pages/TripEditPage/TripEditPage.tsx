@@ -1,13 +1,19 @@
-import { FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
+import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useParams } from 'react-router-dom';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 import { useTripQuery } from '@hooks/api/useTripQuery';
 
-import { addButtonStyling, containerStyling } from '@pages/TripEditPage/TripEditPage.style';
+import {
+  addButtonStyling,
+  containerStyling,
+  mapContainerStyling,
+} from '@pages/TripEditPage/TripEditPage.style';
 
 import DayLogList from '@components/common/DayLogList/DayLogList';
+import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import TripInformation from '@components/common/TripInformation/TripInformation';
+import TripMap from '@components/common/TripMap/TripMap';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 const TripEditPage = () => {
@@ -24,24 +30,46 @@ const TripEditPage = () => {
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
+  const places = selectedDayLog.items
+    .filter((item) => item.itemType)
+    .map((item) => ({
+      id: item.id,
+      coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
+    }));
+
   return (
-    <section css={containerStyling}>
-      <TripInformation {...tripData} />
-      <DayLogList
-        tripId={Number(tripId)}
-        selectedDayLog={selectedDayLog}
-        onTabChange={handleDayLogIdSelectClick}
-        openAddModal={openAddModal}
-      />
-      <FloatingButton css={addButtonStyling} onClick={openAddModal} />
-      {isAddModalOpen && (
-        <TripItemAddModal
+    <Flex>
+      <section css={containerStyling}>
+        <TripInformation {...tripData} />
+        <DayLogList
           tripId={Number(tripId)}
-          dayLogId={selectedDayLog.id}
-          onClose={closeAddModal}
+          selectedDayLog={selectedDayLog}
+          onTabChange={handleDayLogIdSelectClick}
+          openAddModal={openAddModal}
         />
-      )}
-    </section>
+        <FloatingButton
+          css={addButtonStyling}
+          aria-label="여행 아이템 추가"
+          onClick={openAddModal}
+        />
+        {isAddModalOpen && (
+          <TripItemAddModal
+            tripId={Number(tripId)}
+            dayLogId={selectedDayLog.id}
+            onClose={closeAddModal}
+          />
+        )}
+      </section>
+      <section css={mapContainerStyling}>
+        <GoogleMapWrapper>
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
+        </GoogleMapWrapper>
+      </section>
+    </Flex>
   );
 };
 
