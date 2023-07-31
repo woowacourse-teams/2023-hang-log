@@ -1,4 +1,4 @@
-import { CURRENCY_ICON } from '@constants/trip';
+import type { CURRENCY_ICON } from '@constants/trip';
 
 export type CurrencyType = keyof typeof CURRENCY_ICON;
 

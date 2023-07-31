@@ -9,25 +9,19 @@ const meta = {
   title: 'common/TripsItemList',
   component: TripsItemList,
   args: {
-    trips: trips,
+    trips,
     order: '등록순',
-    changeSelect: (selectedId: string | number) => {},
+    changeSelect: () => {},
   },
 } satisfies Meta<typeof TripsItemList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SortBy_Register: Story = {};
+export const SortByRegister: Story = {};
 
-export const SortBy_Date: Story = {
-  render: () => {
-    return (
-      <TripsItemList
-        trips={trips?.slice().sort(sortByStartDate)}
-        order="날짜순"
-        changeSelect={(selectedId: string | number) => {}}
-      />
-    );
+export const SortByDate: Story = {
+  render: ({ ...args }) => {
+    return <TripsItemList {...args} trips={trips?.slice().sort(sortByStartDate)} order="날짜순" />;
   },
 };

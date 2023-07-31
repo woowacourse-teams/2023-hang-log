@@ -6,7 +6,6 @@ import {
   badgeBoxStyling,
   boxStyling,
   durationTextStyling,
-  imageBoxStyling,
   imageStyling,
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
@@ -22,7 +21,11 @@ interface TripsItemProps {
 const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripsItemProps) => {
   return (
     <Flex tag="li" styles={{ direction: 'column' }} css={boxStyling}>
-      <img src={coverImage ?? DefaultThumbnail} css={imageStyling} />
+      <img
+        src={coverImage ?? DefaultThumbnail}
+        css={imageStyling}
+        alt={`${itemName} 대표 이미지`}
+      />
       <Box css={badgeBoxStyling}>
         {cityTags.map((cityTag) => {
           return <Badge key={cityTag.id}>{cityTag.name}</Badge>;

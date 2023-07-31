@@ -18,7 +18,7 @@ const Star = ({ isFilled, isHalf }: StarProps) => {
     );
   }
 
-  return <>{isFilled ? <FilledStarIcon /> : <EmptyStarIcon />}</>;
+  return isFilled ? <FilledStarIcon /> : <EmptyStarIcon />;
 };
 
 export default Star;

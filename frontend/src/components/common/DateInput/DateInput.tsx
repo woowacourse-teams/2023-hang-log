@@ -28,7 +28,7 @@ const DateInput = ({
 
   useEffect(() => {
     updateDateInfo(selectedDateRange);
-  }, [selectedDateRange]);
+  }, [selectedDateRange, updateDateInfo]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
     if (!dateRange.end) return;
@@ -54,7 +54,7 @@ const DateInput = ({
             <DateRangePicker
               onDateSelect={handleDateClick}
               maxDateRange={60}
-              hasRangeRestriction={true}
+              hasRangeRestriction
               initialSelectedDateRange={
                 selectedDateRange.start !== null ? selectedDateRange : undefined
               }
