@@ -11,11 +11,18 @@ import { containerStyling } from '@components/common/DayLogList/DayLogList.style
 interface DayLogListProps {
   tripId: number;
   selectedDayLog: DayLogData;
+  isEditable?: boolean;
   onTabChange: (selectedId: string | number) => void;
-  openAddModal: () => void;
+  openAddModal?: () => void;
 }
 
-const DayLogList = ({ tripId, selectedDayLog, onTabChange, openAddModal }: DayLogListProps) => {
+const DayLogList = ({
+  tripId,
+  selectedDayLog,
+  isEditable = true,
+  onTabChange,
+  openAddModal,
+}: DayLogListProps) => {
   const { dates } = useTripDates(tripId);
 
   return (
@@ -51,7 +58,12 @@ const DayLogList = ({ tripId, selectedDayLog, onTabChange, openAddModal }: DayLo
           );
         })}
       </Tabs>
-      <DayLogItem tripId={tripId} openAddModal={openAddModal} {...selectedDayLog} />
+      <DayLogItem
+        tripId={tripId}
+        isEditable={isEditable}
+        openAddModal={openAddModal}
+        {...selectedDayLog}
+      />
     </section>
   );
 };

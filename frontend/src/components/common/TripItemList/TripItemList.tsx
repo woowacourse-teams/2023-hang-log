@@ -16,9 +16,10 @@ interface TripItemListProps {
   tripId: number;
   dayLogId: number;
   tripItems: TripItemData[];
+  isEditable?: boolean;
 }
 
-const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
+const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
@@ -51,9 +52,10 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
             <TripItem
               tripId={tripId}
               dayLogId={dayLogId}
-              onDragStart={handleDragStart(index)}
-              onDragEnter={handleDragEnter(index)}
-              onDragEnd={handleDragEnd}
+              isEditable={isEditable}
+              onDragStart={isEditable ? handleDragStart(index) : undefined}
+              onDragEnter={isEditable ? handleDragEnter(index) : undefined}
+              onDragEnd={isEditable ? handleDragEnd : undefined}
               {...item}
             />
             <Divider />
@@ -69,7 +71,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   );
 };
 
-TripItemList.Empty = ({ openAddModal }: { openAddModal: () => void }) => {
+TripItemList.Empty = ({ openAddModal }: { openAddModal?: () => void }) => {
   return (
     <>
       <Heading size="xSmall">아직 추가된 일정 기록이 없습니다!</Heading>
