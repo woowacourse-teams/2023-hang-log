@@ -15,12 +15,26 @@ interface TripsItemProps {
   cityTags: CityData[];
   itemName: string;
   duration: string;
+  index: number;
   description?: string | null;
 }
 
-const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripsItemProps) => {
+const TripsItem = ({
+  coverImage,
+  cityTags,
+  itemName,
+  duration,
+  description,
+  index,
+}: TripsItemProps) => {
   return (
-    <Flex tag="li" styles={{ direction: 'column' }} css={boxStyling}>
+    <Flex
+      tag="li"
+      styles={{ direction: 'column' }}
+      css={boxStyling}
+      tabIndex={index + 5}
+      aria-label={index + 1 + '번째 trip,' + itemName}
+    >
       <img
         src={coverImage ?? DefaultThumbnail}
         css={imageStyling}
