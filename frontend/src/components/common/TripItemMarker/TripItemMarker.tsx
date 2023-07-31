@@ -29,11 +29,7 @@ const TripItemMarker = ({ map, id, lat, lng, isSelected }: TripItemMarkerProps) 
     if (marker) {
       const pin = isSelected
         ? new google.maps.marker.PinElement(MARKER_STYLE.SELECTED)
-        : new google.maps.marker.PinElement({
-            glyphColor: '#0083BB',
-            background: '#26A8E0',
-            borderColor: '#0083BB',
-          });
+        : new google.maps.marker.PinElement(MARKER_STYLE.DEFAULT);
 
       marker.content = pin.element;
     }
