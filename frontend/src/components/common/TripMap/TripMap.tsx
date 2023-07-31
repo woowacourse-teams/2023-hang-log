@@ -1,71 +1,70 @@
-import { Theme } from 'hang-log-design-system';
+import { MAP_INITIAL_ZOOM_SIZE, MAP_MAX_ZOOM_SIZE } from '@constants/map';
+import type { TripPlaceType } from '@type/trip';
 import { useEffect, useRef, useState } from 'react';
 
-import TripItemMarker from '../TripItemMarker/TripItemMarker';
+import MapDashedLine from '@components/common/MapDashedLine/MapDashedLine';
+import TripItemMarker from '@components/common/TripItemMarker/TripItemMarker';
 
 interface TripMapProps {
-  places: { id: number; coordinate: { lat: number; lng: number } }[];
+  centerLat: number;
+  centerLng: number;
+  places: TripPlaceType[];
 }
 
-const TripMap = ({ places }: TripMapProps) => {
+const TripMap = ({ centerLat, centerLng, places }: TripMapProps) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+  const coordinates = places.map((place) => ({
+    lat: place.coordinate.lat,
+    lng: place.coordinate.lng,
+  }));
+
   useEffect(() => {
-    const bounds = new google.maps.LatLngBounds();
-    places.forEach((place) =>
-      bounds.extend(new google.maps.LatLng(place.coordinate.lat, place.coordinate.lng))
-    );
-    const center = bounds.getCenter();
+    if (wrapperRef.current) {
+      const initialMap = new google.maps.Map(wrapperRef.current, {
+        center: { lat: centerLat, lng: centerLng },
+        zoom: MAP_INITIAL_ZOOM_SIZE,
+        maxZoom: MAP_MAX_ZOOM_SIZE,
+        disableDefaultUI: true,
+        mapId: process.env.GOOGLE_MAP_ID,
+      });
 
-    const initialMap = new google.maps.Map(wrapperRef.current!, {
-      center,
-      disableDefaultUI: true,
-      mapId: process.env.GOOGLE_MAP_ID,
-    });
+      setMap(initialMap);
+    }
+  }, [centerLat, centerLng]);
 
-    initialMap.fitBounds(bounds);
+  useEffect(() => {
+    if (places.length > 0) {
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach((place) =>
+        bounds.extend(new google.maps.LatLng(place.coordinate.lat, place.coordinate.lng))
+      );
+      const center = bounds.getCenter();
 
-    const lineSymbol = {
-      path: 'M 0,-1 0,1',
-      strokeOpacity: 1,
-      scale: 4,
-    };
-
-    const coordinates = places.map((place) => ({
-      lat: place.coordinate.lat,
-      lng: place.coordinate.lng,
-    }));
-
-    new google.maps.Polyline({
-      path: coordinates,
-      strokeOpacity: 0,
-      icons: [
-        {
-          icon: lineSymbol,
-          offset: '0',
-          repeat: '20px',
-        },
-      ],
-      map: initialMap,
-    });
-
-    setMap(initialMap);
-  }, [places]);
+      map?.panTo(center);
+      map?.fitBounds(bounds);
+    } else {
+      map?.panTo({ lat: centerLat, lng: centerLng });
+      map?.setZoom(MAP_INITIAL_ZOOM_SIZE);
+    }
+  }, [places, map, centerLat, centerLng]);
 
   return (
     <>
-      <div id="map" ref={wrapperRef} css={{ minHeight: '100vh' }} />
+      <div id="map" ref={wrapperRef} css={{ height: 'calc(100vh - 81px)' }} />
       {map && (
         <>
-          {places.map((place) => (
+          {places.map((place, index) => (
             <TripItemMarker
               map={map}
               id={place.id}
               lat={place.coordinate.lat}
               lng={place.coordinate.lng}
+              isSelected={index === 0}
             />
           ))}
+          <MapDashedLine map={map} coordinates={coordinates} />
         </>
       )}
     </>

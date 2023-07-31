@@ -58,7 +58,11 @@ const TripEditPage = () => {
       </section>
       <section css={mapContainerStyling}>
         <GoogleMapWrapper>
-          <TripMap places={places} />
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
         </GoogleMapWrapper>
       </section>
     </Flex>
