@@ -2,6 +2,7 @@ import { useScrollFocus } from '@/hooks/common/useScrollFocus';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
@@ -74,16 +75,39 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   );
 };
 
-TripItemList.Empty = ({ openAddModal }: { openAddModal?: () => void }) => {
-  return (
+interface EmptyTripItemListProps {
+  tripId: number;
+  isEditable?: boolean;
+  openAddModal?: () => void;
+}
+
+TripItemList.Empty = ({ tripId, openAddModal, isEditable = true }: EmptyTripItemListProps) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const navigate = useNavigate();
+
+  return isEditable ? (
     <>
       <Heading size="xSmall">아직 추가된 일정 기록이 없습니다!</Heading>
       <Text css={emptyTextStyling}>
         여행하면서 갔던 장소, 사용했던 경비와 같은 여행 일정 기록들을 추가해 보세요.
       </Text>
-      {/* 클릭하면 일정 추가 모달 열기 */}
       <Button css={addItemButtonStyling} type="button" variant="primary" onClick={openAddModal}>
         일정 기록 추가하기
+      </Button>
+    </>
+  ) : (
+    <>
+      <Heading size="xSmall">추가된 일정 기록이 없습니다!</Heading>
+      <Text css={emptyTextStyling}>
+        여행하면서 갔던 장소, 사용했던 경비와 같은 여행 일정 기록들을 추가해 보세요.
+      </Text>
+      <Button
+        css={addItemButtonStyling}
+        type="button"
+        variant="primary"
+        onClick={() => navigate(`/trip-edit/${tripId}`)}
+      >
+        여행 수정하기
       </Button>
     </>
   );

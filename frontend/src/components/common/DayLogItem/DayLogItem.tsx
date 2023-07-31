@@ -65,7 +65,7 @@ const DayLogItem = ({
           isEditable={isEditable}
         />
       ) : (
-        <TripItemList.Empty openAddModal={openAddModal} />
+        <TripItemList.Empty tripId={tripId} isEditable={isEditable} openAddModal={openAddModal} />
       )}
     </Box>
   );
