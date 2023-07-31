@@ -26,7 +26,7 @@ const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: Suggestion
     onItemSelect,
     closeSuggestion,
   });
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 
@@ -45,6 +45,7 @@ const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: Suggestion
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {queryWord && (
         <SuggestionList css={containerStyling} ref={listRef}>
