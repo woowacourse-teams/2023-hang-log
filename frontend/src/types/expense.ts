@@ -1,15 +1,17 @@
+import type { CurrencyType } from '@type/tripItem';
+
 export interface ExpenseCategoryData {
   id: number;
   name: string;
 }
 
-interface ExpenseItemData {
+export interface ExpenseItemData {
   id: number;
   title: string;
   ordinal: number;
   expense: {
     id: number;
-    currency: string;
+    currency: CurrencyType;
     amount: number;
     category: ExpenseCategoryData;
   };
@@ -41,6 +43,15 @@ export interface ExpenseData {
     id: number;
     ordinal: number;
     date: string;
+    totalAmount: number;
+    items: ExpenseItemData[];
+  }[];
+}
+
+export interface CategoryExpenseType {
+  exchangeRateDate: string;
+  categoryItems: {
+    category: ExpenseCategoryData;
     totalAmount: number;
     items: ExpenseItemData[];
   }[];
