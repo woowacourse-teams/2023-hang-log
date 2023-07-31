@@ -18,45 +18,53 @@ import {
 interface SuggestionProps {
   queryWord: string;
   onItemSelect: (city: CityData) => void;
+  closeSuggestion: () => void;
 }
 
-const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
+const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: SuggestionProps) => {
   const { suggestions, focusedSuggestionIndex, isFocused, setNewSuggestions } = useCitySuggestion({
     onItemSelect,
+    closeSuggestion,
   });
   const listRef = useRef<HTMLDivElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 
   useEffect(() => {
+    if (!queryWord) return;
+
     setNewSuggestions(queryWord);
   }, [queryWord]);
-
-  const handleItemClick = (city: CityData) => () => {
-    onItemSelect(city);
-  };
 
   useEffect(() => {
     scrollToFocusedItem();
   }, [focusedSuggestionIndex]);
 
+  const handleItemClick = (city: CityData) => () => {
+    onItemSelect(city);
+  };
+
   return (
-    <SuggestionList css={containerStyling} ref={listRef}>
-      {suggestions.length ? (
-        suggestions.map((city, index) => (
-          <SuggestionsItem
-            key={city.id}
-            onClick={handleItemClick(city)}
-            css={getItemStyling(isFocused(index))}
-            ref={isFocused(index) ? itemRef : null}
-          >
-            {city.name}
-          </SuggestionsItem>
-        ))
-      ) : (
-        <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+    <>
+      {queryWord && (
+        <SuggestionList css={containerStyling} ref={listRef}>
+          {suggestions.length ? (
+            suggestions.map((city, index) => (
+              <SuggestionsItem
+                key={city.id}
+                onClick={handleItemClick(city)}
+                css={getItemStyling(isFocused(index))}
+                ref={isFocused(index) ? itemRef : null}
+              >
+                {city.name}
+              </SuggestionsItem>
+            ))
+          ) : (
+            <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+          )}
+        </SuggestionList>
       )}
-    </SuggestionList>
+    </>
   );
 };
 

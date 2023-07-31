@@ -1,4 +1,4 @@
-import TripCreateForm from '@/components/newTrip/NewTripForm/TripCreateForm';
+import TripCreateForm from '@/components/trip/TripCreateForm/TripCreateForm';
 import CreatePageImage from '@assets/svg/create-page-image.svg';
 import { Box, Flex, Heading } from 'hang-log-design-system';
 

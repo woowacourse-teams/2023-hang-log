@@ -19,6 +19,8 @@ export const headerStyling = css({
 export const imageStyling = css({
   minWidth: '32px',
   minHeight: '32px',
+  border: 'none',
+  outline: 0,
   borderRadius: '50%',
 
   backgroundColor: Theme.color.gray200,

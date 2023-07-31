@@ -3,7 +3,7 @@ import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import { useEffect, useState } from 'react';
 
-import { dateRangeToString } from '@utils/formatter';
+import { formatDateRange } from '@utils/formatter';
 
 import {
   calendarStyling,
@@ -22,19 +22,19 @@ const DateInput = ({
   updateDateInfo,
   required = false,
 }: DateInputProps) => {
-  const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
+  const [inputValue, setInputValue] = useState(formatDateRange(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
   const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
 
   useEffect(() => {
     updateDateInfo(selectedDateRange);
-  }, [selectedDateRange]);
+  }, [selectedDateRange, updateDateInfo]);
 
   const handleDateClick = (dateRange: DateRangeData) => {
     if (!dateRange.end) return;
 
     setSelectedDateRange(dateRange);
-    setInputValue(dateRangeToString(dateRange));
+    setInputValue(formatDateRange(dateRange));
   };
 
   return (
@@ -54,7 +54,7 @@ const DateInput = ({
             <DateRangePicker
               onDateSelect={handleDateClick}
               maxDateRange={60}
-              hasRangeRestriction={true}
+              hasRangeRestriction
               initialSelectedDateRange={
                 selectedDateRange.start !== null ? selectedDateRange : undefined
               }

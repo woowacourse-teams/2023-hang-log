@@ -22,10 +22,6 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
-  useEffect(() => {
-    handleItemsUpdate(tripItems);
-  }, [tripItems]);
-
   const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
 
@@ -42,6 +38,10 @@ const TripItemList = ({ tripId, dayLogId, tripItems }: TripItemListProps) => {
 
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
+
+  useEffect(() => {
+    handleItemsUpdate(tripItems);
+  }, [handleItemsUpdate, tripItems]);
 
   return (
     <>

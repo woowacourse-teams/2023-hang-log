@@ -1,10 +1,10 @@
+/* eslint-disable no-nested-ternary */
 import { trip } from '@mocks/data/trip';
 import type { CurrencyType, TripItemFormData } from '@type/tripItem';
 import { rest } from 'msw';
 
 export const tripItemHandlers = [
   rest.post('/trips/:tripId/items', async (req, res, ctx) => {
-    const { tripId } = req.params;
     const response = await req.json<TripItemFormData>();
 
     const newTripItem = {
@@ -44,7 +44,7 @@ export const tripItemHandlers = [
   }),
 
   rest.delete('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
-    const { tripId, itemId } = req.params;
+    const { itemId } = req.params;
 
     const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
       return dayLog.items.findIndex((item) => item.id === Number(itemId)) !== -1;
@@ -60,7 +60,7 @@ export const tripItemHandlers = [
   }),
 
   rest.put('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
-    const { tripId, itemId } = req.params;
+    const { itemId } = req.params;
     const response = await req.json<TripItemFormData>();
 
     const dayLogIndex = trip.dayLogs.findIndex((dayLog) => {
