@@ -1,3 +1,4 @@
+import { useScrollFocus } from '@/hooks/common/useScrollFocus';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
@@ -21,6 +22,7 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
+  const { observer } = useScrollFocus();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   const handlePositionChange = (newItems: TripItemData[]) => {
@@ -53,6 +55,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
               tripId={tripId}
               dayLogId={dayLogId}
               isEditable={isEditable}
+              observer={observer}
               onDragStart={isEditable ? handleDragStart(index) : undefined}
               onDragEnter={isEditable ? handleDragEnter(index) : undefined}
               onDragEnd={isEditable ? handleDragEnd : undefined}
