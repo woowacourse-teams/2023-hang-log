@@ -12,6 +12,7 @@ import hanglog.image.util.ImageNameUrlConverter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -26,9 +27,9 @@ public class ImageService {
     private static final String EXTENSION_DELIMITER = ".";
     private static final int MAX_IMAGE_LIST_SIZE = 10;
     private static final int EMPTY_LIST_SIZE = 0;
-    
-    @Value("${image.path}")
-    private String path;
+
+    @Value("${image.base-path}")
+    private String imageBasePath;
 
     public ImagesResponse save(final List<MultipartFile> images) {
         validateImagesSize(images);
@@ -40,11 +41,11 @@ public class ImageService {
                 .map(this::hashName)
                 .toList();
 
-        final List<File> imageFiles = hashedNames.stream()
-                .map(hashedName -> new File(path, hashedName))
+        final List<Path> imagePaths = hashedNames.stream()
+                .map(hashedName -> Path.of(imageBasePath, hashedName))
                 .toList();
 
-        uploadImages(images, imageFiles);
+        uploadImages(images, imagePaths);
 
         final List<String> imageUrls = hashedNames.stream()
                 .map(ImageNameUrlConverter::convertNameToUrl)
@@ -70,10 +71,10 @@ public class ImageService {
         }
     }
 
-    private void uploadImages(final List<MultipartFile> images, final List<File> imageFiles) {
+    private void uploadImages(final List<MultipartFile> images, final List<Path> imagePaths) {
         try {
             for (int i = 0; i < images.size(); i++) {
-                images.get(i).transferTo(imageFiles.get(i));
+                images.get(i).transferTo(imagePaths.get(i));
             }
         } catch (final IOException e) {
             throw new ImageException(IMAGE_PATH_INVALID);
@@ -81,7 +82,7 @@ public class ImageService {
     }
 
     private void makeDirectoryIfNotExist() {
-        final File directory = new File(path);
+        final File directory = new File(imageBasePath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
