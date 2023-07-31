@@ -48,7 +48,6 @@ const TripItem = ({
   }, [observer]);
 
   return (
-    // ! 수정 모드에서만 drag할 수 있다
     <li
       ref={itemRef}
       css={getContainerStyling({ isEditable, isDragging })}
@@ -92,7 +91,6 @@ const TripItem = ({
           )}
         </Box>
       </Flex>
-      {/* ! 로그인 + 수정 모드일 떄만 볼 수 있다 */}
       {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
     </li>
   );
