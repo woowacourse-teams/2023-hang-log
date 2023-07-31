@@ -75,7 +75,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
+    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     public Item(
@@ -105,6 +105,10 @@ public class Item extends BaseEntity {
         this.images = images;
         if (!dayLog.getItems().contains(this)) {
             dayLog.getItems().add(this);
+        }
+
+        for (final Image image : images) {
+            image.setItem(this);
         }
     }
 

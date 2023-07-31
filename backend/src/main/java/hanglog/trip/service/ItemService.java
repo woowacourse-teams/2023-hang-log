@@ -23,7 +23,6 @@ import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,22 +52,11 @@ public class ItemService {
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
                 getExpenseByItemRequest(itemRequest),
-                new ArrayList<>()
+                getImagesByItemRequest(itemRequest)
         );
         validateAlreadyDeleted(item);
-        
-        final Item savedItem = itemRepository.save(item);
-        saveImages(itemRequest, savedItem);
 
-        return itemRepository.save(savedItem).getId();
-    }
-
-    private void saveImages(final ItemRequest itemRequest, final Item savedItem) {
-        final List<Image> images = itemRequest.getImageUrls().stream()
-                .map(imageUrl -> new Image(convertUrlToName(imageUrl), savedItem))
-                .toList();
-
-        savedItem.getImages().addAll(images);
+        return itemRepository.save(item).getId();
     }
 
     public void update(final Long tripId, final Long itemId, final ItemRequest itemRequest) {
@@ -88,7 +76,7 @@ public class ItemService {
                 getPlaceByItemRequest(itemRequest),
                 dayLog,
                 getExpenseByItemRequest(itemRequest),
-                getImagesByItemRequest(itemRequest)
+                getUpdatedImages(itemRequest, item.getImages())
         );
         itemRepository.save(updateditem);
     }
@@ -99,6 +87,23 @@ public class ItemService {
                 .toList();
 
         return imageRepository.saveAll(images);
+    }
+
+    private List<Image> getUpdatedImages(final ItemRequest itemRequest, final List<Image> originalImages) {
+        final List<Image> updatedImages = itemRequest.getImageUrls().stream()
+                .map(imageUrl -> getUpdatedImage(imageUrl, originalImages))
+                .toList();
+
+        return imageRepository.saveAll(updatedImages);
+    }
+
+    private Image getUpdatedImage(final String imageUrl, final List<Image> originalImages) {
+        final String imageName = convertUrlToName(imageUrl);
+
+        return originalImages.stream()
+                .filter(originalImage -> originalImage.getImageName().equals(imageName))
+                .findAny()
+                .orElseGet(() -> new Image(imageName));
     }
 
     private Place getPlaceByItemRequest(final ItemRequest itemRequest) {

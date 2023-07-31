@@ -44,4 +44,8 @@ public class Image extends BaseEntity {
     public Image(final String imageName) {
         this(imageName, null);
     }
+
+    public void setItem(final Item item) {
+        this.item = item;
+    }
 }
