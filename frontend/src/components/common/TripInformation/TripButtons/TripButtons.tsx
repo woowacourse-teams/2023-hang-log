@@ -23,6 +23,10 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
+  const goToEditPage = () => {
+    navigate(`/trip-edit/${tripId}`);
+  };
+
   const handleDeleteButtonClick = () => {
     deleteTripMutation.mutate(
       { tripId },
@@ -52,7 +56,7 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
         </button>
         {isMenuOpen && (
           <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={() => navigate(`/trip-edit/${tripId}`)}>수정</MenuItem>
+            <MenuItem onClick={goToEditPage}>수정</MenuItem>
             <MenuItem onClick={handleDeleteButtonClick}>삭제</MenuItem>
           </MenuList>
         )}
