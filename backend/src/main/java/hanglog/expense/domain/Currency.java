@@ -38,7 +38,7 @@ public class Currency {
     private Double jpy;
 
     @Column(nullable = false)
-    private Double cny;
+    private Double cnh;
 
     @Column(nullable = false)
     private Double chf;
@@ -54,6 +54,22 @@ public class Currency {
 
     @Column(nullable = false)
     private Double krw;
+
+    public Currency(
+            final LocalDate date,
+            final Double usd,
+            final Double eur,
+            final Double gbp,
+            final Double jpy,
+            final Double cnh,
+            final Double chf,
+            final Double sgd,
+            final Double thb,
+            final Double hkd,
+            final Double krw
+    ) {
+        this(null, date, usd, eur, gbp, jpy, cnh, chf, sgd, thb, hkd, krw);
+    }
 
     // TODO : 추후 currency 데이터 입력 후 default 값 생성시 삭제
     public static Currency getDefaultCurrency() {

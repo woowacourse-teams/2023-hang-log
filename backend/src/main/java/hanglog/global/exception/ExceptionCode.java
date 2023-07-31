@@ -25,8 +25,9 @@ public enum ExceptionCode {
     INVALID_RATING(3001, "별점은 N.0점이거나 N.5점 형태이어야 합니다."),
     INVALID_CURRENCY(3002, "제공하지 않는 통화입니다."),
 
-    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다.");
+    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
 
+    FAIL_GET_CURRENCY_API(5001, "통화를 가져오는데 실패하였습니다.");
     private final int code;
     private final String message;
 }

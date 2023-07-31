@@ -92,7 +92,7 @@ public class ExpenseService {
     }
 
     private int changeToKRW(final Expense expense, final Currency currency) {
-        final double rate = CurrencyType.mappingCurrency(expense.getCurrency(), currency);
+        final double rate = CurrencyType.getCurrencyRate(expense.getCurrency(), currency);
         return (int) (expense.getAmount() * rate);
     }
 

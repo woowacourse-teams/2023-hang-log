@@ -15,7 +15,7 @@ public enum CurrencyType {
     EUR("eur", Currency::getEur),
     GBP("gbp", Currency::getGbp),
     JPY("jpy", Currency::getUnitRateOfJpy),
-    CNY("cny", Currency::getCny),
+    CNH("cnh", Currency::getCnh),
     CHF("chf", Currency::getChf),
     SGD("sgd", Currency::getSgd),
     THB("thb", Currency::getThb),
@@ -30,12 +30,21 @@ public enum CurrencyType {
         this.getRate = getRate;
     }
 
-    public static double mappingCurrency(final String currencyCode, final Currency currency) {
+    public static double getCurrencyRate(final String currencyCode, final Currency currency) {
+        return mapping(currencyCode).getRate.apply(currency);
+    }
+
+    public static CurrencyType mapping(final String currencyCode) {
         return Arrays.stream(values())
-                .filter(value -> value.code.equals(currencyCode.toLowerCase()))
+                .filter(value -> value.code.equals(currencyCode.toLowerCase().replace("(100)", "")))
                 .findAny()
-                .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
-                .getRate
-                .apply(currency);
+                .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY));
+    }
+
+    public static boolean provide(final String currencyCode) {
+        return Arrays.stream(CurrencyType.values())
+                .map(CurrencyType::getCode)
+                .toList()
+                .contains(currencyCode);
     }
 }
