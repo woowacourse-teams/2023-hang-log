@@ -4,7 +4,7 @@ import type { ExpenseData } from '@type/expense';
 import { axiosInstance } from '@api/axiosInstance';
 
 export const getExpense = async (tripId: number) => {
-  const { data } = await axiosInstance.get<ExpenseData>(END_POINTS.TRIP(tripId));
+  const { data } = await axiosInstance.get<ExpenseData>(END_POINTS.EXPENSE(tripId));
 
   return data;
 };
