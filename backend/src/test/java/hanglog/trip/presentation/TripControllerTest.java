@@ -1,27 +1,7 @@
 package hanglog.trip.presentation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.dto.request.TripCreateRequest;
-import hanglog.trip.dto.request.TripUpdateRequest;
-import hanglog.trip.dto.response.TripResponse;
-import hanglog.trip.restdocs.RestDocsTest;
-import hanglog.trip.service.TripService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,17 +13,48 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.trip.domain.City;
+import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
+import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.trip.service.TripService;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class TripControllerTest extends RestDocsTest {
+
+    private static final List<City> CITIES = List.of(PARIS, LONDON);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -208,8 +219,8 @@ class TripControllerTest extends RestDocsTest {
     void getTrip() throws Exception {
         // given
         makeTrip();
-        when(tripService.getTrip(1L))
-                .thenReturn(TripResponse.of(LONDON_TRIP));
+        when(tripService.getTripDetail(1L))
+                .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
 
         // when
         final ResultActions resultActions = performGetRequest(1);
@@ -244,8 +255,28 @@ class TripControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "200자 이하의 문자열")),
                                 fieldWithPath("imageUrl")
                                         .type(JsonFieldType.STRING)
-                                        .description("대표 이미지")
-                                        .attributes(field("constraint", "url")),
+                                        .description("여행 대표 이미지")
+                                        .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("cities")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("여행 도시 배열")
+                                        .attributes(field("constraint", "1개 이상의 도시 정보")),
+                                fieldWithPath("cities[].id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("여행 도시 ID")
+                                        .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("cities[].name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 도시 이름")
+                                        .attributes(field("constraint", "나라, 도시")),
+                                fieldWithPath("cities[].latitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("위도")
+                                        .attributes(field("constraint", "실수")),
+                                fieldWithPath("cities[].longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "실수")),
                                 fieldWithPath("dayLogs")
                                         .type(JsonFieldType.ARRAY)
                                         .description("날짜별 여행 기록 배열")
@@ -279,7 +310,7 @@ class TripControllerTest extends RestDocsTest {
                 TripResponse.class
         );
         assertThat(tripResponse).usingRecursiveComparison()
-                .isEqualTo(TripResponse.of(LONDON_TRIP));
+                .isEqualTo(TripResponse.of(LONDON_TRIP, CITIES));
     }
 
 
@@ -288,8 +319,8 @@ class TripControllerTest extends RestDocsTest {
     void getTrips() throws Exception {
         // given
         makeTrip();
-        when(tripService.getAllTrip())
-                .thenReturn(List.of(TripResponse.of(LONDON_TRIP)));
+        when(tripService.getAllTrips())
+                .thenReturn(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
 
         // when
         final ResultActions resultActions = performGetRequest();
@@ -320,32 +351,28 @@ class TripControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "200자 이하의 문자열")),
                                 fieldWithPath("[].imageUrl")
                                         .type(JsonFieldType.STRING)
-                                        .description("대표 이미지")
-                                        .attributes(field("constraint", "url")),
-                                fieldWithPath("[].dayLogs")
+                                        .description("여행 대표 이미지")
+                                        .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("[].cities")
                                         .type(JsonFieldType.ARRAY)
-                                        .description("날짜별 여행 기록 배열")
-                                        .attributes(field("constraint", "2개 이상의 데이 로그")),
-                                fieldWithPath("[].dayLogs[].id")
+                                        .description("여행 도시 배열")
+                                        .attributes(field("constraint", "1개 이상의 도시 정보")),
+                                fieldWithPath("[].cities[].id")
                                         .type(JsonFieldType.NUMBER)
-                                        .description("날짜별 기록 ID")
+                                        .description("여행 도시 ID")
                                         .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].dayLogs[].title")
+                                fieldWithPath("[].cities[].name")
                                         .type(JsonFieldType.STRING)
-                                        .description("소제목")
-                                        .attributes(field("constraint", "문자열")),
-                                fieldWithPath("[].dayLogs[].ordinal")
+                                        .description("여행 도시 이름")
+                                        .attributes(field("constraint", "나라, 도시")),
+                                fieldWithPath("[].cities[].latitude")
                                         .type(JsonFieldType.NUMBER)
-                                        .description("여행에서의 날짜 순서")
-                                        .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].dayLogs[].date")
-                                        .type(JsonFieldType.STRING)
-                                        .description("실제 날짜")
-                                        .attributes(field("constraint", "yyyy-MM-dd")),
-                                fieldWithPath("[].dayLogs[].items")
-                                        .type(JsonFieldType.ARRAY)
-                                        .description("아이템 목록")
-                                        .attributes(field("constraint", "배열"))
+                                        .description("위도")
+                                        .attributes(field("constraint", "실수")),
+                                fieldWithPath("[].cities[].longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "실수"))
                         )
                 ))
                 .andReturn();
@@ -356,7 +383,7 @@ class TripControllerTest extends RestDocsTest {
                 }
         );
         assertThat(tripResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(TripResponse.of(LONDON_TRIP)));
+                .isEqualTo(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
     }
 
     @DisplayName("트립의 정보를 변경할 수 있다.")
@@ -367,6 +394,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -389,6 +417,10 @@ class TripControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 제목")
                                                 .attributes(field("constraint", "50자 이하의 문자열")),
+                                        fieldWithPath("imageUrl")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 이미지")
+                                                .attributes(field("constraint", "이미지 URL")),
                                         fieldWithPath("startDate")
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 시작 날짜")
@@ -420,6 +452,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -444,6 +477,7 @@ class TripControllerTest extends RestDocsTest {
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -468,6 +502,7 @@ class TripControllerTest extends RestDocsTest {
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "updatedTite",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 updateDescription,
@@ -490,6 +525,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 null,
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -512,6 +548,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 null,
                 "추가된 여행 설명",
@@ -534,6 +571,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -556,6 +594,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",

@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: ({ ...args }) => {
+  render: () => {
     const { selected, handleSelectClick } = useSelect(trip.dayLogs[0].id);
     const selectedDayLog = trip.dayLogs.find((log) => log.id === selected)!;
 

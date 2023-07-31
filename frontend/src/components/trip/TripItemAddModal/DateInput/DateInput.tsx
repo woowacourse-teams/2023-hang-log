@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -18,7 +19,7 @@ const DateInput = ({ currentCategory, dayLogId, dates, updateInputValue }: DateI
   };
 
   return (
-    <Select label="날짜" name="date" required onChange={handleDateChange}>
+    <Select label="날짜" id="date" name="date" required onChange={handleDateChange}>
       <>
         {Array.from({ length: dates.length - 1 }, (_, index) => (
           <option
