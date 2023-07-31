@@ -18,13 +18,11 @@ import {
 interface SuggestionProps {
   queryWord: string;
   onItemSelect: (city: CityData) => void;
-  closeSuggestion: () => void;
 }
 
-const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: SuggestionProps) => {
+const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   const { suggestions, focusedSuggestionIndex, isFocused, setNewSuggestions } = useCitySuggestion({
     onItemSelect,
-    closeSuggestion,
   });
   const listRef = useRef<HTMLUListElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
