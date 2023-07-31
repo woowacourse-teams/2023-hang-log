@@ -3,7 +3,7 @@ import type { TripPlaceType } from '@type/trip';
 import { useEffect, useRef, useState } from 'react';
 
 import MapDashedLine from '@components/common/MapDashedLine/MapDashedLine';
-import TripItemMarker from '@components/common/TripItemMarker/TripItemMarker';
+import TripItemMarkerContainer from '@components/common/TripItemMarkerContainer/TripItemMarkerContainer';
 
 interface TripMapProps {
   centerLat: number;
@@ -55,15 +55,7 @@ const TripMap = ({ centerLat, centerLng, places }: TripMapProps) => {
       <div id="map" ref={wrapperRef} css={{ height: 'calc(100vh - 81px)' }} />
       {map && (
         <>
-          {places.map((place) => (
-            <TripItemMarker
-              map={map}
-              id={place.id}
-              lat={place.coordinate.lat}
-              lng={place.coordinate.lng}
-              // isSelected={index === 0}
-            />
-          ))}
+          <TripItemMarkerContainer map={map} places={places} />
           <MapDashedLine map={map} coordinates={coordinates} />
         </>
       )}
