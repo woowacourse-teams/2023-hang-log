@@ -1,7 +1,10 @@
 import MoreIcon from '@assets/svg/more-icon.svg';
 import ShareIcon from '@assets/svg/share-icon.svg';
-import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
+import { PATH } from '@constants/path';
+import { Button, Menu, MenuItem, MenuList, Toast, useOverlay } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
+
+import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
 
 import {
   iconButtonStyling,
@@ -16,7 +19,19 @@ interface TripButtonsProps {
 
 export const TripButtons = ({ tripId }: TripButtonsProps) => {
   const navigate = useNavigate();
+  const deleteTripMutation = useDeleteTripMutation();
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
+  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
+
+  const handleDeleteButtonClick = () => {
+    deleteTripMutation.mutate(
+      { tripId },
+      {
+        onSuccess: () => navigate(PATH.ROOT),
+        onError: () => openErrorToast(),
+      }
+    );
+  };
 
   return (
     <>
@@ -38,14 +53,18 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
         {isMenuOpen && (
           <MenuList css={moreMenuListStyling}>
             <MenuItem onClick={() => navigate(`/trip-edit/${tripId}`)}>수정</MenuItem>
-            {/* TODO : 삭제 기능 추가! */}
-            <MenuItem onClick={() => {}}>삭제</MenuItem>
+            <MenuItem onClick={handleDeleteButtonClick}>삭제</MenuItem>
           </MenuList>
         )}
       </Menu>
       <button css={iconButtonStyling} type="button">
         <MoreIcon />
       </button>
+      {isErrorTostOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          여행 삭제를 실패했습니다. 잠시 후 다시 시도해 주세요.
+        </Toast>
+      )}
     </>
   );
 };
