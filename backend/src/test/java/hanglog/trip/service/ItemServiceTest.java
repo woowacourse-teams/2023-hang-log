@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import hanglog.category.Category;
-import hanglog.category.repository.CategoryRepository;
+import hanglog.category.domain.Category;
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -18,6 +18,7 @@ import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import hanglog.trip.fixture.ExpenseFixture;
@@ -87,6 +88,7 @@ public class ItemServiceTest {
         assertThat(actualId).isEqualTo(1L);
     }
 
+
     @DisplayName("URL이 Base Url을 포함하고 있지 않으면 예외가 발생한다.")
     @Test
     void save_NotContainBaseUrl() {
@@ -149,9 +151,42 @@ public class ItemServiceTest {
         assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("여행 아이템의 정보를 수정한다.")
+    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀌지 않은 경우")
     @Test
-    void update() {
+    void update_PlaceNotChange() {
+        // given
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                List.of("https://hanglog.com/img/imageName.png"),
+                false,
+                null,
+                expenseRequest
+        );
+
+        given(itemRepository.save(any()))
+                .willReturn(ItemFixture.LONDON_EYE_ITEM);
+        given(itemRepository.findById(any()))
+                .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when
+        itemService.update(1L, 1L, itemUpdateRequest);
+
+        // then
+        verify(itemRepository).save(any());
+    }
+
+    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀐 경우")
+    @Test
+    void update_PlaceChange() {
         // given
         final PlaceRequest placeRequest = new PlaceRequest(
                 "에펠탑",
@@ -160,13 +195,14 @@ public class ItemServiceTest {
                 List.of("culture")
         );
         final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
-        final ItemRequest itemRequest = new ItemRequest(
+        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
                 1L,
                 List.of("https://hanglog.com/img/imageName.png"),
+                false,
                 placeRequest,
                 expenseRequest
         );
@@ -181,7 +217,7 @@ public class ItemServiceTest {
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when
-        itemService.update(1L, 1L, itemRequest);
+        itemService.update(1L, 1L, itemUpdateRequest);
 
         // then
         verify(itemRepository).save(any());
