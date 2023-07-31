@@ -30,11 +30,11 @@ const DateInput = ({
     updateDateInfo(selectedDateRange);
   }, [selectedDateRange, updateDateInfo]);
 
-  const handleDateClick = (dateRange: { start: string | null; end: string | null }) => {
-    if (!dateRange.end) return;
+  const handleDateClick = (dateRange: DateRangeData) => {
+    if (!dateRange.endDate) return;
 
-    setSelectedDateRange({ startDate: dateRange.start, endDate: dateRange.end });
-    setInputValue(formatDateRange({ startDate: dateRange.start, endDate: dateRange.end }));
+    setSelectedDateRange(dateRange);
+    setInputValue(formatDateRange(dateRange));
   };
 
   return (
@@ -56,9 +56,7 @@ const DateInput = ({
               maxDateRange={60}
               hasRangeRestriction
               initialSelectedDateRange={
-                selectedDateRange.startDate !== null
-                  ? { start: selectedDateRange.startDate, end: selectedDateRange.endDate }
-                  : undefined
+                selectedDateRange.startDate !== null ? selectedDateRange : undefined
               }
             />
           </Box>

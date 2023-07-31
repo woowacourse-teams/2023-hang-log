@@ -34,7 +34,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
 
   useEffect(() => {
     updateCityInfo(cityTags);
-  }, [cityTags, updateCityInfo]);
+  }, [cityTags]);
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const word = event.currentTarget.value;

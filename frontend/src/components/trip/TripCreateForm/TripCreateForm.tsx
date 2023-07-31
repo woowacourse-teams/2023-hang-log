@@ -1,6 +1,6 @@
 import { PATH } from '@constants/path';
 import { Button } from 'hang-log-design-system';
-import { type FormEvent, Suspense } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCreateTripMutation } from '@hooks/api/useCreateTripMutation';
@@ -30,9 +30,7 @@ const TripCreateForm = () => {
 
   return (
     <form css={formStyling} onSubmit={handleSubmit}>
-      <Suspense>
-        <CitySearchBar updateCityInfo={updateCityInfo} />
-      </Suspense>
+      <CitySearchBar updateCityInfo={updateCityInfo} />
       <DateInput updateDateInfo={updateDateInfo} />
       <Button variant="primary" disabled={!isCityDateValid}>
         기록하기
