@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 const meta = {
-  title: 'common/TripsItemList-Empty',
+  title: 'trips/TripsItemListEmpty',
   component: TripsItemList.Empty,
   args: {},
 } satisfies Meta<typeof TripsItemList>;
@@ -11,4 +11,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SortByRegister: Story = {};
+export const Default: Story = {};
