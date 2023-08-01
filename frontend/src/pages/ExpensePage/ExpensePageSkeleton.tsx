@@ -10,7 +10,6 @@ const ExpensePageSkeleton = () => {
     <Flex css={containerStyling}>
       <TotalExpenseSectionSkeleton />
       <ExpenseListSectionSkeleton />
-      {/* <ExpenseListSection tripId={expenseData.id} /> */}
     </Flex>
   );
 };
