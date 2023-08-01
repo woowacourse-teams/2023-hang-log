@@ -40,7 +40,7 @@ class ExpenseControllerTest extends RestDocsTest {
 
     @DisplayName("모든 경비를 가져온다.")
     @Test
-    void getExpensesTest() throws Exception {
+    void getExpenses() throws Exception {
         // given
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
