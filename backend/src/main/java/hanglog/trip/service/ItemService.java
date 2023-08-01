@@ -108,15 +108,25 @@ public class ItemService {
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        // TODO apiCategory를 가지고 category를 탐색
-        final Category category = new Category(1L, "문화", "culture");
-
         return new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
-                category
+                findCategoryByApiCategory(placeRequest.getApiCategory())
         );
+    }
+
+    public Category findCategoryByApiCategory(final List<String> apiCategory) {
+        final String engName = getCategoryEngNameFromApiCategory(apiCategory);
+        return categoryRepository.findByEngName(engName)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ENG_NAME));
+    }
+
+    private String getCategoryEngNameFromApiCategory(final List<String> apiCategory) {
+        return apiCategory.stream()
+                .filter(category -> categoryEngNames.contains(category))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException(INVALID_API_CATEGORY));
     }
 
     private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {

@@ -18,6 +18,7 @@ public enum ExceptionCode {
     NOT_FOUND_PLACE_ID(1006, "요청한 ID에 해당하는 장소가 존재하지 않습니다."),
     NOT_FOUND_CATEGORY_ID(1007, "요청한 ID에 해당하는 카테고리가 존재하지 않습니다."),
     NOT_FOUNT_IMAGE_URL(1008, "요청한 URL에 해당하는 이미지가 존재하지 않습니다."),
+    NOT_FOUND_CATEGORY_ENG_NAME(1009, "요청한 카테고리 EngName에 해당하는 카테고리가 존재하지 않습니다."),
 
     ALREADY_DELETED_TRIP_ITEM(2001, "이미 삭제된 여행 아이템입니다."),
     ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다."),
@@ -33,7 +34,9 @@ public enum ExceptionCode {
     EXCEED_IMAGE_LIST_SIZE(5004, "업로드 가능한 이미지 개수를 초과했습니다."),
     INVALID_IMAGE_URL(5005, "요청한 이미지 URL의 형식이 잘못되었습니다."),
     INVALID_IMAGE_PATH(5101, "이미지를 저장할 경로가 올바르지 않습니다."),
-    FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다.");
+    FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다."),
+
+    INVALID_API_CATEGORY(6001, "요청한 ApiCategory와 대응하는 카테고리 EngName이 존재하지 않습니다.");
 
     private final int code;
     private final String message;
