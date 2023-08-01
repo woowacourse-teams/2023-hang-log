@@ -1,5 +1,7 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_API_CATEGORY;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ENG_NAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
@@ -22,6 +24,7 @@ import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,12 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
     private final ImageRepository imageRepository;
+    private List<String> categoryEngNames;
+
+    @PostConstruct
+    private void initEngNames() {
+        categoryEngNames = categoryRepository.findAllEngName();
+    }
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요

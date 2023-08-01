@@ -9,4 +9,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category c WHERE MOD(c.id, 100) = 0")
     List<Category> findExpenseCategory();
+
+    @Query("SELECT c.engName FROM Category c")
+    List<String> findAllEngName();
 }
