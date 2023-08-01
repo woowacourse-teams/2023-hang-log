@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ExpensePage from '@pages/ExpensePage/ExpensePage';
+import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path: PATH.EXPENSE,
-        element: <ExpensePage />,
+        element: (
+          <Suspense fallback={<ExpensePageSkeleton />}>
+            <ExpensePage />
+          </Suspense>
+        ),
       },
     ],
   },

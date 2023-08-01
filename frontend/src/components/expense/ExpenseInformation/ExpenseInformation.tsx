@@ -1,5 +1,5 @@
 import type { ExpenseData } from '@type/expense';
-import { Badge, Box, Flex, Heading, Text, Theme } from 'hang-log-design-system';
+import { Badge, Flex, Heading, Text, Theme } from 'hang-log-design-system';
 
 import { formatDate } from '@utils/formatter';
 
@@ -16,19 +16,17 @@ interface ExpenseInformationProps
 const ExpenseInformation = ({ ...information }: ExpenseInformationProps) => {
   return (
     <header css={sectionStyling}>
-      <Box tag="section">
-        <Flex styles={{ gap: Theme.spacer.spacing1 }}>
-          {information.cities.map(({ id, name }) => (
-            <Badge key={id}>{name}</Badge>
-          ))}
-        </Flex>
-        <Heading css={titleStyling} size="large">
-          {information.title}
-        </Heading>
-        <Text>
-          {formatDate(information.startDate)} - {formatDate(information.endDate)}
-        </Text>
-      </Box>
+      <Flex styles={{ gap: Theme.spacer.spacing1 }}>
+        {information.cities.map(({ id, name }) => (
+          <Badge key={id}>{name}</Badge>
+        ))}
+      </Flex>
+      <Heading css={titleStyling} size="large">
+        {information.title}
+      </Heading>
+      <Text>
+        {formatDate(information.startDate)} - {formatDate(information.endDate)}
+      </Text>
     </header>
   );
 };
