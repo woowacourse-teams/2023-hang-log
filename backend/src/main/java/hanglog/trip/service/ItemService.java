@@ -7,7 +7,7 @@ import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
