@@ -29,12 +29,12 @@ public class TripExpenseResponse {
     public static TripExpenseResponse of(
             final Trip trip,
             final int totalAmount,
-            final List<TripCity> cities,
+            final List<TripCity> testCities,
             final List<CategoryExpense> categoryExpenses,
             final Currency currency,
             final List<DayLogExpense> dayLogExpenses
     ) {
-        final List<CityResponse> cityExpenseResponses = cities.stream()
+        final List<CityResponse> cityExpenseResponses = testCities.stream()
                 .map(tripCity -> CityResponse.of(tripCity.getCity()))
                 .toList();
 
