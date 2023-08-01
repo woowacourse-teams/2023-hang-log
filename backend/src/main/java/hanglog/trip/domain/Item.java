@@ -107,9 +107,7 @@ public class Item extends BaseEntity {
             dayLog.getItems().add(this);
         }
 
-        for (final Image image : images) {
-            image.setItem(this);
-        }
+        images.forEach(image -> image.setItem(this));
     }
 
     public Item(
