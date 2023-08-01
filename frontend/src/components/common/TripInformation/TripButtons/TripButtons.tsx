@@ -66,7 +66,7 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
       </button>
       {isErrorTostOpen && (
         <Toast variant="error" closeToast={closeErrorToast}>
-          여행 삭제를 실패했습니다. 잠시 후 다시 시도해 주세요.
+          여행 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.
         </Toast>
       )}
     </>
