@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 
 import { useExpenseQuery } from '@hooks/api/useExpenseQuery';
 
+import { containerStyling } from '@pages/ExpensePage/ExpensePage.style';
+
 import ExpenseListSection from '@components/expense/ExpenseListSection/ExpenseListSection';
 
 const ExpensePage = () => {
@@ -13,7 +15,7 @@ const ExpensePage = () => {
   const { expenseData } = useExpenseQuery(Number(tripId));
 
   return (
-    <Flex>
+    <Flex css={containerStyling}>
       <TotalExpenseSection tripId={expenseData.id} />
       <ExpenseListSection tripId={expenseData.id} />
     </Flex>
