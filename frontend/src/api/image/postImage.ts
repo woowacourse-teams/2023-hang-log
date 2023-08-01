@@ -9,7 +9,7 @@ interface PostImageRequestBody {
 export const postImage =
   () =>
   async ({ images }: PostImageRequestBody) => {
-    const response = await axiosInstance.post<string[]>(END_POINTS.IMAGES, images);
+    const { data } = await axiosInstance.post<string[]>(END_POINTS.IMAGES, images);
 
-    return response.data;
+    return data;
   };
