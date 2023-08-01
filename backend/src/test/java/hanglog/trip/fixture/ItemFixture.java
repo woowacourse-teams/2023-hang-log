@@ -55,7 +55,8 @@ public final class ItemFixture {
             new DayLog(
                     "이동",
                     1,
-                    TripFixture.LONDON_TRIP),
+                    TripFixture.LONDON_TRIP
+            ),
             ExpenseFixture.JPY_10000
     );
 }

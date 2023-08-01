@@ -42,7 +42,8 @@ class ExpenseControllerTest extends RestDocsTest {
     @Test
     void getExpensesTest() throws Exception {
         // given
-        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(LONDON_TO_JAPAN,
+        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
+                LONDON_TO_JAPAN,
                 20000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                 List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), 20000, 20000)),
