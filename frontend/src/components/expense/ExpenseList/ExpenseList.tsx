@@ -38,7 +38,7 @@ ExpenseList.Empty = ({ tripId }: { tripId: number }) => {
   const navigate = useNavigate();
 
   return (
-    <Box styles={{ marginTop: Theme.spacer.spacing4 }}>
+    <Box styles={{ marginTop: Theme.spacer.spacing3 }}>
       <Heading size="xSmall">아직 추가된 일정 기록이 없습니다!</Heading>
       <Text css={emptyTextStyling}>
         여행하면서 갔던 장소, 사용했던 경비와 같은 여행 일정 기록들을 추가해 보세요.
