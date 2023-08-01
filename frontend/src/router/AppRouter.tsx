@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: PATH.EDIT_TRIP,
+        path: PATH.EDIT_TRIP(':tripId'),
         element: (
           <Suspense fallback={<TripEditPageSkeleton />}>
             <TripEditPage />

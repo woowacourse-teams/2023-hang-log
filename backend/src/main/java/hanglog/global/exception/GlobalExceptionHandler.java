@@ -1,7 +1,10 @@
 package hanglog.global.exception;
 
+import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_CAPACITY;
+
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn(e.getMessage(), e);
         return ResponseEntity.badRequest()
                 .body(new ExceptionResponse(e.getCode(), e.getMessage()));
+    }
+
+    @ExceptionHandler(SizeLimitExceededException.class)
+    public ResponseEntity<ExceptionResponse> handleSizeLimitExceededException(final SizeLimitExceededException e) {
+        final String message = EXCEED_IMAGE_CAPACITY.getMessage()
+                + " 입력된 이미지 용량은 " + e.getActualSize() + " byte 입니다. "
+                + "(제한 용량: " + e.getPermittedSize() + " byte)";
+        log.warn(message, e);
+        return ResponseEntity.badRequest()
+                .body(new ExceptionResponse(EXCEED_IMAGE_CAPACITY.getCode(), message));
     }
 
     @ExceptionHandler(Exception.class)

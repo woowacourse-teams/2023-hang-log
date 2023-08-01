@@ -25,7 +25,15 @@ public enum ExceptionCode {
     INVALID_RATING(3001, "별점은 N.0점이거나 N.5점 형태이어야 합니다."),
     INVALID_CURRENCY(3002, "제공하지 않는 통화입니다."),
 
-    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다.");
+    INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
+
+    EXCEED_IMAGE_CAPACITY(5001, "업로드 가능한 이미지 용량을 초과했습니다."),
+    NULL_IMAGE(5002, "업로드한 이미지 파일이 NULL입니다."),
+    EMPTY_IMAGE_LIST(5003, "최소 한 장 이상의 이미지를 업로드해야합니다."),
+    EXCEED_IMAGE_LIST_SIZE(5004, "업로드 가능한 이미지 개수를 초과했습니다."),
+    INVALID_IMAGE_URL(5005, "요청한 이미지 URL의 형식이 잘못되었습니다."),
+    INVALID_IMAGE_PATH(5101, "이미지를 저장할 경로가 올바르지 않습니다."),
+    FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다.");
 
     private final int code;
     private final String message;
