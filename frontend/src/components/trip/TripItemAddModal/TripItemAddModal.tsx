@@ -92,20 +92,10 @@ const TripItemAddModal = ({
               </Flex>
               <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
                 <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
-                {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
                 <ImageInput
                   initialImageUrls={tripItemInformation.imageUrls}
                   updateInputValue={updateInputValue}
                 />
-                {/* <ImageUploadInput
-                  id="image-upload"
-                  label="이미지 업로드"
-                  imageUrls={tripItemInformation.imageUrls}
-                  imageAltText="여행 일정 업르드 이미지"
-                  supportingText="사진은 최대 5장 올릴 수 있어요."
-                  maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
-                  onRemove={() => {}}
-                /> */}
               </Flex>
             </Flex>
             <Button variant="primary">일정 기록 추가하기</Button>
