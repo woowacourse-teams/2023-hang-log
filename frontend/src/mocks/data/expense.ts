@@ -27,7 +27,7 @@ export const expense: ExpenseData = {
         name: '음식',
       },
       amount: 500000,
-      percentage: 2,
+      percentage: 10,
     },
     {
       category: {
@@ -35,7 +35,7 @@ export const expense: ExpenseData = {
         name: '문화',
       },
       amount: 300000,
-      percentage: 2,
+      percentage: 20,
     },
     {
       category: {
@@ -43,7 +43,7 @@ export const expense: ExpenseData = {
         name: '쇼핑',
       },
       amount: 300000,
-      percentage: 2,
+      percentage: 40,
     },
     {
       category: {
@@ -51,7 +51,7 @@ export const expense: ExpenseData = {
         name: '숙박',
       },
       amount: 500000,
-      percentage: 2,
+      percentage: 5,
     },
     {
       category: {
@@ -59,7 +59,7 @@ export const expense: ExpenseData = {
         name: '교통',
       },
       amount: 500000,
-      percentage: 2,
+      percentage: 10,
     },
     {
       category: {
@@ -67,7 +67,7 @@ export const expense: ExpenseData = {
         name: '기타',
       },
       amount: 0,
-      percentage: 0,
+      percentage: 15,
     },
   ],
   exchangeRate: {

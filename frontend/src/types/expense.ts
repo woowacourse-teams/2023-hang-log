@@ -1,8 +1,11 @@
+import type { EXPENSE_CATEGORY_NAMES } from '@constants/expense';
 import type { CurrencyType } from '@type/tripItem';
+
+export type ExpenseCategoryNameType = (typeof EXPENSE_CATEGORY_NAMES)[number];
 
 export interface ExpenseCategoryData {
   id: number;
-  name: string;
+  name: ExpenseCategoryNameType;
 }
 
 export interface ExpenseItemData {

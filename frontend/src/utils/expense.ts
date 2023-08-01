@@ -1,7 +1,7 @@
 import type { CategoryExpenseType, ExpenseData, ExpenseItemData } from '@type/expense';
 
 export const getItemsByCategory = (expenseData: ExpenseData): CategoryExpenseType => {
-  const itemsByCategory: { [categoryId: number]: ExpenseItemData[] } = expenseData.dayLogs
+  const itemsByCategory = expenseData.dayLogs
     .flatMap((dayLog) => dayLog.items)
     .reduce<{ [categoryId: number]: ExpenseItemData[] }>((acc, item) => {
       const categoryId = item.expense.category.id;
