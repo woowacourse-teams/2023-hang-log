@@ -24,7 +24,7 @@ const TripCreateForm = () => {
   };
 
   const goToTripEditPageWithId = (id: string) => {
-    const targetURL = PATH.EDIT_TRIP.replace(':tripId', id);
+    const targetURL = PATH.EDIT_TRIP(id);
     navigate(targetURL);
   };
 
