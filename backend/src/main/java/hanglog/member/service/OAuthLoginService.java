@@ -2,7 +2,9 @@ package hanglog.member.service;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.global.exception.AuthException;
+import hanglog.member.MultiValueMapConverter;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.member.dto.AccessTokenRequest;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +28,12 @@ import org.springframework.web.client.RestTemplate;
 public class OAuthLoginService {
 
     private final MemberRepository memberRepository;
+    private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
     public OAuthLoginService(final MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+        this.objectMapper = new ObjectMapper();
         this.restTemplate = new RestTemplate();
     }
 
@@ -41,7 +46,10 @@ public class OAuthLoginService {
 
     private String getAccessToken(final String code, final ProviderProperties properties) {
         final AccessTokenRequest accessTokenRequest = AccessTokenRequest.of(code, properties);
-        final HttpEntity<AccessTokenRequest> accessTokenRequestEntity = new HttpEntity<>(accessTokenRequest);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        final MultiValueMap<String, String> params = MultiValueMapConverter.convert(objectMapper, accessTokenRequest);
+        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
 
         final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
                 properties.getTokenUri(),
@@ -57,7 +65,7 @@ public class OAuthLoginService {
 
     private UserInfo getUserInfo(final String accessToken, final Provider provider) {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
+        headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
 
         return (UserInfo) restTemplate.exchange(
