@@ -18,8 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // TODO: Logger 달기
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             final MethodArgumentNotValidException e,
@@ -45,6 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final String message = EXCEED_IMAGE_CAPACITY.getMessage()
                 + " 입력된 이미지 용량은 " + e.getActualSize() + " byte 입니다. "
                 + "(제한 용량: " + e.getPermittedSize() + " byte)";
+        log.warn(message, e);
         return ResponseEntity.badRequest()
                 .body(new ExceptionResponse(EXCEED_IMAGE_CAPACITY.getCode(), message));
     }
