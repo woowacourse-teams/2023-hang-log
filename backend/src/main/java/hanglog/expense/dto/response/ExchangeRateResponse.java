@@ -17,7 +17,7 @@ public class ExchangeRateResponse {
 
     public static ExchangeRateResponse of(final Currency currency) {
         final List<CurrencyRateResponse> currencyRateResponses = Arrays.stream(CurrencyType.values())
-                .map(type -> new CurrencyRateResponse(type.getCode(), type.getGetRate().apply(currency)))
+                .map(type -> new CurrencyRateResponse(type.getCode(), type.getCurrencyRate(currency)))
                 .toList();
 
         return new ExchangeRateResponse(

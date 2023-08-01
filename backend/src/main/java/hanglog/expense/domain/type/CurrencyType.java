@@ -23,11 +23,11 @@ public enum CurrencyType {
     KRW("krw", Currency::getKrw);
 
     private final String code;
-    private final Function<Currency, Double> getRate;
+    private final Function<Currency, Double> rate;
 
-    CurrencyType(final String code, final Function<Currency, Double> getRate) {
+    CurrencyType(final String code, final Function<Currency, Double> rate) {
         this.code = code;
-        this.getRate = getRate;
+        this.rate = rate;
     }
 
     public static double mappingCurrency(final String currencyCode, final Currency currency) {
@@ -35,7 +35,11 @@ public enum CurrencyType {
                 .filter(value -> value.code.equals(currencyCode.toLowerCase()))
                 .findAny()
                 .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
-                .getRate
+                .rate
                 .apply(currency);
+    }
+
+    public double getCurrencyRate(final Currency currency) {
+        return this.rate.apply(currency);
     }
 }
