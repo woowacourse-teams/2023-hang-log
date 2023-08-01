@@ -30,19 +30,19 @@ public class Image extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String imageName;
+    private String name;
 
     @ManyToOne(fetch = LAZY, cascade = {PERSIST})
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public Image(final String imageName, final Item item) {
-        this.imageName = imageName;
+    public Image(final String name, final Item item) {
+        this.name = name;
         this.item = item;
     }
 
-    public Image(final String imageName) {
-        this(imageName, null);
+    public Image(final String name) {
+        this(name, null);
     }
 
     public void setItem(final Item item) {
