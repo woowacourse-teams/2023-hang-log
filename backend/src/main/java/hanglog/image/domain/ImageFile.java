@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageFile {
 
     private static final String EXTENSION_DELIMITER = ".";
+
     private final MultipartFile file;
     private final String hashedName;
 
@@ -42,8 +43,8 @@ public class ImageFile {
         final String filenameExtension = EXTENSION_DELIMITER + getFilenameExtension(name);
         final String nameAndDate = name + LocalDateTime.now();
         try {
-            final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-            final byte[] hashBytes = digest.digest(nameAndDate.getBytes(StandardCharsets.UTF_8));
+            final MessageDigest hashAlgorithm = MessageDigest.getInstance("SHA3-256");
+            final byte[] hashBytes = hashAlgorithm.digest(nameAndDate.getBytes(StandardCharsets.UTF_8));
             return bytesToHex(hashBytes) + filenameExtension;
         } catch (final NoSuchAlgorithmException e) {
             throw new ImageException(FAIL_IMAGE_NAME_HASH);
