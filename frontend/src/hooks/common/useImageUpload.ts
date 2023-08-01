@@ -28,14 +28,14 @@ export const useImageUpload = ({
       return;
     }
 
-    const formData = new FormData();
+    const imageUploadFormData = new FormData();
 
     [...event.target.files].forEach((file) => {
-      formData.append('images', file);
+      imageUploadFormData.append('images', file);
     });
 
     imageMutation.mutate(
-      { images: formData },
+      { images: imageUploadFormData },
       {
         onSuccess: (data) => {
           setUploadedImageUrls((prevImageUrls) => {
