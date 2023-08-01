@@ -17,7 +17,8 @@ export const useTripEditForm = (
     description,
     imageUrl,
   }: Omit<TripData, 'dayLogs'>,
-  onClose: () => void
+  onClose: () => void,
+  openErrorToast: () => void
 ) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
@@ -76,6 +77,7 @@ export const useTripEditForm = (
       },
       {
         onSuccess: onClose,
+        onError: openErrorToast,
       }
     );
   };
