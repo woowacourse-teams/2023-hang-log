@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DayLogGetResponse {
 
-    private static final int DEFAULT_DAY = 1;
-
     private final Long id;
     private final String title;
     private final Integer ordinal;
@@ -19,7 +17,6 @@ public class DayLogGetResponse {
     private final List<ItemResponse> items;
 
     public static DayLogGetResponse of(final DayLog dayLog) {
-        final LocalDate date = calculateDate(dayLog);
         final List<ItemResponse> itemResponses = dayLog.getItems().stream()
                 .map(ItemResponse::of)
                 .toList();
@@ -28,13 +25,8 @@ public class DayLogGetResponse {
                 dayLog.getId(),
                 dayLog.getTitle(),
                 dayLog.getOrdinal(),
-                date,
+                dayLog.calculateDate(),
                 itemResponses
         );
-    }
-
-    private static LocalDate calculateDate(final DayLog dayLog) {
-        final LocalDate startDate = dayLog.getTrip().getStartDate();
-        return startDate.plusDays(dayLog.getOrdinal() - DEFAULT_DAY);
     }
 }

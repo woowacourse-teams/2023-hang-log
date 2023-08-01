@@ -45,6 +45,7 @@ const CitySuggestion = ({ queryWord, onItemSelect, closeSuggestion }: Suggestion
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {queryWord && (
         <SuggestionList css={containerStyling} ref={listRef}>

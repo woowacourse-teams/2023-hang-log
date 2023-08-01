@@ -3,8 +3,8 @@ import type { CityData } from '@type/city';
 
 import { axiosInstance } from '@api/axiosInstance';
 
-export const getCities = async () => {
-  const { data } = await axiosInstance.get<CityData[]>(END_POINTS.CITIES);
+export const getCity = async () => {
+  const { data } = await axiosInstance.get<CityData[]>(END_POINTS.CITY);
 
   return data;
 };
