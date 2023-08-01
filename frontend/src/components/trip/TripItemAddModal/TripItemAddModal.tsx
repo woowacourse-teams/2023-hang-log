@@ -102,6 +102,7 @@ const TripItemAddModal = ({
                 <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
                 {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
                 <ImageUploadInput
+                  id="image-upload"
                   label="이미지 업로드"
                   imageUrls={tripItemInformation.imageUrls}
                   imageAltText="여행 일정 업르드 이미지"

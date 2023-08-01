@@ -2,6 +2,7 @@ package hanglog.trip.presentation;
 
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.service.TripService;
 import jakarta.validation.Valid;
@@ -27,14 +28,14 @@ public class TripController {
 
     @GetMapping
     public ResponseEntity<List<TripResponse>> getTrips() {
-        List<TripResponse> tripResponses = tripService.getAllTrip();
+        final List<TripResponse> tripResponses = tripService.getAllTrips();
         return ResponseEntity.ok().body(tripResponses);
     }
 
     @GetMapping("/{tripId}")
-    public ResponseEntity<TripResponse> getTrip(@PathVariable final Long tripId) {
-        TripResponse tripResponse = tripService.getTrip(tripId);
-        return ResponseEntity.ok().body(tripResponse);
+    public ResponseEntity<TripDetailResponse> getTrip(@PathVariable final Long tripId) {
+        final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+        return ResponseEntity.ok().body(tripDetailResponse);
     }
 
     @PutMapping("/{tripId}")

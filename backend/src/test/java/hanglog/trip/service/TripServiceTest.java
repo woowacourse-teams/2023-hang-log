@@ -14,12 +14,13 @@ import static org.mockito.Mockito.verify;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
-import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,12 +105,15 @@ class TripServiceTest {
         given(tripRepository.findById(1L))
                 .willReturn(Optional.of(LONDON_TRIP));
 
+        given(tripCityRepository.findByTripId(1L))
+                .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
+
         // when
-        final TripResponse actual = tripService.getTrip(1L);
+        final TripDetailResponse actual = tripService.getTripDetail(1L);
 
         // then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripResponse.of(LONDON_TRIP));
+                .isEqualTo(TripDetailResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
@@ -118,14 +122,19 @@ class TripServiceTest {
         // given
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
+                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 5),
                 "추가된 여행 설명",
-                List.of(1L, 2L, 3L)
+                List.of(1L, 2L)
         );
 
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
+        given(cityRepository.findById(1L))
+                .willReturn(Optional.of(PARIS));
+        given(cityRepository.findById(2L))
+                .willReturn(Optional.of(LONDON));
 
         // when
         tripService.update(LONDON_TRIP.getId(), updateRequest);
@@ -156,7 +165,7 @@ class TripServiceTest {
     class UpdateTripTests {
 
         TripUpdateRequest updateRequest;
-        Trip trip = new Trip(
+        Trip trip = Trip.of(
                 "파리 여행",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 3)
@@ -171,6 +180,7 @@ class TripServiceTest {
             trip = new Trip(
                     2L,
                     "파리 여행",
+                    "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                     LocalDate.of(2023, 7, 1),
                     LocalDate.of(2023, 7, 3),
                     "",
@@ -181,14 +191,16 @@ class TripServiceTest {
         void changeDate(final int startDay, final int endDay) {
             updateRequest = new TripUpdateRequest(
                     "변경된 타이틀",
+                    "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
                     LocalDate.of(2023, 7, startDay),
                     LocalDate.of(2023, 7, endDay),
                     "추가된 여행 설명",
-                    List.of(1L, 2L, 3L)
+                    List.of(1L, 2L)
             );
 
             final Trip updatedTrip = new Trip(
                     trip.getId(),
+                    updateRequest.getImageUrl(),
                     updateRequest.getTitle(),
                     updateRequest.getStartDate(),
                     updateRequest.getEndDate(),
@@ -200,6 +212,10 @@ class TripServiceTest {
                     .willReturn(Optional.of(trip));
             given(tripRepository.save(any(Trip.class)))
                     .willReturn(updatedTrip);
+            given(cityRepository.findById(1L))
+                    .willReturn(Optional.of(PARIS));
+            given(cityRepository.findById(2L))
+                    .willReturn(Optional.of(LONDON));
         }
 
         @DisplayName("변경된 일정이 같은 경우")

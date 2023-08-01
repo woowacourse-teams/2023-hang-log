@@ -28,6 +28,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           css={categorySelectStyling}
           name="expense-category"
           value={initialExpenseValue?.categoryId}
+          aria-label="비용 카테고리"
           onChange={handleCategoryChange}
         >
           {expenseCategoryData.map(({ id, name }) => (
@@ -40,6 +41,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           css={currencySelectStyling}
           name="expense-currency"
           value={initialExpenseValue?.currency}
+          aria-label="통화"
           onChange={handleCurrencyChange}
         >
           {Object.entries(CURRENCY_ICON).map(([key, value]) => (
@@ -51,6 +53,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
         <Input
           type="number"
           placeholder="0"
+          aria-label="비용"
           value={initialExpenseValue?.amount}
           onChange={handleAmountChange}
         />
