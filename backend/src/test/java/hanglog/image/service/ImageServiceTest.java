@@ -23,8 +23,6 @@ class ImageServiceTest {
     @InjectMocks
     private ImageService imageService;
 
-
-    //    @DisplayName("이미지들의 이름을 해싱하여 저장하고 URL을 반환한다.")
     @DisplayName("입력된 이미지의 수가 0개이면 예외가 발생한다.")
     @Test
     void save_EmptyException() {
