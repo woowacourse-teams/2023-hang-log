@@ -20,4 +20,11 @@ public class CityFixture {
             new BigDecimal("789.000"),
             new BigDecimal("987.098")
     );
+    public static final City TOKYO = new City(
+            3L,
+            "일본",
+            "도쿄",
+            new BigDecimal("404.000"),
+            new BigDecimal("303.099")
+    );
 }

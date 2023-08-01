@@ -1,13 +1,12 @@
 package hanglog.trip.service;
 
+import hanglog.city.dto.response.CityResponse;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.repository.CityRepository;
-import hanglog.trip.dto.response.CityResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class CityService {
     public List<CityResponse> getAllCities() {
         final List<City> cities = cityRepository.findAll();
         return cities.stream()
-                .map(CityResponse::of)
+                .map(CityResponse::withCountry)
                 .toList();
     }
 }
