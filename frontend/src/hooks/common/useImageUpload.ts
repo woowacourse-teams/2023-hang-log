@@ -21,16 +21,18 @@ export const useImageUpload = ({
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
   const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
+    const imageFiles = event.target.files;
 
-    if (event.target.files.length + uploadedImageUrls.length > maxUploadCount) {
+    if (!imageFiles) return;
+
+    if (imageFiles.length + uploadedImageUrls.length > maxUploadCount) {
       onError?.('이미지는 최대 5개 업로드할 수 있습니다.');
       return;
     }
 
     const imageUploadFormData = new FormData();
 
-    [...event.target.files].forEach((file) => {
+    [...imageFiles].forEach((file) => {
       imageUploadFormData.append('images', file);
     });
 
