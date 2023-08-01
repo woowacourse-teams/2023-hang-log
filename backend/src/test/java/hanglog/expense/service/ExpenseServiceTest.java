@@ -149,8 +149,8 @@ class ExpenseServiceTest {
             for (final DayLogExpenseResponse response : actual.getDayLogs()) {
                 for (final ItemDetailResponse item : response.getItems()) {
                     softly.assertThat(expectItemList)
-                            .usingRecursiveFieldByFieldElementComparator().
-                            contains(item);
+                            .usingRecursiveFieldByFieldElementComparator()
+                            .contains(item);
                 }
             }
         });
