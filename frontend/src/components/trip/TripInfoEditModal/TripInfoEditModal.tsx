@@ -18,7 +18,6 @@ import {
   dateInputSupportingText,
   formStyling,
   textareaStyling,
-  titleStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
