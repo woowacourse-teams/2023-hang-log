@@ -3,7 +3,7 @@ package hanglog.trip.service;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.image.util.ImageNameUrlConverter.convertUrlToName;
+import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
@@ -122,7 +122,7 @@ public class ItemService {
         final String imageName = convertUrlToName(imageUrl);
 
         return originalImages.stream()
-                .filter(originalImage -> originalImage.getImageName().equals(imageName))
+                .filter(originalImage -> originalImage.getName().equals(imageName))
                 .findAny()
                 .orElseGet(() -> new Image(imageName));
     }

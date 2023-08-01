@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class ImageNameUrlConverterTest {
+class ImageUrlConverterTest {
 
     @DisplayName("URL로 이미지의 이름을 파싱한다.")
     @Test
@@ -19,7 +19,7 @@ class ImageNameUrlConverterTest {
         final String expected = "test.png";
 
         // when & then
-        assertThat(ImageNameUrlConverter.convertUrlToName(url)).isEqualTo(expected);
+        assertThat(ImageUrlConverter.convertUrlToName(url)).isEqualTo(expected);
     }
 
     @DisplayName("URL의 형식이 잘못된 경우 예외가 발생한다.")
@@ -32,7 +32,7 @@ class ImageNameUrlConverterTest {
     })
     void convertUrlToName(final String url) {
         // when & then
-        assertThatThrownBy(() -> ImageNameUrlConverter.convertUrlToName(url))
+        assertThatThrownBy(() -> ImageUrlConverter.convertUrlToName(url))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(5005);
@@ -47,6 +47,6 @@ class ImageNameUrlConverterTest {
         final String expected = "https://hanglog.com/img/test.png";
 
         // when & then
-        assertThat(ImageNameUrlConverter.convertNameToUrl(name)).isEqualTo(expected);
+        assertThat(ImageUrlConverter.convertNameToUrl(name)).isEqualTo(expected);
     }
 }
