@@ -3,12 +3,12 @@ package hanglog.global.exception;
 import lombok.Getter;
 
 @Getter
-public class InvalidDomainException extends RuntimeException {
+public class ImageException extends RuntimeException {
 
     private final int code;
     private final String message;
 
-    public InvalidDomainException(final ExceptionCode exceptionCode) {
+    public ImageException(final ExceptionCode exceptionCode) {
         this.code = exceptionCode.getCode();
         this.message = exceptionCode.getMessage();
     }

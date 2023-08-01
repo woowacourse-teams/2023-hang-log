@@ -3,6 +3,7 @@ package hanglog.trip.dto.response;
 import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.image.domain.Image;
+import hanglog.image.dto.ImagesResponse;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ItemResponse {
     private final Integer ordinal;
     private final Double rating;
     private final String memo;
-    private final List<String> imageUrls;
+    private final ImagesResponse imageUrls;
     private final PlaceResponse place;
     private final ItemExpenseResponse expense;
 
@@ -51,9 +52,10 @@ public class ItemResponse {
         return ItemExpenseResponse.of(expense);
     }
 
-    private static List<String> getImageUrls(final List<Image> images) {
-        return images.stream()
-                .map(Image::getImageUrl)
-                .toList();
+    private static ImagesResponse getImageUrls(final List<Image> images) {
+        if (images == null) {
+            return null;
+        }
+        return ImagesResponse.of(images);
     }
 }
