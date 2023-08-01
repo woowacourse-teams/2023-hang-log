@@ -25,7 +25,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "typescript": "^5.1.6",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
@@ -67,6 +66,7 @@
     "prettier": "^2.8.8",
     "storybook": "^7.0.25",
     "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
