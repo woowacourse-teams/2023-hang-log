@@ -7,7 +7,8 @@ const meta = {
   title: 'common/CitySearchBar',
   component: CitySearchBar,
   args: {
-    initialCities: cities,
+    initialCities: cities.splice(0, 2),
+    updateCityInfo: () => {},
   },
 } satisfies Meta<typeof CitySearchBar>;
 
