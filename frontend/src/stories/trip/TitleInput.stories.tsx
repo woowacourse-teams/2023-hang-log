@@ -1,32 +1,22 @@
-import GoogleMapWrapper from '@/components/common/GoogleMapWrapper/GoogleMapWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { TripItemFormData } from '@type/tripItem';
 import { useState } from 'react';
 
-import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
+import TitleInput from '@components/trip/TripItemAddModal/TitleInput/TitleInput';
 
 const meta = {
-  title: 'trip/TripItemAddModal/PlaceInput',
-  component: PlaceInput,
+  title: 'trip/TripItemAddModal/TitleInput',
+  component: TitleInput,
   argTypes: {
     value: { control: false },
-    isUpdatable: { control: false },
     updateInputValue: { control: false },
   },
   args: {
     value: '',
     isError: false,
-    isUpdatable: false,
     disableError: () => {},
   },
-  decorators: [
-    (Story) => (
-      <GoogleMapWrapper>
-        <Story />
-      </GoogleMapWrapper>
-    ),
-  ],
-} satisfies Meta<typeof PlaceInput>;
+} satisfies Meta<typeof TitleInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -42,6 +32,6 @@ export const Default: Story = {
       setValue(value as string);
     };
 
-    return <PlaceInput {...args} value={value} updateInputValue={updateInputValue} />;
+    return <TitleInput {...args} value={value} updateInputValue={updateInputValue} />;
   },
 };

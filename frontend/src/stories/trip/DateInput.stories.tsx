@@ -5,6 +5,10 @@ import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
 const meta = {
   title: 'trip/TripItemAddModal/DateInput',
   component: DateInput,
+  argTypes: {
+    dayLogId: { control: false },
+    updateInputValue: { control: false },
+  },
   args: {
     currentCategory: true,
     dayLogId: 1,
