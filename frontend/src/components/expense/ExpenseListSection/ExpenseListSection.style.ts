@@ -7,6 +7,8 @@ export const containerStyling = css({
   gap: Theme.spacer.spacing3,
 
   width: '50vw',
+  marginTop: '140px',
+  padding: '0 50px',
 });
 
 export const toggleGroupStyling = css({

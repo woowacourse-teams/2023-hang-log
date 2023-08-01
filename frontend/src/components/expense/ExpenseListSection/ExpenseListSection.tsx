@@ -1,18 +1,18 @@
 import { EXPENSE_LIST_FILTERS } from '@constants/expense';
-import type { ExpenseData } from '@type/expense';
 import { Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
 
+import ExpenseCategories from '@components/expense/ExpenseCategories/ExpenseCategories';
 import ExpenseDates from '@components/expense/ExpenseDates/ExpenseDates';
 import {
   containerStyling,
   toggleGroupStyling,
 } from '@components/expense/ExpenseListSection/ExpenseListSection.style';
 
-import ExpenseCategories from '../ExpenseCategories/ExpenseCategories';
+interface ExpenseListProps {
+  tripId: number;
+}
 
-type ExpenseListProps = ExpenseData;
-
-const ExpenseListSection = ({ ...information }: ExpenseListProps) => {
+const ExpenseListSection = ({ tripId }: ExpenseListProps) => {
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
     EXPENSE_LIST_FILTERS.DAY_LOG
   );
@@ -36,9 +36,9 @@ const ExpenseListSection = ({ ...information }: ExpenseListProps) => {
         />
       </ToggleGroup>
       {selectedFilter === EXPENSE_LIST_FILTERS.DAY_LOG ? (
-        <ExpenseDates tripId={information.id} />
+        <ExpenseDates tripId={tripId} />
       ) : (
-        <ExpenseCategories tripId={information.id} />
+        <ExpenseCategories tripId={tripId} />
       )}
     </section>
   );
