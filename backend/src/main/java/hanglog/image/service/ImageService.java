@@ -54,14 +54,6 @@ public class ImageService {
         return new ImagesResponse(imageUrls);
     }
 
-    private void validateImageNull(final List<MultipartFile> images) {
-        images.forEach(image -> {
-            if (image.isEmpty()) {
-                throw new ImageException(NULL_IMAGE);
-            }
-        });
-    }
-
     private void validateImagesSize(final List<MultipartFile> images) {
         if (images.size() > MAX_IMAGE_LIST_SIZE) {
             throw new ImageException(EXCEED_IMAGE_LIST_SIZE);
@@ -71,13 +63,11 @@ public class ImageService {
         }
     }
 
-    private void uploadImages(final List<MultipartFile> images, final List<Path> imagePaths) {
-        try {
-            for (int i = 0; i < images.size(); i++) {
-                images.get(i).transferTo(imagePaths.get(i));
-            }
-        } catch (final IOException e) {
-            throw new ImageException(INVALID_IMAGE_PATH);
+    private void validateImageNull(final List<MultipartFile> images) {
+        final boolean hasNullImage = images.stream()
+                .anyMatch(MultipartFile::isEmpty);
+        if (hasNullImage) {
+            throw new ImageException(NULL_IMAGE);
         }
     }
 
@@ -107,5 +97,15 @@ public class ImageService {
             sb.append(String.format("%02x", b & 0xff));
         }
         return sb.toString();
+    }
+
+    private void uploadImages(final List<MultipartFile> images, final List<Path> imagePaths) {
+        try {
+            for (int i = 0; i < images.size(); i++) {
+                images.get(i).transferTo(imagePaths.get(i));
+            }
+        } catch (final IOException e) {
+            throw new ImageException(INVALID_IMAGE_PATH);
+        }
     }
 }
