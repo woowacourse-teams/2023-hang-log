@@ -179,3 +179,15 @@ include::{snippets}/category-controller-test/get-expense-categories/http-request
 ==== 응답
 include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
 include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]
+
+== 경비 API
+
+=== 경비 조회 (GET /trips/:tripId/expense)
+
+==== 요청
+include::{snippets}/expense-controller-test/get-expenses/http-request.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]

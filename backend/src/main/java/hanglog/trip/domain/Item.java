@@ -9,7 +9,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
