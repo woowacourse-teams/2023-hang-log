@@ -24,7 +24,7 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
   const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   const goToEditPage = () => {
-    navigate(`/trip-edit/${tripId}`);
+    navigate(PATH.EDIT_TRIP(tripId));
   };
 
   const handleDeleteButtonClick = () => {
