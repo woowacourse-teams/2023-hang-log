@@ -1,4 +1,4 @@
-import { NETWORK } from '@/constants/api';
+import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
 import type { ExpenseData } from '@type/expense';
 import type { AxiosError } from 'axios';

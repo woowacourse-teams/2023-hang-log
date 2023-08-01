@@ -1,4 +1,4 @@
-import { EXPENSE_CHART_COLORS } from '@/constants/expense';
+import { EXPENSE_CHART_COLORS } from '@constants/expense';
 import { css } from '@emotion/react';
 import type { ExpenseCategoryNameType } from '@type/expense';
 import { Theme } from 'hang-log-design-system';
