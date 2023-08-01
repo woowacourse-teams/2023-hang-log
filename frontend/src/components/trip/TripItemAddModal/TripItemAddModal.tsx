@@ -8,6 +8,7 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
 import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
 import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
+import ImageInput from '@components/trip/TripItemAddModal/ImageInput/ImageInput';
 import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
 import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
@@ -16,8 +17,6 @@ import {
   formStyling,
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
-
-import ImageInput from './ImageInput/ImageInput';
 
 interface TripItemAddModalProps {
   tripId: number;
