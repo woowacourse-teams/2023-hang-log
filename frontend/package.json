@@ -4,9 +4,9 @@
   "description": "장소 기반 여행 기록 서비스, \"행록\"",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --mode development",
-    "dev": "webpack serve --mode development --open --hot",
-    "build": "webpack --mode production",
+    "start": "NODE_ENV=development webpack --mode development",
+    "dev": "NODE_ENV=development webpack serve --mode development --open --hot",
+    "build": "NODE_ENV=production webpack",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint src"
