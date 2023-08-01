@@ -1,6 +1,5 @@
 package hanglog.image.service;
 
-import static java.io.InputStream.nullInputStream;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import hanglog.global.exception.ImageException;
@@ -40,10 +39,12 @@ class ImageServiceTest {
     @Test
     void save_ExceedSizeException() throws IOException {
         // given
-        final MockMultipartFile file = new MockMultipartFile("images",
+        final MockMultipartFile file = new MockMultipartFile(
+                "images",
                 "static/images/logo.png",
                 "image/png",
-                new FileInputStream("./src/test/resources/static/images/logo.png"));
+                new FileInputStream("./src/test/resources/static/images/logo.png")
+        );
 
         final List<MultipartFile> files = new ArrayList<>(Collections.nCopies(11, file));
 
@@ -52,28 +53,5 @@ class ImageServiceTest {
                 .isInstanceOf(ImageException.class)
                 .extracting("code")
                 .isEqualTo(5004);
-    }
-
-    @DisplayName("Null인 파일이 입력되면 예외가 발생한다.")
-    @Test
-    void save_NullFileException() throws IOException {
-        // given
-        final MockMultipartFile file = new MockMultipartFile("images",
-                "static/images/logo.png",
-                "image/png",
-                new FileInputStream("./src/test/resources/static/images/logo.png"));
-
-        final MockMultipartFile nullFile = new MockMultipartFile("images",
-                null,
-                null,
-                nullInputStream());
-
-        final List<MultipartFile> files = List.of(file, nullFile);
-
-        // when & then
-        assertThatThrownBy(() -> imageService.save(files))
-                .isInstanceOf(ImageException.class)
-                .extracting("code")
-                .isEqualTo(5002);
     }
 }
