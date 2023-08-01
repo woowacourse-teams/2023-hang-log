@@ -5,12 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { makeRegexByCho } from '@utils/cityFilter';
 import { formatStringToLetter } from '@utils/formatter';
 
-interface useCitySuggestionProps {
+interface useCitySuggestionPrams {
   onItemSelect: (city: CityData) => void;
-  closeSuggestion: () => void;
 }
 
-export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySuggestionProps) => {
+export const useCitySuggestion = ({ onItemSelect }: useCitySuggestionPrams) => {
   const queryClient = useQueryClient();
   const cityData = queryClient.getQueryData<CityData[]>(['city']);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);
@@ -63,19 +62,8 @@ export const useCitySuggestion = ({ onItemSelect, closeSuggestion }: useCitySugg
           onItemSelect(suggestions[focusedSuggestionIndex]);
         }
       }
-
-      if (e.key === 'Escape') {
-        closeSuggestion();
-      }
     },
-    [
-      closeSuggestion,
-      focusLowerSuggestion,
-      focusUpperSuggestion,
-      focusedSuggestionIndex,
-      onItemSelect,
-      suggestions,
-    ]
+    [focusLowerSuggestion, focusUpperSuggestion, focusedSuggestionIndex, onItemSelect, suggestions]
   );
 
   useEffect(() => {

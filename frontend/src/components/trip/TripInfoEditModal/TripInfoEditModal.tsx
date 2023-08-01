@@ -37,7 +37,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
   } = useTripEditForm(information, onClose);
 
   return (
-    <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
+    <Modal isOpen={isOpen} closeModal={onClose} isBackdropClosable={false} hasCloseButton>
       <form onSubmit={handleSubmit} css={formStyling} noValidate>
         <Flex styles={{ direction: 'column', gap: '4px' }}>
           <CitySearchBar

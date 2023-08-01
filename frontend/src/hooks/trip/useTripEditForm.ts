@@ -38,7 +38,7 @@ export const useTripEditForm = (
   const updateInputValue =
     (key: keyof TripData) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setTripInfo((prevTripInfo) => {
-        return { ...prevTripInfo, [key]: event.currentTarget.value };
+        return { ...prevTripInfo, [key]: event.target.value };
       });
     };
 
