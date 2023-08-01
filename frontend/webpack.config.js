@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -12,12 +13,10 @@ const plugins = [
     template: './public/index.html',
   }),
   new webpack.HotModuleReplacementPlugin(),
+  new Dotenv(),
 ];
 
 if (!prod) {
-  const Dotenv = require('dotenv-webpack');
-  plugins.push(new Dotenv());
-
   const CopyPlugin = require('copy-webpack-plugin');
   plugins.push(
     new CopyPlugin({
