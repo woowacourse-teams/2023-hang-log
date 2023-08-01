@@ -1,9 +1,9 @@
 package hanglog.image.service;
 
-import static hanglog.global.exception.ExceptionCode.IMAGE_LIST_EMPTY;
-import static hanglog.global.exception.ExceptionCode.IMAGE_LIST_SIZE_EXCEED;
-import static hanglog.global.exception.ExceptionCode.IMAGE_NULL;
-import static hanglog.global.exception.ExceptionCode.IMAGE_PATH_INVALID;
+import static hanglog.global.exception.ExceptionCode.EMPTY_IMAGE_LIST;
+import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_LIST_SIZE;
+import static hanglog.global.exception.ExceptionCode.INVALID_IMAGE_PATH;
+import static hanglog.global.exception.ExceptionCode.NULL_IMAGE;
 import static org.springframework.util.StringUtils.getFilenameExtension;
 
 import hanglog.global.exception.ImageException;
@@ -57,17 +57,17 @@ public class ImageService {
     private void validateImageNull(final List<MultipartFile> images) {
         images.forEach(image -> {
             if (image.isEmpty()) {
-                throw new ImageException(IMAGE_NULL);
+                throw new ImageException(NULL_IMAGE);
             }
         });
     }
 
     private void validateImagesSize(final List<MultipartFile> images) {
         if (images.size() > MAX_IMAGE_LIST_SIZE) {
-            throw new ImageException(IMAGE_LIST_SIZE_EXCEED);
+            throw new ImageException(EXCEED_IMAGE_LIST_SIZE);
         }
         if (images.size() == EMPTY_LIST_SIZE) {
-            throw new ImageException(IMAGE_LIST_EMPTY);
+            throw new ImageException(EMPTY_IMAGE_LIST);
         }
     }
 
@@ -77,7 +77,7 @@ public class ImageService {
                 images.get(i).transferTo(imagePaths.get(i));
             }
         } catch (final IOException e) {
-            throw new ImageException(IMAGE_PATH_INVALID);
+            throw new ImageException(INVALID_IMAGE_PATH);
         }
     }
 
