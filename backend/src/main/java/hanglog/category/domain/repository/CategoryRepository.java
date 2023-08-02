@@ -2,7 +2,6 @@ package hanglog.category.domain.repository;
 
 import hanglog.category.domain.Category;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,8 +10,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT c FROM Category c WHERE MOD(c.id, 100) = 0")
     List<Category> findExpenseCategory();
 
-    @Query("SELECT c.engName FROM Category c")
-    List<String> findAllEngNames();
+    List<Category> findByEngNameIn(List<String> engNames);
 
-    Optional<Category> findByEngName(String engName);
+    @Query("SELECT c FROM Category c WHERE c.id = 600")
+    Category findCategoryETC();
 }

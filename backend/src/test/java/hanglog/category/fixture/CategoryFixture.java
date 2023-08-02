@@ -5,15 +5,6 @@ import java.util.List;
 
 public class CategoryFixture {
 
-    public static final List<String> CATEGORY_ENG_NAMES = List.of(
-            "food",
-            "culture",
-            "shopping",
-            "accommodation",
-            "transportation",
-            "etc"
-    );
-
     public static final List<Category> EXPENSE_CATEGORIES = List.of(
             new Category(100L, "food", "음식"),
             new Category(200L, "culture", "문화"),

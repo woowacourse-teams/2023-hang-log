@@ -1,6 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ENG_NAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
@@ -23,7 +22,6 @@ import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,18 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ItemService {
 
-    public static final String CATEGORY_ETC_NAME = "etc";
-
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
     private final ImageRepository imageRepository;
-    private List<String> categoryEngNames;
-
-    @PostConstruct
-    private void initEngNames() {
-        categoryEngNames = categoryRepository.findAllEngNames();
-    }
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
@@ -117,17 +107,12 @@ public class ItemService {
         );
     }
 
-    private Category findCategoryByApiCategory(final List<String> apiCategory) {
-        final String categoryEngName = getCategoryEngNameFromApiCategory(apiCategory);
-        return categoryRepository.findByEngName(categoryEngName)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ENG_NAME));
-    }
-
-    private String getCategoryEngNameFromApiCategory(final List<String> apiCategory) {
-        return apiCategory.stream()
-                .filter(apiCategoryName -> categoryEngNames.contains(apiCategoryName))
-                .findFirst()
-                .orElseGet(() -> CATEGORY_ETC_NAME);
+    public Category findCategoryByApiCategory(final List<String> apiCategory) {
+        final List<Category> categories = categoryRepository.findByEngNameIn(apiCategory);
+        if (categories.size() == 0) {
+            return categoryRepository.findCategoryETC();
+        }
+        return categories.get(0);
     }
 
     private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
