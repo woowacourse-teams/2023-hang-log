@@ -117,14 +117,14 @@ public class ItemService {
     }
 
     private Category findCategoryByApiCategory(final List<String> apiCategory) {
-        final String engName = getCategoryEngNameFromApiCategory(apiCategory);
-        return categoryRepository.findByEngName(engName)
+        final String categoryEngName = getCategoryEngNameFromApiCategory(apiCategory);
+        return categoryRepository.findByEngName(categoryEngName)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ENG_NAME));
     }
 
     private String getCategoryEngNameFromApiCategory(final List<String> apiCategory) {
         return apiCategory.stream()
-                .filter(category -> categoryEngNames.contains(category))
+                .filter(apiCategoryName -> categoryEngNames.contains(apiCategoryName))
                 .findFirst()
                 .orElseThrow(() -> new BadRequestException(INVALID_API_CATEGORY));
     }
