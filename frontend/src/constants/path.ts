@@ -3,6 +3,6 @@ export const PATH = {
   CREATE_TRIP: '/trip-new',
   EDIT_TRIP: (tripId: number | string) => `/trip/${tripId}/edit`,
   TRIP: (tripId: number | string) => `/trip/${tripId}`,
-  EXPENSE: '/trip/expense',
+  EXPENSE: '/trip/:tripId/expense',
   RELOAD: 0,
 } as const;
