@@ -43,7 +43,7 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
         type="button"
         variant="primary"
         size="small"
-        onClick={() => navigate(`/expense/${tripId}`)}
+        onClick={() => navigate(PATH.EXPENSE(tripId))}
       >
         가계부
       </Button>
