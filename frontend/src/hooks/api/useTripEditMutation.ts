@@ -6,8 +6,8 @@ export const useTripEditMutation = () => {
   const queryClient = useQueryClient();
 
   const tripMutation = useMutation(putTrip(), {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['trip'] });
+    onSuccess: (_, { tripId }) => {
+      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
   });
 
