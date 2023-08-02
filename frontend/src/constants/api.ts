@@ -13,6 +13,7 @@ export const END_POINTS = {
   CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   CITY: '/cities',
   EXPENSE_CATEGORY: '/expense-category',
+  IMAGES: '/images',
 } as const;
 
 export const NETWORK = {

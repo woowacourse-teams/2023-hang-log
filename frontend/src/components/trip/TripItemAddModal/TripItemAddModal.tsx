@@ -1,14 +1,5 @@
-import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 import type { TripItemFormData } from '@type/tripItem';
-import {
-  Button,
-  Flex,
-  ImageUploadInput,
-  Modal,
-  Theme,
-  Toast,
-  useOverlay,
-} from 'hang-log-design-system';
+import { Button, Flex, Modal, Theme, Toast, useOverlay } from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 import { useTripDates } from '@hooks/trip/useTripDates';
@@ -17,6 +8,7 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
 import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
 import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
+import ImageInput from '@components/trip/TripItemAddModal/ImageInput/ImageInput';
 import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
 import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
@@ -100,15 +92,9 @@ const TripItemAddModal = ({
               </Flex>
               <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
                 <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
-                {/* TODO : 이미지 업로드 관련 로직 처리 필요함 */}
-                <ImageUploadInput
-                  id="image-upload"
-                  label="이미지 업로드"
-                  imageUrls={tripItemInformation.imageUrls}
-                  imageAltText="여행 일정 업르드 이미지"
-                  supportingText="사진은 최대 5장 올릴 수 있어요."
-                  maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
-                  onRemove={() => {}}
+                <ImageInput
+                  initialImageUrls={tripItemInformation.imageUrls}
+                  updateInputValue={updateInputValue}
                 />
               </Flex>
             </Flex>
