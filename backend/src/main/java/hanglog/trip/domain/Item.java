@@ -166,6 +166,9 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
+        if(rating == null){
+            return;
+        }
         if (rating % RATING_DECIMAL_UNIT != 0) {
             throw new InvalidDomainException(INVALID_RATING);
         }

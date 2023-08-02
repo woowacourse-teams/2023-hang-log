@@ -58,6 +58,9 @@ public class ItemRequest {
     }
 
     private void validateRatingFormat(final Double value) {
+        if(value==null){
+            return;
+        }
         if (value % 0.5 != 0) {
             throw new BadRequestException(INVALID_RATING);
         }
