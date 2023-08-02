@@ -3,9 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
 
 const meta = {
-  title: 'common/TripsHeader',
+  title: 'trips/TripsHeader',
   component: TripsHeader,
-  args: {},
 } satisfies Meta<typeof TripsHeader>;
 
 export default meta;

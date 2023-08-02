@@ -1,0 +1,30 @@
+import { trips } from '@mocks/data/trips';
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { formatDate } from '@utils/formatter';
+
+import TripsItem from '@components/trips/TripsItem/TripsItem';
+
+const meta = {
+  title: 'trips/TripsItem',
+  component: TripsItem,
+  args: {
+    index: 0,
+    itemName: trips[0].title,
+    cityTags: trips[0].cities,
+    coverImage: trips[0].imageUrl,
+    duration: `${formatDate(trips[0].startDate)} - ${formatDate(trips[0].endDate)}`,
+    description: trips[0].description,
+  },
+} satisfies Meta<typeof TripsItem>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const WithDescription: Story = {};
+
+export const WithoutDescription: Story = {
+  args: {
+    description: null,
+  },
+};

@@ -6,7 +6,7 @@ import { sortByStartDate } from '@utils/sortByStartDate';
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 const meta = {
-  title: 'common/TripsItemList',
+  title: 'trips/TripsItemList',
   component: TripsItemList,
   args: {
     trips,
