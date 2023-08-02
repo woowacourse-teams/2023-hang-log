@@ -1,14 +1,17 @@
 package hanglog.trip.service;
 
+import static hanglog.category.fixture.CategoryFixture.CATEGORY_ENG_NAMES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.category.fixture.CategoryFixture;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -27,12 +30,14 @@ import hanglog.trip.fixture.TripFixture;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceTest {
@@ -51,6 +56,12 @@ class ItemServiceTest {
 
     @Mock
     private ImageRepository imageRepository;
+
+    @BeforeEach
+    void setUp() {
+        when(categoryRepository.findAllEngName()).thenReturn(CATEGORY_ENG_NAMES);
+        ReflectionTestUtils.invokeMethod(itemService, "initEngNames");
+    }
 
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
@@ -76,10 +87,12 @@ class ItemServiceTest {
 
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        given(categoryRepository.findByEngName(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
@@ -111,8 +124,6 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -142,10 +153,68 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when & then
+        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("PlaceRequest의 apiCategory와 대응하는 카테고리 EngName이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void save_InvalidApiCategoryOfPlace() {
+        // given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "에펠탑",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                List.of("dummy")
+        );
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                List.of("https://hanglog.com/img/https://hanglog.com/img/imageName.png"),
+                placeRequest,
+                expenseRequest
+        );
+
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+
+        // when & then
+        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("Category engName과 대응하는 카테고리가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void save_InvalidCategoryEngName() {
+        // given
+        final PlaceRequest placeRequest = new PlaceRequest(
+                "에펠탑",
+                new BigDecimal("38.123456"),
+                new BigDecimal("39.123456"),
+                List.of("culture")
+        );
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ItemRequest itemRequest = new ItemRequest(
+                true,
+                "에펠탑",
+                4.5,
+                "에펠탑을 방문",
+                1L,
+                List.of("https://hanglog.com/img/https://hanglog.com/img/imageName.png"),
+                placeRequest,
+                expenseRequest
+        );
+
+        given(dayLogRepository.findById(any()))
+                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(categoryRepository.findByEngName("culture"))
+                .willReturn(Optional.empty());
 
         // when & then
         assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
@@ -173,7 +242,7 @@ class ItemServiceTest {
         given(itemRepository.findById(any()))
                 .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -194,7 +263,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 200L);
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",
@@ -212,7 +281,7 @@ class ItemServiceTest {
         given(itemRepository.findById(any()))
                 .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
