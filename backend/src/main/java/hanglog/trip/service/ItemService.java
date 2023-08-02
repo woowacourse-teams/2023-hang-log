@@ -116,7 +116,7 @@ public class ItemService {
         );
     }
 
-    public Category findCategoryByApiCategory(final List<String> apiCategory) {
+    private Category findCategoryByApiCategory(final List<String> apiCategory) {
         final String engName = getCategoryEngNameFromApiCategory(apiCategory);
         return categoryRepository.findByEngName(engName)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ENG_NAME));
