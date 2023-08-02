@@ -58,7 +58,6 @@ public class Item extends BaseEntity {
     private Integer ordinal;
 
     @DecimalMax(value = "5.0")
-    @DecimalMin(value = "0.5")
     private Double rating;
 
     private String memo;
