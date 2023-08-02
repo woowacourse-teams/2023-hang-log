@@ -1,5 +1,9 @@
 import type { Segment } from '@components/common/DonutChart/DonutChart';
 
+export const calculateTotalPercentage = (segments: Segment[]) => {
+  return segments.reduce((sum, segment) => sum + segment.percentage, 0);
+};
+
 export const calculateDonutChartSegmentData = (
   index: number,
   cumulativePercentages: number[],

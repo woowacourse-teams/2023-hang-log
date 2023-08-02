@@ -1,6 +1,6 @@
 import { Theme } from 'hang-log-design-system';
 
-import { calculateDonutChartSegmentData } from '@utils/chart';
+import { calculateDonutChartSegmentData, calculateTotalPercentage } from '@utils/chart';
 
 export interface Segment {
   id: number;
@@ -14,9 +14,8 @@ interface DonutChartProps {
   strokeWidth: number;
 }
 
-const DonutChart: React.FC<DonutChartProps> = ({ segments, size, strokeWidth }) => {
-  const totalPercentage = segments.reduce((sum, segment) => sum + segment.percentage, 0);
-
+const DonutChart = ({ segments, size, strokeWidth }: DonutChartProps) => {
+  const totalPercentage = calculateTotalPercentage(segments);
   const remainingPercentage = 100 - totalPercentage;
 
   const dataWithFill =
@@ -24,7 +23,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ segments, size, strokeWidth }) 
       ? segments
       : [...segments, { id: -1, percentage: remainingPercentage, color: Theme.color.gray200 }];
 
-  const cumulativePercentages: number[] = dataWithFill.reduce((acc: number[], segment: Segment) => {
+  const cumulativePercentages = dataWithFill.reduce((acc: number[], segment: Segment) => {
     const lastPercentage = acc.length > 0 ? acc[acc.length - 1] : 0;
     const accumulatedPercentage = lastPercentage + segment.percentage;
     acc.push(accumulatedPercentage);
