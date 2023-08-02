@@ -28,7 +28,7 @@ import org.hibernate.annotations.Where;
 @Where(clause = "status = 'USABLE'")
 public class Trip extends BaseEntity {
 
-    private static final String DEFAULT_IMAGE_URL = "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0";
+    private static final String DEFAULT_IMAGE_NAME = "default-image.png";
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -38,7 +38,7 @@ public class Trip extends BaseEntity {
     private String title;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String imageName;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -55,7 +55,7 @@ public class Trip extends BaseEntity {
     public Trip(
             final Long id,
             final String title,
-            final String imageUrl,
+            final String imageName,
             final LocalDate startDate,
             final LocalDate endDate,
             final String description,
@@ -64,7 +64,7 @@ public class Trip extends BaseEntity {
         super(USABLE);
         this.id = id;
         this.title = title;
-        this.imageUrl = imageUrl;
+        this.imageName = imageName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
@@ -75,7 +75,7 @@ public class Trip extends BaseEntity {
         return new Trip(
                 null,
                 title,
-                DEFAULT_IMAGE_URL,
+                DEFAULT_IMAGE_NAME,
                 startDate,
                 endDate,
                 "",

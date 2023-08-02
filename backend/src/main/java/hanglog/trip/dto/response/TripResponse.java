@@ -34,7 +34,7 @@ public class TripResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                trip.getImageUrl()
+                trip.getImageName()
         );
     }
 }

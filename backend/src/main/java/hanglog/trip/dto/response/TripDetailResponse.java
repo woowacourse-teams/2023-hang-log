@@ -38,7 +38,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                trip.getImageUrl(),
+                trip.getImageName(),
                 dayLogGetResponses
         );
     }
