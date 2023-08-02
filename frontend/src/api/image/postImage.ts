@@ -1,4 +1,5 @@
-import { END_POINTS } from '@/constants/api';
+import { END_POINTS } from '@constants/api';
+import type { ImageData } from '@type/image';
 
 import { axiosInstance } from '@api/axiosInstance';
 
@@ -9,7 +10,7 @@ interface PostImageRequestBody {
 export const postImage =
   () =>
   async ({ images }: PostImageRequestBody) => {
-    const { data } = await axiosInstance.post<string[]>(END_POINTS.IMAGES, images);
+    const { data } = await axiosInstance.post<ImageData>(END_POINTS.IMAGES, images);
 
     return data;
   };
