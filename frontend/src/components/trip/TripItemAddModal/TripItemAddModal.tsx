@@ -98,7 +98,9 @@ const TripItemAddModal = ({
                 />
               </Flex>
             </Flex>
-            <Button variant="primary">일정 기록 추가하기</Button>
+            <Button type="submit" variant="primary">
+              일정 기록 추가하기
+            </Button>
           </form>
         </GoogleMapWrapper>
       </Modal>

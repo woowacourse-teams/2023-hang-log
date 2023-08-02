@@ -94,7 +94,9 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
               console.log(image);
             }}
           />
-          <Button variant="primary">여행 정보 수정</Button>
+          <Button type="submit" variant="primary">
+            여행 정보 수정
+          </Button>
         </form>
       </Modal>
       {isErrorTostOpen && (

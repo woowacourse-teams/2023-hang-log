@@ -35,7 +35,7 @@ const TripCreateForm = () => {
       <form css={formStyling} onSubmit={handleSubmit}>
         <CitySearchBar updateCityInfo={updateCityInfo} />
         <DateInput updateDateInfo={updateDateInfo} />
-        <Button variant="primary" disabled={!isCityDateValid}>
+        <Button type="submit" variant="primary" disabled={!isCityDateValid}>
           기록하기
         </Button>
       </form>
