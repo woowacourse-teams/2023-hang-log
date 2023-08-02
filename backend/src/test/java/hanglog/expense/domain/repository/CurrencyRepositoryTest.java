@@ -20,7 +20,8 @@ class CurrencyRepositoryTest {
     void getLatestCurrency() {
         // given
         currencyRepository.save(
-                new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+                new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
         final Currency expect = currencyRepository.save(
                 new Currency(null, LocalDate.of(2023, 1, 2), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
@@ -38,7 +39,8 @@ class CurrencyRepositoryTest {
     void getOldestCurrency() {
         // given
         final Currency expect = currencyRepository.save(
-                new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+                new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
         currencyRepository.save(
                 new Currency(null, LocalDate.of(2023, 1, 2), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
