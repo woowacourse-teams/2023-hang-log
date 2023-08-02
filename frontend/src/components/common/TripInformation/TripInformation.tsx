@@ -1,23 +1,28 @@
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 import type { TripData } from '@type/trip';
-import { Badge, Box, Button, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
+import { Badge, Box, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
 import { memo } from 'react';
 
 import { formatDate } from '@utils/formatter';
 
 import {
+  badgeStyling,
   buttonContainerStyling,
   descriptionStyling,
-  editButtonStyling,
   imageWrapperStyling,
   sectionStyling,
   titleStyling,
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
 
-type TripInformationProps = Omit<TripData, 'dayLogs'>;
+import TripButtons from './TripButtons/TripButtons';
+import TripEditButtons from './TripEditButtons/TripEditButtons';
 
-const TripInformation = ({ ...information }: TripInformationProps) => {
+interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
+  isEditable?: boolean;
+}
+
+const TripInformation = ({ isEditable = true, ...information }: TripInformationProps) => {
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
   return (
@@ -30,7 +35,9 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
         <Box tag="section">
           <Flex styles={{ gap: Theme.spacer.spacing1 }}>
             {information.cities.map(({ id, name }) => (
-              <Badge key={id}>{name}</Badge>
+              <Badge key={id} css={badgeStyling}>
+                {name}
+              </Badge>
             ))}
           </Flex>
           <Heading css={titleStyling} size="large">
@@ -44,14 +51,11 @@ const TripInformation = ({ ...information }: TripInformationProps) => {
           </Text>
         </Box>
         <Box css={buttonContainerStyling}>
-          {/* 수정 모드일 때만 보인다 */}
-          <Button onClick={openEditModal} css={editButtonStyling} variant="outline" size="small">
-            여행 정보 수정
-          </Button>
-          {/* TODO : 클릭하면 읽기 전용 페이지로 이동 i.e. /trip/1 */}
-          <Button variant="primary" size="small">
-            저장
-          </Button>
+          {isEditable ? (
+            <TripEditButtons tripId={information.id} openEditModal={openEditModal} />
+          ) : (
+            <TripButtons tripId={information.id} />
+          )}
         </Box>
       </header>
       {isEditModalOpen && (

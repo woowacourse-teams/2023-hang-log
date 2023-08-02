@@ -8,7 +8,8 @@ import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
-import TripEditPageSkeleton from '@pages/TripEditPage/TripEditPageSkeleton';
+import TripPage from '@pages/TripPage/TripPage';
+import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 import TripsPage from '@pages/TripsPage/TripsPage';
 import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
@@ -27,9 +28,17 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: PATH.TRIP(':tripId'),
+        element: (
+          <Suspense fallback={<TripPageSkeleton />}>
+            <TripPage />
+          </Suspense>
+        ),
+      },
+      {
         path: PATH.EDIT_TRIP(':tripId'),
         element: (
-          <Suspense fallback={<TripEditPageSkeleton />}>
+          <Suspense fallback={<TripPageSkeleton />}>
             <TripEditPage />
           </Suspense>
         ),

@@ -21,15 +21,17 @@ import {
 interface TripListItemProps extends TripItemData {
   tripId: number;
   dayLogId: number;
+  isEditable?: boolean;
   observer?: IntersectionObserver | null;
-  onDragStart: () => void;
-  onDragEnter: () => void;
-  onDragEnd: () => void;
+  onDragStart?: () => void;
+  onDragEnter?: () => void;
+  onDragEnd?: () => void;
 }
 
 const TripItem = ({
   tripId,
   dayLogId,
+  isEditable = true,
   observer,
   onDragStart,
   onDragEnter,
@@ -46,16 +48,15 @@ const TripItem = ({
   }, [observer]);
 
   return (
-    // ! 수정 모드에서만 drag할 수 있다
     <li
       ref={itemRef}
-      css={getContainerStyling(isDragging)}
+      css={getContainerStyling({ isEditable, isDragging })}
       data-id={information.id}
-      draggable
+      draggable={isEditable}
       onDragStart={onDragStart}
-      onDrag={handleDrag}
+      onDrag={isEditable ? handleDrag : undefined}
       onDragEnter={onDragEnter}
-      onDragEnd={handleDragEnd}
+      onDragEnd={isEditable ? handleDragEnd : undefined}
     >
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
         {information.imageUrls.length > 0 && (
@@ -90,8 +91,7 @@ const TripItem = ({
           )}
         </Box>
       </Flex>
-      {/* ! 로그인 + 수정 모드일 떄만 볼 수 있다 */}
-      <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} />
+      {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
     </li>
   );
 };
