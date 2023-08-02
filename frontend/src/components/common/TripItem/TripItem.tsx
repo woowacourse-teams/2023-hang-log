@@ -1,7 +1,8 @@
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
-import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
-import { useEffect, useRef } from 'react';
+import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+import { forwardRef, useEffect, useRef } from 'react';
+import type { ForwardedRef } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -16,6 +17,7 @@ import {
   memoStyling,
   starRatingStyling,
   subInformationStyling,
+  wrapperStyling,
 } from '@components/common/TripItem/TripItem.style';
 
 interface TripListItemProps extends TripItemData {
@@ -28,16 +30,19 @@ interface TripListItemProps extends TripItemData {
   onDragEnd?: () => void;
 }
 
-const TripItem = ({
-  tripId,
-  dayLogId,
-  isEditable = true,
-  observer,
-  onDragStart,
-  onDragEnter,
-  onDragEnd,
-  ...information
-}: TripListItemProps) => {
+const TripItem = (
+  {
+    tripId,
+    dayLogId,
+    isEditable = true,
+    observer,
+    onDragStart,
+    onDragEnter,
+    onDragEnd,
+    ...information
+  }: TripListItemProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
   const itemRef = useRef<HTMLLIElement>(null);
 
@@ -58,7 +63,7 @@ const TripItem = ({
       onDragEnter={onDragEnter}
       onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+      <div ref={ref} css={wrapperStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
             width={250}
@@ -90,10 +95,10 @@ const TripItem = ({
             </Text>
           )}
         </Box>
-      </Flex>
+      </div>
       {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
     </li>
   );
 };
 
-export default TripItem;
+export default forwardRef(TripItem);
