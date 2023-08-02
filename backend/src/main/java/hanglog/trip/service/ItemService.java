@@ -45,7 +45,7 @@ public class ItemService {
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
-                getNewItemOrdinal(tripId),
+                getNewItemOrdinal(dayLog.getId()),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
                 makePlace(itemRequest.getPlace()),
