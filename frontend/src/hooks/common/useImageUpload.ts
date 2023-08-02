@@ -39,9 +39,9 @@ export const useImageUpload = ({
     imageMutation.mutate(
       { images: imageUploadFormData },
       {
-        onSuccess: (data) => {
+        onSuccess: ({ imageUrls }) => {
           setUploadedImageUrls((prevImageUrls) => {
-            const updatedImageUrls = [...prevImageUrls, ...data];
+            const updatedImageUrls = [...prevImageUrls, ...imageUrls];
             onSuccess?.(updatedImageUrls);
 
             return updatedImageUrls;
