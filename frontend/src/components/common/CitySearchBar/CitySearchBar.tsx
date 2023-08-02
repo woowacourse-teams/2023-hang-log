@@ -107,11 +107,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
           </div>
         </div>
         {isSuggestionOpen && (
-          <CitySuggestion
-            queryWord={debouncedQueryWord}
-            onItemSelect={handleSuggestionClick}
-            closeSuggestion={closeSuggestion}
-          />
+          <CitySuggestion queryWord={debouncedQueryWord} onItemSelect={handleSuggestionClick} />
         )}
       </Box>
     </Menu>
