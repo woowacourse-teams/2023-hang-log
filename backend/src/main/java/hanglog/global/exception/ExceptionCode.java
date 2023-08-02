@@ -34,9 +34,7 @@ public enum ExceptionCode {
     EXCEED_IMAGE_LIST_SIZE(5004, "업로드 가능한 이미지 개수를 초과했습니다."),
     INVALID_IMAGE_URL(5005, "요청한 이미지 URL의 형식이 잘못되었습니다."),
     INVALID_IMAGE_PATH(5101, "이미지를 저장할 경로가 올바르지 않습니다."),
-    FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다."),
-
-    INVALID_API_CATEGORY(6001, "요청한 ApiCategory와 대응하는 카테고리 EngName이 존재하지 않습니다.");
+    FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다.");
 
     private final int code;
     private final String message;

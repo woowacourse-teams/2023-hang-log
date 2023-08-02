@@ -160,35 +160,6 @@ class ItemServiceTest {
         assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("PlaceRequest의 apiCategory와 대응하는 카테고리 EngName이 존재하지 않으면 예외가 발생한다.")
-    @Test
-    void save_InvalidApiCategoryOfPlace() {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("dummy")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("https://hanglog.com/img/https://hanglog.com/img/imageName.png"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(dayLogRepository.findById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-
-        // when & then
-        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
-    }
-
     @DisplayName("Category engName과 대응하는 카테고리가 존재하지 않으면 예외가 발생한다.")
     @Test
     void save_InvalidCategoryEngName() {

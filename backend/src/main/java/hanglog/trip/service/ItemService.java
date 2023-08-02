@@ -1,6 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.INVALID_API_CATEGORY;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ENG_NAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
@@ -34,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class ItemService {
+
+    public static final String CATEGORY_ETC_NAME = "etc";
 
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
@@ -126,7 +127,7 @@ public class ItemService {
         return apiCategory.stream()
                 .filter(apiCategoryName -> categoryEngNames.contains(apiCategoryName))
                 .findFirst()
-                .orElseThrow(() -> new BadRequestException(INVALID_API_CATEGORY));
+                .orElseGet(() -> CATEGORY_ETC_NAME);
     }
 
     private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
