@@ -90,7 +90,9 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
             imageAltText="여행 대표 업로드 이미지"
             maxUploadCount={1}
-            onRemove={() => {}}
+            onRemove={(image: string) => () => {
+              console.log(image);
+            }}
           />
           <Button variant="primary">여행 정보 수정</Button>
         </form>
