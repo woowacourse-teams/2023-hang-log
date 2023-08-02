@@ -364,15 +364,7 @@ class TripControllerTest extends RestDocsTest {
                                 fieldWithPath("[].cities[].name")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 도시 이름")
-                                        .attributes(field("constraint", "나라, 도시")),
-                                fieldWithPath("[].cities[].latitude")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("위도")
-                                        .attributes(field("constraint", "실수")),
-                                fieldWithPath("[].cities[].longitude")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("경도")
-                                        .attributes(field("constraint", "실수"))
+                                        .attributes(field("constraint", "도시"))
                         )
                 ))
                 .andReturn();

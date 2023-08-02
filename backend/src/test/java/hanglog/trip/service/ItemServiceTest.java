@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.category.fixture.CategoryFixture;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -76,10 +77,10 @@ class ItemServiceTest {
 
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(categoryRepository.findById(any()))
+                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
@@ -111,8 +112,6 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -142,8 +141,6 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -173,7 +170,7 @@ class ItemServiceTest {
         given(itemRepository.findById(any()))
                 .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
@@ -194,7 +191,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 200L);
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",
@@ -212,7 +209,7 @@ class ItemServiceTest {
         given(itemRepository.findById(any()))
                 .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
         given(dayLogRepository.findById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
