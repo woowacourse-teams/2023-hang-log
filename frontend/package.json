@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development webpack --mode development",
-    "dev": "NODE_ENV=development webpack serve --mode development --open --hot",
+    "dev": "webpack serve --mode development --open --hot",
     "build": "NODE_ENV=production webpack --mode production",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

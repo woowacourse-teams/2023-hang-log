@@ -9,6 +9,7 @@ import {
   SupportingText,
   Textarea,
 } from 'hang-log-design-system';
+import type { ChangeEvent } from 'react';
 
 import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
@@ -35,6 +36,10 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateDateInfo,
     handleSubmit,
   } = useTripEditForm(information, onClose);
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+  };
 
   return (
     <Modal isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -85,7 +90,10 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
           imageAltText="여행 대표 업로드 이미지"
           maxUploadCount={1}
-          onRemove={() => {}}
+          onChange={handleImageUpload}
+          onRemove={(imageUrl: string) => () => {
+            console.log(imageUrl);
+          }}
         />
         <Button variant="primary">여행 정보 수정</Button>
       </form>
