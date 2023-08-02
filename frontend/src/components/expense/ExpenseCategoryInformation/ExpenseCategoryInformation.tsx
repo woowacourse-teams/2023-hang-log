@@ -21,14 +21,14 @@ const ExpenseCategoryInformation = ({ tripId }: ExpenseCategoryInformationProps)
 
   return (
     <ul css={containerStyling}>
-      {expenseData.categories.map((category) => (
-        <li key={category.category.id} css={wrapperStyling}>
+      {expenseData.categories.map(({ category, amount }) => (
+        <li key={category.id} css={wrapperStyling}>
           <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
-            <div css={getCategoryIconStyling(category.category.name)} />
-            <Text css={categoryNameStyling}>{category.category.name}</Text>
+            <div css={getCategoryIconStyling(category.name)} />
+            <Text css={categoryNameStyling}>{category.name}</Text>
           </Flex>
           <Text>
-            {CURRENCY_ICON[DEFAULT_CURRENCY]} {formatNumberToMoney(category.amount)}
+            {CURRENCY_ICON[DEFAULT_CURRENCY]} {formatNumberToMoney(amount)}
           </Text>
         </li>
       ))}
