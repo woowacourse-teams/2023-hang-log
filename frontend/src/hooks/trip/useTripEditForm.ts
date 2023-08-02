@@ -43,6 +43,12 @@ export const useTripEditForm = (
       });
     };
 
+  const updateCoverImage = (imageUrl: string) => {
+    setTripInfo((prevTripInfo) => {
+      return { ...prevTripInfo, imageUrl };
+    });
+  };
+
   const validateCityInput = () => {
     if (cityDateInfo.cityIds.length > 0) {
       setIsCityError(false);
@@ -100,6 +106,7 @@ export const useTripEditForm = (
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
+    updateCoverImage,
     handleSubmit,
   };
 };

@@ -3,7 +3,6 @@ import type { TripData } from '@type/trip';
 import {
   Button,
   Flex,
-  ImageUploadInput,
   Input,
   Modal,
   SupportingText,
@@ -22,6 +21,8 @@ import {
   textareaStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
+import ImageInput from './ImageInput/ImageInput';
+
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
   isOpen: boolean;
   onClose: () => void;
@@ -36,6 +37,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
+    updateCoverImage,
     handleSubmit,
   } = useTripEditForm(information, onClose, openErrorToast);
 
@@ -84,16 +86,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             onChange={updateInputValue('description')}
             css={textareaStyling}
           />
-          <ImageUploadInput
-            id="image-upload"
-            label="대표 이미지 업로드"
-            imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
-            imageAltText="여행 대표 업로드 이미지"
-            maxUploadCount={1}
-            onRemove={(image: string) => () => {
-              console.log(image);
-            }}
-          />
+          <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
           <Button variant="primary">여행 정보 수정</Button>
         </form>
       </Modal>

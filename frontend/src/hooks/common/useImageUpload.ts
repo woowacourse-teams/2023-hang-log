@@ -58,6 +58,7 @@ export const useImageUpload = ({
   const handleImageRemoval = (selectedImageUrl: string) => () => {
     setUploadedImageUrls((prevImageUrls) => {
       const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
+      console.log(updatedImageUrls);
       onSuccess?.(updatedImageUrls);
 
       return updatedImageUrls;
