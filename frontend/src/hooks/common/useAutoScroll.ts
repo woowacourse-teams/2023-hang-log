@@ -2,7 +2,7 @@ import type { RefObject } from 'react';
 
 export const useAutoScroll = (
   listRef: RefObject<HTMLElement>,
-  focusItemRef: RefObject<HTMLLIElement>
+  focusItemRef: RefObject<HTMLLIElement | HTMLDivElement>
 ) => {
   const scrollToFocusedItem = () => {
     const list = listRef.current;
@@ -22,5 +22,14 @@ export const useAutoScroll = (
     }
   };
 
-  return { scrollToFocusedItem };
+  const scrollToCenter = () => {
+    const list = listRef.current;
+    const focusedItem = focusItemRef.current;
+
+    if (list && focusedItem) {
+      focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  return { scrollToFocusedItem, scrollToCenter };
 };
