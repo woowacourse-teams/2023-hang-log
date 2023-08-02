@@ -107,7 +107,7 @@ public class ItemService {
         );
     }
 
-    public Category findCategoryByApiCategory(final List<String> apiCategory) {
+    private Category findCategoryByApiCategory(final List<String> apiCategory) {
         final List<Category> categories = categoryRepository.findByEngNameIn(apiCategory);
         if (categories.size() == 0) {
             return categoryRepository.findCategoryETC();
