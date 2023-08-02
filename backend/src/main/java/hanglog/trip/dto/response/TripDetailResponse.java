@@ -2,7 +2,6 @@ package hanglog.trip.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import hanglog.city.dto.response.CityResponse;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class TripDetailResponse {
 
     private final Long id;
-    private final List<CityResponse> cities;
+    private final List<CityWithPositionResponse> cities;
     private final String title;
     private final LocalDate startDate;
     private final LocalDate endDate;
@@ -28,13 +27,13 @@ public class TripDetailResponse {
                 .map(DayLogGetResponse::of)
                 .toList();
 
-        final List<CityResponse> cityResponses = cities.stream()
-                .map(CityResponse::of)
+        final List<CityWithPositionResponse> cityWithPositionResponses = cities.stream()
+                .map(CityWithPositionResponse::of)
                 .toList();
 
         return new TripDetailResponse(
                 trip.getId(),
-                cityResponses,
+                cityWithPositionResponses,
                 trip.getTitle(),
                 trip.getStartDate(),
                 trip.getEndDate(),
