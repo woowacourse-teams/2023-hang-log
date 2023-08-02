@@ -19,7 +19,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
 
   useEffect(() => {
     setTitle(initialTitle);
-  }, [initialTitle]);
+  }, [initialTitle, dayLogId]);
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
