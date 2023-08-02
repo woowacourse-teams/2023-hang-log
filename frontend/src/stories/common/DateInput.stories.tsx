@@ -7,6 +7,7 @@ const meta = {
   component: DateInput,
   args: {
     initialDateRange: { startDate: null, endDate: null },
+    updateDateInfo: () => {},
   },
 } satisfies Meta<typeof DateInput>;
 

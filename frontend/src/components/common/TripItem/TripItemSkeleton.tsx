@@ -7,7 +7,7 @@ import {
 
 const TripItemSkeleton = () => {
   return (
-    <li css={getContainerStyling()}>
+    <li css={getContainerStyling({})}>
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
         <Skeleton css={{ minWidth: '250px' }} width="250px" height="167px" />
         <Box css={informationContainerStyling}>

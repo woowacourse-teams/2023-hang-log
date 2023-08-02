@@ -32,7 +32,6 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
             toggleId={ORDER_BY_REGISTRATION}
             selectedId={order}
             changeSelect={changeSelect}
-            tabIndex={3}
             aria-label="등록순 정렬 버튼"
           />
           <Toggle
@@ -40,7 +39,6 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
             toggleId={ORDER_BY_DATE}
             selectedId={order}
             changeSelect={changeSelect}
-            tabIndex={4}
             aria-label="날짜순 정렬 버튼"
           />
         </ToggleGroup>
@@ -50,6 +48,7 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
           return (
             <TripsItem
               key={trip.id}
+              id={trip.id}
               coverImage={trip.imageUrl}
               cityTags={trip.cities}
               itemName={trip.title}

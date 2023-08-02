@@ -3,7 +3,7 @@ import { containerStyling, skeletonContainerStyling } from '@pages/TripEditPage/
 import DayLogListSkeleton from '@components/common/DayLogList/DayLogListSkeleton';
 import TripInformationSkeleton from '@components/common/TripInformation/TripInformationSkeleton';
 
-const TripEditPageSkeleton = () => {
+const TripPageSkeleton = () => {
   return (
     <section css={[containerStyling, skeletonContainerStyling]}>
       <TripInformationSkeleton />
@@ -12,4 +12,4 @@ const TripEditPageSkeleton = () => {
   );
 };
 
-export default TripEditPageSkeleton;
+export default TripPageSkeleton;
