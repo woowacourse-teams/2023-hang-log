@@ -44,7 +44,7 @@ public class ItemService {
 
     @PostConstruct
     private void initEngNames() {
-        categoryEngNames = categoryRepository.findAllEngName();
+        categoryEngNames = categoryRepository.findAllEngNames();
     }
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {

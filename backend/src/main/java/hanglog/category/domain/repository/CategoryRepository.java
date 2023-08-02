@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findExpenseCategory();
 
     @Query("SELECT c.engName FROM Category c")
-    List<String> findAllEngName();
+    List<String> findAllEngNames();
 
     Optional<Category> findByEngName(String engName);
 }

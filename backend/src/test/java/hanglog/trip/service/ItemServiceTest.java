@@ -59,7 +59,7 @@ class ItemServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(categoryRepository.findAllEngName()).thenReturn(CATEGORY_ENG_NAMES);
+        when(categoryRepository.findAllEngNames()).thenReturn(CATEGORY_ENG_NAMES);
         ReflectionTestUtils.invokeMethod(itemService, "initEngNames");
     }
 
