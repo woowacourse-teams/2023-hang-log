@@ -12,7 +12,8 @@ export const END_POINTS = {
   CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   CITY: '/cities',
-  EXPENSE_CATEGORY: '/expense-category',
+  EXPENSE_CATEGORY: '/categories',
+  EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
 } as const;
 
