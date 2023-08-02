@@ -386,7 +386,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -444,7 +444,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -469,7 +469,7 @@ class TripControllerTest extends RestDocsTest {
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -493,8 +493,8 @@ class TripControllerTest extends RestDocsTest {
 
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
-                "updatedTite",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "updatedTitle",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 updateDescription,
@@ -517,7 +517,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 null,
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -540,7 +540,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 1),
                 null,
                 "추가된 여행 설명",
@@ -563,7 +563,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -586,7 +586,7 @@ class TripControllerTest extends RestDocsTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
