@@ -1,5 +1,7 @@
 package hanglog.trip.fixture;
 
+import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
+import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_1;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_2;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_EXTRA;
@@ -19,5 +21,15 @@ public final class TripFixture {
             LocalDate.of(2023, 7, 2),
             "",
             new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA))
+    );
+
+    public static final Trip LONDON_TO_JAPAN = new Trip(
+            1L,
+            "런던에서 일본으로",
+            "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+            LocalDate.of(2023, 7, 1),
+            LocalDate.of(2023, 7, 2),
+            "",
+            List.of(EXPENSE_LONDON_DAYLOG, EXPENSE_JAPAN_DAYLOG)
     );
 }

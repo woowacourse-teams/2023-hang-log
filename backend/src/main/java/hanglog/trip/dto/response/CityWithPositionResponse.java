@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = PRIVATE)
 public class CityWithPositionResponse {
 
-    private static final String CITY_SEPARATOR =", ";
+    private static final String CITY_SEPARATOR = ", ";
 
     private final Long id;
     private final String name;

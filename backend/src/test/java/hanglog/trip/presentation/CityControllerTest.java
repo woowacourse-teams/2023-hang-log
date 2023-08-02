@@ -1,10 +1,19 @@
 package hanglog.trip.presentation;
 
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.PARIS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.trip.dto.response.CityResponse;
+import hanglog.city.dto.response.CityResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.CityService;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +23,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.List;
-
-import static hanglog.trip.fixture.CityFixture.LONDON;
-import static hanglog.trip.fixture.CityFixture.PARIS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CityController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -40,7 +39,9 @@ class CityControllerTest extends RestDocsTest {
     @Test
     void getCities() throws Exception {
         // given
-        when(cityService.getAllCities()).thenReturn(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
+        when(cityService.getAllCities()).thenReturn(
+                List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON))
+        );
 
         // when
         final ResultActions resultActions = mockMvc.perform(get("/cities")
@@ -58,6 +59,6 @@ class CityControllerTest extends RestDocsTest {
         );
 
         assertThat(cityResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(CityResponse.of(PARIS), CityResponse.of(LONDON)));
+                .isEqualTo(List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON)));
     }
 }

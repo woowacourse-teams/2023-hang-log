@@ -1,4 +1,4 @@
-package hanglog.expense;
+package hanglog.expense.domain;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;

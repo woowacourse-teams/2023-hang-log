@@ -11,9 +11,10 @@ export const END_POINTS = {
   DAY_LOG_ORDER: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
   CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
-  CITIES: '/cities',
+  CITY: '/cities',
   EXPENSE_CATEGORY: '/expense-category',
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
+  IMAGES: '/images',
 } as const;
 
 export const NETWORK = {
