@@ -62,7 +62,7 @@ public class Item extends BaseEntity {
 
     private String memo;
 
-    @ManyToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "place_id")
     private Place place;
 
@@ -70,7 +70,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
-    @OneToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
