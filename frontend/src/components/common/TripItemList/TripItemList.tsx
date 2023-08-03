@@ -1,3 +1,4 @@
+import { sortByOrdinal } from '@/utils/sortByStartDate';
 import { PATH } from '@constants/path';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
@@ -44,6 +45,8 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
 
+  const sortedItems = items.sort(sortByOrdinal);
+
   useEffect(() => {
     handleItemsUpdate(tripItems);
   }, [handleItemsUpdate, tripItems]);
@@ -51,7 +54,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   return (
     <>
       <ol css={containerStyling}>
-        {items.map((item, index) => (
+        {sortedItems.map((item, index) => (
           <Fragment key={item.id}>
             <TripItem
               tripId={tripId}
