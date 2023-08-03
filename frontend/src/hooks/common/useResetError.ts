@@ -11,7 +11,7 @@ export const useResetError = () => {
   const handleErrorReset = useCallback(
     (error: Error | HTTPError) => {
       if (error instanceof Error && !(error instanceof HTTPError)) {
-        navigate(PATH.RELOAD);
+        navigate(PATH.ROOT);
 
         return;
       }
