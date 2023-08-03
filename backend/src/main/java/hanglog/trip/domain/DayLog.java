@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class DayLog extends BaseEntity {
     private Trip trip;
 
     @OneToMany(mappedBy = "dayLog", cascade = REMOVE, orphanRemoval = true)
+    @OrderBy(value = "ordinal ASC")
     private List<Item> items = new ArrayList<>();
 
     public DayLog(
