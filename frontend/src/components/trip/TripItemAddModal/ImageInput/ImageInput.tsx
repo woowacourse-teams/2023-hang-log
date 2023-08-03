@@ -1,7 +1,11 @@
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
+import { toastListState } from '@store/toast';
 import type { TripItemFormData } from '@type/tripItem';
-import { ImageUploadInput, Toast, useOverlay } from 'hang-log-design-system';
-import { useCallback, useState } from 'react';
+import { ImageUploadInput } from 'hang-log-design-system';
+import { useCallback } from 'react';
+import { useSetRecoilState } from 'recoil';
+
+import { generateUniqueId } from '@utils/uniqueId';
 
 import { useImageUpload } from '@hooks/common/useImageUpload';
 
@@ -11,8 +15,7 @@ interface ImageInputProps {
 }
 
 const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
+  const setToastList = useSetRecoilState(toastListState);
 
   const handleImageUrlsChange = useCallback(
     (imageUrls: string[]) => {
@@ -21,9 +24,15 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
     [updateInputValue]
   );
 
-  const handleImageUploadError = (errorMessage: string) => {
-    setErrorMessage(errorMessage);
-    openErrorToast();
+  const handleImageUploadError = () => {
+    setToastList((prevToastList) => [
+      ...prevToastList,
+      {
+        id: generateUniqueId(),
+        variant: 'error',
+        message: '이미지는 최대 5개 업로드할 수 있습니다.',
+      },
+    ]);
   };
 
   const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useImageUpload({
@@ -33,24 +42,17 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
   });
 
   return (
-    <>
-      <ImageUploadInput
-        id="image-upload"
-        label="이미지 업로드"
-        imageUrls={uploadedImageUrls}
-        imageAltText="여행 일정 업르드 이미지"
-        supportingText="사진은 최대 5장 올릴 수 있어요."
-        maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
-        multiple
-        onChange={handleImageUpload}
-        onRemove={handleImageRemoval}
-      />
-      {isErrorTostOpen && (
-        <Toast variant="error" closeToast={closeErrorToast}>
-          {errorMessage}
-        </Toast>
-      )}
-    </>
+    <ImageUploadInput
+      id="image-upload"
+      label="이미지 업로드"
+      imageUrls={uploadedImageUrls}
+      imageAltText="여행 일정 업르드 이미지"
+      supportingText="사진은 최대 5장 올릴 수 있어요."
+      maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
+      multiple
+      onChange={handleImageUpload}
+      onRemove={handleImageRemoval}
+    />
   );
 };
 

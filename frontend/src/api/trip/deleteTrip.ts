@@ -6,8 +6,6 @@ interface DeleteTripParams {
   tripId: number;
 }
 
-export const deleteTrip =
-  () =>
-  ({ tripId }: DeleteTripParams) => {
-    return axiosInstance.delete(END_POINTS.TRIP(tripId));
-  };
+export const deleteTrip = ({ tripId }: DeleteTripParams) => {
+  return axiosInstance.delete(END_POINTS.TRIP(tripId));
+};

@@ -52,7 +52,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: PATH.EXPENSE,
+        path: PATH.EXPENSE(':tripId'),
         element: (
           <Suspense fallback={<ExpensePageSkeleton />}>
             <ExpensePage />
