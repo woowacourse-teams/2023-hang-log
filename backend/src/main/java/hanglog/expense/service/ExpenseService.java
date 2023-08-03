@@ -1,5 +1,6 @@
 package hanglog.expense.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
@@ -30,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExpenseService {
 
-    //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
-    private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
-
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
@@ -40,8 +38,8 @@ public class ExpenseService {
     public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final Currency currency = currencyRepository.findByDate(trip.getStartDate())
-                .orElse(DEFAULT_CURRENCY);
+        final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
+                .orElse(findOldestCurrency());
 
         final Map<DayLog, Integer> dayLogAmounts = new HashMap<>();
         final Map<Category, Integer> categoryAmounts = new HashMap<>();
@@ -69,6 +67,11 @@ public class ExpenseService {
                 currency,
                 dayLogExpenses
         );
+    }
+
+    private Currency findOldestCurrency() {
+        return currencyRepository.findTopByOrderByDateAsc()
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
     }
 
     private void calculateAmounts(

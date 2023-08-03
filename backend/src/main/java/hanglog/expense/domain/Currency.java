@@ -55,11 +55,6 @@ public class Currency {
     @Column(nullable = false)
     private Double krw;
 
-    // TODO : 추후 currency 데이터 입력 후 default 값 생성시 삭제
-    public static Currency getDefaultCurrency() {
-        return new Currency();
-    }
-
     public double getUnitRateOfJpy() {
         return this.jpy / 100;
     }
