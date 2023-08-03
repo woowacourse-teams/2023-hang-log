@@ -61,6 +61,14 @@ export const useAddTripItemForm = ({
 
     if (
       tripItemInformation.itemType &&
+      tripItemInformation.isPlaceUpdated === false &&
+      initialData?.itemType === false
+    ) {
+      return true;
+    }
+
+    if (
+      tripItemInformation.itemType &&
       !tripItemInformation.place &&
       tripItemInformation.isPlaceUpdated === undefined
     ) {

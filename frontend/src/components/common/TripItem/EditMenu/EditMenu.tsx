@@ -1,6 +1,6 @@
 import MoreIcon from '@assets/svg/more-icon.svg';
 import type { TripItemData } from '@type/tripItem';
-import { Menu, MenuItem, MenuList, Toast, useOverlay } from 'hang-log-design-system';
+import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
 
@@ -21,18 +21,9 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
 
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
-  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   const handleTripItemDelete = () => {
-    deleteTripItemMutation.mutate(
-      { tripId, itemId: information.id },
-      {
-        onError: () => {
-          openErrorToast();
-          closeMenu();
-        },
-      }
-    );
+    deleteTripItemMutation.mutate({ tripId, itemId: information.id });
   };
 
   return (
@@ -72,11 +63,6 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
             imageUrls: information.imageUrls,
           }}
         />
-      )}
-      {isErrorTostOpen && (
-        <Toast variant="error" closeToast={closeErrorToast}>
-          아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.
-        </Toast>
       )}
     </>
   );

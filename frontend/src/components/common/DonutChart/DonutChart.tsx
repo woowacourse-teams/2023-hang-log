@@ -2,6 +2,8 @@ import { Theme } from 'hang-log-design-system';
 
 import { calculateDonutChartSegmentData, calculateTotalPercentage } from '@utils/chart';
 
+// import WholeDonut from '@components/common/DonutChart/WholeDonut/WholeDonut';
+
 export interface Segment {
   id: number;
   percentage: number;
@@ -16,6 +18,7 @@ interface DonutChartProps {
 
 const DonutChart = ({ segments, size, strokeWidth }: DonutChartProps) => {
   const totalPercentage = calculateTotalPercentage(segments);
+
   const remainingPercentage = 100 - totalPercentage;
 
   const dataWithFill =

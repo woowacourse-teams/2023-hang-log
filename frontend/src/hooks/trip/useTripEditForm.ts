@@ -17,8 +17,7 @@ export const useTripEditForm = (
     description,
     imageUrl,
   }: Omit<TripData, 'dayLogs'>,
-  onClose: () => void,
-  openErrorToast: () => void
+  onClose: () => void
 ) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
     cityIds: cities.map((city) => city.id),
@@ -42,6 +41,12 @@ export const useTripEditForm = (
         return { ...prevTripInfo, [key]: event.target.value };
       });
     };
+
+  const updateCoverImage = (imageUrl: string) => {
+    setTripInfo((prevTripInfo) => {
+      return { ...prevTripInfo, imageUrl };
+    });
+  };
 
   const validateCityInput = () => {
     if (cityDateInfo.cityIds.length > 0) {
@@ -77,7 +82,6 @@ export const useTripEditForm = (
       },
       {
         onSuccess: onClose,
-        onError: openErrorToast,
       }
     );
   };
@@ -100,6 +104,7 @@ export const useTripEditForm = (
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
+    updateCoverImage,
     handleSubmit,
   };
 };

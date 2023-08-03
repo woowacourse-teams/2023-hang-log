@@ -12,13 +12,11 @@ export interface PatchDayLogOrderRequestBody {
   itemIds: number[];
 }
 
-export const patchDayLogItemOrder =
-  () =>
-  ({ tripId, dayLogId, itemIds }: PatchDayLogItemOrderParams) => {
-    return axiosInstance.patch<PatchDayLogOrderRequestBody>(
-      END_POINTS.DAY_LOG_ORDER(tripId, dayLogId),
-      {
-        itemIds,
-      }
-    );
-  };
+export const patchDayLogItemOrder = ({ tripId, dayLogId, itemIds }: PatchDayLogItemOrderParams) => {
+  return axiosInstance.patch<PatchDayLogOrderRequestBody>(
+    END_POINTS.DAY_LOG_ORDER(tripId, dayLogId),
+    {
+      itemIds,
+    }
+  );
+};

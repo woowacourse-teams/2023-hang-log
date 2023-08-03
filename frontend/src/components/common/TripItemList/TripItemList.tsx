@@ -2,10 +2,12 @@ import { useAutoScroll } from '@/hooks/common/useAutoScroll';
 import { clickedMarkerState } from '@/store/scrollFocus';
 import { PATH } from '@constants/path';
 import type { TripItemData } from '@type/tripItem';
-import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
+import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+
+import { sortByOrdinal } from '@utils/sortByStartDate';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
@@ -32,7 +34,6 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const itemRef = useRef<HTMLDivElement>(null);
   const { scrollToCenter } = useAutoScroll(listRef, itemRef);
   const clickedMarkerId = useRecoilValue(clickedMarkerState);
-  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   useEffect(() => {
     scrollToCenter();
@@ -44,10 +45,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
     dayLogOrderMutation.mutate(
       { tripId, dayLogId, itemIds },
       {
-        onError: () => {
-          handleItemsUpdate(tripItems);
-          openErrorToast();
-        },
+        onError: () => handleItemsUpdate(tripItems),
       }
     );
   };
@@ -55,36 +53,31 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
 
+  const sortedItems = items.sort(sortByOrdinal);
+
   useEffect(() => {
     handleItemsUpdate(tripItems);
   }, [handleItemsUpdate, tripItems]);
 
   return (
-    <>
-      <ol ref={listRef} css={containerStyling}>
-        {items.map((item, index) => (
-          <Fragment key={item.id}>
-            <TripItem
-              ref={item.id === clickedMarkerId ? itemRef : null}
-              tripId={tripId}
-              dayLogId={dayLogId}
-              isEditable={isEditable}
-              observer={observer}
-              onDragStart={isEditable ? handleDragStart(index) : undefined}
-              onDragEnter={isEditable ? handleDragEnter(index) : undefined}
-              onDragEnd={isEditable ? handleDragEnd : undefined}
-              {...item}
-            />
-            <Divider />
-          </Fragment>
-        ))}
-      </ol>
-      {isErrorTostOpen && (
-        <Toast variant="error" closeToast={closeErrorToast}>
-          아이템 순서 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.
-        </Toast>
-      )}
-    </>
+    <ol ref={listRef} css={containerStyling}>
+      {sortedItems.map((item, index) => (
+        <Fragment key={item.id}>
+          <TripItem
+            ref={item.id === clickedMarkerId ? itemRef : null}
+            tripId={tripId}
+            dayLogId={dayLogId}
+            isEditable={isEditable}
+            observer={observer}
+            onDragStart={isEditable ? handleDragStart(index) : undefined}
+            onDragEnter={isEditable ? handleDragEnter(index) : undefined}
+            onDragEnd={isEditable ? handleDragEnd : undefined}
+            {...item}
+          />
+          <Divider />
+        </Fragment>
+      ))}
+    </ol>
   );
 };
 

@@ -21,10 +21,6 @@ export const iconButtonStyling = css({
 });
 
 export const moreButtonStyling = css({
-  position: 'absolute',
-
-  width: '20px',
-  height: '20px',
   border: 'none',
   outline: 0,
 
@@ -35,17 +31,24 @@ export const moreButtonStyling = css({
   '& svg': {
     width: '20px',
     height: '20px',
+
+    '& path': {
+      stroke: Theme.color.white,
+      strokeWidth: 1.5,
+    },
   },
 });
 
 export const moreMenuStyling = css({
-  position: 'absolute',
-  top: 0,
-  right: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+
+  marginLeft: Theme.spacer.spacing3,
 });
 
 export const moreMenuListStyling = css({
-  transform: 'translateY(36px)',
+  transform: 'translateY(64px)',
 
   '& > li': {
     padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,

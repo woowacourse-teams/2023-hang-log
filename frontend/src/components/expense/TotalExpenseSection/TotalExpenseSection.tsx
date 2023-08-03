@@ -23,13 +23,15 @@ const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
   const { expenseData } = useExpense(tripId);
 
   const chartData = expenseData.categories.reduce<Segment[]>((acc, curr) => {
-    const data = {
-      id: curr.category.id,
-      percentage: curr.percentage,
-      color: EXPENSE_CHART_COLORS[curr.category.name],
-    };
+    if (curr.percentage !== 0) {
+      const data = {
+        id: curr.category.id,
+        percentage: curr.percentage,
+        color: EXPENSE_CHART_COLORS[curr.category.name],
+      };
 
-    acc.push(data);
+      acc.push(data);
+    }
 
     return acc;
   }, []);

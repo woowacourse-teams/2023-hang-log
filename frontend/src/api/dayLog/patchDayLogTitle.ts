@@ -11,10 +11,8 @@ interface PatchDayLogTitleParams extends PatchDayLogTitleRequestBody {
   dayLogId: number;
 }
 
-export const patchDayLogTitle =
-  () =>
-  ({ tripId, dayLogId, title }: PatchDayLogTitleParams) => {
-    return axiosInstance.patch<PatchDayLogTitleRequestBody>(END_POINTS.DAY_LOG(tripId, dayLogId), {
-      title,
-    });
-  };
+export const patchDayLogTitle = ({ tripId, dayLogId, title }: PatchDayLogTitleParams) => {
+  return axiosInstance.patch<PatchDayLogTitleRequestBody>(END_POINTS.DAY_LOG(tripId, dayLogId), {
+    title,
+  });
+};
