@@ -1,8 +1,10 @@
 import { PATH } from '@constants/path';
 import type { TripItemData } from '@type/tripItem';
-import { Button, Divider, Heading, Text, Toast, useOverlay } from 'hang-log-design-system';
+import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { sortByOrdinal } from '@utils/sortByStartDate';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
@@ -25,7 +27,6 @@ interface TripItemListProps {
 const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
   const { observer } = useScrollFocus();
-  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
@@ -33,10 +34,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
     dayLogOrderMutation.mutate(
       { tripId, dayLogId, itemIds },
       {
-        onError: () => {
-          handleItemsUpdate(tripItems);
-          openErrorToast();
-        },
+        onError: () => handleItemsUpdate(tripItems),
       }
     );
   };
@@ -44,35 +42,30 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
 
+  const sortedItems = items.sort(sortByOrdinal);
+
   useEffect(() => {
     handleItemsUpdate(tripItems);
   }, [handleItemsUpdate, tripItems]);
 
   return (
-    <>
-      <ol css={containerStyling}>
-        {items.map((item, index) => (
-          <Fragment key={item.id}>
-            <TripItem
-              tripId={tripId}
-              dayLogId={dayLogId}
-              isEditable={isEditable}
-              observer={observer}
-              onDragStart={isEditable ? handleDragStart(index) : undefined}
-              onDragEnter={isEditable ? handleDragEnter(index) : undefined}
-              onDragEnd={isEditable ? handleDragEnd : undefined}
-              {...item}
-            />
-            <Divider />
-          </Fragment>
-        ))}
-      </ol>
-      {isErrorTostOpen && (
-        <Toast variant="error" closeToast={closeErrorToast}>
-          아이템 순서 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.
-        </Toast>
-      )}
-    </>
+    <ol css={containerStyling}>
+      {sortedItems.map((item, index) => (
+        <Fragment key={item.id}>
+          <TripItem
+            tripId={tripId}
+            dayLogId={dayLogId}
+            isEditable={isEditable}
+            observer={observer}
+            onDragStart={isEditable ? handleDragStart(index) : undefined}
+            onDragEnter={isEditable ? handleDragEnter(index) : undefined}
+            onDragEnd={isEditable ? handleDragEnd : undefined}
+            {...item}
+          />
+          <Divider />
+        </Fragment>
+      ))}
+    </ol>
   );
 };
 

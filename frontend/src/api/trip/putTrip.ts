@@ -7,10 +7,8 @@ export interface PutTripParams extends TripFormData {
   tripId: number;
 }
 
-export const putTrip =
-  () =>
-  ({ tripId, ...tripInformation }: PutTripParams) => {
-    return axiosInstance.put<TripFormData>(END_POINTS.TRIP(tripId), {
-      ...tripInformation,
-    });
-  };
+export const putTrip = ({ tripId, ...tripInformation }: PutTripParams) => {
+  return axiosInstance.put<TripFormData>(END_POINTS.TRIP(tripId), {
+    ...tripInformation,
+  });
+};
