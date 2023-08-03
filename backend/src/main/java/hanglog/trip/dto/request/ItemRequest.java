@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class ItemRequest {
 
-    public static final double RATING_DECIMAL_UNIT = 0.5;
+    private static final double RATING_DECIMAL_UNIT = 0.5;
 
     @NotNull(message = "여행 아이템의 타입을 입력해주세요.")
     private final Boolean itemType;
