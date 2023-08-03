@@ -1,9 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchDayLogTitle } from '@api/dayLog/patchDayLogTitle';
 
 export const useDayLogTitleMutation = () => {
-  const dayLogTitleMutation = useMutation(patchDayLogTitle());
+  const queryClient = useQueryClient();
+
+  const dayLogTitleMutation = useMutation(patchDayLogTitle(), {
+    onSuccess: (_, { tripId }) => {
+      queryClient.invalidateQueries(['trip', tripId]);
+    },
+  });
 
   return dayLogTitleMutation;
 };
