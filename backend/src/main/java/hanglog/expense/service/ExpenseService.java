@@ -1,7 +1,7 @@
 package hanglog.expense.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
-import static hanglog.global.exception.ExceptionCode.NO_CURRENCY_DATA;
 
 import hanglog.category.domain.Category;
 import hanglog.expense.domain.CategoryExpense;
@@ -71,7 +71,7 @@ public class ExpenseService {
 
     private Currency findOldestCurrency() {
         return currencyRepository.findTopByOrderByDateAsc()
-                .orElseThrow(() -> new BadRequestException(NO_CURRENCY_DATA));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
     }
 
     private void calculateAmounts(
