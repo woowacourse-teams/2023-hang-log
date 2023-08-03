@@ -19,12 +19,11 @@ class CurrencyRepositoryTest {
     @Test
     void getLatestCurrency() {
         // given
-        final Currency expect = currencyRepository.save(getCurrency(2023, 1, 5));
-
-        currencyRepository.save(getCurrency(2021, 1, 1));
-        currencyRepository.save(getCurrency(2021, 1, 2));
-        currencyRepository.save(getCurrency(2022, 2, 1));
-        currencyRepository.save(getCurrency(2023, 1, 4));
+        final Currency expect = saveCurrency(2023, 1, 5);
+        saveCurrency(2021, 1, 1);
+        saveCurrency(2021, 1, 2);
+        saveCurrency(2022, 2, 1);
+        saveCurrency(2023, 1, 4);
 
         // when
         final Currency actual = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(LocalDate.of(2023, 1, 30))
@@ -38,11 +37,11 @@ class CurrencyRepositoryTest {
     @Test
     void getOldestCurrency() {
         // given
-        final Currency expect = currencyRepository.save(getCurrency(2023, 1, 1));
-        currencyRepository.save(getCurrency(2023, 1, 2));
-        currencyRepository.save(getCurrency(2023, 1, 3));
-        currencyRepository.save(getCurrency(2023, 1, 4));
-        currencyRepository.save(getCurrency(2023, 1, 5));
+        final Currency expect = saveCurrency(2023, 1, 1);
+        saveCurrency(2023, 1, 2);
+        saveCurrency(2023, 1, 3);
+        saveCurrency(2023, 1, 4);
+        saveCurrency(2023, 1, 5);
 
         // when
         final Currency actual = currencyRepository.findTopByOrderByDateAsc().get();
@@ -51,7 +50,9 @@ class CurrencyRepositoryTest {
         assertThat(actual).isEqualTo(expect);
     }
 
-    private Currency getCurrency(final int year, final int month, final int date) {
-        return new Currency(null, LocalDate.of(year, month, date), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    private Currency saveCurrency(final int year, final int month, final int date) {
+        return currencyRepository.save(
+                new Currency(null, LocalDate.of(year, month, date), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
     }
 }
