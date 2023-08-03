@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
@@ -14,7 +15,7 @@ import lombok.Getter;
 public class ItemUpdateRequest {
 
     private static final double RATING_DECIMAL_UNIT = 0.5;
-    
+
     @NotNull(message = "여행 아이템의 타입을 입력해주세요.")
     private final Boolean itemType;
 
@@ -52,6 +53,7 @@ public class ItemUpdateRequest {
             final PlaceRequest place,
             final ExpenseRequest expense
     ) {
+        validateExistPlaceWhenSpot(itemType, place);
         validateRatingFormat(rating);
         this.itemType = itemType;
         this.title = title;
@@ -72,5 +74,11 @@ public class ItemUpdateRequest {
 
     private boolean isInvalidRatingFormat(final Double rating) {
         return rating % RATING_DECIMAL_UNIT != 0;
+    }
+    
+    private void validateExistPlaceWhenSpot(final Boolean itemType, final PlaceRequest place) {
+        if (itemType && place == null) {
+            throw new BadRequestException(INVALID_NULL_PLACE);
+        }
     }
 }

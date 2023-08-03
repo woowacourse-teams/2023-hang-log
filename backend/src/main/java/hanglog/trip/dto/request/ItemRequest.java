@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
@@ -48,6 +49,7 @@ public class ItemRequest {
             final List<String> imageUrls,
             final PlaceRequest place, final ExpenseRequest expense
     ) {
+        validateExistPlaceWhenSpot(itemType, place);
         validateRatingFormat(rating);
         this.itemType = itemType;
         this.title = title;
@@ -65,7 +67,13 @@ public class ItemRequest {
         }
     }
 
-    private boolean isInvalidRatingFormat(Double rating) {
+    private boolean isInvalidRatingFormat(final Double rating) {
         return rating % RATING_DECIMAL_UNIT != 0;
+    }
+
+    private void validateExistPlaceWhenSpot(final Boolean itemType, final PlaceRequest place) {
+        if (itemType && place == null) {
+            throw new BadRequestException(INVALID_NULL_PLACE);
+        }
     }
 }
