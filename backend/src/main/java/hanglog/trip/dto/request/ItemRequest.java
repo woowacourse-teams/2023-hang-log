@@ -1,7 +1,7 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_NOT_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
-import static hanglog.global.exception.ExceptionCode.INVALID_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
@@ -71,7 +71,7 @@ public class ItemRequest {
 
     private void validateNoExistPlaceWhenNonSpot(final Boolean itemType, final PlaceRequest place) {
         if (!itemType && place != null) {
-            throw new BadRequestException(INVALID_PLACE);
+            throw new BadRequestException(INVALID_NOT_NULL_PLACE);
         }
     }
 

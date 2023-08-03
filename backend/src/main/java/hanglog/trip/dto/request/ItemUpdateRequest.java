@@ -1,7 +1,8 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT;
+import static hanglog.global.exception.ExceptionCode.INVALID_NOT_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
-import static hanglog.global.exception.ExceptionCode.INVALID_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
@@ -54,8 +55,9 @@ public class ItemUpdateRequest {
             final PlaceRequest place,
             final ExpenseRequest expense
     ) {
-        validateExistPlaceWhenSpotAndPlaceUpdated(itemType, place, isPlaceUpdated);
-        validateNoExistPlaceWhenNonSpot(itemType, place);
+        validatePlaceWhenSpotAndPlaceUpdated(itemType, place, isPlaceUpdated);
+        validatePlaceWhenNonSpot(itemType, place);
+        validateIsPlaceUpdatedWhenNonSpot(itemType, isPlaceUpdated);
         validateRatingFormat(rating);
         this.itemType = itemType;
         this.title = title;
@@ -68,7 +70,7 @@ public class ItemUpdateRequest {
         this.expense = expense;
     }
 
-    private void validateExistPlaceWhenSpotAndPlaceUpdated(
+    private void validatePlaceWhenSpotAndPlaceUpdated(
             final Boolean itemType,
             final PlaceRequest place,
             final Boolean isPlaceUpdated
@@ -78,9 +80,15 @@ public class ItemUpdateRequest {
         }
     }
 
-    private void validateNoExistPlaceWhenNonSpot(final Boolean itemType, final PlaceRequest place) {
+    private void validatePlaceWhenNonSpot(final Boolean itemType, final PlaceRequest place) {
         if (!itemType && place != null) {
-            throw new BadRequestException(INVALID_PLACE);
+            throw new BadRequestException(INVALID_NOT_NULL_PLACE);
+        }
+    }
+
+    private void validateIsPlaceUpdatedWhenNonSpot(final Boolean itemType, final Boolean isPlaceUpdated) {
+        if (!itemType && isPlaceUpdated) {
+            throw new BadRequestException(INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT);
         }
     }
 
