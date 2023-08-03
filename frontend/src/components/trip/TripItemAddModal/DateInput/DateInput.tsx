@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
+import { useTripDates } from '@/hooks/trip/useTripDates';
 import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -8,12 +9,14 @@ import { formatMonthDate } from '@utils/formatter';
 
 interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];
+  tripId: number;
   dayLogId: number;
-  dates: { id: number; date: string }[];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const DateInput = ({ currentCategory, dayLogId, dates, updateInputValue }: DateInputProps) => {
+const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: DateInputProps) => {
+  const { dates } = useTripDates(tripId);
+
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
   };

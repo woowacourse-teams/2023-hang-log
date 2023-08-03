@@ -2,7 +2,6 @@ import type { TripItemFormData } from '@type/tripItem';
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
-import { useTripDates } from '@hooks/trip/useTripDates';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
@@ -35,7 +34,6 @@ const TripItemAddModal = ({
   isOpen = true,
   onClose,
 }: TripItemAddModalProps) => {
-  const { dates } = useTripDates(tripId);
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
       tripId,
@@ -59,7 +57,7 @@ const TripItemAddModal = ({
               <DateInput
                 currentCategory={tripItemInformation.itemType}
                 dayLogId={dayLogId}
-                dates={dates}
+                tripId={tripId}
                 updateInputValue={updateInputValue}
               />
               {tripItemInformation.itemType ? (
