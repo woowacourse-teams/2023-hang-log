@@ -17,6 +17,7 @@ import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -59,8 +60,8 @@ public class TripService {
     }
 
     private void saveDayLogs(final Trip savedTrip) {
-        final Period period = Period.between(savedTrip.getStartDate(), savedTrip.getEndDate().plusDays(1));
-        final List<DayLog> dayLogs = IntStream.rangeClosed(1, period.getDays() + 1)
+        final int days = (int) ChronoUnit.DAYS.between(savedTrip.getStartDate(), savedTrip.getEndDate().plusDays(1));
+        final List<DayLog> dayLogs = IntStream.rangeClosed(1, days + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
         savedTrip.getDayLogs().addAll(dayLogs);
