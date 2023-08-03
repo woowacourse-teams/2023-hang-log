@@ -21,6 +21,7 @@ import hanglog.trip.domain.repository.TripRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,14 +82,14 @@ public class ExpenseService {
     ) {
 
         for (final Item item : dayLog.getItems()) {
-            final Expense expense = item.getExpense();
+            final Optional<Expense> expense = Optional.ofNullable(item.getExpense());
 
-            if (expense != null) {
+            if (expense.isPresent()) {
                 final int dayLogAmount = dayLogAmounts.getOrDefault(dayLog, 0);
-                dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense, currency));
+                dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense.get(), currency));
 
-                final int categoryAmount = categoryAmounts.getOrDefault(expense.getCategory(), 0);
-                categoryAmounts.put(expense.getCategory(), categoryAmount + changeToKRW(expense, currency));
+                final int categoryAmount = categoryAmounts.getOrDefault(expense.get().getCategory(), 0);
+                categoryAmounts.put(expense.get().getCategory(), categoryAmount + changeToKRW(expense.get(), currency));
             }
         }
     }
