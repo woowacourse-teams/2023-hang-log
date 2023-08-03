@@ -22,8 +22,18 @@ class CurrencyRepositoryTest {
         currencyRepository.save(
                 new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
-        final Currency expect = currencyRepository.save(
+        currencyRepository.save(
                 new Currency(null, LocalDate.of(2023, 1, 2), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+        currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 1, 4), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+        currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 1, 3), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+
+        final Currency expect = currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 1, 5), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
 
         // when
@@ -39,10 +49,19 @@ class CurrencyRepositoryTest {
     void getOldestCurrency() {
         // given
         final Currency expect = currencyRepository.save(
-                new Currency(null, LocalDate.of(2023, 1, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                new Currency(null, LocalDate.of(2023, 3, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
         currencyRepository.save(
-                new Currency(null, LocalDate.of(2023, 1, 2), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                new Currency(null, LocalDate.of(2023, 4, 9), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+        currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 5, 3), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+        currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 6, 4), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        );
+        currencyRepository.save(
+                new Currency(null, LocalDate.of(2023, 7, 1), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
         );
 
         // when
