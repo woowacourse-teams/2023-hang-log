@@ -14,8 +14,6 @@ export const boxStyling = css({
   gap: Theme.spacer.spacing5,
 
   paddingTop: '72px',
-
-  zIndex: Theme.zIndex.overlayMiddle,
 });
 
 export const backgroundImage = css({
