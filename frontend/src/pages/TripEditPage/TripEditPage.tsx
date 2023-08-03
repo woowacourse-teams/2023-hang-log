@@ -1,4 +1,5 @@
 import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
@@ -30,13 +31,17 @@ const TripEditPage = () => {
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
-  const places = selectedDayLog.items
-    .filter((item) => item.itemType)
-    .map((item) => ({
-      id: item.id,
-      name: item.title,
-      coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-    }));
+  const places = useMemo(
+    () =>
+      selectedDayLog.items
+        .filter((item) => item.itemType)
+        .map((item) => ({
+          id: item.id,
+          name: item.title,
+          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
+        })),
+    [selectedDayLog.items]
+  );
 
   return (
     <Flex>
