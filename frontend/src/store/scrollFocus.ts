@@ -5,7 +5,7 @@ export const focusedIdState = atom<number>({
   default: 0,
 });
 
-export const clickedMarkerState = atom<number>({
-  key: 'clickedMarker',
+export const clickedMarkerIdState = atom<number>({
+  key: 'clickedMarkerId',
   default: 0,
 });

@@ -1,5 +1,5 @@
 import { useAutoScroll } from '@/hooks/common/useAutoScroll';
-import { clickedMarkerState } from '@/store/scrollFocus';
+import { clickedMarkerIdState } from '@/store/scrollFocus';
 import { PATH } from '@constants/path';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
@@ -33,7 +33,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const listRef = useRef<HTMLOListElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
   const { scrollToCenter } = useAutoScroll(listRef, itemRef);
-  const clickedMarkerId = useRecoilValue(clickedMarkerState);
+  const clickedMarkerId = useRecoilValue(clickedMarkerIdState);
 
   useEffect(() => {
     scrollToCenter();
@@ -64,7 +64,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
       {sortedItems.map((item, index) => (
         <Fragment key={item.id}>
           <TripItem
-            ref={item.id === clickedMarkerId ? itemRef : null}
+            scrollRef={item.id === clickedMarkerId ? itemRef : null}
             tripId={tripId}
             dayLogId={dayLogId}
             isEditable={isEditable}

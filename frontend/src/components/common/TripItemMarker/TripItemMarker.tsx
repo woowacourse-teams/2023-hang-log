@@ -1,6 +1,6 @@
 import PinIcon from '@assets/svg/pin-icon.svg';
 import SelectedPinIcon from '@assets/svg/selected-pin-icon.svg';
-import { clickedMarkerState } from '@store/scrollFocus';
+import { clickedMarkerIdState } from '@store/scrollFocus';
 import { Flex, Text } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
 import type { Root } from 'react-dom/client';
@@ -30,7 +30,7 @@ const TripItemMarker = ({
   isSelected,
   isZoomedOut,
 }: TripItemMarkerProps) => {
-  const setClickedMarkerId = useSetRecoilState(clickedMarkerState);
+  const setClickedMarkerId = useSetRecoilState(clickedMarkerIdState);
 
   const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
   const rootRef = useRef<Root | null>(null);
@@ -75,7 +75,7 @@ const TripItemMarker = ({
         setClickedMarkerId(id);
       });
     }
-  }, [isSelected, isZoomedOut, lat, lng, map, name]);
+  }, [id, isSelected, isZoomedOut, lat, lng, map, name, setClickedMarkerId]);
 
   return null;
 };

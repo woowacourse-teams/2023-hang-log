@@ -1,7 +1,7 @@
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
 import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
-import { forwardRef, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { ForwardedRef } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
@@ -25,24 +25,23 @@ interface TripListItemProps extends TripItemData {
   dayLogId: number;
   isEditable?: boolean;
   observer?: IntersectionObserver | null;
+  scrollRef?: ForwardedRef<HTMLDivElement>;
   onDragStart?: () => void;
   onDragEnter?: () => void;
   onDragEnd?: () => void;
 }
 
-const TripItem = (
-  {
-    tripId,
-    dayLogId,
-    isEditable = true,
-    observer,
-    onDragStart,
-    onDragEnter,
-    onDragEnd,
-    ...information
-  }: TripListItemProps,
-  ref: ForwardedRef<HTMLDivElement>
-) => {
+const TripItem = ({
+  tripId,
+  dayLogId,
+  isEditable = true,
+  observer,
+  scrollRef,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
+  ...information
+}: TripListItemProps) => {
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
   const itemRef = useRef<HTMLLIElement>(null);
 
@@ -63,7 +62,7 @@ const TripItem = (
       onDragEnter={onDragEnter}
       onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <div ref={ref} css={wrapperStyling}>
+      <div ref={scrollRef} css={wrapperStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
             width={250}
@@ -101,4 +100,4 @@ const TripItem = (
   );
 };
 
-export default forwardRef(TripItem);
+export default TripItem;
