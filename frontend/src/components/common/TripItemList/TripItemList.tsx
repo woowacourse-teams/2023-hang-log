@@ -1,9 +1,10 @@
-import { sortByOrdinal } from '@/utils/sortByStartDate';
 import { PATH } from '@constants/path';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { sortByOrdinal } from '@utils/sortByStartDate';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
@@ -49,7 +50,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
 
   return (
     <ol css={containerStyling}>
-      {items.map((item, index) => (
+      {sortedItems.map((item, index) => (
         <Fragment key={item.id}>
           <TripItem
             tripId={tripId}
