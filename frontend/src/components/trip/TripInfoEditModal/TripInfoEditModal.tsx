@@ -15,13 +15,12 @@ import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
+import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput';
 import {
   dateInputSupportingText,
   formStyling,
   textareaStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
-
-import ImageInput from './ImageInput/ImageInput';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
   isOpen: boolean;
