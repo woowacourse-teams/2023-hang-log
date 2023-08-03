@@ -49,7 +49,7 @@ const DonutChart = ({ segments, size, strokeWidth }: DonutChartProps) => {
           return (
             <g key={segment.id}>
               <path d={pathData} fill="none" stroke={segment.color} strokeWidth={strokeWidth} />
-              {segment.percentage >= 5 && (
+              {segment.id !== -1 && segment.percentage >= 5 && (
                 <text
                   x={labelX}
                   y={labelY}
