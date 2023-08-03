@@ -54,7 +54,7 @@ public class ItemUpdateRequest {
             final PlaceRequest place,
             final ExpenseRequest expense
     ) {
-        validateExistPlaceWhenSpot(itemType, place);
+        validateExistPlaceWhenSpotAndPlaceUpdated(itemType, place, isPlaceUpdated);
         validateNoExistPlaceWhenNonSpot(itemType, place);
         validateRatingFormat(rating);
         this.itemType = itemType;
@@ -68,8 +68,12 @@ public class ItemUpdateRequest {
         this.expense = expense;
     }
 
-    private void validateExistPlaceWhenSpot(final Boolean itemType, final PlaceRequest place) {
-        if (itemType && place == null) {
+    private void validateExistPlaceWhenSpotAndPlaceUpdated(
+            final Boolean itemType,
+            final PlaceRequest place,
+            final Boolean isPlaceUpdated
+    ) {
+        if (itemType && isPlaceUpdated && place == null) {
             throw new BadRequestException(INVALID_NULL_PLACE);
         }
     }
