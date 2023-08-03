@@ -12,7 +12,7 @@ export const calculateDonutChartSegmentData = (
   strokeWidth: number
 ) => {
   const startAngle = index === 0 ? 0 : (cumulativePercentages[index - 1] / 100) * 360;
-  const endAngle = (segment.percentage / 100) * 360;
+  const endAngle = segment.percentage === 100 ? 359.999 : (segment.percentage / 100) * 360;
   const largeArcFlag = endAngle > 180 ? 1 : 0;
 
   const x1 = size / 2 + (size / 2 - strokeWidth / 2) * Math.cos((startAngle * Math.PI) / 180);

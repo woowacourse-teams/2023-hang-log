@@ -122,7 +122,7 @@ class TripServiceTest {
         // given
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                "https://hanglog.com/img/default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 5),
                 "추가된 여행 설명",
@@ -180,7 +180,7 @@ class TripServiceTest {
             trip = new Trip(
                     2L,
                     "파리 여행",
-                    "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                    "https://hanglog.com/img/default-image.png",
                     LocalDate.of(2023, 7, 1),
                     LocalDate.of(2023, 7, 3),
                     "",
@@ -191,7 +191,7 @@ class TripServiceTest {
         void changeDate(final int startDay, final int endDay) {
             updateRequest = new TripUpdateRequest(
                     "변경된 타이틀",
-                    "https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65607364-3bf7-4920-abd1-edfdbc8d4df0",
+                    "https://hanglog.com/img/default-image.png",
                     LocalDate.of(2023, 7, startDay),
                     LocalDate.of(2023, 7, endDay),
                     "추가된 여행 설명",

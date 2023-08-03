@@ -26,6 +26,7 @@ const TripPage = () => {
     .filter((item) => item.itemType)
     .map((item) => ({
       id: item.id,
+      name: item.title,
       coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
     }));
 
