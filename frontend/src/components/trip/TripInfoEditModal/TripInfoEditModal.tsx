@@ -10,6 +10,7 @@ import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput
 import {
   dateInputSupportingText,
   formStyling,
+  modalStyling,
   textareaStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
@@ -31,7 +32,13 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
   } = useTripEditForm(information, onClose);
 
   return (
-    <Modal isOpen={isOpen} closeModal={onClose} isBackdropClosable={false} hasCloseButton>
+    <Modal
+      isOpen={isOpen}
+      closeModal={onClose}
+      isBackdropClosable={false}
+      hasCloseButton
+      css={modalStyling}
+    >
       <form onSubmit={handleSubmit} css={formStyling} noValidate>
         <Flex styles={{ direction: 'column', gap: '4px' }}>
           <CitySearchBar
