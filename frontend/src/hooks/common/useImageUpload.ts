@@ -18,6 +18,7 @@ export const useImageUpload = ({
   onError,
 }: UseImageUploadParams) => {
   const imageMutation = useImageMutation();
+
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
   const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +27,8 @@ export const useImageUpload = ({
     if (!imageFiles) return;
 
     if (imageFiles.length + uploadedImageUrls.length > maxUploadCount) {
-      onError?.('이미지는 최대 5개 업로드할 수 있습니다.');
+      onError?.();
+
       return;
     }
 
@@ -47,7 +49,6 @@ export const useImageUpload = ({
             return updatedImageUrls;
           });
         },
-        onError: () => onError?.('이미지 업로드를 실패했습니다. 잠시 후 다시 시도해 주세요.'),
       }
     );
 

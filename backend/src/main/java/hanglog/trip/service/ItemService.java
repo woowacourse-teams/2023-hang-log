@@ -1,5 +1,6 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_ASSOCIATE_DAYLOG_WITH_TRIP;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
@@ -41,6 +42,7 @@ public class ItemService {
         // TODO: 유저 인가 로직 필요
         final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
+        validateAssociationTripAndDayLog(tripId, dayLog);
 
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
@@ -56,6 +58,13 @@ public class ItemService {
         return itemRepository.save(item).getId();
     }
 
+    private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {
+        final Long actualTripId = dayLog.getTrip().getId();
+        if (!actualTripId.equals(tripId)) {
+            throw new BadRequestException(NOT_ASSOCIATE_DAYLOG_WITH_TRIP);
+        }
+    }
+
     private List<Image> makeImages(final ItemRequest itemRequest) {
         final List<Image> images = itemRequest.getImageUrls().stream()
                 .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
@@ -67,12 +76,18 @@ public class ItemService {
     public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
         final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
+        validateAssociationTripAndDayLog(tripId, dayLog);
+
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
 
         Place updatedPlace = item.getPlace();
-        if (itemUpdateRequest.getIsPlaceUpdated()) {
+        if (itemUpdateRequest.getIsPlaceUpdated() || isChangedToSpot(itemUpdateRequest, item)) {
             updatedPlace = makePlace(itemUpdateRequest.getPlace());
+        }
+
+        if (item.getItemType() == ItemType.SPOT && !itemUpdateRequest.getItemType()) {
+            updatedPlace = null;
         }
 
         final Item updatedItem = new Item(
@@ -89,6 +104,10 @@ public class ItemService {
         );
 
         itemRepository.save(updatedItem);
+    }
+
+    private boolean isChangedToSpot(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        return item.getItemType().equals(ItemType.NON_SPOT) && itemUpdateRequest.getPlace() != null;
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {

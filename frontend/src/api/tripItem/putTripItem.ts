@@ -8,10 +8,8 @@ interface PutTripItemParams extends TripItemFormData {
   itemId: number;
 }
 
-export const putTripItem =
-  () =>
-  ({ tripId, itemId, ...information }: PutTripItemParams) => {
-    return axiosInstance.put<TripItemFormData>(END_POINTS.CHANGE_TRIP_ITEM(tripId, itemId), {
-      ...information,
-    });
-  };
+export const putTripItem = ({ tripId, itemId, ...information }: PutTripItemParams) => {
+  return axiosInstance.put<TripItemFormData>(END_POINTS.CHANGE_TRIP_ITEM(tripId, itemId), {
+    ...information,
+  });
+};

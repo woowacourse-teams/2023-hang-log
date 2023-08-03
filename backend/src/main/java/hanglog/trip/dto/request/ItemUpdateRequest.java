@@ -1,5 +1,8 @@
 package hanglog.trip.dto.request;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT;
+import static hanglog.global.exception.ExceptionCode.INVALID_NOT_NULL_PLACE;
+import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
@@ -12,6 +15,8 @@ import lombok.Getter;
 
 @Getter
 public class ItemUpdateRequest {
+
+    private static final double RATING_DECIMAL_UNIT = 0.5;
 
     @NotNull(message = "여행 아이템의 타입을 입력해주세요.")
     private final Boolean itemType;
@@ -50,6 +55,9 @@ public class ItemUpdateRequest {
             final PlaceRequest place,
             final ExpenseRequest expense
     ) {
+        validatePlaceWhenSpotAndPlaceUpdated(itemType, place, isPlaceUpdated);
+        validatePlaceWhenNonSpot(itemType, place);
+        validateIsPlaceUpdatedWhenNonSpot(itemType, isPlaceUpdated);
         validateRatingFormat(rating);
         this.itemType = itemType;
         this.title = title;
@@ -62,9 +70,35 @@ public class ItemUpdateRequest {
         this.expense = expense;
     }
 
-    private void validateRatingFormat(final Double value) {
-        if (value % 0.5 != 0) {
+    private void validatePlaceWhenSpotAndPlaceUpdated(
+            final Boolean itemType,
+            final PlaceRequest place,
+            final Boolean isPlaceUpdated
+    ) {
+        if (itemType && isPlaceUpdated && place == null) {
+            throw new BadRequestException(INVALID_NULL_PLACE);
+        }
+    }
+
+    private void validatePlaceWhenNonSpot(final Boolean itemType, final PlaceRequest place) {
+        if (!itemType && place != null) {
+            throw new BadRequestException(INVALID_NOT_NULL_PLACE);
+        }
+    }
+
+    private void validateIsPlaceUpdatedWhenNonSpot(final Boolean itemType, final Boolean isPlaceUpdated) {
+        if (!itemType && isPlaceUpdated) {
+            throw new BadRequestException(INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT);
+        }
+    }
+
+    private void validateRatingFormat(final Double rating) {
+        if (rating != null && isInvalidRatingFormat(rating)) {
             throw new BadRequestException(INVALID_RATING);
         }
+    }
+
+    private boolean isInvalidRatingFormat(final Double rating) {
+        return rating % RATING_DECIMAL_UNIT != 0;
     }
 }

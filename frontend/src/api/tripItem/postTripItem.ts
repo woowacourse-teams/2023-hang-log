@@ -7,10 +7,8 @@ export interface PostTripItemParams extends TripItemFormData {
   tripId: number;
 }
 
-export const postTripItem =
-  () =>
-  ({ tripId, ...information }: PostTripItemParams) => {
-    return axiosInstance.post<TripItemFormData>(END_POINTS.CREATE_TRIP_ITEM(tripId), {
-      ...information,
-    });
-  };
+export const postTripItem = ({ tripId, ...information }: PostTripItemParams) => {
+  return axiosInstance.post<TripItemFormData>(END_POINTS.CREATE_TRIP_ITEM(tripId), {
+    ...information,
+  });
+};

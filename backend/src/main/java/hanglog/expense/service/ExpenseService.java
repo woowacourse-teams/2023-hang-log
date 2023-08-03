@@ -1,8 +1,10 @@
 package hanglog.expense.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.Currency;
 import hanglog.expense.domain.DayLogExpense;
@@ -30,21 +32,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExpenseService {
 
-    //  TODO: 추후 Currency 데이터 생길시 deafault 값 추가
-    private static final Currency DEFAULT_CURRENCY = Currency.getDefaultCurrency();
-
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;
     private final TripCityRepository tripCityRepository;
+    private final CategoryRepository categoryRepository;
 
     public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final Currency currency = currencyRepository.findByDate(trip.getStartDate())
-                .orElse(DEFAULT_CURRENCY);
+        final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
+                .orElse(findOldestCurrency());
 
-        final Map<DayLog, Integer> dayLogAmounts = new HashMap<>();
-        final Map<Category, Integer> categoryAmounts = new HashMap<>();
+        final Map<DayLog, Integer> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
+        final Map<Category, Integer> categoryAmounts = getCategoryAmounts();
         final List<TripCity> tripCities = tripCityRepository.findByTripId(tripId);
 
         for (final DayLog dayLog : trip.getDayLogs()) {
@@ -71,21 +71,25 @@ public class ExpenseService {
         );
     }
 
+    private Currency findOldestCurrency() {
+        return currencyRepository.findTopByOrderByDateAsc()
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
+    }
+
     private void calculateAmounts(
             final DayLog dayLog,
             final Currency currency,
             final Map<DayLog, Integer> dayLogAmounts,
             final Map<Category, Integer> categoryAmounts
     ) {
-
         for (final Item item : dayLog.getItems()) {
             final Optional<Expense> expense = Optional.ofNullable(item.getExpense());
 
             if (expense.isPresent()) {
-                final int dayLogAmount = dayLogAmounts.getOrDefault(dayLog, 0);
+                final int dayLogAmount = dayLogAmounts.get(dayLog);
                 dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense.get(), currency));
 
-                final int categoryAmount = categoryAmounts.getOrDefault(expense.get().getCategory(), 0);
+                final int categoryAmount = categoryAmounts.get(expense.get().getCategory());
                 categoryAmounts.put(expense.get().getCategory(), categoryAmount + changeToKRW(expense.get(), currency));
             }
         }
@@ -100,5 +104,22 @@ public class ExpenseService {
         return dayLogAmounts.values().stream()
                 .reduce(Integer::sum)
                 .orElse(0);
+    }
+
+    private Map<DayLog, Integer> getDayLogAmounts(final List<DayLog> dayLogs) {
+        final Map<DayLog, Integer> dayLogAmounts = new HashMap<>();
+        for (final DayLog dayLog : dayLogs) {
+            dayLogAmounts.put(dayLog, 0);
+        }
+        return dayLogAmounts;
+    }
+
+    private Map<Category, Integer> getCategoryAmounts() {
+        final List<Category> categories = categoryRepository.findExpenseCategory();
+        final Map<Category, Integer> categoryAmounts = new HashMap<>();
+        for (final Category category : categories) {
+            categoryAmounts.put(category, 0);
+        }
+        return categoryAmounts;
     }
 }
