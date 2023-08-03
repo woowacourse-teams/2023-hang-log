@@ -13,6 +13,8 @@ import lombok.Getter;
 @Getter
 public class ItemRequest {
 
+    public static final double RATING_DECIMAL_UNIT = 0.5;
+
     @NotNull(message = "여행 아이템의 타입을 입력해주세요.")
     private final Boolean itemType;
 
@@ -58,10 +60,10 @@ public class ItemRequest {
     }
 
     private void validateRatingFormat(final Double value) {
-        if(value==null){
+        if (value == null) {
             return;
         }
-        if (value % 0.5 != 0) {
+        if (value % RATING_DECIMAL_UNIT != 0) {
             throw new BadRequestException(INVALID_RATING);
         }
     }

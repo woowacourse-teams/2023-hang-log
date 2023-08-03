@@ -26,7 +26,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -166,7 +165,7 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
-        if(rating == null){
+        if (rating == null) {
             return;
         }
         if (rating % RATING_DECIMAL_UNIT != 0) {
