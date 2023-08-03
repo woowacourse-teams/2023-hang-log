@@ -58,3 +58,7 @@ export const buttonContainerStyling = css({
 export const badgeStyling = css({
   color: `${Theme.color.blue700} !important`,
 });
+
+export const badgeWrapperStyling = css({
+  width: '60%',
+});

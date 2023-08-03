@@ -12,3 +12,7 @@ export const titleStyling = css({
   marginTop: Theme.spacer.spacing3,
   marginBottom: Theme.spacer.spacing3,
 });
+
+export const badgeWrapperStyling = css({
+  width: '60%',
+});

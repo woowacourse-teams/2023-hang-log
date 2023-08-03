@@ -7,6 +7,7 @@ import { formatDate } from '@utils/formatter';
 
 import {
   badgeStyling,
+  badgeWrapperStyling,
   buttonContainerStyling,
   descriptionStyling,
   imageWrapperStyling,
@@ -33,7 +34,7 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
           <img src={information.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
         </Box>
         <Box tag="section">
-          <Flex styles={{ gap: Theme.spacer.spacing1 }}>
+          <Flex styles={{ gap: Theme.spacer.spacing1, wrap: 'wrap' }} css={badgeWrapperStyling}>
             {information.cities.map(({ id, name }) => (
               <Badge key={id} css={badgeStyling}>
                 {name}
