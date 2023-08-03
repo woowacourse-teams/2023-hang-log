@@ -59,9 +59,6 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
           </MenuList>
         )}
       </Menu>
-      <button css={iconButtonStyling} type="button">
-        <MoreIcon />
-      </button>
     </>
   );
 };
