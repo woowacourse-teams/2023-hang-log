@@ -61,9 +61,6 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
           </MenuList>
         )}
       </Menu>
-      <button css={iconButtonStyling} type="button">
-        <MoreIcon />
-      </button>
       {isErrorTostOpen && (
         <Toast variant="error" closeToast={closeErrorToast}>
           여행 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.
