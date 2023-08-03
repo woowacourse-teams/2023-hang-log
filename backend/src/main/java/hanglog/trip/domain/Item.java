@@ -170,7 +170,7 @@ public class Item extends BaseEntity {
         }
     }
 
-    private boolean isInvalidRatingFormat(Double rating) {
+    private boolean isInvalidRatingFormat(final Double rating) {
         return rating % RATING_DECIMAL_UNIT != 0;
     }
 
