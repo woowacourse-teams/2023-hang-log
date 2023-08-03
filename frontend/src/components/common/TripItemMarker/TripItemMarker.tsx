@@ -1,39 +1,74 @@
-import { MARKER_STYLE } from '@constants/map';
-import { useEffect, useState } from 'react';
+import PinIcon from '@assets/svg/pin-icon.svg';
+import SelectedPinIcon from '@assets/svg/selected-pin-icon.svg';
+import { Flex, Text } from 'hang-log-design-system';
+import { useEffect, useRef } from 'react';
+import type { Root } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
+
+import {
+  getLabelStyling,
+  getMarkerContainerStyling,
+} from '@components/common/TripItemMarker/TripItemMarker.style';
 
 interface TripItemMarkerProps {
   map: google.maps.Map;
   id: number;
+  name: string;
   lat: number;
   lng: number;
   isSelected: boolean;
+  isZoomedOut: boolean;
 }
 
-const TripItemMarker = ({ map, id, lat, lng, isSelected }: TripItemMarkerProps) => {
-  const [marker, setMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
+const TripItemMarker = ({
+  map,
+  id,
+  name,
+  lat,
+  lng,
+  isSelected,
+  isZoomedOut,
+}: TripItemMarkerProps) => {
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const rootRef = useRef<Root | null>(null);
 
   useEffect(() => {
-    const marker = new google.maps.marker.AdvancedMarkerElement({
-      position: { lat, lng },
-      map,
-    });
+    if (!rootRef.current) {
+      const container = document.createElement('div');
+      rootRef.current = createRoot(container);
 
-    setMarker(marker);
+      markerRef.current = new google.maps.marker.AdvancedMarkerElement({
+        position: { lat, lng },
+        map,
+        content: container,
+      });
+    }
 
     return () => {
-      marker.map = null;
+      if (markerRef.current) markerRef.current.map = null;
     };
   }, [id, lat, lng, map]);
 
   useEffect(() => {
-    if (marker) {
-      const pin = isSelected
-        ? new google.maps.marker.PinElement(MARKER_STYLE.SELECTED)
-        : new google.maps.marker.PinElement(MARKER_STYLE.DEFAULT);
+    if (rootRef.current && markerRef.current) {
+      rootRef.current.render(
+        <Flex
+          styles={{ direction: 'column', align: 'center', gap: '2px' }}
+          css={getMarkerContainerStyling(isZoomedOut)}
+        >
+          {isSelected ? <SelectedPinIcon /> : <PinIcon />}
+          {isZoomedOut ? (
+            <Text data-text={name} css={getLabelStyling(isSelected)}>
+              {name}
+            </Text>
+          ) : null}
+        </Flex>
+      );
 
-      marker.content = pin.element;
+      markerRef.current.position = { lat, lng };
+      markerRef.current.map = map;
     }
-  }, [id, isSelected, marker]);
+  }, [isSelected, isZoomedOut, lat, lng, map, name]);
 
   return null;
 };

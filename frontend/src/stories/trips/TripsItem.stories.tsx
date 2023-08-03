@@ -9,6 +9,7 @@ const meta = {
   title: 'trips/TripsItem',
   component: TripsItem,
   args: {
+    id: 1,
     index: 0,
     itemName: trips[0].title,
     cityTags: trips[0].cities,
