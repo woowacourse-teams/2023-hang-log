@@ -59,11 +59,11 @@ public class ItemRequest {
         this.expense = expense;
     }
 
-    private void validateRatingFormat(final Double value) {
-        if (value == null) {
+    private void validateRatingFormat(final Double rating) {
+        if (rating == null) {
             return;
         }
-        if (value % RATING_DECIMAL_UNIT != 0) {
+        if (rating % RATING_DECIMAL_UNIT != 0) {
             throw new BadRequestException(INVALID_RATING);
         }
     }
