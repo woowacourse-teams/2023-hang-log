@@ -1,5 +1,8 @@
 package hanglog.global.exception;
 
+import lombok.Getter;
+
+@Getter
 public class InvalidDomainException extends RuntimeException {
 
     private final int code;

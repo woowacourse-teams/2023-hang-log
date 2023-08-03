@@ -2,6 +2,7 @@ package hanglog.trip.domain;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
+import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -9,7 +10,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
@@ -74,7 +75,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     public Item(
@@ -105,6 +106,8 @@ public class Item extends BaseEntity {
         if (!dayLog.getItems().contains(this)) {
             dayLog.getItems().add(this);
         }
+
+        images.forEach(image -> image.setItem(this));
     }
 
     public Item(

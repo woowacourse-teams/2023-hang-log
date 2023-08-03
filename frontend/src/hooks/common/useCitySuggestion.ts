@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { makeRegexByCho } from '@utils/cityFilter';
 import { formatStringToLetter } from '@utils/formatter';
 
-interface useCitySuggestionProps {
+interface useCitySuggestionPrams {
   onItemSelect: (city: CityData) => void;
 }
 
-export const useCitySuggestion = ({ onItemSelect }: useCitySuggestionProps) => {
+export const useCitySuggestion = ({ onItemSelect }: useCitySuggestionPrams) => {
   const queryClient = useQueryClient();
   const cityData = queryClient.getQueryData<CityData[]>(['city']);
   const [suggestions, setSuggestions] = useState<CityData[]>([]);

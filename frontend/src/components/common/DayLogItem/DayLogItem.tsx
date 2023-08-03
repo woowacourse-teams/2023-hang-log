@@ -1,6 +1,6 @@
 import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 import type { DayLogData } from '@type/dayLog';
-import { Box, Flex, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
+import { Box, Flex, Heading, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
 import { useEffect } from 'react';
 
 import { containerStyling, headerStyling } from '@components/common/DayLogItem/DayLogItem.style';
@@ -9,10 +9,16 @@ import TripItemList from '@components/common/TripItemList/TripItemList';
 
 interface DayLogItemProps extends DayLogData {
   tripId: number;
-  openAddModal: () => void;
+  isEditable?: boolean;
+  openAddModal?: () => void;
 }
 
-const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) => {
+const DayLogItem = ({
+  tripId,
+  isEditable = true,
+  openAddModal,
+  ...information
+}: DayLogItemProps) => {
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
     DAY_LOG_ITEM_FILTERS.ALL
   );
@@ -29,8 +35,11 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
   return (
     <Box tag="section" css={containerStyling}>
       <Flex css={headerStyling} styles={{ justify: 'space-between' }}>
-        {/* 수정 모드일 때만 보인다 */}
-        <TitleInput tripId={tripId} dayLogId={information.id} initialTitle={information.title} />
+        {isEditable ? (
+          <TitleInput tripId={tripId} dayLogId={information.id} initialTitle={information.title} />
+        ) : (
+          <Heading size="xSmall">{information.title}</Heading>
+        )}
         <ToggleGroup>
           <Toggle
             text={DAY_LOG_ITEM_FILTERS.ALL}
@@ -49,9 +58,14 @@ const DayLogItem = ({ tripId, openAddModal, ...information }: DayLogItemProps) =
         </ToggleGroup>
       </Flex>
       {selectedTripItemList.length > 0 ? (
-        <TripItemList tripId={tripId} dayLogId={information.id} tripItems={selectedTripItemList} />
+        <TripItemList
+          tripId={tripId}
+          dayLogId={information.id}
+          tripItems={selectedTripItemList}
+          isEditable={isEditable}
+        />
       ) : (
-        <TripItemList.Empty openAddModal={openAddModal} />
+        <TripItemList.Empty tripId={tripId} isEditable={isEditable} openAddModal={openAddModal} />
       )}
     </Box>
   );

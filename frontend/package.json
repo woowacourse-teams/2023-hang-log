@@ -4,9 +4,9 @@
   "description": "장소 기반 여행 기록 서비스, \"행록\"",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --mode development",
-    "dev": "webpack serve --mode development --open --hot",
-    "build": "webpack --mode production",
+    "start": "NODE_ENV=development webpack --mode development",
+    "dev": "NODE_ENV=development webpack serve --mode development --open --hot",
+    "build": "NODE_ENV=production webpack --mode production",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint src"
@@ -21,11 +21,10 @@
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
-    "hang-log-design-system": "^1.2.4",
+    "hang-log-design-system": "^1.2.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "typescript": "^5.1.6",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
@@ -34,6 +33,7 @@
     "@babel/preset-typescript": "^7.22.5",
     "@emotion/babel-plugin": "^11.11.0",
     "@emotion/babel-preset-css-prop": "^11.11.0",
+    "@storybook/addon-a11y": "^7.1.1",
     "@storybook/addon-essentials": "^7.0.25",
     "@storybook/addon-interactions": "^7.0.25",
     "@storybook/addon-links": "^7.0.25",
@@ -67,6 +67,7 @@
     "prettier": "^2.8.8",
     "storybook": "^7.0.25",
     "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",

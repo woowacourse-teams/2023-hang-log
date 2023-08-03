@@ -1,5 +1,5 @@
 import { PATH } from '@constants/path';
-import { Button } from 'hang-log-design-system';
+import { Button, Toast, useOverlay } from 'hang-log-design-system';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import { formStyling } from '@components/trip/TripCreateForm/TripCreateForm.styl
 
 const TripCreateForm = () => {
   const { cityDateInfo, updateCityInfo, updateDateInfo, isCityDateValid } = useCityDateForm();
+  const { isOpen: isErrorToastOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
   const createTripMutation = useCreateTripMutation();
   const navigate = useNavigate();
 
@@ -20,22 +21,30 @@ const TripCreateForm = () => {
 
     createTripMutation.mutate(cityDateInfo, {
       onSuccess: goToTripEditPageWithId,
+      onError: openErrorToast,
     });
   };
 
   const goToTripEditPageWithId = (id: string) => {
-    const targetURL = PATH.EDIT_TRIP.replace(':tripId', id);
+    const targetURL = PATH.EDIT_TRIP(id);
     navigate(targetURL);
   };
 
   return (
-    <form css={formStyling} onSubmit={handleSubmit}>
-      <CitySearchBar updateCityInfo={updateCityInfo} />
-      <DateInput updateDateInfo={updateDateInfo} />
-      <Button variant="primary" disabled={!isCityDateValid}>
-        기록하기
-      </Button>
-    </form>
+    <>
+      <form css={formStyling} onSubmit={handleSubmit}>
+        <CitySearchBar updateCityInfo={updateCityInfo} />
+        <DateInput updateDateInfo={updateDateInfo} />
+        <Button variant="primary" disabled={!isCityDateValid}>
+          기록하기
+        </Button>
+      </form>
+      {isErrorToastOpen && (
+        <Toast variant="error" closeToast={closeErrorToast}>
+          새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.
+        </Toast>
+      )}
+    </>
   );
 };
 

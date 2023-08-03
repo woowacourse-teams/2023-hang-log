@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+
+    <include resource="console-appender.xml"/>
+    <include resource="info-appender.xml"/>
+    <include resource="warn-appender.xml"/>
+    <include resource="error-appender.xml"/>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE-INFO"/>
+        <appender-ref ref="FILE-ERROR"/>
+        <appender-ref ref="FILE-WARN"/>
+    </root>
+</configuration>

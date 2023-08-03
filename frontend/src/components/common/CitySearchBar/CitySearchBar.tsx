@@ -5,6 +5,7 @@ import { Badge, Box, Input, Label, Menu, useOverlay } from 'hang-log-design-syst
 import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
+import { useCityQuery } from '@hooks/api/useCityQuery';
 import { useCityTags } from '@hooks/common/useCityTags';
 import { useDebounce } from '@hooks/common/useDebounce';
 
@@ -31,6 +32,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedQueryWord = useDebounce(queryWord, 150);
+  useCityQuery();
 
   useEffect(() => {
     updateCityInfo(cityTags);

@@ -19,7 +19,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
 
   useEffect(() => {
     setTitle(initialTitle);
-  }, [initialTitle]);
+  }, [initialTitle, dayLogId]);
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -48,7 +48,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
       />
       {isErrorTostOpen && (
         <Toast variant="error" closeToast={closeErrorToast}>
-          소제목 변경을 실패했습니다. 잠시 후 다시 시도해 주세요.
+          소제목 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.
         </Toast>
       )}
     </>
