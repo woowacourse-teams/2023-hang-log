@@ -1,19 +1,12 @@
 import WarningIcon from '@assets/svg/warning-icon.svg';
 import type { TripData } from '@type/trip';
-import {
-  Button,
-  Flex,
-  ImageUploadInput,
-  Input,
-  Modal,
-  SupportingText,
-  Textarea,
-} from 'hang-log-design-system';
+import { Button, Flex, Input, Modal, SupportingText, Textarea } from 'hang-log-design-system';
 
 import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
+import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput';
 import {
   dateInputSupportingText,
   formStyling,
@@ -33,6 +26,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
+    updateCoverImage,
     handleSubmit,
   } = useTripEditForm(information, onClose);
 
@@ -80,16 +74,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           onChange={updateInputValue('description')}
           css={textareaStyling}
         />
-        <ImageUploadInput
-          id="image-upload"
-          label="대표 이미지 업로드"
-          imageUrls={tripInfo.imageUrl === null ? null : [tripInfo.imageUrl]}
-          imageAltText="여행 대표 업로드 이미지"
-          maxUploadCount={1}
-          onRemove={(image: string) => () => {
-            console.log(image);
-          }}
-        />
+        <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
         <Button variant="primary">여행 정보 수정</Button>
       </form>
     </Modal>

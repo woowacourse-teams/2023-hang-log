@@ -46,7 +46,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
       id="image-upload"
       label="이미지 업로드"
       imageUrls={uploadedImageUrls}
-      imageAltText="여행 일정 업르드 이미지"
+      imageAltText="여행 일정 업로드 이미지"
       supportingText="사진은 최대 5장 올릴 수 있어요."
       maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
       multiple
