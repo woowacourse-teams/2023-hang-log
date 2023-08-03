@@ -28,7 +28,8 @@ const ExpenseCategoryInformation = ({ tripId }: ExpenseCategoryInformationProps)
             <Text css={categoryNameStyling}>{category.name}</Text>
           </Flex>
           <Text>
-            {CURRENCY_ICON[DEFAULT_CURRENCY]} {formatNumberToMoney(amount)}
+            {CURRENCY_ICON[DEFAULT_CURRENCY]}
+            {formatNumberToMoney(amount)}
           </Text>
         </li>
       ))}
