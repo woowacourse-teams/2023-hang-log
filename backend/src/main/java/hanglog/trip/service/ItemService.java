@@ -82,8 +82,12 @@ public class ItemService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
 
         Place updatedPlace = item.getPlace();
-        if (itemUpdateRequest.getIsPlaceUpdated()) {
+        if (itemUpdateRequest.getIsPlaceUpdated() || isChangedToSpot(itemUpdateRequest, item)) {
             updatedPlace = makePlace(itemUpdateRequest.getPlace());
+        }
+
+        if (item.getItemType() == ItemType.SPOT && !itemUpdateRequest.getItemType()) {
+            updatedPlace = null;
         }
 
         final Item updatedItem = new Item(
@@ -100,6 +104,10 @@ public class ItemService {
         );
 
         itemRepository.save(updatedItem);
+    }
+
+    private boolean isChangedToSpot(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        return item.getItemType().equals(ItemType.NON_SPOT) && itemUpdateRequest.getPlace() != null;
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {
