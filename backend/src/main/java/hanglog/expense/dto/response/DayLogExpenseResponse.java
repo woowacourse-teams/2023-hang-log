@@ -18,6 +18,7 @@ public class DayLogExpenseResponse {
 
     public static DayLogExpenseResponse of(final DayLogExpense dayLogExpense) {
         final List<ItemDetailResponse> itemResponses = dayLogExpense.getDayLog().getItems().stream()
+                .filter(dayLog -> dayLog.getExpense() != null)
                 .map(ItemDetailResponse::of)
                 .toList();
 
