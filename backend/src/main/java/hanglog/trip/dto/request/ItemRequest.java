@@ -60,11 +60,12 @@ public class ItemRequest {
     }
 
     private void validateRatingFormat(final Double rating) {
-        if (rating == null) {
-            return;
-        }
-        if (rating % RATING_DECIMAL_UNIT != 0) {
+        if (rating != null && isInvalidRatingFormat(rating)) {
             throw new BadRequestException(INVALID_RATING);
         }
+    }
+
+    private boolean isInvalidRatingFormat(Double rating) {
+        return rating % RATING_DECIMAL_UNIT != 0;
     }
 }

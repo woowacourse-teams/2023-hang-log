@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.expense.domain.Expense;
 import hanglog.global.BaseEntity;
-import hanglog.global.exception.InvalidDomainException;
+import hanglog.global.exception.BadRequestException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
@@ -165,12 +165,13 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
-        if (rating == null) {
-            return;
+        if (rating != null && isInvalidRatingFormat(rating)) {
+            throw new BadRequestException(INVALID_RATING);
         }
-        if (rating % RATING_DECIMAL_UNIT != 0) {
-            throw new InvalidDomainException(INVALID_RATING);
-        }
+    }
+
+    private boolean isInvalidRatingFormat(Double rating) {
+        return rating % RATING_DECIMAL_UNIT != 0;
     }
 
     public void changeOrdinal(final int ordinal) {
