@@ -56,7 +56,7 @@ class ImageControllerTest extends RestDocsTest {
                 .andExpect(status().isCreated())
                 .andDo(restDocs.document(
                         requestParts(
-                                partWithName("images").description("이미지 파일, 최대 10개, 개당 최대 10MB")
+                                partWithName("images").description("이미지 파일, 최대 5개, 개당 최대 10MB")
                         ),
                         responseFields(
                                 fieldWithPath("imageUrls")
