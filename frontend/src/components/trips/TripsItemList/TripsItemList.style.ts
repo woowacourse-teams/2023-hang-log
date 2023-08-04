@@ -1,6 +1,10 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
+export const containerStyling = css({
+  minHeight: 'calc(100vh - 331px)',
+});
+
 export const gridBoxStyling = css({
   margin: `${Theme.spacer.spacing4} 50px ${Theme.spacer.spacing7}`,
   display: 'grid',

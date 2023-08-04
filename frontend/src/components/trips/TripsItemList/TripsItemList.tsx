@@ -1,11 +1,14 @@
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
+import { PATH } from '@constants/path';
 import type { TripsData } from '@type/trips';
 import { Box, Button, Flex, Heading, Text, Toggle, ToggleGroup } from 'hang-log-design-system';
+import { useNavigate } from 'react-router-dom';
 
 import { formatDate } from '@utils/formatter';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import {
+  containerStyling,
   emptyBoxStyling,
   gridBoxStyling,
   toggleGroupStyling,
@@ -20,7 +23,7 @@ interface TripsItemListProps {
 
 const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
   return (
-    <>
+    <section css={containerStyling}>
       <Flex
         tag="section"
         styles={{ justify: 'right', paddingRight: '50px' }}
@@ -59,18 +62,23 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
           );
         })}
       </Box>
-    </>
+    </section>
   );
 };
 
 TripsItemList.Empty = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const navigate = useNavigate();
+
   return (
-    <Box tag="section" css={emptyBoxStyling}>
+    <Box tag="section" css={[emptyBoxStyling, containerStyling]}>
       <Heading size="small">아직 기록된 여행이 없습니다!</Heading>
       <Text css={{ padding: '8px 0 16px' }} size="large">
         여행 가방에 쌓인 먼지를 털어내고 여행을 기록해 보세요.
       </Text>
-      <Button variant="primary">여행 기록하기</Button>
+      <Button variant="primary" onClick={() => navigate(PATH.CREATE_TRIP)}>
+        여행 기록하기
+      </Button>
       <TutorialModal />
     </Box>
   );
