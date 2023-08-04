@@ -1,7 +1,6 @@
+import { sortByStartDate } from '@/utils/sort';
 import { trips } from '@mocks/data/trips';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { sortByStartDate } from '@utils/sortByStartDate';
 
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 

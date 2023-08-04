@@ -20,6 +20,14 @@ export interface ExpenseItemData {
   };
 }
 
+export interface ExpenseDayLogData {
+  id: number;
+  ordinal: number;
+  date: string;
+  totalAmount: number;
+  items: ExpenseItemData[];
+}
+
 export interface ExpenseData {
   id: number;
   title: string;
@@ -42,13 +50,7 @@ export interface ExpenseData {
       rate: number;
     }[];
   };
-  dayLogs: {
-    id: number;
-    ordinal: number;
-    date: string;
-    totalAmount: number;
-    items: ExpenseItemData[];
-  }[];
+  dayLogs: ExpenseDayLogData[];
 }
 
 export interface CategoryExpenseType {
