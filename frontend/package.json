@@ -10,7 +10,8 @@
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "cypress": "cypress open"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +45,7 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "@svgr/webpack": "^8.0.1",
     "@tanstack/react-query-devtools": "^4.29.23",
+    "@testing-library/cypress": "^9.0.0",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/google.maps": "^3.53.5",
     "@types/react": "^18.2.14",
@@ -53,6 +55,7 @@
     "babel-plugin-react-require": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
+    "cypress": "^12.17.3",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^8.44.0",
     "eslint-config-airbnb": "^19.0.4",
