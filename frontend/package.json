@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=development webpack --mode development",
     "dev": "cross-env NODE_ENV=development webpack serve --mode development --open --hot",
     "prod": "cross-env NODE_ENV=production webpack serve --mode production --open --hot",
+    "build": "cross-env NODE_ENV=production webpack --mode production",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint src"
