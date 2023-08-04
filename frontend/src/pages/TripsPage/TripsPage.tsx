@@ -1,9 +1,8 @@
+import { sortByStartDate } from '@/utils/sort';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
 import { FloatingButton, useSelect } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
-
-import { sortByStartDate } from '@utils/sortByStartDate';
 
 import { useTripsQuery } from '@hooks/api/useTripsQuery';
 

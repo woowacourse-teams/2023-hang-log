@@ -2,6 +2,7 @@ import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { Flex, Heading, Tab, Tabs, Text, Theme, useSelect } from 'hang-log-design-system';
 
 import { formatDate, formatMonthDate, formatNumberToMoney } from '@utils/formatter';
+import { sortByOrdinal } from '@utils/sort';
 
 import { useExpense } from '@hooks/expense/useExpense';
 
@@ -14,10 +15,12 @@ interface ExpenseDatesProps {
 
 const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {
   const { expenseData, dates } = useExpense(tripId);
+  const sortedExpenseDayLog = expenseData.dayLogs.sort(sortByOrdinal);
+
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    expenseData.dayLogs[0].id
+    sortedExpenseDayLog[0].id
   );
-  const selectedDayLog = expenseData.dayLogs.find((log) => log.id === selectedDayLogId)!;
+  const selectedDayLog = sortedExpenseDayLog.find((log) => log.id === selectedDayLogId)!;
 
   return (
     <>
