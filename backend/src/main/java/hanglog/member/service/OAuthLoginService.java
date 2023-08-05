@@ -31,9 +31,9 @@ public class OAuthLoginService {
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
-    public OAuthLoginService(final MemberRepository memberRepository) {
+    public OAuthLoginService(final MemberRepository memberRepository, final ObjectMapper objectMapper) {
         this.memberRepository = memberRepository;
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate();
     }
 
