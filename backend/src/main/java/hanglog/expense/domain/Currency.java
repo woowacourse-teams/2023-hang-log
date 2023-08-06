@@ -61,14 +61,14 @@ public class Currency {
             final Double eur,
             final Double gbp,
             final Double jpy,
-            final Double cnh,
+            final Double cny,
             final Double chf,
             final Double sgd,
             final Double thb,
             final Double hkd,
             final Double krw
     ) {
-        this(null, date, usd, eur, gbp, jpy, cnh, chf, sgd, thb, hkd, krw);
+        this(null, date, usd, eur, gbp, jpy, cny, chf, sgd, thb, hkd, krw);
     }
 
     public double getUnitRateOfJpy() {

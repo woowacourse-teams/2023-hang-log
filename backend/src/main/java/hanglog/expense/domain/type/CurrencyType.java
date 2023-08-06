@@ -5,6 +5,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY;
 import hanglog.expense.domain.Currency;
 import hanglog.global.exception.InvalidDomainException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import lombok.Getter;
 
@@ -40,6 +41,9 @@ public enum CurrencyType {
     }
 
     public static CurrencyType mapping(final String currencyCode) {
+        if (currencyCode.equals("cnh")) {
+            return CNY;
+        }
         return Arrays.stream(values())
                 .filter(value -> value.code.equals(currencyCode.toLowerCase().replace("(100)", "")))
                 .findAny()
@@ -47,10 +51,10 @@ public enum CurrencyType {
     }
 
     public static boolean provide(final String currencyCode) {
-        return Arrays.stream(CurrencyType.values())
+        final List<String> values = Arrays.stream(CurrencyType.values())
                 .map(CurrencyType::getCode)
-                .toList()
-                .contains(currencyCode);
+                .toList();
+        return values.contains(currencyCode) || currencyCode.equals("cnh");
     }
 
     public double getCurrencyRate(final Currency currency) {

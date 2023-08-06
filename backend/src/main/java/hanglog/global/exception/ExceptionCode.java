@@ -28,6 +28,7 @@ public enum ExceptionCode {
     INVALID_NULL_PLACE(3003, "아이템의 장소 정보가 필요합니다."),
     INVALID_NOT_NULL_PLACE(3004, "아이템의 장소 정보가 불필요합니다."),
     INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT(3005, "아이템이 기타일 때, 장소를 업데이트할 수 없습니다."),
+    INVALID_DATE_WHEN_WEEKEND(3006, "공휴일에는 공공 환율 api를 조회할 수 없습니다."),
 
     INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
 
@@ -41,9 +42,7 @@ public enum ExceptionCode {
 
     NOT_ASSOCIATE_DAYLOG_WITH_TRIP(6001, "요청한 DayLog와 Trip은 연관관계가 아닙니다."),
 
-    INTERNAL_SEVER_ERROR(9999, "서버 에러가 발생하였습니다. 관리자에게 문의해 주세요."),
-
-    FAIL_GET_CURRENCY_API(5001, "통화를 가져오는데 실패하였습니다.");
+    INTERNAL_SEVER_ERROR(9999, "서버 에러가 발생하였습니다. 관리자에게 문의해 주세요.");
 
 
     private final int code;

@@ -1,4 +1,4 @@
-package hanglog.currency.service;
+package hanglog.expense.service;
 
 import static hanglog.expense.domain.type.CurrencyType.CHF;
 import static hanglog.expense.domain.type.CurrencyType.CNY;
@@ -10,13 +10,17 @@ import static hanglog.expense.domain.type.CurrencyType.KRW;
 import static hanglog.expense.domain.type.CurrencyType.SGD;
 import static hanglog.expense.domain.type.CurrencyType.THB;
 import static hanglog.expense.domain.type.CurrencyType.USD;
-import static hanglog.global.exception.ExceptionCode.FAIL_GET_CURRENCY_API;
+import static hanglog.global.exception.ExceptionCode.INVALID_DATE_WHEN_WEEKEND;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
 
-import hanglog.currency.dto.response.CurrencyResponse;
 import hanglog.expense.domain.Currency;
 import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.type.CurrencyType;
+import hanglog.expense.dto.response.CurrencyResponse;
 import hanglog.global.exception.InvalidDomainException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -27,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Transactional
@@ -47,10 +52,9 @@ public class CurrencyService {
         this.authKey = authKey;
     }
 
-    public Currency saveTodayCurrency() {
-        final LocalDate today = LocalDate.now();
-
-        final List<CurrencyResponse> currencyResponseList = getCurrencyList(today);
+    public Currency saveDailyCurrency(final LocalDate date) {
+        validateWeekend(date);
+        final List<CurrencyResponse> currencyResponseList = getCurrencyList(date);
         final Map<CurrencyType, Double> currencyTypeRateMap = new EnumMap<>(CurrencyType.class);
 
         for (final CurrencyResponse currencyResponse : currencyResponseList) {
@@ -64,26 +68,31 @@ public class CurrencyService {
             }
         }
 
-        final Currency currency = getCurrency(today, currencyTypeRateMap);
+        final Currency currency = getCurrency(date, currencyTypeRateMap);
         return currencyRepository.save(currency);
+    }
+
+    private void validateWeekend(final LocalDate date) {
+        final DayOfWeek dayOfWeek = date.getDayOfWeek();
+        if (dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY)) {
+            throw new InvalidDomainException(INVALID_DATE_WHEN_WEEKEND);
+        }
     }
 
     private List<CurrencyResponse> getCurrencyList(final LocalDate today) {
         final CurrencyResponse[] responses = Optional.ofNullable(
-                restTemplate.getForObject(
-                        getCurrencyUrl(today),
-                        CurrencyResponse[].class
-                )
-        ).orElseThrow(() -> new InvalidDomainException(FAIL_GET_CURRENCY_API));
+                restTemplate.getForObject(getCurrencyUrl(today), CurrencyResponse[].class)
+        ).orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA));
         return Arrays.stream(responses)
                 .toList();
     }
 
     private String getCurrencyUrl(final LocalDate today) {
-        return CURRENCY_API_URI +
-                "?authkey=" + authKey +
-                "&searchdate=" + today.toString().replace("-", "") +
-                "&data=AP01";
+        return UriComponentsBuilder.fromHttpUrl(CURRENCY_API_URI)
+                .queryParam("authkey", authKey)
+                .queryParam("searchdate", today.toString().replace("-", ""))
+                .queryParam("data", "AP01")
+                .toUriString();
     }
 
     private Currency getCurrency(final LocalDate today, final Map<CurrencyType, Double> currencyTypeRateMap) {
