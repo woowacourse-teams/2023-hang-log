@@ -81,8 +81,9 @@ public class CurrencyService {
 
     private List<CurrencyResponse> getCurrencyList(final LocalDate today) {
         final CurrencyResponse[] responses = Optional.ofNullable(
-                restTemplate.getForObject(getCurrencyUrl(today), CurrencyResponse[].class)
-        ).orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA));
+                        restTemplate.getForObject(getCurrencyUrl(today), CurrencyResponse[].class)
+                )
+                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA));
         return Arrays.stream(responses)
                 .toList();
     }

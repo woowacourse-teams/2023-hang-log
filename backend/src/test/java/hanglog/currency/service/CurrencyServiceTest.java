@@ -1,6 +1,5 @@
 package hanglog.currency.service;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
