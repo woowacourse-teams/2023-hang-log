@@ -58,12 +58,12 @@ public class CurrencyService {
         final Map<CurrencyType, Double> currencyTypeRateMap = new EnumMap<>(CurrencyType.class);
 
         for (final CurrencyResponse currencyResponse : currencyResponseList) {
-            final String currencyUnit = currencyResponse.getCurUnit().toLowerCase().replace("(100)", "");
+            final String currencyUnit = currencyResponse.getCurrencyCode().toLowerCase().replace("(100)", "");
 
             if (CurrencyType.provide(currencyUnit)) {
                 currencyTypeRateMap.put(
                         CurrencyType.getMappedCurrencyType(currencyUnit),
-                        Double.valueOf(currencyResponse.getDealBasR().replace(",", ""))
+                        Double.valueOf(currencyResponse.getRate().replace(",", ""))
                 );
             }
         }
