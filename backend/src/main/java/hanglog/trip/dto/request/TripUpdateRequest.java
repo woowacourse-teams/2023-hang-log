@@ -1,5 +1,6 @@
 package hanglog.trip.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,6 +17,9 @@ public class TripUpdateRequest {
     @NotNull(message = "여행 제목을 입력해 주세요.")
     @Size(max = 50, message = "여행 제목은 50자를 넘을 수 없습니다.")
     private final String title;
+
+    @NotBlank(message = "여행 이미지를 입력해 주세요.")
+    private final String imageUrl;
 
     @NotNull(message = "여행 시작 날짜를 입력해 주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

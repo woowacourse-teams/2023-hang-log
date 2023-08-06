@@ -38,9 +38,15 @@ export const useTripEditForm = (
   const updateInputValue =
     (key: keyof TripData) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setTripInfo((prevTripInfo) => {
-        return { ...prevTripInfo, [key]: event.currentTarget.value };
+        return { ...prevTripInfo, [key]: event.target.value };
       });
     };
+
+  const updateCoverImage = (imageUrl: string) => {
+    setTripInfo((prevTripInfo) => {
+      return { ...prevTripInfo, imageUrl };
+    });
+  };
 
   const validateCityInput = () => {
     if (cityDateInfo.cityIds.length > 0) {
@@ -98,6 +104,7 @@ export const useTripEditForm = (
     updateInputValue,
     updateCityInfo,
     updateDateInfo,
+    updateCoverImage,
     handleSubmit,
   };
 };

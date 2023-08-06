@@ -1,9 +1,10 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_ASSOCIATE_DAYLOG_WITH_TRIP;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.global.exception.ExceptionCode.NOT_FOUNT_IMAGE_URL;
+import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
@@ -41,11 +42,12 @@ public class ItemService {
         // TODO: 유저 인가 로직 필요
         final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
+        validateAssociationTripAndDayLog(tripId, dayLog);
 
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
-                getNewItemOrdinal(tripId),
+                getNewItemOrdinal(dayLog.getId()),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
                 makePlace(itemRequest.getPlace()),
@@ -56,23 +58,36 @@ public class ItemService {
         return itemRepository.save(item).getId();
     }
 
+    private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {
+        final Long actualTripId = dayLog.getTrip().getId();
+        if (!actualTripId.equals(tripId)) {
+            throw new BadRequestException(NOT_ASSOCIATE_DAYLOG_WITH_TRIP);
+        }
+    }
+
     private List<Image> makeImages(final ItemRequest itemRequest) {
-        return itemRequest.getImageUrls().stream()
-                .map(imageUrl -> imageRepository.findByImageUrl(imageUrl)
-                        .orElseThrow(() -> new BadRequestException(NOT_FOUNT_IMAGE_URL))
-                )
+        final List<Image> images = itemRequest.getImageUrls().stream()
+                .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
                 .toList();
+
+        return imageRepository.saveAll(images);
     }
 
     public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
         final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
+        validateAssociationTripAndDayLog(tripId, dayLog);
+
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
 
         Place updatedPlace = item.getPlace();
-        if (itemUpdateRequest.getIsPlaceUpdated()) {
+        if (itemUpdateRequest.getIsPlaceUpdated() || isChangedToSpot(itemUpdateRequest, item)) {
             updatedPlace = makePlace(itemUpdateRequest.getPlace());
+        }
+
+        if (item.getItemType() == ItemType.SPOT && !itemUpdateRequest.getItemType()) {
+            updatedPlace = null;
         }
 
         final Item updatedItem = new Item(
@@ -84,10 +99,15 @@ public class ItemService {
                 itemUpdateRequest.getMemo(),
                 updatedPlace,
                 dayLog,
-                makeExpense(itemUpdateRequest.getExpense())
+                makeExpense(itemUpdateRequest.getExpense()),
+                makeUpdatedImages(itemUpdateRequest, item.getImages())
         );
 
         itemRepository.save(updatedItem);
+    }
+
+    private boolean isChangedToSpot(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        return item.getItemType().equals(ItemType.NON_SPOT) && itemUpdateRequest.getPlace() != null;
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {
@@ -98,15 +118,37 @@ public class ItemService {
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        // TODO apiCategory를 가지고 category를 탐색
-        final Category category = new Category(1L, "문화", "culture");
-
         return new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
-                category
+                findCategoryByApiCategory(placeRequest.getApiCategory())
         );
+    }
+
+    private Category findCategoryByApiCategory(final List<String> apiCategory) {
+        final List<Category> categories = categoryRepository.findByEngNameIn(apiCategory);
+        if (categories.isEmpty()) {
+            return categoryRepository.findCategoryETC();
+        }
+        return categories.get(0);
+    }
+
+    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
+        final List<Image> updatedImages = itemUpdateRequest.getImageUrls().stream()
+                .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages))
+                .toList();
+
+        return imageRepository.saveAll(updatedImages);
+    }
+
+    private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
+        final String imageName = convertUrlToName(imageUrl);
+
+        return originalImages.stream()
+                .filter(originalImage -> originalImage.getName().equals(imageName))
+                .findAny()
+                .orElseGet(() -> new Image(imageName));
     }
 
     private Expense makeExpense(final ExpenseRequest expenseRequest) {

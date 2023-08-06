@@ -23,7 +23,7 @@ body:
       placeholder: |
         OS: macOS 12.2.1
     validations:
-      required: true
+      required: false
   - type: textarea
     attributes:
       label: 🙋🏻 More

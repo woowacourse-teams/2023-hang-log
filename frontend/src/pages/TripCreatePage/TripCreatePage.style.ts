@@ -2,21 +2,22 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
-  width: '100%',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+
+  width: '100%',
+  height: 'calc(100vh - 81px)',
 });
 
 export const boxStyling = css({
   position: 'relative',
-  top: '72px',
   gap: Theme.spacer.spacing5,
-  zIndex: Theme.zIndex.overlayMiddle,
+
+  paddingTop: '72px',
 });
 
 export const backgroundImage = css({
-  position: 'fixed',
+  position: 'absolute',
   bottom: Theme.spacer.spacing4,
   right: 0,
 });

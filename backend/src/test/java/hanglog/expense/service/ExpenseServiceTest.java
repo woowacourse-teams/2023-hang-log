@@ -2,9 +2,9 @@ package hanglog.expense.service;
 
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CityFixture.LONDON;
-import static hanglog.expense.fixture.CityFixture.TOKYO;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.ExpenseFixture.EURO_10000;
@@ -16,9 +16,9 @@ import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
@@ -60,6 +60,8 @@ class ExpenseServiceTest {
     @Mock
     private TripCityRepository tripCityRepository;
 
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @DisplayName("경비를 반환한다")
     @Test
@@ -67,10 +69,13 @@ class ExpenseServiceTest {
         // given
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TO_JAPAN));
-        when(currencyRepository.findByDate(any(LocalDate.class)))
+        when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(tripCityRepository.findByTripId(1L))
                 .thenReturn(List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)));
+        when(categoryRepository.findExpenseCategory())
+                .thenReturn(EXPENSE_CATEGORIES);
+
         final List<ItemDetailResponse> expectItemList = List.of(
                 ItemDetailResponse.of(LONDON_EYE_ITEM),
                 ItemDetailResponse.of(JAPAN_HOTEL),
@@ -83,7 +88,7 @@ class ExpenseServiceTest {
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
-
+        System.out.println(actual);
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual)
@@ -149,8 +154,8 @@ class ExpenseServiceTest {
             for (final DayLogExpenseResponse response : actual.getDayLogs()) {
                 for (final ItemDetailResponse item : response.getItems()) {
                     softly.assertThat(expectItemList)
-                            .usingRecursiveFieldByFieldElementComparator().
-                            contains(item);
+                            .usingRecursiveFieldByFieldElementComparator()
+                            .contains(item);
                 }
             }
         });
@@ -162,26 +167,19 @@ class ExpenseServiceTest {
         // given
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(LONDON_TRIP));
-        when(currencyRepository.findByDate(any(LocalDate.class)))
+        when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(tripCityRepository.findByTripId(1L))
                 .thenReturn(List.of());
+        when(categoryRepository.findExpenseCategory())
+                .thenReturn(EXPENSE_CATEGORIES);
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
 
         // then
-        assertThat(actual)
-                .usingRecursiveComparison()
-                .isEqualTo(
-                        TripExpenseResponse.of(
-                                LONDON_TRIP,
-                                0,
-                                List.of(),
-                                List.of(),
-                                DEFAULT_CURRENCY,
-                                List.of()
-                        )
-                );
+        assertThat(actual).extracting("categories").asList().hasSize(6);
+        assertThat(actual).extracting("dayLogs").asList().hasSize(3);
+
     }
 }

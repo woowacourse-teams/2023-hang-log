@@ -1,7 +1,8 @@
 import CalendarIcon from '@assets/svg/calendar-icon.svg';
 import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import type { KeyboardEvent } from 'react';
 
 import { formatDateRange } from '@utils/formatter';
 
@@ -24,17 +25,25 @@ const DateInput = ({
 }: DateInputProps) => {
   const [inputValue, setInputValue] = useState(formatDateRange(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
-  const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
-
-  useEffect(() => {
-    updateDateInfo(selectedDateRange);
-  }, [selectedDateRange, updateDateInfo]);
+  const {
+    isOpen: isCalendarOpen,
+    open: openCalendar,
+    close: closeCalendar,
+    toggle: toggleCalendar,
+  } = useOverlay();
 
   const handleDateClick = (dateRange: DateRangeData) => {
     if (!dateRange.endDate) return;
 
     setSelectedDateRange(dateRange);
     setInputValue(formatDateRange(dateRange));
+    updateDateInfo(dateRange);
+  };
+
+  const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      openCalendar();
+    }
   };
 
   return (
@@ -46,6 +55,7 @@ const DateInput = ({
             placeholder="방문 날짜를 입력해주세요"
             icon={<CalendarIcon aria-label="캘린더 아이콘" />}
             value={inputValue}
+            onKeyDown={handleEnter}
             readOnly
           />
         </Box>

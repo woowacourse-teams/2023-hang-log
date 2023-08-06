@@ -15,6 +15,7 @@ public final class DayLogFixture {
     private static final Trip TRIP = new Trip(
             1L,
             "런던 여행",
+            "default-image.png",
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",

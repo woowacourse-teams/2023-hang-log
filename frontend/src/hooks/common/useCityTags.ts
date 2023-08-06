@@ -17,14 +17,14 @@ export const useCityTags = (initialCityTags: CityData[]) => {
 
       if (hasCityTag) {
         const filteredCityTags = prevCityTags.filter((cityTag) => cityTag.id !== selectedCity.id);
-        return [...filteredCityTags, { id: selectedCity.id, name: cityName }];
+        return [...filteredCityTags, { ...selectedCity, name: cityName }];
       }
 
       if (prevCityTags.length >= CITY_TAG_MAX_LENGTH) {
         return prevCityTags;
       }
 
-      return [...prevCityTags, { id: selectedCity.id, name: cityName }];
+      return [...prevCityTags, { ...selectedCity, name: cityName }];
     });
   };
 

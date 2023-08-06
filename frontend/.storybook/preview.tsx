@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { HangLogProvider } from 'hang-log-design-system';
+import { HangLogProvider, Spinner } from 'hang-log-design-system';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
@@ -49,7 +49,9 @@ export const decorators = [
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
           <HangLogProvider>
-            <Story />
+            <Suspense fallback={<Spinner />}>
+              <Story />
+            </Suspense>
           </HangLogProvider>
         </RecoilRoot>
       </QueryClientProvider>

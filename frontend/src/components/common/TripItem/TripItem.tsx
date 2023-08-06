@@ -1,6 +1,7 @@
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
 import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
+import { useEffect, useRef } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -20,30 +21,42 @@ import {
 interface TripListItemProps extends TripItemData {
   tripId: number;
   dayLogId: number;
-  onDragStart: () => void;
-  onDragEnter: () => void;
-  onDragEnd: () => void;
+  isEditable?: boolean;
+  observer?: IntersectionObserver | null;
+  onDragStart?: () => void;
+  onDragEnter?: () => void;
+  onDragEnd?: () => void;
 }
 
 const TripItem = ({
   tripId,
   dayLogId,
+  isEditable = true,
+  observer,
   onDragStart,
   onDragEnter,
   onDragEnd,
   ...information
 }: TripListItemProps) => {
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
+  const itemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (itemRef.current) {
+      observer?.observe(itemRef.current);
+    }
+  }, [observer]);
 
   return (
-    // ! 수정 모드에서만 drag할 수 있다
     <li
-      css={getContainerStyling(isDragging)}
-      draggable
+      ref={itemRef}
+      css={getContainerStyling({ isEditable, isDragging })}
+      data-id={information.id}
+      draggable={isEditable}
       onDragStart={onDragStart}
-      onDrag={handleDrag}
+      onDrag={isEditable ? handleDrag : undefined}
       onDragEnter={onDragEnter}
-      onDragEnd={handleDragEnd}
+      onDragEnd={isEditable ? handleDragEnd : undefined}
     >
       <Flex styles={{ gap: Theme.spacer.spacing4 }}>
         {information.imageUrls.length > 0 && (
@@ -78,8 +91,7 @@ const TripItem = ({
           )}
         </Box>
       </Flex>
-      {/* ! 로그인 + 수정 모드일 떄만 볼 수 있다 */}
-      <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} />
+      {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
     </li>
   );
 };

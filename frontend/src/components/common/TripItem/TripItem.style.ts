@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const getContainerStyling = (isDragging?: boolean) => {
+export const getContainerStyling = ({
+  isEditable,
+  isDragging,
+}: {
+  isEditable?: boolean;
+  isDragging?: boolean;
+}) => {
   return css({
     position: 'relative',
 
@@ -12,7 +18,7 @@ export const getContainerStyling = (isDragging?: boolean) => {
 
     opacity: isDragging ? '0.4' : '1',
 
-    cursor: 'grab',
+    cursor: isEditable ? 'grab' : 'unset',
   });
 };
 

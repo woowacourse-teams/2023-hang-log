@@ -1,9 +1,29 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+
 const prod = process.env.NODE_ENV === 'production';
+
+const plugins = [
+  new webpack.ProvidePlugin({
+    React: 'react',
+  }),
+  new HtmlWebpackPlugin({
+    template: './public/index.html',
+  }),
+  new webpack.HotModuleReplacementPlugin(),
+  new Dotenv(),
+];
+
+if (!prod) {
+  const CopyPlugin = require('copy-webpack-plugin');
+  plugins.push(
+    new CopyPlugin({
+      patterns: [{ from: 'public/mockServiceWorker.js', to: '' }],
+    })
+  );
+}
 
 module.exports = {
   mode: prod ? 'production' : 'development',
@@ -68,19 +88,5 @@ module.exports = {
       '@utils': path.resolve(__dirname, './src/utils'),
     },
   },
-
-  plugins: [
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-
-    new CopyPlugin({
-      patterns: [{ from: 'public/mockServiceWorker.js', to: '' }],
-    }),
-    new Dotenv(),
-  ],
+  plugins,
 };

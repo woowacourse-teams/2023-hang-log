@@ -3,7 +3,7 @@ import { PATH } from '@constants/path';
 import { FloatingButton, useSelect } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
-import { sortByStartDate } from '@utils/sortByStartDate';
+import { sortByStartDate } from '@utils/sort';
 
 import { useTripsQuery } from '@hooks/api/useTripsQuery';
 

@@ -55,12 +55,10 @@ export const buttonContainerStyling = css({
   gap: Theme.spacer.spacing1,
 });
 
-export const editButtonStyling = css({
-  backgroundColor: 'transparent',
+export const badgeStyling = css({
+  color: `${Theme.color.blue700} !important`,
+});
 
-  color: Theme.color.white,
-
-  '&:hover:enabled': {
-    backgroundColor: 'rgba(255, 255, 255, .2)',
-  },
+export const badgeWrapperStyling = css({
+  width: '60%',
 });

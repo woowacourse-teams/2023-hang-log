@@ -16,6 +16,7 @@ public final class TripFixture {
     public static final Trip LONDON_TRIP = new Trip(
             1L,
             "런던 여행",
+            "default-image.png",
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",
@@ -25,6 +26,7 @@ public final class TripFixture {
     public static final Trip LONDON_TO_JAPAN = new Trip(
             1L,
             "런던에서 일본으로",
+            "default-image.png",
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",

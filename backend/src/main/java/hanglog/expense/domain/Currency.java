@@ -38,7 +38,7 @@ public class Currency {
     private Double jpy;
 
     @Column(nullable = false)
-    private Double cnh;
+    private Double cny;
 
     @Column(nullable = false)
     private Double chf;
@@ -69,11 +69,6 @@ public class Currency {
             final Double krw
     ) {
         this(null, date, usd, eur, gbp, jpy, cnh, chf, sgd, thb, hkd, krw);
-    }
-
-    // TODO : 추후 currency 데이터 입력 후 default 값 생성시 삭제
-    public static Currency getDefaultCurrency() {
-        return new Currency();
     }
 
     public double getUnitRateOfJpy() {

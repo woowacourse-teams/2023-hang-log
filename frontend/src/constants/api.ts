@@ -1,4 +1,4 @@
-const PROD = process.env.NODE_ENV === 'production';
+export const PROD = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = PROD
   ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
@@ -11,8 +11,10 @@ export const END_POINTS = {
   DAY_LOG_ORDER: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
   CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
-  CITIES: '/cities',
-  EXPENSE_CATEGORY: '/expense-category',
+  CITY: '/cities',
+  EXPENSE_CATEGORY: '/categories',
+  EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
+  IMAGES: '/images',
 } as const;
 
 export const NETWORK = {

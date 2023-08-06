@@ -1,7 +1,7 @@
 package hanglog.currency.service;
 
 import static hanglog.expense.domain.type.CurrencyType.CHF;
-import static hanglog.expense.domain.type.CurrencyType.CNH;
+import static hanglog.expense.domain.type.CurrencyType.CNY;
 import static hanglog.expense.domain.type.CurrencyType.EUR;
 import static hanglog.expense.domain.type.CurrencyType.GBP;
 import static hanglog.expense.domain.type.CurrencyType.HKD;
@@ -93,7 +93,7 @@ public class CurrencyService {
                 currencyTypeRateMap.get(EUR),
                 currencyTypeRateMap.get(GBP),
                 currencyTypeRateMap.get(JPY),
-                currencyTypeRateMap.get(CNH),
+                currencyTypeRateMap.get(CNY),
                 currencyTypeRateMap.get(CHF),
                 currencyTypeRateMap.get(SGD),
                 currencyTypeRateMap.get(THB),

@@ -159,6 +159,27 @@ include::{snippets}/item-controller-test/delete-item/path-parameters.adoc[]
 ==== 응답
 include::{snippets}/item-controller-test/delete-item/http-response.adoc[]
 
+
+== 이미지 API
+
+=== 이미지 업로드 (POST /images)
+
+==== 요청
+----
+POST /images HTTP/1.1
+Content-Type: multipart/form-data;charset=UTF-8;
+
+Content-Disposition: form-data; name=images; filename=static/images/logo.png
+Content-Type: image/png
+----
+include::{snippets}/image-controller-test/upload-image/request-parts.adoc[]
+
+==== 응답
+include::{snippets}/image-controller-test/upload-image/http-response.adoc[]
+include::{snippets}/image-controller-test/upload-image/response-fields.adoc[]
+
+
+
 == 도시 API
 
 === 모든 도시 조회 (GET /cities)
@@ -185,9 +206,9 @@ include::{snippets}/category-controller-test/get-expense-categories/response-fie
 === 경비 조회 (GET /trips/:tripId/expense)
 
 ==== 요청
-include::{snippets}/Expense-controller-test/get-expenses/http-request.adoc[]
-include::{snippets}/Expense-controller-test/get-expenses/path-parameters.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/http-request.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
 
 ==== 응답
-include::{snippets}/Expense-controller-test/get-expenses/http-response.adoc[]
-include::{snippets}/Expense-controller-test/get-expenses/response-fields.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
+include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]

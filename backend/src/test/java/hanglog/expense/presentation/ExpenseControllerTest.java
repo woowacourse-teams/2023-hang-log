@@ -1,9 +1,9 @@
 package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.expense.fixture.CityFixture.LONDON;
-import static hanglog.expense.fixture.CityFixture.TOKYO;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
+import static hanglog.trip.fixture.CityFixture.LONDON;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -40,9 +40,10 @@ class ExpenseControllerTest extends RestDocsTest {
 
     @DisplayName("모든 경비를 가져온다.")
     @Test
-    void getExpensesTest() throws Exception {
+    void getExpenses() throws Exception {
         // given
-        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(LONDON_TO_JAPAN,
+        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
+                LONDON_TO_JAPAN,
                 20000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
                 List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), 20000, 20000)),
