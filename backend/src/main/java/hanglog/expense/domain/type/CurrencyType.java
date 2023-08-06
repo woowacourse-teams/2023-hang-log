@@ -40,7 +40,7 @@ public enum CurrencyType {
             return CNY;
         }
         return Arrays.stream(values())
-                .filter(value -> value.code.equals(currencyCode))
+                .filter(value -> value.code.equals(currencyCode.toLowerCase().replace("(100)", "")))
                 .findAny()
                 .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY));
     }
