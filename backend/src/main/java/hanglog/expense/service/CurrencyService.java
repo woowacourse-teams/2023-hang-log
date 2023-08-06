@@ -62,7 +62,7 @@ public class CurrencyService {
 
             if (CurrencyType.provide(currencyUnit)) {
                 currencyTypeRateMap.put(
-                        CurrencyType.mapping(currencyUnit),
+                        CurrencyType.getMappedCurrencyType(currencyUnit),
                         Double.valueOf(currencyResponse.getDealBasR().replace(",", ""))
                 );
             }

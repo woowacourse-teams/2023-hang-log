@@ -31,16 +31,11 @@ public enum CurrencyType {
         this.rate = rate;
     }
 
-    public static double mappingCurrency(final String currencyCode, final Currency currency) {
-        return Arrays.stream(values())
-                .filter(value -> value.code.equals(currencyCode.toLowerCase()))
-                .findAny()
-                .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY))
-                .rate
-                .apply(currency);
+    public static double getMappedCurrencyRate(final String currencyCode, final Currency currency) {
+        return getMappedCurrencyType(currencyCode).rate.apply(currency);
     }
 
-    public static CurrencyType mapping(final String currencyCode) {
+    public static CurrencyType getMappedCurrencyType(final String currencyCode) {
         if (currencyCode.equals("cnh")) {
             return CNY;
         }
