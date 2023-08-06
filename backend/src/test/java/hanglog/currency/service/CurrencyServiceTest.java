@@ -24,8 +24,11 @@ class CurrencyServiceTest {
     @DisplayName("금일 환율 정보를 저장한다.")
     @Test
     void saveCurrency() {
+        // given
+        final LocalDate date = LocalDate.of(2023, 8, 3);
+
         // when
-        final Currency actual = currencyService.saveDailyCurrency(LocalDate.of(2023, 8, 3));
+        final Currency actual = currencyService.saveDailyCurrency(date);
 
         // then
         assertSoftly(
