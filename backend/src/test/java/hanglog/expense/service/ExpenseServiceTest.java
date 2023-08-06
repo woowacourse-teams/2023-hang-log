@@ -88,7 +88,7 @@ class ExpenseServiceTest {
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
-        System.out.println(actual);
+
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual)
@@ -180,6 +180,5 @@ class ExpenseServiceTest {
         // then
         assertThat(actual).extracting("categories").asList().hasSize(6);
         assertThat(actual).extracting("dayLogs").asList().hasSize(3);
-
     }
 }
