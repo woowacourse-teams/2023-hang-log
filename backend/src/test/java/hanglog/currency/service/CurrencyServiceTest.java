@@ -63,6 +63,7 @@ class CurrencyServiceTest {
         // when & then
         assertThatThrownBy(() -> currencyService.saveDailyCurrency(weekend))
                 .isInstanceOf(InvalidDomainException.class)
-                .extracting("code").isEqualTo(3006);
+                .extracting("code")
+                .isEqualTo(3006);
     }
 }
