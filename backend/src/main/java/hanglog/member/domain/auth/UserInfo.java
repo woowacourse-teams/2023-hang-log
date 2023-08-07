@@ -1,4 +1,4 @@
-package hanglog.member.dto;
+package hanglog.member.domain.auth;
 
 public interface UserInfo {
     String getId();

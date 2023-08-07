@@ -1,80 +1,31 @@
 package hanglog.member.service;
 
-import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.global.exception.AuthException;
-import hanglog.member.MultiValueMapConverter;
 import hanglog.member.domain.Member;
+import hanglog.member.domain.auth.Provider;
+import hanglog.member.domain.auth.Providers;
+import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.AccessTokenRequest;
-import hanglog.member.dto.AccessTokenResponse;
-import hanglog.member.dto.UserInfo;
-import hanglog.member.provider.Provider;
-import hanglog.member.provider.ProviderProperties;
-import java.util.Optional;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @Transactional
 public class AuthService {
 
     private final MemberRepository memberRepository;
-    private final ObjectMapper objectMapper;
-    private final RestTemplate restTemplate;
+    private final Providers providers;
 
-    public AuthService(final MemberRepository memberRepository, final ObjectMapper objectMapper) {
+    public AuthService(final MemberRepository memberRepository, final Providers providers) {
         this.memberRepository = memberRepository;
-        this.objectMapper = objectMapper;
-        this.restTemplate = new RestTemplate();
+        this.providers = providers;
     }
 
     public Long login(final String providerName, final String code) {
-        final Provider provider = Provider.mappingProvider(providerName);
-        final String accessToken = getAccessToken(code, provider.getProperties());
-        final UserInfo userInfo = getUserInfo(accessToken, provider);
+        final Provider provider = providers.getProvider(providerName);
+        final String accessToken = provider.getAccessToken(code);
+        final UserInfo userInfo = provider.getUserInfo(accessToken);
         final Member member = save(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
         return member.getId();
-    }
-
-    private String getAccessToken(final String code, final ProviderProperties properties) {
-        final AccessTokenRequest accessTokenRequest = AccessTokenRequest.of(code, properties);
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        final MultiValueMap<String, String> params = MultiValueMapConverter.convert(objectMapper, accessTokenRequest);
-        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
-
-        final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
-                properties.getTokenUri(),
-                HttpMethod.POST,
-                accessTokenRequestEntity,
-                AccessTokenResponse.class
-        );
-
-        return Optional.ofNullable(accessTokenResponse.getBody())
-                .orElseThrow(() -> new AuthException(INVALID_AUTHORIZATION_CODE))
-                .getAccessToken();
-    }
-
-    private UserInfo getUserInfo(final String accessToken, final Provider provider) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-        final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
-
-        return (UserInfo) restTemplate.exchange(
-                provider.getProperties().getUserUri(),
-                HttpMethod.GET,
-                userInfoRequestEntity,
-                provider.getResponseDto()
-        ).getBody();
     }
 
     // TODO : 토큰 받기
