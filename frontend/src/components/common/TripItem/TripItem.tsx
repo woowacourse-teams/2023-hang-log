@@ -1,7 +1,9 @@
 import { CURRENCY_ICON } from '@constants/trip';
+import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
 import type { TripItemData } from '@type/tripItem';
-import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
-import { useEffect, useRef } from 'react';
+import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+import { useEffect, useMemo, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -10,6 +12,7 @@ import { useDraggedItem } from '@hooks/common/useDraggedItem';
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
 import {
+  contentContainerStyling,
   expenseStyling,
   getContainerStyling,
   informationContainerStyling,
@@ -38,6 +41,12 @@ const TripItem = ({
   onDragEnd,
   ...information
 }: TripListItemProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+  const viewportWidth = useRecoilValue(viewportWidthState);
+
+  const imageWidth = useMemo(() => viewportWidth - 48, [viewportWidth]);
+  const imageHeight = useMemo(() => (imageWidth / 4.5) * 3, [imageWidth]);
+
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
   const itemRef = useRef<HTMLLIElement>(null);
 
@@ -58,11 +67,11 @@ const TripItem = ({
       onDragEnter={onDragEnter}
       onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+      <div css={contentContainerStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
-            width={250}
-            height={167}
+            width={isMobile ? imageWidth : 250}
+            height={isMobile ? imageHeight : 167}
             isDraggable={false}
             showNavigationOnHover
             showArrows
@@ -90,8 +99,16 @@ const TripItem = ({
             </Text>
           )}
         </Box>
-      </Flex>
-      {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
+      </div>
+      {isEditable ? (
+        <EditMenu
+          tripId={tripId}
+          dayLogId={dayLogId}
+          hasImage={information.imageUrls.length > 0}
+          imageHeight={imageHeight}
+          {...information}
+        />
+      ) : null}
     </li>
   );
 };

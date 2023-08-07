@@ -1,7 +1,9 @@
+import { mediaQueryMobileState } from '@/store/mediaQuery';
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 import type { TripData } from '@type/trip';
-import { Badge, Box, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
+import { Badge, Box, Heading, Text, useOverlay } from 'hang-log-design-system';
 import { memo } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { formatDate } from '@utils/formatter';
 
@@ -24,6 +26,8 @@ interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
 }
 
 const TripInformation = ({ isEditable = true, ...information }: TripInformationProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
   return (
@@ -34,14 +38,14 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
           <img src={information.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
         </Box>
         <Box tag="section">
-          <Flex styles={{ gap: Theme.spacer.spacing1, wrap: 'wrap' }} css={badgeWrapperStyling}>
+          <Box css={badgeWrapperStyling}>
             {information.cities.map(({ id, name }) => (
               <Badge key={id} css={badgeStyling}>
                 {name}
               </Badge>
             ))}
-          </Flex>
-          <Heading css={titleStyling} size="large">
+          </Box>
+          <Heading css={titleStyling} size={isMobile ? 'medium' : 'large'}>
             {information.title}
           </Heading>
           <Text>

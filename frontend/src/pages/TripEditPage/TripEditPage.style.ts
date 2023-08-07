@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
   position: 'relative',
@@ -6,6 +7,10 @@ export const containerStyling = css({
 
   '@media screen and (max-width: 1200px)': {
     width: '60vw',
+  },
+
+  '@media screen and (max-width: 600px)': {
+    width: '100vw',
   },
 });
 
@@ -27,6 +32,11 @@ export const addButtonStyling = css({
 
   '@media screen and (max-width: 1200px)': {
     left: 'calc(60vw - 114px)',
+  },
+
+  '@media screen and (max-width: 600px)': {
+    bottom: Theme.spacer.spacing4,
+    left: 'calc(100vw - 88px)',
   },
 });
 
