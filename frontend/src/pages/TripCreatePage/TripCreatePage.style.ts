@@ -30,6 +30,7 @@ export const backgroundImage = css({
   position: 'absolute',
   bottom: Theme.spacer.spacing4,
   right: 0,
+  zIndex: -1,
 
   '@media (max-width: 600px)': {
     display: 'none',
