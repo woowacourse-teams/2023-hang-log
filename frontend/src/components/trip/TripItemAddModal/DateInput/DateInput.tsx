@@ -8,6 +8,8 @@ import { formatMonthDate } from '@utils/formatter';
 
 import { useTripDates } from '@hooks/trip/useTripDates';
 
+import { selectStyling } from '@components/trip/TripItemAddModal/DateInput/DateInput.style';
+
 interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];
   tripId: number;
@@ -23,7 +25,14 @@ const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: Date
   };
 
   return (
-    <Select label="날짜" id="date" name="date" required onChange={handleDateChange}>
+    <Select
+      css={selectStyling}
+      label="날짜"
+      id="date"
+      name="date"
+      required
+      onChange={handleDateChange}
+    >
       <>
         {Array.from({ length: dates.length - 1 }, (_, index) => (
           <option

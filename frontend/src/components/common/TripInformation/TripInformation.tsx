@@ -7,6 +7,8 @@ import { useRecoilValue } from 'recoil';
 
 import { formatDate } from '@utils/formatter';
 
+import TripButtons from '@components/common/TripInformation/TripButtons/TripButtons';
+import TripEditButtons from '@components/common/TripInformation/TripEditButtons/TripEditButtons';
 import {
   badgeStyling,
   badgeWrapperStyling,
@@ -17,9 +19,6 @@ import {
   titleStyling,
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
-
-import TripButtons from './TripButtons/TripButtons';
-import TripEditButtons from './TripEditButtons/TripEditButtons';
 
 interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
   isEditable?: boolean;
