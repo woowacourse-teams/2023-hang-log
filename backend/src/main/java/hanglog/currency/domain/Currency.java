@@ -1,4 +1,4 @@
-package hanglog.expense.domain;
+package hanglog.currency.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;

@@ -1,8 +1,8 @@
-package hanglog.expense.domain.type;
+package hanglog.currency.domain.type;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY;
 
-import hanglog.expense.domain.Currency;
+import hanglog.currency.domain.Currency;
 import hanglog.global.exception.InvalidDomainException;
 import java.util.Arrays;
 import java.util.List;

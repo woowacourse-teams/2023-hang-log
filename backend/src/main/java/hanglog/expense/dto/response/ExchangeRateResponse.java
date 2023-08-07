@@ -1,7 +1,7 @@
 package hanglog.expense.dto.response;
 
-import hanglog.expense.domain.Currency;
-import hanglog.expense.domain.type.CurrencyType;
+import hanglog.currency.domain.Currency;
+import hanglog.currency.domain.type.CurrencyType;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;

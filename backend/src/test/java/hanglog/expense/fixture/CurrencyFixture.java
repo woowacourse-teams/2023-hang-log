@@ -1,6 +1,6 @@
 package hanglog.expense.fixture;
 
-import hanglog.expense.domain.Currency;
+import hanglog.currency.domain.Currency;
 import java.time.LocalDate;
 
 public class CurrencyFixture {

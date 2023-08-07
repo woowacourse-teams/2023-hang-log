@@ -1,24 +1,24 @@
-package hanglog.expense.service;
+package hanglog.currency.service;
 
-import static hanglog.expense.domain.type.CurrencyType.CHF;
-import static hanglog.expense.domain.type.CurrencyType.CNY;
-import static hanglog.expense.domain.type.CurrencyType.EUR;
-import static hanglog.expense.domain.type.CurrencyType.GBP;
-import static hanglog.expense.domain.type.CurrencyType.HKD;
-import static hanglog.expense.domain.type.CurrencyType.JPY;
-import static hanglog.expense.domain.type.CurrencyType.KRW;
-import static hanglog.expense.domain.type.CurrencyType.SGD;
-import static hanglog.expense.domain.type.CurrencyType.THB;
-import static hanglog.expense.domain.type.CurrencyType.USD;
+import static hanglog.currency.domain.type.CurrencyType.CHF;
+import static hanglog.currency.domain.type.CurrencyType.CNY;
+import static hanglog.currency.domain.type.CurrencyType.EUR;
+import static hanglog.currency.domain.type.CurrencyType.GBP;
+import static hanglog.currency.domain.type.CurrencyType.HKD;
+import static hanglog.currency.domain.type.CurrencyType.JPY;
+import static hanglog.currency.domain.type.CurrencyType.KRW;
+import static hanglog.currency.domain.type.CurrencyType.SGD;
+import static hanglog.currency.domain.type.CurrencyType.THB;
+import static hanglog.currency.domain.type.CurrencyType.USD;
 import static hanglog.global.exception.ExceptionCode.INVALID_DATE_WHEN_WEEKEND;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
-import hanglog.expense.domain.Currency;
+import hanglog.currency.domain.Currency;
+import hanglog.currency.domain.type.CurrencyType;
+import hanglog.currency.dto.CurrencyResponse;
 import hanglog.expense.domain.repository.CurrencyRepository;
-import hanglog.expense.domain.type.CurrencyType;
-import hanglog.expense.dto.response.CurrencyResponse;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;

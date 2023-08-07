@@ -3,8 +3,7 @@ package hanglog.currency.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import hanglog.expense.domain.Currency;
-import hanglog.expense.service.CurrencyService;
+import hanglog.currency.domain.Currency;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
