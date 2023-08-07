@@ -38,6 +38,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CurrencyService {
 
     private static final String CURRENCY_API_URI = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
+    private static final String JAPAN_UNIT_STRING = "(100)";
+    private static final String NUMBER_SEPARATOR = ",";
+    private static final String DATE_SEPARATOR = "-";
 
     private final RestTemplate restTemplate;
     private final CurrencyRepository currencyRepository;
@@ -58,12 +61,12 @@ public class CurrencyService {
         final Map<CurrencyType, Double> currencyTypeRateMap = new EnumMap<>(CurrencyType.class);
 
         for (final CurrencyResponse currencyResponse : currencyResponseList) {
-            final String currencyUnit = currencyResponse.getCurrencyCode().toLowerCase().replace("(100)", "");
+            final String currencyUnit = currencyResponse.getCurrencyCode().toLowerCase().replace(JAPAN_UNIT_STRING, "");
 
             if (CurrencyType.provide(currencyUnit)) {
                 currencyTypeRateMap.put(
                         CurrencyType.getMappedCurrencyType(currencyUnit),
-                        Double.valueOf(currencyResponse.getRate().replace(",", ""))
+                        Double.valueOf(currencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
                 );
             }
         }
@@ -91,7 +94,7 @@ public class CurrencyService {
     private String getCurrencyUrl(final LocalDate today) {
         return UriComponentsBuilder.fromHttpUrl(CURRENCY_API_URI)
                 .queryParam("authkey", authKey)
-                .queryParam("searchdate", today.toString().replace("-", ""))
+                .queryParam("searchdate", today.toString().replace(DATE_SEPARATOR, ""))
                 .queryParam("data", "AP01")
                 .toUriString();
     }
