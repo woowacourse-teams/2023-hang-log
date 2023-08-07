@@ -21,6 +21,7 @@ const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInp
     <Input
       label="제목"
       name="title"
+      maxLength={25}
       value={value}
       placeholder="제목을 입력해 주세요"
       supportingText={isError ? '일정의 제목을 입력해 주세요' : undefined}

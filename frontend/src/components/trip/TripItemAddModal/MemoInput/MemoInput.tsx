@@ -23,6 +23,7 @@ const MemoInput = ({ value, updateInputValue }: MemoInputProps) => {
       name="memo"
       value={value ?? ''}
       placeholder="메모를 입력해 주세요"
+      maxLength={255}
       onChange={handleMemoChange}
     />
   );

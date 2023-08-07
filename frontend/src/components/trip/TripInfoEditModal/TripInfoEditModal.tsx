@@ -68,6 +68,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Input
           required
           label="여행 제목"
+          maxLength={15}
           value={tripInfo.title}
           isError={isTitleError}
           supportingText={isTitleError ? '여행 제목을 입력하세요' : undefined}
@@ -76,7 +77,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Textarea
           id="description"
           label="여행 설명"
-          maxLength={120}
+          maxLength={125}
           value={tripInfo.description ?? ''}
           onChange={updateInputValue('description')}
           css={textareaStyling}
