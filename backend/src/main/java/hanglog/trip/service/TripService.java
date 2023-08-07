@@ -138,17 +138,15 @@ public class TripService {
     }
 
     private void updateDayLogByPeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        final DayLog extraDayLog = trip.getDayLogs().remove(currentPeriod);
-        extraDayLog.updateOrdinal(requestPeriod + 1);
-
+        final DayLog extraDayLog = trip.getDayLogs().get(currentPeriod);
         if (currentPeriod < requestPeriod) {
+            extraDayLog.updateOrdinal(requestPeriod + 1);
             addEmptyDayLogs(trip, currentPeriod, requestPeriod);
         }
-
         if (currentPeriod > requestPeriod) {
             removeRemainingDayLogs(trip, currentPeriod, requestPeriod);
+            extraDayLog.updateOrdinal(requestPeriod + 1);
         }
-        trip.getDayLogs().add(extraDayLog);
     }
 
     private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
@@ -160,8 +158,7 @@ public class TripService {
 
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         trip.getDayLogs()
-                .removeIf(
-                        dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod + 1);
+                .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod);
     }
 
     public void delete(final Long tripId) {
