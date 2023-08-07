@@ -1,5 +1,5 @@
-import { mediaQueryMobileState } from '@/store/mediaQuery';
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import type { TripData } from '@type/trip';
 import { Badge, Box, Heading, Text, useOverlay } from 'hang-log-design-system';
 import { memo } from 'react';

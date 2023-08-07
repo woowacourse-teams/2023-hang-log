@@ -13,6 +13,10 @@ export const useMediaQuery = () => {
     setViewportWidth(window.innerWidth);
   }, [setIsMobile, setViewportWidth]);
 
+  const handleViewportWidthChange = useCallback(() => {
+    setViewportWidth(window.innerWidth);
+  }, [setViewportWidth]);
+
   useEffect(() => {
     setIsMobile(window.matchMedia(MOBILE_MEDIA_QUERY_SIZE).matches);
     setViewportWidth(window.innerWidth);
@@ -23,9 +27,11 @@ export const useMediaQuery = () => {
     mediaQueryRef.current = mediaQueryList;
 
     mediaQueryRef.current.addEventListener('change', handleWindowResize);
+    window.addEventListener('resize', handleViewportWidthChange);
 
     return () => {
       mediaQueryRef.current?.removeEventListener('change', handleWindowResize);
+      window.removeEventListener('resize', handleViewportWidthChange);
     };
-  }, [handleWindowResize]);
+  }, [handleWindowResize, handleViewportWidthChange]);
 };
