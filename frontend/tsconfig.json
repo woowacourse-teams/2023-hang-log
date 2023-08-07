@@ -28,7 +28,8 @@
       "@utils/*": ["./src/utils/*"]
     },
     "jsxImportSource": "@emotion/react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["cypress", "node", "@testing-library/cypress"]
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]
