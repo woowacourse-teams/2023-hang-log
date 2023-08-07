@@ -6,13 +6,14 @@ import {
   backgroundImage,
   boxStyling,
   containerStyling,
+  headingStyling,
 } from '@pages/TripCreatePage/TripCreatePage.style';
 
 const TripCreatePage = () => {
   return (
     <Flex css={containerStyling}>
       <Box css={boxStyling}>
-        <Heading>여행을 기록해 보세요</Heading>
+        <Heading css={headingStyling}>여행을 기록해 보세요</Heading>
         <TripCreateForm />
       </Box>
       <CreatePageImage aria-label="세계 랜드마크 이미지" css={backgroundImage} />

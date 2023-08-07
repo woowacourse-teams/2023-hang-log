@@ -44,4 +44,9 @@ export const calendarStyling = css({
   boxShadow: Theme.boxShadow.shadow8,
 
   zIndex: Theme.zIndex.overlayPeak,
+
+  '@media (max-width: 600px)': {
+    height: '350px',
+    overflow: 'auto',
+  },
 });

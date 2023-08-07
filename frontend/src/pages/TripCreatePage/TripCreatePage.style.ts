@@ -20,6 +20,12 @@ export const boxStyling = css({
   },
 });
 
+export const headingStyling = css({
+  '@media (max-width: 600px)': {
+    fontSize: '24px',
+  },
+});
+
 export const backgroundImage = css({
   position: 'absolute',
   bottom: Theme.spacer.spacing4,

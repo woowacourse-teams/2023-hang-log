@@ -11,4 +11,14 @@ export const formStyling = css({
   '> button': {
     width: '100%',
   },
+
+  '@media (max-width: 600px)': {
+    minHeight: 'calc(100vh - 100px)',
+    marginTop: Theme.spacer.spacing4,
+
+    '> button': {
+      position: 'absolute',
+      bottom: '17%',
+    },
+  },
 });
