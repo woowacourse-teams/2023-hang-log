@@ -25,13 +25,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Transactional
-public class OAuthLoginService {
+public class AuthService {
 
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
-    public OAuthLoginService(final MemberRepository memberRepository, final ObjectMapper objectMapper) {
+    public AuthService(final MemberRepository memberRepository, final ObjectMapper objectMapper) {
         this.memberRepository = memberRepository;
         this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate();
