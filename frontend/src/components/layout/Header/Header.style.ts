@@ -14,6 +14,10 @@ export const headerStyling = css({
   '& > *': {
     cursor: 'pointer',
   },
+
+  '@media (max-width: 600px)': {
+    padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing4}`,
+  },
 });
 
 export const imageStyling = css({
