@@ -67,7 +67,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.12",
     "html-webpack-plugin": "^5.5.3",
-    "msw": "^1.2.2",
+    "msw": "^1.2.3",
     "msw-storybook-addon": "^1.8.0",
     "prettier": "^2.8.8",
     "storybook": "^7.0.25",
