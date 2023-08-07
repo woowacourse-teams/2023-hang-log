@@ -1,8 +1,6 @@
 import type { CityData } from '@type/city';
 import type { TripItemData } from '@type/tripItem';
 
-import { formatDate } from '@utils/formatter';
-
 const TEST_URL = 'http://localhost:3000';
 
 describe('여행 수정 페이지', () => {
@@ -26,9 +24,7 @@ describe('여행 수정 페이지', () => {
     cy.fixture('trip.json').then((expectedData) => {
       cy.findByText(expectedData.title).should('be.visible');
 
-      cy.findByText(
-        `${formatDate(expectedData.startDate)} - ${formatDate(expectedData.endDate)}`
-      ).should('be.visible');
+      cy.findByText('2023.07.01 - 2023.07.03').should('be.visible');
 
       cy.findByText(expectedData.description).should('be.visible');
 
@@ -139,12 +135,10 @@ describe('여행 정보 수정', () => {
   it('여행 정보 수정 모달에서 방문 기간을 변경할 수 있다.', () => {
     cy.findByText('여행 정보 수정').click();
 
-    cy.fixture('trip.json').then((expectedData) => {
-      cy.findByPlaceholderText('방문 날짜를 입력해주세요').should(
-        'have.value',
-        `${formatDate(expectedData.startDate)} - ${formatDate(expectedData.endDate)}`
-      );
-    });
+    cy.findByPlaceholderText('방문 날짜를 입력해주세요').should(
+      'have.value',
+      '2023.07.01 - 2023.07.03'
+    );
 
     cy.findByPlaceholderText('방문 날짜를 입력해주세요').click();
 
@@ -155,7 +149,7 @@ describe('여행 정보 수정', () => {
 
     cy.findByPlaceholderText('방문 날짜를 입력해주세요').should(
       'have.value',
-      `${formatDate('2023-06-07')} - ${formatDate('2023-06-12')}`
+      '2023.06.07 - 2023.06.12'
     );
   });
 
@@ -200,7 +194,7 @@ describe('여행 정보 수정', () => {
 
     cy.findByText('여행 정보 수정하기').click();
 
-    cy.findByText(`${formatDate('2023-06-07')} - ${formatDate('2023-06-12')}`).should('be.visible');
+    cy.findByText('2023.06.07 - 2023.06.12').should('be.visible');
 
     cy.fixture('trip.json').then((expectedData) => {
       cy.findByText(`${expectedData.title}입니다.`).should('be.visible');
