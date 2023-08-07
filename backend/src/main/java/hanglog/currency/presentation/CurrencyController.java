@@ -17,7 +17,7 @@ public class CurrencyController {
     private final CurrencyService currencyService;
 
     @PostMapping("/today")
-    public ResponseEntity<LocalDate> getTodayCurrency() {
+    public ResponseEntity<LocalDate> saveTodayCurrency() {
         final Currency currency = currencyService.saveDailyCurrency(LocalDate.now());
         return ResponseEntity.ok(currency.getDate());
     }

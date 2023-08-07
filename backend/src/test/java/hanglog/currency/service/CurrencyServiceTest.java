@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.currency.domain.Currency;
+import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +12,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
+@DataJpaTest
 class CurrencyServiceTest {
 
+    private final CurrencyService currencyService;
+
     @Autowired
-    private CurrencyService currencyService;
+    private CurrencyServiceTest(
+            final CurrencyRepository currencyRepository,
+            @Value("${currency.auth-key}") final String authKey
+    ) {
+        currencyService = new CurrencyService(currencyRepository, authKey);
+    }
 
     @DisplayName("금일 환율 정보를 저장한다.")
     @Test

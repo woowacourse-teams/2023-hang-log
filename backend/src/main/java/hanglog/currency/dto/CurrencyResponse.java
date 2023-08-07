@@ -6,9 +6,6 @@ import lombok.Getter;
 @Getter
 public class CurrencyResponse {
 
-    @JsonProperty("result")
-    private int result;
-
     @JsonProperty("cur_unit")
     private String currencyCode;
 
