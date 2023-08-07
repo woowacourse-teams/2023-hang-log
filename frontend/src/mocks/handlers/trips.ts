@@ -17,7 +17,7 @@ export const tripsHandlers = [
   }),
 
   rest.get(`${END_POINTS.TRIPS}/:tripId`, (_, res, ctx) => {
-    return res(ctx.delay(3000), ctx.status(200), ctx.json(trip));
+    return res(ctx.status(200), ctx.json(trip));
   }),
 
   rest.put(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
