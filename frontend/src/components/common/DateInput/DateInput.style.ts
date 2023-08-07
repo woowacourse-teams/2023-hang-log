@@ -26,6 +26,10 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
         '> input': { cursor: 'pointer' },
       },
     },
+
+    '@media (max-width: 600px)': {
+      width: '100%',
+    },
   });
 };
 

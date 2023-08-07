@@ -14,10 +14,18 @@ export const boxStyling = css({
   gap: Theme.spacer.spacing5,
 
   paddingTop: '72px',
+
+  '@media (max-width: 600px)': {
+    width: '85%',
+  },
 });
 
 export const backgroundImage = css({
   position: 'absolute',
   bottom: Theme.spacer.spacing4,
   right: 0,
+
+  '@media (max-width: 600px)': {
+    display: 'none',
+  },
 });
