@@ -37,7 +37,8 @@ public class OAuthLoginService {
         this.restTemplate = new RestTemplate();
     }
 
-    public Long login(final Provider provider, final String code) {
+    public Long login(final String providerName, final String code) {
+        final Provider provider = Provider.mappingProvider(providerName);
         final String accessToken = getAccessToken(code, provider.getProperties());
         final UserInfo userInfo = getUserInfo(accessToken, provider);
         final Member member = save(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());

@@ -1,6 +1,5 @@
 package hanglog.member.presentation;
 
-import hanglog.member.provider.Provider;
 import hanglog.member.service.OAuthLoginService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,7 @@ public class OAuthLoginController {
 
     @GetMapping("/code/{provider}")
     public ResponseEntity<Void> loginOAuth(@PathVariable final String provider, @RequestParam final String code) {
-        final Provider oAuthProvider = Provider.mappingProvider(provider);
-        final Long memberId = oAuthLoginService.login(oAuthProvider, code);
+        final Long memberId = oAuthLoginService.login(provider, code);
         return ResponseEntity.ok().build();
     }
 }
