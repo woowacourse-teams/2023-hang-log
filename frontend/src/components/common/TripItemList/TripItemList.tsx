@@ -1,6 +1,5 @@
-import { useAutoScroll } from '@/hooks/common/useAutoScroll';
-import { clickedMarkerIdState } from '@/store/scrollFocus';
 import { PATH } from '@constants/path';
+import { clickedMarkerIdState } from '@store/scrollFocus';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect, useRef } from 'react';
@@ -10,6 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { sortByOrdinal } from '@utils/sortByStartDate';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
+import { useAutoScroll } from '@hooks/common/useAutoScroll';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
 import { useScrollFocus } from '@hooks/common/useScrollFocus';
 
