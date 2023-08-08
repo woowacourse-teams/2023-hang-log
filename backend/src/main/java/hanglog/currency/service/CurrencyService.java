@@ -10,7 +10,7 @@ import static hanglog.currency.domain.type.CurrencyType.KRW;
 import static hanglog.currency.domain.type.CurrencyType.SGD;
 import static hanglog.currency.domain.type.CurrencyType.THB;
 import static hanglog.currency.domain.type.CurrencyType.USD;
-import static hanglog.global.exception.ExceptionCode.INVALID_DATE_WHEN_WEEKEND;
+import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY_DATE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
@@ -78,7 +78,7 @@ public class CurrencyService {
     private void validateWeekend(final LocalDate date) {
         final DayOfWeek dayOfWeek = date.getDayOfWeek();
         if (dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY)) {
-            throw new InvalidDomainException(INVALID_DATE_WHEN_WEEKEND);
+            throw new InvalidDomainException(INVALID_CURRENCY_DATE);
         }
     }
 
