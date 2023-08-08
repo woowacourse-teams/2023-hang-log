@@ -1,4 +1,4 @@
-import { MAP_INITIAL_ZOOM_SIZE, MAP_MAX_ZOOM_SIZE } from '@constants/map';
+import { MAP_INITIAL_ZOOM_SIZE, MAP_MAX_ZOOM_SIZE, MAP_MIN_ZOOM_SIZE } from '@constants/map';
 import type { TripPlaceType } from '@type/trip';
 import { useEffect, useRef, useState } from 'react';
 
@@ -25,6 +25,7 @@ const TripMap = ({ centerLat, centerLng, places }: TripMapProps) => {
       const initialMap = new google.maps.Map(wrapperRef.current, {
         center: { lat: centerLat, lng: centerLng },
         zoom: MAP_INITIAL_ZOOM_SIZE,
+        minZoom: MAP_MIN_ZOOM_SIZE,
         maxZoom: MAP_MAX_ZOOM_SIZE,
         disableDefaultUI: true,
         mapId: process.env.GOOGLE_MAP_ID,
