@@ -7,6 +7,5 @@ public interface Provider {
     RestTemplate restTemplate = new RestTemplate();
 
     boolean is(String name);
-    String getAccessToken(String code);
-    UserInfo getUserInfo(String accessToken);
+    UserInfo getUserInfo(String code);
 }

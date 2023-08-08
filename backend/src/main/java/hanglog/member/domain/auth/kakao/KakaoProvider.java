@@ -6,7 +6,7 @@ import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE
 import hanglog.global.exception.AuthException;
 import hanglog.member.domain.auth.Provider;
 import hanglog.member.domain.auth.UserInfo;
-import hanglog.member.domain.auth.AccessTokenResponse;
+import hanglog.member.domain.auth.AccessToken;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -45,35 +45,12 @@ public class KakaoProvider implements Provider {
 
     @Override
     public boolean is(final String name) {
-        return name.equals("kakao");
+        return "kakao".equals(name);
     }
 
     @Override
-    public String getAccessToken(final String code) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
-        params.add("redirect_uri", redirectUri);
-        params.add("grant_type", "authorization_code");
-        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
-
-        final ResponseEntity<AccessTokenResponse> accessTokenResponse = restTemplate.exchange(
-                tokenUri,
-                HttpMethod.POST,
-                accessTokenRequestEntity,
-                AccessTokenResponse.class
-        );
-
-        return Optional.ofNullable(accessTokenResponse.getBody())
-                .orElseThrow(() -> new AuthException(INVALID_AUTHORIZATION_CODE))
-                .getAccessToken();
-    }
-
-    @Override
-    public UserInfo getUserInfo(final String accessToken) {
+    public UserInfo getUserInfo(final String code) {
+        final String accessToken = getAccessToken(code);
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
@@ -89,5 +66,28 @@ public class KakaoProvider implements Provider {
             return response.getBody();
         }
         throw new AuthException(NOT_SUPPORTED_OAUTH_SERVICE);
+    }
+
+    private String getAccessToken(final String code) {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUri);
+        params.add("grant_type", "authorization_code");
+        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
+
+        final ResponseEntity<AccessToken> accessTokenResponse = restTemplate.exchange(
+                tokenUri,
+                HttpMethod.POST,
+                accessTokenRequestEntity,
+                AccessToken.class
+        );
+
+        return Optional.ofNullable(accessTokenResponse.getBody())
+                .orElseThrow(() -> new AuthException(INVALID_AUTHORIZATION_CODE))
+                .getAccessToken();
     }
 }

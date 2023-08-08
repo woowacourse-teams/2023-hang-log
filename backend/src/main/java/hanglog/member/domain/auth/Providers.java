@@ -15,7 +15,7 @@ public class Providers {
         this.providers = providers;
     }
 
-    public Provider getProvider(final String providerName) {
+    public Provider mapping(final String providerName) {
         return providers.stream()
                 .filter(provider -> provider.is(providerName))
                 .findFirst()

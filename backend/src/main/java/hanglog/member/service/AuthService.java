@@ -21,9 +21,8 @@ public class AuthService {
     }
 
     public Long login(final String providerName, final String code) {
-        final Provider provider = providers.getProvider(providerName);
-        final String accessToken = provider.getAccessToken(code);
-        final UserInfo userInfo = provider.getUserInfo(accessToken);
+        final Provider provider = providers.mapping(providerName);
+        final UserInfo userInfo = provider.getUserInfo(code);
         final Member member = save(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
         return member.getId();
     }
