@@ -36,6 +36,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
     <input
       css={inputStyling}
       value={title}
+      maxLength={25}
       placeholder="소제목"
       onChange={handleTitleChange}
       onBlur={handleInputBlur}
