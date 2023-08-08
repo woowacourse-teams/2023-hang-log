@@ -18,6 +18,11 @@ export const inputStyling = css({
 
   transition: 'all .2s ease-in',
 
+  '@media screen and (max-width: 600px)': {
+    maxWidth: '60%',
+    minWidth: '40%',
+  },
+
   '&:focus': {
     boxShadow: `inset`,
     borderColor: Theme.color.gray200,

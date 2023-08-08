@@ -1,5 +1,7 @@
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import type { TripItemFormData } from '@type/tripItem';
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
+import { useRecoilValue } from 'recoil';
 
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 
@@ -34,6 +36,8 @@ const TripItemAddModal = ({
   isOpen = true,
   onClose,
 }: TripItemAddModalProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
       tripId,
@@ -47,8 +51,15 @@ const TripItemAddModal = ({
     <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
-          <Flex styles={{ gap: Theme.spacer.spacing4 }}>
-            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+          <Flex styles={{ gap: Theme.spacer.spacing4, direction: isMobile ? 'column' : 'row' }}>
+            <Flex
+              styles={{
+                direction: 'column',
+                gap: '16px',
+                width: isMobile ? '100%' : '312px',
+                align: 'stretch',
+              }}
+            >
               <CategoryInput
                 itemType={tripItemInformation.itemType}
                 updateInputValue={updateInputValue}
@@ -85,7 +96,14 @@ const TripItemAddModal = ({
                 updateInputValue={updateInputValue}
               />
             </Flex>
-            <Flex styles={{ direction: 'column', gap: '16px', width: '312px', align: 'stretch' }}>
+            <Flex
+              styles={{
+                direction: 'column',
+                gap: '16px',
+                width: isMobile ? '100%' : '312px',
+                align: 'stretch',
+              }}
+            >
               <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
               <ImageInput
                 initialImageUrls={tripItemInformation.imageUrls}

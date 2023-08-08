@@ -52,6 +52,7 @@ const DateInput = ({
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
           <Input
+            id="date"
             placeholder="방문 날짜를 입력해주세요"
             icon={<CalendarIcon aria-label="캘린더 아이콘" />}
             value={inputValue}

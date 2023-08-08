@@ -1,4 +1,3 @@
-import TripCreateForm from '@/components/trip/TripCreateForm/TripCreateForm';
 import CreatePageImage from '@assets/svg/create-page-image.svg';
 import { Box, Flex, Heading } from 'hang-log-design-system';
 
@@ -8,6 +7,8 @@ import {
   containerStyling,
   headingStyling,
 } from '@pages/TripCreatePage/TripCreatePage.style';
+
+import TripCreateForm from '@components/trip/TripCreateForm/TripCreateForm';
 
 const TripCreatePage = () => {
   return (
