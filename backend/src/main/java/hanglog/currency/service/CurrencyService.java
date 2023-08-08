@@ -10,7 +10,7 @@ import static hanglog.currency.domain.type.CurrencyType.KRW;
 import static hanglog.currency.domain.type.CurrencyType.SGD;
 import static hanglog.currency.domain.type.CurrencyType.THB;
 import static hanglog.currency.domain.type.CurrencyType.USD;
-import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY_DATE;
+import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY_DATE_WHEN_WEEKEND;
 import static hanglog.global.exception.ExceptionCode.INVALID_DATE_ALREADY_EXIST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static java.time.DayOfWeek.SATURDAY;
@@ -63,7 +63,7 @@ public class CurrencyService {
         }
 
         validateWeekend(date);
-        final List<CurrencyResponse> currencyResponses = getCurrencyResponses(date);
+        final List<CurrencyResponse> currencyResponses = requestFilteredCurrencyResponses(date);
         final Map<CurrencyType, Double> rateOfCurrencyType = new EnumMap<>(CurrencyType.class);
 
         for (final CurrencyResponse currencyResponse : currencyResponses) {
@@ -74,20 +74,20 @@ public class CurrencyService {
             );
         }
 
-        final Currency currency = getCurrency(date, rateOfCurrencyType);
+        final Currency currency = createCurrency(date, rateOfCurrencyType);
         currencyRepository.save(currency);
     }
 
     private void validateWeekend(final LocalDate date) {
         final DayOfWeek dayOfWeek = date.getDayOfWeek();
         if (dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY)) {
-            throw new InvalidDomainException(INVALID_CURRENCY_DATE);
+            throw new InvalidDomainException(INVALID_CURRENCY_DATE_WHEN_WEEKEND);
         }
     }
 
-    private List<CurrencyResponse> getCurrencyResponses(final LocalDate date) {
+    private List<CurrencyResponse> requestFilteredCurrencyResponses(final LocalDate date) {
         return Arrays.stream(
-                        Optional.ofNullable(restTemplate.getForObject(getCurrencyUrl(date), CurrencyResponse[].class))
+                        Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), CurrencyResponse[].class))
                                 .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
                 )
                 .filter(
@@ -98,7 +98,7 @@ public class CurrencyService {
                 .toList();
     }
 
-    private String getCurrencyUrl(final LocalDate date) {
+    private String createCurrencyUrl(final LocalDate date) {
         return UriComponentsBuilder.fromHttpUrl(CURRENCY_API_URI)
                 .queryParam("authkey", authKey)
                 .queryParam("searchdate", date.toString().replace(DATE_SEPARATOR, ""))
@@ -106,7 +106,7 @@ public class CurrencyService {
                 .toUriString();
     }
 
-    private Currency getCurrency(final LocalDate date, final Map<CurrencyType, Double> currencyTypeRateMap) {
+    private Currency createCurrency(final LocalDate date, final Map<CurrencyType, Double> currencyTypeRateMap) {
         return new Currency(
                 date,
                 currencyTypeRateMap.get(USD),
