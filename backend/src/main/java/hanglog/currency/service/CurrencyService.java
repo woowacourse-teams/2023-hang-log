@@ -82,26 +82,26 @@ public class CurrencyService {
         }
     }
 
-    private List<CurrencyResponse> getCurrencyResponses(final LocalDate today) {
+    private List<CurrencyResponse> getCurrencyResponses(final LocalDate date) {
         final CurrencyResponse[] responses = Optional.ofNullable(
-                        restTemplate.getForObject(getCurrencyUrl(today), CurrencyResponse[].class)
+                        restTemplate.getForObject(getCurrencyUrl(date), CurrencyResponse[].class)
                 )
                 .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA));
         return Arrays.stream(responses)
                 .toList();
     }
 
-    private String getCurrencyUrl(final LocalDate today) {
+    private String getCurrencyUrl(final LocalDate date) {
         return UriComponentsBuilder.fromHttpUrl(CURRENCY_API_URI)
                 .queryParam("authkey", authKey)
-                .queryParam("searchdate", today.toString().replace(DATE_SEPARATOR, ""))
+                .queryParam("searchdate", date.toString().replace(DATE_SEPARATOR, ""))
                 .queryParam("data", "AP01")
                 .toUriString();
     }
 
-    private Currency getCurrency(final LocalDate today, final Map<CurrencyType, Double> currencyTypeRateMap) {
+    private Currency getCurrency(final LocalDate date, final Map<CurrencyType, Double> currencyTypeRateMap) {
         return new Currency(
-                today,
+                date,
                 currencyTypeRateMap.get(USD),
                 currencyTypeRateMap.get(EUR),
                 currencyTypeRateMap.get(GBP),
