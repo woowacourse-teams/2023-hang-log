@@ -5,7 +5,7 @@ export const containerStyling = css({
   width: '400px',
   margin: '0 auto',
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     width: '100%',
     margin: 0,
   },

@@ -12,7 +12,7 @@ export const formStyling = css({
     width: '100%',
   },
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     minHeight: 'calc(100vh - 100px)',
     marginTop: Theme.spacer.spacing4,
 

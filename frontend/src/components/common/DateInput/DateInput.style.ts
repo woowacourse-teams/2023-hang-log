@@ -45,7 +45,7 @@ export const calendarStyling = css({
 
   zIndex: Theme.zIndex.overlayPeak,
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     height: '350px',
     overflow: 'auto',
   },

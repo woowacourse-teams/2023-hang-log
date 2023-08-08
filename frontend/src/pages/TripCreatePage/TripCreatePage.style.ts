@@ -15,13 +15,13 @@ export const boxStyling = css({
 
   paddingTop: '72px',
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     width: '85%',
   },
 });
 
 export const headingStyling = css({
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     fontSize: '24px',
   },
 });
@@ -32,7 +32,7 @@ export const backgroundImage = css({
   right: 0,
   zIndex: -1,
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     display: 'none',
   },
 });

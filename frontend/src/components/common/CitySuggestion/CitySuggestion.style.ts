@@ -10,7 +10,7 @@ export const containerStyling = css({
 
   transform: 'translateY(0)',
 
-  '@media (max-width: 600px)': {
+  '@media screen and (max-width: 600px)': {
     width: '100%',
   },
 });
