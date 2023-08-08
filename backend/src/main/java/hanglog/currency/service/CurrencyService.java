@@ -88,7 +88,7 @@ public class CurrencyService {
                         Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), SingleCurrencyResponse[].class))
                                 .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
                 )
-                .filter(response -> CurrencyType.beProvided(response.getCode()))
+                .filter(response -> CurrencyType.isProvided(response.getCode()))
                 .toList();
     }
 

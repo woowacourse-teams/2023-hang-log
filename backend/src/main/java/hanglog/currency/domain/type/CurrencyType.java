@@ -46,7 +46,7 @@ public enum CurrencyType {
                 .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY));
     }
 
-    public static boolean beProvided(final String currencyCode) {
+    public static boolean isProvided(final String currencyCode) {
         final List<String> values = Arrays.stream(CurrencyType.values())
                 .map(CurrencyType::getCode)
                 .toList();
