@@ -7,7 +7,7 @@ describe('여행 수정 페이지', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
     cy.visit(`${TEST_URL}/trip/1/edit`);
-    cy.wait(4000);
+    cy.wait(3000);
   });
 
   it('여행 수정 페이지에 처음 방문 시 여행 데이터가 렌더링되기 전에 skeleton을 볼 수 있다.', () => {
@@ -15,7 +15,7 @@ describe('여행 수정 페이지', () => {
 
     cy.visit(`${TEST_URL}/trip/1/edit`);
 
-    cy.tick(4000);
+    cy.tick(3000);
 
     cy.get('.skeleton').should('be.visible');
   });
@@ -230,9 +230,9 @@ describe('여행 아이템 추가', () => {
   it('여행 아이템 추가 모달에서 별 아이콘 호버하면 호버한 지점까지 별점이 채워지고, 별 아이콘을 클릭해서 원하는 별점을 입력할 수 있다.', () => {
     cy.get('button[aria-label="여행 아이템 추가"]').click();
 
-    cy.get('.star-box > img').eq(5).trigger('mouseover');
+    cy.get('.star-box > div').eq(5).trigger('mouseover');
 
-    cy.get('.star-box > img').eq(6).click();
+    cy.get('.star-box > div').eq(6).click();
   });
 
   it('여행 아이템 추가 모달에서 비용 입력 시, 비용 카테고리, 통화, 그리고 비용 금액을 입력할 수 있다.', () => {
@@ -301,7 +301,7 @@ describe('여행 아이템 추가', () => {
 
     cy.findByRole('radio', { name: /기타/ }).click();
     cy.get('#title').type('샹젤리제 거리 -> 에펠탑 지하철');
-    cy.get('.star-box > img').eq(6).click();
+    cy.get('.star-box > div').eq(6).click();
     cy.get('select[aria-label="비용 카테고리"]').select('문화');
     cy.get('select[aria-label="통화"').select('€');
     cy.get('input[aria-label="비용"]').type('400');
@@ -373,7 +373,7 @@ describe('여행 아이템 수정', () => {
 
     cy.findByRole('radio', { name: /기타/ }).click();
     cy.get('#title').type(' 택시');
-    cy.get('.star-box > img').eq(6).click();
+    cy.get('.star-box > div').eq(6).click();
     cy.get('select[aria-label="비용 카테고리"]').select('문화');
     cy.get('input[aria-label="비용"]').type('0');
     cy.findByPlaceholderText('메모를 입력해 주세요').type(' 즐거움!');
