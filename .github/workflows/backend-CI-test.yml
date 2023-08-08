@@ -21,9 +21,9 @@ jobs:
     steps:
     - name: 레포지토리 체크아웃
       uses: actions/checkout@v3
-      
-    - name: 서브모듈 업데이트
-      run: git submodule update --remote
+      with:
+        token: ${{ secrets.SUBMODULE_TOKEN }}
+        submodules: remote
       
     - name: JDK 17을 설치합니다.
       uses: actions/setup-java@v3
