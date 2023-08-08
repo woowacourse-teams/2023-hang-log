@@ -23,6 +23,8 @@ public enum CurrencyType {
     HKD("hkd", Currency::getHkd),
     KRW("krw", Currency::getKrw);
 
+    private static final String JPY_UNIT_STRING = "(100)";
+    
     private final String code;
     private final Function<Currency, Double> rate;
 
@@ -40,7 +42,7 @@ public enum CurrencyType {
             return CNY;
         }
         return Arrays.stream(values())
-                .filter(value -> value.code.equals(currencyCode.toLowerCase().replace("(100)", "")))
+                .filter(value -> value.code.equals(currencyCode.toLowerCase().replace(JPY_UNIT_STRING, "")))
                 .findAny()
                 .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY));
     }
