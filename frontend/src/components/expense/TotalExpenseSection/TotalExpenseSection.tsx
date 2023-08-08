@@ -1,6 +1,8 @@
 import { EXPENSE_CHART_COLORS } from '@constants/expense';
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import { Box, Heading } from 'hang-log-design-system';
+import { useRecoilValue } from 'recoil';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -20,6 +22,8 @@ interface TotalExpenseSectionProps {
 }
 
 const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+
   const { expenseData } = useExpense(tripId);
 
   const chartData = expenseData.categories.reduce<Segment[]>((acc, curr) => {
@@ -45,7 +49,7 @@ const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
         endDate={expenseData.endDate}
         cities={expenseData.cities}
       />
-      <Heading size="small" css={totalAmountStyling}>
+      <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>
           {CURRENCY_ICON[DEFAULT_CURRENCY]}
