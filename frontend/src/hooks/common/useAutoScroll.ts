@@ -1,10 +1,11 @@
+import { useCallback } from 'react';
 import type { RefObject } from 'react';
 
 export const useAutoScroll = (
   listRef: RefObject<HTMLElement>,
-  focusItemRef: RefObject<HTMLLIElement>
+  focusItemRef: RefObject<HTMLElement>
 ) => {
-  const scrollToFocusedItem = () => {
+  const scrollToFocusedItem = useCallback(() => {
     const list = listRef.current;
     const focusedItem = focusItemRef.current;
 
@@ -20,7 +21,16 @@ export const useAutoScroll = (
         behavior: 'smooth',
       });
     }
-  };
+  }, [focusItemRef, listRef]);
 
-  return { scrollToFocusedItem };
+  const scrollToCenter = useCallback(() => {
+    const list = listRef.current;
+    const focusedItem = focusItemRef.current;
+
+    if (list && focusedItem) {
+      focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [focusItemRef, listRef]);
+
+  return { scrollToFocusedItem, scrollToCenter };
 };

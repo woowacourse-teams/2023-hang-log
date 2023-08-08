@@ -1,7 +1,8 @@
 import { CURRENCY_ICON } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
-import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
+import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
+import type { ForwardedRef } from 'react';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -16,6 +17,7 @@ import {
   memoStyling,
   starRatingStyling,
   subInformationStyling,
+  wrapperStyling,
 } from '@components/common/TripItem/TripItem.style';
 
 interface TripListItemProps extends TripItemData {
@@ -23,6 +25,7 @@ interface TripListItemProps extends TripItemData {
   dayLogId: number;
   isEditable?: boolean;
   observer?: IntersectionObserver | null;
+  scrollRef?: ForwardedRef<HTMLDivElement>;
   onDragStart?: () => void;
   onDragEnter?: () => void;
   onDragEnd?: () => void;
@@ -33,6 +36,7 @@ const TripItem = ({
   dayLogId,
   isEditable = true,
   observer,
+  scrollRef,
   onDragStart,
   onDragEnter,
   onDragEnd,
@@ -58,7 +62,7 @@ const TripItem = ({
       onDragEnter={onDragEnter}
       onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+      <div ref={scrollRef} css={wrapperStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
             width={250}
@@ -90,7 +94,7 @@ const TripItem = ({
             </Text>
           )}
         </Box>
-      </Flex>
+      </div>
       {isEditable ? <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} /> : null}
     </li>
   );

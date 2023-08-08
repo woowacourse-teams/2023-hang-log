@@ -1,11 +1,14 @@
 import { sortByOrdinal } from '@/utils/sort';
 import { PATH } from '@constants/path';
+import { clickedMarkerIdState } from '@store/scrollFocus';
 import type { TripItemData } from '@type/tripItem';
 import { Button, Divider, Heading, Text } from 'hang-log-design-system';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
+import { useAutoScroll } from '@hooks/common/useAutoScroll';
 import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
 import { useScrollFocus } from '@hooks/common/useScrollFocus';
 
@@ -26,6 +29,14 @@ interface TripItemListProps {
 const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
   const { observer } = useScrollFocus();
+  const listRef = useRef<HTMLOListElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
+  const { scrollToCenter } = useAutoScroll(listRef, itemRef);
+  const clickedMarkerId = useRecoilValue(clickedMarkerIdState);
+
+  useEffect(() => {
+    scrollToCenter();
+  }, [clickedMarkerId, scrollToCenter]);
 
   const handlePositionChange = (newItems: TripItemData[]) => {
     const itemIds = newItems.map((item) => item.id);
@@ -48,10 +59,11 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   }, [handleItemsUpdate, tripItems]);
 
   return (
-    <ol css={containerStyling}>
+    <ol ref={listRef} css={containerStyling}>
       {sortedItems.map((item, index) => (
         <Fragment key={item.id}>
           <TripItem
+            scrollRef={item.id === clickedMarkerId ? itemRef : null}
             tripId={tripId}
             dayLogId={dayLogId}
             isEditable={isEditable}
