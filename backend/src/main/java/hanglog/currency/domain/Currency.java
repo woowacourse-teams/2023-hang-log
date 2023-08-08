@@ -22,7 +22,7 @@ public class Currency {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private LocalDate date;
 
     @Column(nullable = false)

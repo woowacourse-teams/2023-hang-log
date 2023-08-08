@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.currency.domain.Currency;
-import hanglog.expense.domain.repository.CurrencyRepository;
+import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +19,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 class CurrencyServiceTest {
 
     private final CurrencyService currencyService;
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
     private CurrencyServiceTest(
             final CurrencyRepository currencyRepository,
             @Value("${currency.auth-key}") final String authKey
     ) {
-        currencyService = new CurrencyService(currencyRepository, authKey);
+        this.currencyService = new CurrencyService(currencyRepository, authKey);
+        this.currencyRepository = currencyRepository;
     }
 
     @DisplayName("금일 환율 정보를 저장한다.")
@@ -35,8 +37,9 @@ class CurrencyServiceTest {
         final LocalDate date = LocalDate.of(2023, 8, 3);
 
         // when
-        final Currency actual = currencyService.saveDailyCurrency(date);
-
+        currencyService.saveDailyCurrency(date);
+        final Currency actual = currencyRepository.findByDate(date);
+        
         // then
         assertSoftly(
                 softly -> {

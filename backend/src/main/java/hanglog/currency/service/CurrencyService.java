@@ -16,9 +16,9 @@ import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
 import hanglog.currency.domain.Currency;
+import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.currency.dto.CurrencyResponse;
-import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -55,24 +55,24 @@ public class CurrencyService {
         this.authKey = authKey;
     }
 
-    public Currency saveDailyCurrency(final LocalDate date) {
+    public void saveDailyCurrency(final LocalDate date) {
+        if (currencyRepository.existsByDate(date)) {
+            return;
+        }
         validateWeekend(date);
         final List<CurrencyResponse> currencyResponses = getCurrencyResponses(date);
         final Map<CurrencyType, Double> rateOfCurrencyType = new EnumMap<>(CurrencyType.class);
 
         for (final CurrencyResponse currencyResponse : currencyResponses) {
             final String code = currencyResponse.getCode().toLowerCase().replace(JAPAN_UNIT_STRING, "");
-
-            if (CurrencyType.provide(code)) {
-                rateOfCurrencyType.put(
-                        CurrencyType.getMappedCurrencyType(code),
-                        Double.valueOf(currencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
-                );
-            }
+            rateOfCurrencyType.put(
+                    CurrencyType.getMappedCurrencyType(code),
+                    Double.valueOf(currencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
+            );
         }
 
         final Currency currency = getCurrency(date, rateOfCurrencyType);
-        return currencyRepository.save(currency);
+        currencyRepository.save(currency);
     }
 
     private void validateWeekend(final LocalDate date) {
@@ -83,11 +83,15 @@ public class CurrencyService {
     }
 
     private List<CurrencyResponse> getCurrencyResponses(final LocalDate date) {
-        final CurrencyResponse[] responses = Optional.ofNullable(
-                        restTemplate.getForObject(getCurrencyUrl(date), CurrencyResponse[].class)
+        return Arrays.stream(
+                        Optional.ofNullable(restTemplate.getForObject(getCurrencyUrl(date), CurrencyResponse[].class))
+                                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
                 )
-                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA));
-        return Arrays.stream(responses)
+                .filter(
+                        response -> CurrencyType.provide(
+                                response.getCode().toLowerCase().replace(JAPAN_UNIT_STRING, "")
+                        )
+                )
                 .toList();
     }
 

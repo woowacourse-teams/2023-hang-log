@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
+import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.dto.response.CategoryExpenseResponse;
 import hanglog.expense.dto.response.DayLogExpenseResponse;
 import hanglog.expense.dto.response.ItemDetailResponse;

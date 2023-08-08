@@ -1,4 +1,4 @@
-package hanglog.expense.domain.repository;
+package hanglog.currency.domain.repository;
 
 import hanglog.currency.domain.Currency;
 import java.time.LocalDate;
@@ -10,4 +10,8 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
     Optional<Currency> findTopByDateLessThanEqualOrderByDateDesc(final LocalDate date);
 
     Optional<Currency> findTopByOrderByDateAsc();
+
+    Currency findByDate(LocalDate date);
+
+    boolean existsByDate(LocalDate date);
 }
