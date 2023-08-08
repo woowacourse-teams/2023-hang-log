@@ -24,7 +24,8 @@ public enum CurrencyType {
     KRW("krw", Currency::getKrw);
 
     private static final String JPY_UNIT_STRING = "(100)";
-    
+    private static final String CNY_API_CODE = "cnh";
+
     private final String code;
     private final Function<Currency, Double> rate;
 
@@ -38,7 +39,7 @@ public enum CurrencyType {
     }
 
     public static CurrencyType getMappedCurrencyType(final String currencyCode) {
-        if (currencyCode.equals("cnh")) {
+        if (currencyCode.equals(CNY_API_CODE)) {
             return CNY;
         }
         return Arrays.stream(values())
@@ -51,7 +52,7 @@ public enum CurrencyType {
         final List<String> values = Arrays.stream(CurrencyType.values())
                 .map(CurrencyType::getCode)
                 .toList();
-        return values.contains(currencyCode) || currencyCode.equals("cnh");
+        return values.contains(currencyCode) || currencyCode.equals(CNY_API_CODE);
     }
 
     public double getCurrencyRate(final Currency currency) {
