@@ -7,11 +7,12 @@ export const boxStyling = css({
   alignItems: 'center',
 
   width: '450px',
-  height: '581px',
+  height: '500px',
   marginTop: '30px',
+
   '@media screen and (max-width: 600px)': {
     width: '346px',
-    height: '493px',
+    marginBottom: Theme.spacer.spacing6,
   },
 });
 
