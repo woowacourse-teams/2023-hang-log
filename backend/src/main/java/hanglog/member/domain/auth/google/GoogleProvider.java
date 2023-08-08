@@ -49,7 +49,7 @@ public class GoogleProvider implements Provider {
 
     @Override
     public UserInfo getUserInfo(final String code) {
-        final String accessToken = getAccessToken(code);
+        final String accessToken = requestAccessToken(code);
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
@@ -67,7 +67,7 @@ public class GoogleProvider implements Provider {
         throw new AuthException(NOT_SUPPORTED_OAUTH_SERVICE);
     }
 
-    private String getAccessToken(final String code) {
+    private String requestAccessToken(final String code) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("client_id", clientId);
