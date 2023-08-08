@@ -1,3 +1,4 @@
+import { TRIP_ITEM_TITLE_MAX_LENGTH } from '@constants/ui';
 import type { TripItemFormData } from '@type/tripItem';
 import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -22,7 +23,7 @@ const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInp
       label="제목"
       id="title"
       name="title"
-      maxLength={50}
+      maxLength={TRIP_ITEM_TITLE_MAX_LENGTH}
       value={value}
       placeholder="제목을 입력해 주세요"
       supportingText={isError ? '일정의 제목을 입력해 주세요' : undefined}

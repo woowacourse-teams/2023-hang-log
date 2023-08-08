@@ -1,4 +1,5 @@
 import WarningIcon from '@assets/svg/warning-icon.svg';
+import { TRIP_DESCRIPTION_MAX_LENGTH, TRIP_TITLE_MAX_LENGTH } from '@constants/ui';
 import type { TripData } from '@type/trip';
 import { Button, Flex, Input, Modal, SupportingText, Textarea } from 'hang-log-design-system';
 
@@ -69,7 +70,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           required
           label="여행 제목"
           id="title"
-          maxLength={15}
+          maxLength={TRIP_TITLE_MAX_LENGTH}
           value={tripInfo.title}
           isError={isTitleError}
           supportingText={isTitleError ? '여행 제목을 입력하세요' : undefined}
@@ -78,7 +79,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Textarea
           id="description"
           label="여행 설명"
-          maxLength={125}
+          maxLength={TRIP_DESCRIPTION_MAX_LENGTH}
           value={tripInfo.description ?? ''}
           onChange={updateInputValue('description')}
           css={textareaStyling}
