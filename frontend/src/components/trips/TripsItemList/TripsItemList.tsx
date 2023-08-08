@@ -11,6 +11,7 @@ import {
   containerStyling,
   emptyBoxStyling,
   gridBoxStyling,
+  headingStyling,
   textStyling,
   toggleGroupStyling,
 } from '@components/trips/TripsItemList/TripsItemList.style';
@@ -73,10 +74,8 @@ TripsItemList.Empty = () => {
 
   return (
     <Box tag="section" css={[emptyBoxStyling, containerStyling]}>
-      <Heading size="small">아직 기록된 여행이 없습니다!</Heading>
-      <Text size="large" css={textStyling}>
-        여행 가방에 쌓인 먼지를 털어내고 여행을 기록해 보세요.
-      </Text>
+      <Heading css={headingStyling}>아직 기록된 여행이 없습니다!</Heading>
+      <Text css={textStyling}>여행 가방에 쌓인 먼지를 털어내고 여행을 기록해 보세요.</Text>
       <Button variant="primary" onClick={() => navigate(PATH.CREATE_TRIP)}>
         여행 기록하기
       </Button>

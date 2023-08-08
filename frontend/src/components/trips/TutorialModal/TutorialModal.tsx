@@ -29,10 +29,10 @@ const TutorialModal = () => {
           height={isMobile ? 353 : 412}
           images={[Tutorial1SVG, Tutorial2SVG, Tutorial3SVG, Tutorial4SVG]}
         />
-        <Button variant="primary" css={buttonStyling} onClick={closeTutorial}>
-          닫기
-        </Button>
       </Flex>
+      <Button variant="primary" css={buttonStyling} onClick={closeTutorial}>
+        닫기
+      </Button>
     </Modal>
   );
 };

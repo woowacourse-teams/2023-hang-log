@@ -18,7 +18,7 @@ export const headingStyling = css({
   marginLeft: '50px',
 
   '@media screen and (max-width: 600px)': {
-    marginLeft: '24px',
+    marginLeft: Theme.spacer.spacing4,
     padding: '36px 0',
     fontSize: Theme.heading.medium.fontSize,
   },

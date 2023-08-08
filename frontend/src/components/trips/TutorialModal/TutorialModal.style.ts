@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Theme } from 'hang-log-design-system';
 
 export const boxStyling = css({
   display: 'flex',
@@ -16,7 +17,7 @@ export const boxStyling = css({
 
 export const modalStyling = css({
   '@media screen and (max-width: 600px)': {
-    padding: '18px',
+    width: `calc(100vw - ${Theme.spacer.spacing5})`,
   },
 });
 
@@ -27,5 +28,4 @@ export const carouselStyling = css({
 
 export const buttonStyling = css({
   width: '100%',
-  marginTop: 'auto',
 });

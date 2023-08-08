@@ -5,7 +5,7 @@ export const containerStyling = css({
   minHeight: 'calc(100vh - 331px)',
 
   '@media screen and (max-width: 600px)': {
-    minHeight: 'calc(100vh - 48px)',
+    minHeight: `calc(100vh - ${Theme.spacer.spacing6})`,
   },
 });
 
@@ -25,31 +25,37 @@ export const gridBoxStyling = css({
   },
 });
 
-export const toggleGroupStyling = css({
-  marginTop: Theme.spacer.spacing3,
+export const headingStyling = css({
+  fontSize: Theme.heading.small.fontSize,
+
   '@media screen and (max-width: 600px)': {
-    display: 'none',
+    fontSize: Theme.heading.xSmall.fontSize,
+    lineHeight: Theme.heading.xSmall.lineHeight,
   },
 });
 
-export const headingStyling = css({
-  fontSize: Theme.heading.small.fontSize,
+export const toggleGroupStyling = css({
+  marginTop: Theme.spacer.spacing3,
+
   '@media screen and (max-width: 600px)': {
-    fontSize: Theme.heading.xSmall.fontSize,
+    display: 'none',
   },
 });
 
 export const textStyling = css({
   padding: '8px 0 16px',
   fontSize: Theme.text.large.fontSize,
+
   '@media screen and (max-width: 600px)': {
     fontSize: Theme.text.medium.fontSize,
+    lineHeight: Theme.text.medium.lineHeight,
   },
 });
 
 export const emptyBoxStyling = css({
   marginLeft: '50px',
+
   '@media screen and (max-width: 600px)': {
-    marginLeft: '24px',
+    marginLeft: Theme.spacer.spacing4,
   },
 });
