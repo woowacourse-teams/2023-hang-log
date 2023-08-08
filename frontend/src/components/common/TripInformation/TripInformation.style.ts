@@ -7,6 +7,11 @@ export const sectionStyling = css({
   minHeight: '240px',
   padding: `${Theme.spacer.spacing4} 50px`,
 
+  '@media screen and (max-width: 600px)': {
+    minHeight: '220px',
+    padding: Theme.spacer.spacing4,
+  },
+
   '& *': {
     color: Theme.color.white,
   },
@@ -50,7 +55,7 @@ export const descriptionStyling = css({
 export const buttonContainerStyling = css({
   position: 'absolute',
   top: Theme.spacer.spacing4,
-  right: '50px',
+  right: Theme.spacer.spacing4,
   display: 'flex',
   gap: Theme.spacer.spacing1,
 });
@@ -61,4 +66,23 @@ export const badgeStyling = css({
 
 export const badgeWrapperStyling = css({
   width: '60%',
+  minHeight: '24px',
+  marginBottom: Theme.spacer.spacing2,
+
+  overflowX: 'scroll',
+  whiteSpace: 'nowrap',
+  '-ms-overflow-style': 'none',
+  scrollbarWidth: 'none',
+
+  '& > span': {
+    marginRight: Theme.spacer.spacing1,
+  },
+
+  '::-webkit-scrollbar': {
+    display: 'none',
+  },
+
+  '@media screen and (max-width: 600px)': {
+    width: 'calc(100vw - 220px)',
+  },
 });

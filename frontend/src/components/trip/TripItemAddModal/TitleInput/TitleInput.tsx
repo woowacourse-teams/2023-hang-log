@@ -20,6 +20,7 @@ const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInp
   return (
     <Input
       label="제목"
+      id="title"
       name="title"
       value={value}
       placeholder="제목을 입력해 주세요"
