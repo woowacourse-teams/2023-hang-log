@@ -258,20 +258,46 @@ class TripServiceTest {
         @Test
         void update_IncreasePeriod() {
             // given
-            changeDate(1, 4);
+            changeDate(1, 5);
+            given(tripRepository.findById(trip.getId()))
+                    .willReturn(Optional.of(new Trip(
+                                            trip.getId(),
+                                            trip.getTitle(),
+                                            trip.getImageName(),
+                                            updateRequest.getStartDate(),
+                                            updateRequest.getEndDate(),
+                                            trip.getDescription(),
+                                            List.of(
+                                                    dayLog1,
+                                                    dayLog2,
+                                                    dayLog3,
+                                                    DayLog.generateEmpty(4, trip),
+                                                    DayLog.generateEmpty(5, trip),
+                                                    extraDayLog
+                                            )
+                                    )
+                            )
+                    );
 
             // when
             tripService.update(trip.getId(), updateRequest);
+            List<DayLog> actualDayLogs = tripRepository.findById(trip.getId()).get().getDayLogs();
 
             // then
             assertSoftly(
                     softly -> {
-                        softly.assertThat(trip.getDayLogs().size()).isEqualTo(5);
-                        softly.assertThat(trip.getDayLogs())
+                        softly.assertThat(actualDayLogs.size()).isEqualTo(6);
+                        softly.assertThat(actualDayLogs)
                                 .usingRecursiveComparison()
                                 .ignoringFields("trip")
-                                .isEqualTo(
-                                        List.of(dayLog1, dayLog2, dayLog3, DayLog.generateEmpty(4, trip), extraDayLog));
+                                .isEqualTo(List.of(
+                                        dayLog1,
+                                        dayLog2,
+                                        dayLog3,
+                                        DayLog.generateEmpty(4, trip),
+                                        DayLog.generateEmpty(5, trip),
+                                        extraDayLog
+                                ));
                     }
             );
         }
