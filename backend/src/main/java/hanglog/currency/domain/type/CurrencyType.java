@@ -17,6 +17,7 @@ public enum CurrencyType {
     GBP("gbp", Currency::getGbp),
     JPY("jpy", Currency::getUnitRateOfJpy),
     CNY("cny", Currency::getCny),
+    CNY_FROM_API("cnh", Currency::getCny),
     CHF("chf", Currency::getChf),
     SGD("sgd", Currency::getSgd),
     THB("thb", Currency::getThb),
@@ -39,9 +40,6 @@ public enum CurrencyType {
     }
 
     public static CurrencyType getMappedCurrencyType(final String currencyCode) {
-        if (currencyCode.equals(CNY_API_CODE)) {
-            return CNY;
-        }
         return Arrays.stream(values())
                 .filter(value -> value.code.equals(currencyCode.toLowerCase().replace(JPY_UNIT_STRING, "")))
                 .findAny()
@@ -52,7 +50,7 @@ public enum CurrencyType {
         final List<String> values = Arrays.stream(CurrencyType.values())
                 .map(CurrencyType::getCode)
                 .toList();
-        return values.contains(currencyCode) || currencyCode.equals(CNY_API_CODE);
+        return values.contains(currencyCode);
     }
 
     public double getCurrencyRate(final Currency currency) {
