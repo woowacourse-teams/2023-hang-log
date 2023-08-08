@@ -56,7 +56,7 @@ class CurrencyServiceTest {
 
     @ParameterizedTest(name = "주말에는 환율 정보를 받아오지 못한다.")
     @ValueSource(ints = {5, 6})
-    void failSaveCurrencyAtWeekend(final int date) {
+    void saveCurrency_FailAtWeekend(final int date) {
         // given
         final LocalDate weekend = LocalDate.of(2023, 8, date);
 

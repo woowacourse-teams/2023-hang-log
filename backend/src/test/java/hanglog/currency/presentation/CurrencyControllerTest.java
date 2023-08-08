@@ -28,7 +28,7 @@ class CurrencyControllerTest {
     @MockBean
     private CurrencyService currencyService;
 
-    @DisplayName("")
+    @DisplayName("당일 환율 정보를 저장한다.")
     @Test
     void saveTodayCurrency() throws Exception {
         // given
