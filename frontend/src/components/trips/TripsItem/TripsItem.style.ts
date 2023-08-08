@@ -46,7 +46,7 @@ export const badgeBoxStyling = css({
   scrollbarWidth: 'none',
 
   '& > span': {
-    marginRight: Theme.spacer.spacing2,
+    marginRight: Theme.spacer.spacing1,
   },
 
   '::-webkit-scrollbar': {

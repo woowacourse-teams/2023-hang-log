@@ -22,9 +22,14 @@ export const getContainerStyling = ({
   });
 };
 
-export const wrapperStyling = css({
+export const contentContainerStyling = css({
   display: 'flex',
   gap: Theme.spacer.spacing4,
+
+  '@media screen and (max-width: 600px)': {
+    flexDirection: 'column',
+    gap: Theme.spacer.spacing3,
+  },
 });
 
 export const informationContainerStyling = css({

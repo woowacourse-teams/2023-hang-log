@@ -1,4 +1,4 @@
-import { focusedIdState } from '@/store/scrollFocus';
+import { focusedIdState } from '@store/scrollFocus';
 import { useCallback, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 

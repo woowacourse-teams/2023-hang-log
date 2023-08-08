@@ -12,6 +12,7 @@ const ExpensePage = () => {
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
+
   const { expenseData } = useExpenseQuery(Number(tripId));
 
   return (
