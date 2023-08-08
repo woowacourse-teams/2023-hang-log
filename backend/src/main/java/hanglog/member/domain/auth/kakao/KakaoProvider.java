@@ -22,6 +22,7 @@ import org.springframework.util.MultiValueMap;
 public class KakaoProvider implements Provider {
 
     private static final String PROPERTIES_PATH = "${oauth2.provider.kakao.";
+    private static final String PROVIDER_NAME = "kakao";
 
     protected final String clientId;
     protected final String clientSecret;
@@ -45,7 +46,7 @@ public class KakaoProvider implements Provider {
 
     @Override
     public boolean is(final String name) {
-        return "kakao".equals(name);
+        return PROVIDER_NAME.equals(name);
     }
 
     @Override

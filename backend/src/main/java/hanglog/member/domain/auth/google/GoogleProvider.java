@@ -21,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 public class GoogleProvider implements Provider {
 
     private static final String PROPERTIES_PATH = "${oauth2.provider.google.";
+    private static final String PROVIDER_NAME = "google";
 
     protected final String clientId;
     protected final String clientSecret;
@@ -44,7 +45,7 @@ public class GoogleProvider implements Provider {
 
     @Override
     public boolean is(final String name) {
-        return "google".equals(name);
+        return PROVIDER_NAME.equals(name);
     }
 
     @Override
