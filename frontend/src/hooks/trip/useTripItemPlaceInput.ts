@@ -30,8 +30,6 @@ export const useTripItemPlaceInput = (
   const handlePlaceSelect = useCallback(() => {
     const place = autoCompleteWidget?.getPlace();
 
-    console.log(place, '1234');
-
     const name = place?.name;
     const latitude = place?.geometry?.location?.lat();
     const longitude = place?.geometry?.location?.lng();
