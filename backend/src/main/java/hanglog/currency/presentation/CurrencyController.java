@@ -1,8 +1,6 @@
 package hanglog.currency.presentation;
 
-import hanglog.currency.domain.Currency;
 import hanglog.currency.service.CurrencyService;
-import java.net.URI;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +16,8 @@ public class CurrencyController {
     private final CurrencyService currencyService;
 
     @PostMapping("/today")
-    public ResponseEntity<LocalDate> saveTodayCurrency() {
-        final Currency currency = currencyService.saveDailyCurrency(LocalDate.now());
-        return ResponseEntity.created(URI.create("/currency/" + currency.getDate())).build();
+    public ResponseEntity<Void> saveTodayCurrency() {
+        currencyService.saveDailyCurrency(LocalDate.now());
+        return ResponseEntity.ok().build();
     }
 }
