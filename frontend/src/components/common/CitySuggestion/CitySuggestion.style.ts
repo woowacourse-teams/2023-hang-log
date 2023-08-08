@@ -9,6 +9,10 @@ export const containerStyling = css({
   overflowX: 'hidden',
 
   transform: 'translateY(0)',
+
+  '@media screen and (max-width: 600px)': {
+    width: 'calc(100% - 48px)',
+  },
 });
 
 export const getItemStyling = (isFocused: boolean) => {

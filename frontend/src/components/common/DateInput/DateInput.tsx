@@ -47,7 +47,7 @@ const DateInput = ({
   };
 
   return (
-    <Flex styles={{ direction: 'column', width: '400px', margin: '0 auto', align: 'flex-start' }}>
+    <Flex styles={{ direction: 'column', width: '100%', margin: '0 auto', align: 'flex-start' }}>
       <Label required={required}>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
