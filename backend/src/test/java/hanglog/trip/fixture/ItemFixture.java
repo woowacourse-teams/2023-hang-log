@@ -45,4 +45,18 @@ public final class ItemFixture {
             DAYLOG_FOR_ITEM_FIXTURE,
             ExpenseFixture.EURO_10000
     );
+    public static final Item JAPAN_HOTEL = new Item(
+            4L,
+            ItemType.NON_SPOT,
+            "호텔",
+            3,
+            4.5,
+            "일본에서 묵은 호텔",
+            new DayLog(
+                    "이동",
+                    1,
+                    TripFixture.LONDON_TRIP
+            ),
+            ExpenseFixture.JPY_10000
+    );
 }

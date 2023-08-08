@@ -26,6 +26,10 @@ export const getInputStyling = (isCalendarOpen: boolean) => {
         '> input': { cursor: 'pointer' },
       },
     },
+
+    '@media (max-width: 600px)': {
+      width: '100%',
+    },
   });
 };
 
@@ -40,4 +44,12 @@ export const calendarStyling = css({
   boxShadow: Theme.boxShadow.shadow8,
 
   zIndex: Theme.zIndex.overlayPeak,
+
+  '@media screen and (max-width: 600px)': {
+    width: 'min-content',
+    height: '45%',
+    padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing3}`,
+
+    overflow: 'auto',
+  },
 });

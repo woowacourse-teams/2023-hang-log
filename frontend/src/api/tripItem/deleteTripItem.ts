@@ -7,8 +7,6 @@ interface DeleteTripItemParams {
   itemId: number;
 }
 
-export const deleteTripItem =
-  () =>
-  ({ tripId, itemId }: DeleteTripItemParams) => {
-    return axiosInstance.delete(END_POINTS.CHANGE_TRIP_ITEM(tripId, itemId));
-  };
+export const deleteTripItem = ({ tripId, itemId }: DeleteTripItemParams) => {
+  return axiosInstance.delete(END_POINTS.CHANGE_TRIP_ITEM(tripId, itemId));
+};

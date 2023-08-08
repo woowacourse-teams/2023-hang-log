@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import type { TripItemFormData } from '@type/tripItem';
 import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -5,20 +6,33 @@ import { memo } from 'react';
 
 import { formatMonthDate } from '@utils/formatter';
 
+import { useTripDates } from '@hooks/trip/useTripDates';
+
+import { selectStyling } from '@components/trip/TripItemAddModal/DateInput/DateInput.style';
+
 interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];
+  tripId: number;
   dayLogId: number;
-  dates: { id: number; date: string }[];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const DateInput = ({ currentCategory, dayLogId, dates, updateInputValue }: DateInputProps) => {
+const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: DateInputProps) => {
+  const { dates } = useTripDates(tripId);
+
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
   };
 
   return (
-    <Select label="날짜" name="date" required onChange={handleDateChange}>
+    <Select
+      css={selectStyling}
+      label="날짜"
+      id="date"
+      name="date"
+      required
+      onChange={handleDateChange}
+    >
       <>
         {Array.from({ length: dates.length - 1 }, (_, index) => (
           <option

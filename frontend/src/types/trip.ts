@@ -15,3 +15,9 @@ export interface TripData {
 export interface TripFormData extends Omit<TripData, 'cities' | 'id' | 'dayLogs'> {
   cityIds: number[];
 }
+
+export interface TripPlaceType {
+  id: number;
+  name: string;
+  coordinate: { lat: number; lng: number };
+}

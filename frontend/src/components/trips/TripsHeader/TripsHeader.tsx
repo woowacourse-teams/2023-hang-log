@@ -1,7 +1,7 @@
 import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 import { Flex, Heading, Theme } from 'hang-log-design-system';
 
-import { imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
+import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
 
 const TripsHeader = () => {
   return (
@@ -15,7 +15,7 @@ const TripsHeader = () => {
         marginBottom: Theme.spacer.spacing4,
       }}
     >
-      <Heading css={{ marginLeft: '50px' }} size="large">
+      <Heading css={headingStyling} size="large">
         라곤의 여행
       </Heading>
       <TripsHeaderImage css={imageStyling} />

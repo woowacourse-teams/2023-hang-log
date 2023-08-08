@@ -1,6 +1,10 @@
 import { CURRENCY_ICON } from '@constants/trip';
+import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
 import type { TripItemData } from '@type/tripItem';
-import { Box, Flex, Heading, ImageCarousel, Text, Theme } from 'hang-log-design-system';
+import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+import type { ForwardedRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
@@ -9,6 +13,7 @@ import { useDraggedItem } from '@hooks/common/useDraggedItem';
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
 import {
+  contentContainerStyling,
   expenseStyling,
   getContainerStyling,
   informationContainerStyling,
@@ -20,40 +25,60 @@ import {
 interface TripListItemProps extends TripItemData {
   tripId: number;
   dayLogId: number;
-  onDragStart: () => void;
-  onDragEnter: () => void;
-  onDragEnd: () => void;
+  isEditable?: boolean;
+  observer?: IntersectionObserver | null;
+  scrollRef?: ForwardedRef<HTMLDivElement>;
+  onDragStart?: () => void;
+  onDragEnter?: () => void;
+  onDragEnd?: () => void;
 }
 
 const TripItem = ({
   tripId,
   dayLogId,
+  isEditable = true,
+  observer,
+  scrollRef,
   onDragStart,
   onDragEnter,
   onDragEnd,
   ...information
 }: TripListItemProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+  const viewportWidth = useRecoilValue(viewportWidthState);
+
+  const imageWidth = useMemo(() => viewportWidth - 48, [viewportWidth]);
+  const imageHeight = useMemo(() => (imageWidth / 4.5) * 3, [imageWidth]);
+
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
+  const itemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (itemRef.current) {
+      observer?.observe(itemRef.current);
+    }
+  }, [observer]);
 
   return (
-    // ! 수정 모드에서만 drag할 수 있다
     <li
-      css={getContainerStyling(isDragging)}
-      draggable
+      ref={itemRef}
+      css={getContainerStyling({ isEditable, isDragging })}
+      data-id={information.id}
+      draggable={isEditable}
       onDragStart={onDragStart}
-      onDrag={handleDrag}
+      onDrag={isEditable ? handleDrag : undefined}
       onDragEnter={onDragEnter}
-      onDragEnd={handleDragEnd}
+      onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <Flex styles={{ gap: Theme.spacer.spacing4 }}>
+      <div ref={scrollRef} css={contentContainerStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
-            width={250}
-            height={167}
+            width={isMobile ? imageWidth : 250}
+            height={isMobile ? imageHeight : 167}
             isDraggable={false}
-            showNavigationOnHover={true}
-            showArrows={true}
-            showDots={true}
+            showNavigationOnHover
+            showArrows
+            showDots
             images={information.imageUrls}
           />
         )}
@@ -77,9 +102,16 @@ const TripItem = ({
             </Text>
           )}
         </Box>
-      </Flex>
-      {/* ! 로그인 + 수정 모드일 떄만 볼 수 있다 */}
-      <EditMenu tripId={tripId} dayLogId={dayLogId} {...information} />
+      </div>
+      {isEditable ? (
+        <EditMenu
+          tripId={tripId}
+          dayLogId={dayLogId}
+          hasImage={information.imageUrls.length > 0}
+          imageHeight={imageHeight}
+          {...information}
+        />
+      ) : null}
     </li>
   );
 };

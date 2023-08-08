@@ -23,17 +23,20 @@ const initialState: State = {
 class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, State> {
   state: State = initialState;
 
-  resetErrorBoundary = () => {
-    this.props.onReset?.(this.state.error!);
-    this.setState(initialState);
-  };
-
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
+  resetErrorBoundary = () => {
+    const { onReset } = this.props;
+    const { error } = this.state;
+
+    onReset?.(error!);
+    this.setState(initialState);
+  };
+
   render() {
-    const { Fallback } = this.props;
+    const { Fallback, children } = this.props;
     const { error } = this.state;
 
     if (error) {
@@ -45,7 +48,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Sta
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

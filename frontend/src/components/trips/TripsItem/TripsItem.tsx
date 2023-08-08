@@ -1,28 +1,51 @@
 import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
 import type { CityData } from '@type/city';
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
+import { useNavigate } from 'react-router-dom';
 
 import {
   badgeBoxStyling,
   boxStyling,
   durationTextStyling,
-  imageBoxStyling,
   imageStyling,
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
 
 interface TripsItemProps {
+  id: number;
   coverImage: string | null;
   cityTags: CityData[];
   itemName: string;
   duration: string;
+  index: number;
   description?: string | null;
 }
 
-const TripsItem = ({ coverImage, cityTags, itemName, duration, description }: TripsItemProps) => {
+const TripsItem = ({
+  id,
+  coverImage,
+  cityTags,
+  itemName,
+  duration,
+  description,
+  index,
+}: TripsItemProps) => {
+  const navigate = useNavigate();
+
   return (
-    <Flex tag="li" styles={{ direction: 'column' }} css={boxStyling}>
-      <img src={coverImage ?? DefaultThumbnail} css={imageStyling} />
+    <Flex
+      tag="li"
+      styles={{ direction: 'column' }}
+      css={boxStyling}
+      tabIndex={index + 5}
+      aria-label={`${index + 1}번째 trip, ${itemName}`}
+      onClick={() => navigate(`trip/${id}`)}
+    >
+      <img
+        src={coverImage ?? DefaultThumbnail}
+        css={imageStyling}
+        alt={`${itemName} 대표 이미지`}
+      />
       <Box css={badgeBoxStyling}>
         {cityTags.map((cityTag) => {
           return <Badge key={cityTag.id}>{cityTag.name}</Badge>;

@@ -4,7 +4,7 @@ export const trip: TripData = {
   id: 1,
   title: '런던 여행',
   startDate: '2023-07-01',
-  endDate: '2023-07-04',
+  endDate: '2023-07-03',
   description: '라곤의 좌충우돌 유럽 여행기',
   imageUrl:
     'https://a.cdn-hotels.com/gdcs/production153/d1371/e6c1f55e-51ac-41d5-8c63-2d0c63faf59e.jpg',
@@ -12,14 +12,20 @@ export const trip: TripData = {
     {
       id: 1,
       name: '런던',
+      latitude: 51.509865,
+      longitude: -0.118092,
     },
     {
       id: 2,
       name: '애든버러',
+      latitude: 55.953251,
+      longitude: -3.188267,
     },
     {
       id: 3,
       name: '파리',
+      latitude: 48.864716,
+      longitude: 2.338629,
     },
   ],
   dayLogs: [
@@ -100,6 +106,36 @@ export const trip: TripData = {
             },
           },
           imageUrls: [],
+        },
+        {
+          id: 10,
+          itemType: true,
+          title: 'covertGarden',
+          ordinal: 1,
+          rating: 4.5,
+          memo: null,
+          place: {
+            id: 1,
+            name: 'covertGarden',
+            latitude: 51.5117,
+            longitude: -0.1226,
+            category: {
+              id: 2,
+              name: '공원',
+            },
+          },
+          expense: {
+            id: 3,
+            currency: 'GBP',
+            amount: 50,
+            category: {
+              id: 2,
+              name: '음식',
+            },
+          },
+          imageUrls: [
+            'https://lh3.googleusercontent.com/p/AF1QipOirgDoMN4u1mwho_3Nh_4hS6IehGlewiHtcQLI=s1360-w1360-h1020',
+          ],
         },
       ],
     },

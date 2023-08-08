@@ -9,6 +9,9 @@ export const boxStyling = css({
   padding: 0,
 
   cursor: 'pointer',
+  '@media screen and (max-width: 600px)': {
+    width: `calc(100vw - 48px)`,
+  },
 });
 
 export const imageBoxStyling = css({
@@ -26,6 +29,11 @@ export const imageStyling = css({
   borderRadius: Theme.borderRadius.medium,
 
   backgroundColor: Theme.color.gray200,
+
+  '@media screen and (max-width: 600px)': {
+    minHeight: '256px',
+    maxHeight: '256px',
+  },
 });
 
 export const nameStyling = css({
@@ -46,11 +54,15 @@ export const badgeBoxStyling = css({
   scrollbarWidth: 'none',
 
   '& > span': {
-    marginRight: Theme.spacer.spacing2,
+    marginRight: Theme.spacer.spacing1,
   },
 
   '::-webkit-scrollbar': {
     display: 'none',
+  },
+
+  '@media screen and (max-width: 600px)': {
+    width: '100%',
   },
 });
 

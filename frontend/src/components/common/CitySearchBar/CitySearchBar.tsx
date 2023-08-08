@@ -1,10 +1,11 @@
 import CloseIcon from '@assets/svg/close-icon.svg';
 import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 import type { CityData } from '@type/city';
-import { Badge, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
+import { Badge, Box, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
+import { useCityQuery } from '@hooks/api/useCityQuery';
 import { useCityTags } from '@hooks/common/useCityTags';
 import { useDebounce } from '@hooks/common/useDebounce';
 
@@ -30,7 +31,8 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   const { cityTags, addCityTag, deleteCityTag } = useCityTags(initialCities ?? []);
   const { isOpen: isSuggestionOpen, open: openSuggestion, close: closeSuggestion } = useOverlay();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debouncedQueryWord = useDebounce(queryWord, 300);
+  const debouncedQueryWord = useDebounce(queryWord, 150);
+  useCityQuery();
 
   useEffect(() => {
     updateCityInfo(cityTags);
@@ -64,7 +66,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   };
 
   const handleInputFocus = () => {
-    if (queryWord) {
+    if (debouncedQueryWord) {
       openSuggestion();
     }
   };
@@ -77,7 +79,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
 
   return (
     <Menu closeMenu={closeSuggestion}>
-      <div css={containerStyling} onClick={focusInput}>
+      <Box css={containerStyling} onClick={focusInput}>
         <Label required={required}>방문 도시</Label>
         <div css={wrapperStyling}>
           <SearchPinIcon aria-label="지도표시 아이콘" css={searchPinIconStyling} />
@@ -93,6 +95,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
               </Badge>
             ))}
             <Input
+              aria-label="방문 도시"
               placeholder={cityTags.length ? '' : '방문 도시를 입력해주세요'}
               value={queryWord}
               onChange={handleInputChange}
@@ -106,7 +109,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
         {isSuggestionOpen && (
           <CitySuggestion queryWord={debouncedQueryWord} onItemSelect={handleSuggestionClick} />
         )}
-      </div>
+      </Box>
     </Menu>
   );
 };

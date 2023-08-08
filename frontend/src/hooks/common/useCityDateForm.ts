@@ -22,9 +22,7 @@ export const useCityDateForm = (initialTripData?: NewTripData) => {
     setCityDateInfo((prev) => ({ ...prev, cityIds }));
   }, []);
 
-  const updateDateInfo = useCallback((dateRange: DateRangeData): void => {
-    const { start: startDate, end: endDate } = dateRange;
-
+  const updateDateInfo = useCallback(({ startDate, endDate }: DateRangeData): void => {
     setCityDateInfo((prev) => ({ ...prev, startDate, endDate }));
   }, []);
 

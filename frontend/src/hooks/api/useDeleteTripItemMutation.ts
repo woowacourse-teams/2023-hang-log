@@ -1,25 +1,48 @@
+import { toastListState } from '@store/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { TripData } from '@type/trip';
+import { useSetRecoilState } from 'recoil';
+
+import { generateUniqueId } from '@utils/uniqueId';
 
 import { deleteTripItem } from '@api/tripItem/deleteTripItem';
 
 export const useDeleteTripItemMutation = () => {
   const queryClient = useQueryClient();
+  const setToastList = useSetRecoilState(toastListState);
 
-  const deleteTripItemMutation = useMutation(deleteTripItem(), {
+  const deleteTripItemMutation = useMutation({
+    mutationFn: deleteTripItem,
     onMutate: ({ tripId, itemId }) => {
-      // TODO : 낙관적 업데이트 적용 -> 에러 발생 시 토스트가 안 보이는 문제 때문에 일단 커멘트
-      // const tripData = queryClient.getQueryData<TripData>(['trip', tripId]);
-      // queryClient.setQueryData<TripData>(['trip', tripId], (prevTripData) => {
-      //   if (!prevTripData) return prevTripData;
-      //   const updatedDayLogs = prevTripData.dayLogs.map((dayLog) => {
-      //     const updatedItems = dayLog.items.filter((item) => item.id !== itemId);
-      //     return { ...dayLog, items: updatedItems };
-      //   });
-      //   return { ...prevTripData, dayLogs: updatedDayLogs };
-      // });
-      // return { tripData };
+      const tripData = queryClient.getQueryData<TripData>(['trip', tripId]);
+
+      queryClient.setQueryData<TripData>(['trip', tripId], (prevTripData) => {
+        if (!prevTripData) return prevTripData;
+
+        const updatedDayLogs = prevTripData.dayLogs.map((dayLog) => {
+          const updatedItems = dayLog.items.filter((item) => item.id !== itemId);
+
+          return { ...dayLog, items: updatedItems };
+        });
+
+        return { ...prevTripData, dayLogs: updatedDayLogs };
+      });
+
+      return { tripData };
     },
-    onSuccess: (_, { tripId }) => {
+    onError: (_, { tripId }, context) => {
+      queryClient.setQueryData<TripData>(['trip', tripId], context?.tripData);
+
+      setToastList((prevToastList) => [
+        ...prevToastList,
+        {
+          id: generateUniqueId(),
+          variant: 'error',
+          message: '아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        },
+      ]);
+    },
+    onSettled: (data, error, { tripId }) => {
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
   });

@@ -2,6 +2,8 @@ import { trip } from '@mocks/data/trip';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useSelect } from 'hang-log-design-system';
 
+import { useTripQuery } from '@hooks/api/useTripQuery';
+
 import DayLogList from '@components/common/DayLogList/DayLogList';
 
 const meta = {
@@ -17,7 +19,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: ({ ...args }) => {
+  render: () => {
+    useTripQuery(1);
     const { selected, handleSelectClick } = useSelect(trip.dayLogs[0].id);
     const selectedDayLog = trip.dayLogs.find((log) => log.id === selected)!;
 

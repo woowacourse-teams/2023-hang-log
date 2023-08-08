@@ -1,6 +1,10 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
+export const modalStyling = css({
+  overflow: 'initial',
+});
+
 export const formStyling = css({
   display: 'flex',
   flexDirection: 'column',
@@ -9,6 +13,10 @@ export const formStyling = css({
   '> button': {
     width: '400px',
   },
+});
+
+export const dateInputSupportingText = css({
+  wordBreak: 'keep-all',
 });
 
 export const titleStyling = css({

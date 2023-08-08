@@ -24,39 +24,46 @@ const CitySuggestion = ({ queryWord, onItemSelect }: SuggestionProps) => {
   const { suggestions, focusedSuggestionIndex, isFocused, setNewSuggestions } = useCitySuggestion({
     onItemSelect,
   });
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const itemRef = useRef<HTMLLIElement>(null);
   const { scrollToFocusedItem } = useAutoScroll(listRef, itemRef);
 
   useEffect(() => {
+    if (!queryWord) return;
+
     setNewSuggestions(queryWord);
   }, [queryWord]);
-
-  const handleItemClick = (city: CityData) => () => {
-    onItemSelect(city);
-  };
 
   useEffect(() => {
     scrollToFocusedItem();
   }, [focusedSuggestionIndex]);
 
+  const handleItemClick = (city: CityData) => () => {
+    onItemSelect(city);
+  };
+
   return (
-    <SuggestionList css={containerStyling} ref={listRef}>
-      {suggestions.length ? (
-        suggestions.map((city, index) => (
-          <SuggestionsItem
-            key={city.id}
-            onClick={handleItemClick(city)}
-            css={getItemStyling(isFocused(index))}
-            ref={isFocused(index) ? itemRef : null}
-          >
-            {city.name}
-          </SuggestionsItem>
-        ))
-      ) : (
-        <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {queryWord && (
+        <SuggestionList css={containerStyling} ref={listRef}>
+          {suggestions.length ? (
+            suggestions.map((city, index) => (
+              <SuggestionsItem
+                key={city.id}
+                onClick={handleItemClick(city)}
+                css={getItemStyling(isFocused(index))}
+                ref={isFocused(index) ? itemRef : null}
+              >
+                {city.name}
+              </SuggestionsItem>
+            ))
+          ) : (
+            <Text css={emptyTextStyling}>검색어에 해당하는 도시가 없습니다.</Text>
+          )}
+        </SuggestionList>
       )}
-    </SuggestionList>
+    </>
   );
 };
 

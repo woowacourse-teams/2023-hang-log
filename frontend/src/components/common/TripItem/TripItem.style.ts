@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
-export const getContainerStyling = (isDragging?: boolean) => {
+export const getContainerStyling = ({
+  isEditable,
+  isDragging,
+}: {
+  isEditable?: boolean;
+  isDragging?: boolean;
+}) => {
   return css({
     position: 'relative',
 
@@ -12,9 +18,19 @@ export const getContainerStyling = (isDragging?: boolean) => {
 
     opacity: isDragging ? '0.4' : '1',
 
-    cursor: 'grab',
+    cursor: isEditable ? 'grab' : 'unset',
   });
 };
+
+export const contentContainerStyling = css({
+  display: 'flex',
+  gap: Theme.spacer.spacing4,
+
+  '@media screen and (max-width: 600px)': {
+    flexDirection: 'column',
+    gap: Theme.spacer.spacing3,
+  },
+});
 
 export const informationContainerStyling = css({
   width: '100%',

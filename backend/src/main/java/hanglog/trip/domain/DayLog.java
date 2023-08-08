@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -26,6 +28,8 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE day_log SET status = 'DELETED' WHERE id = ?")
 @Where(clause = "status = 'USABLE'")
 public class DayLog extends BaseEntity {
+
+    private static final int DEFAULT_DAY = 1;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -42,6 +46,7 @@ public class DayLog extends BaseEntity {
     private Trip trip;
 
     @OneToMany(mappedBy = "dayLog", cascade = REMOVE, orphanRemoval = true)
+    @OrderBy(value = "ordinal ASC")
     private List<Item> items = new ArrayList<>();
 
     public DayLog(
@@ -67,10 +72,15 @@ public class DayLog extends BaseEntity {
     }
 
     public static DayLog generateEmpty(final Integer ordinal, final Trip trip) {
-        return new DayLog(null, "", ordinal , trip , new ArrayList<>());
+        return new DayLog(null, "", ordinal, trip, new ArrayList<>());
     }
 
     public void updateOrdinal(final Integer newOrdinal) {
         this.ordinal = newOrdinal;
+    }
+
+    public LocalDate calculateDate() {
+        final LocalDate startDate = trip.getStartDate();
+        return startDate.plusDays((long) ordinal - DEFAULT_DAY);
     }
 }

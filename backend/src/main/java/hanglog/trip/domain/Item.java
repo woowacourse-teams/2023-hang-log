@@ -2,6 +2,7 @@ package hanglog.trip.domain;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
+import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -9,9 +10,9 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.expense.Expense;
+import hanglog.expense.domain.Expense;
 import hanglog.global.BaseEntity;
-import hanglog.global.exception.InvalidDomainException;
+import hanglog.global.exception.BadRequestException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
@@ -25,7 +26,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -57,12 +57,11 @@ public class Item extends BaseEntity {
     private Integer ordinal;
 
     @DecimalMax(value = "5.0")
-    @DecimalMin(value = "0.5")
     private Double rating;
 
     private String memo;
 
-    @ManyToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "place_id")
     private Place place;
 
@@ -70,11 +69,11 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
-    @OneToOne(fetch = LAZY, cascade = {PERSIST, REMOVE})
+    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     public Item(
@@ -105,6 +104,8 @@ public class Item extends BaseEntity {
         if (!dayLog.getItems().contains(this)) {
             dayLog.getItems().add(this);
         }
+
+        images.forEach(image -> image.setItem(this));
     }
 
     public Item(
@@ -164,9 +165,13 @@ public class Item extends BaseEntity {
     }
 
     private void validateRatingFormat(final Double rating) {
-        if (rating % RATING_DECIMAL_UNIT != 0) {
-            throw new InvalidDomainException(INVALID_RATING);
+        if (rating != null && isInvalidRatingFormat(rating)) {
+            throw new BadRequestException(INVALID_RATING);
         }
+    }
+
+    private boolean isInvalidRatingFormat(final Double rating) {
+        return rating % RATING_DECIMAL_UNIT != 0;
     }
 
     public void changeOrdinal(final int ordinal) {

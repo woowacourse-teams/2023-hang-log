@@ -17,7 +17,7 @@ const GoogleMapWrapper = ({ children }: GoogleMapWrapperProps) => {
     <Wrapper
       apiKey={process.env.GOOGLE_API_KEY}
       render={render}
-      libraries={['places']}
+      libraries={['places', 'marker']}
       language="KO"
     >
       {children}

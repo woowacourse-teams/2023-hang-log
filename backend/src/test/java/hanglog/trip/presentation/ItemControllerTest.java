@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.ItemService;
@@ -155,13 +156,14 @@ public class ItemControllerTest extends RestDocsTest {
 
         final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
 
-        final ItemRequest itemRequest = new ItemRequest(
+        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",
                 4.5,
                 "에펠탑을 방문",
                 1L,
                 List.of("imageUrl"),
+                true,
                 placeRequest,
                 expenseRequest
         );
@@ -171,7 +173,7 @@ public class ItemControllerTest extends RestDocsTest {
         // when & then
         mockMvc.perform(put("/trips/{tripId}/items/{itemId}", 1L, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemRequest)))
+                        .content(objectMapper.writeValueAsString(itemUpdateRequest)))
                 .andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
@@ -206,6 +208,10 @@ public class ItemControllerTest extends RestDocsTest {
                                                 .type(JsonFieldType.ARRAY)
                                                 .description("여행 아이템 이미지 URL 배열")
                                                 .attributes(field("constraint", "URL 배열")),
+                                        fieldWithPath("isPlaceUpdated")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("여행 수정 여부")
+                                                .attributes(field("constraint", "True: 여행 수정됨, False: 여행 수정 안됨")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
                                                 .description("장소 이름")

@@ -1,17 +1,16 @@
 import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
 import type { CityData } from '@type/city';
-import { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 
-import { getCities } from '@api/city/getCities';
+import { getCity } from '@api/city/getCity';
 
 export const useCityQuery = () => {
-  const { data: cityData } = useQuery<CityData[], AxiosError>(['city'], getCities, {
+  const { data } = useQuery<CityData[], AxiosError>(['city'], getCity, {
     retry: NETWORK.RETRY_COUNT,
-    cacheTime: Infinity,
     suspense: true,
     useErrorBoundary: true,
   });
 
-  return { cityData };
+  return { cityData: data! };
 };

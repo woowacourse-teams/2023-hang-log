@@ -1,9 +1,10 @@
 import CalendarIcon from '@assets/svg/calendar-icon.svg';
 import type { DateRangeData } from '@type/trips';
 import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import type { KeyboardEvent } from 'react';
 
-import { dateRangeToString } from '@utils/formatter';
+import { formatDateRange } from '@utils/formatter';
 
 import {
   calendarStyling,
@@ -18,34 +19,44 @@ interface DateInputProps {
 }
 
 const DateInput = ({
-  initialDateRange = { start: null, end: null },
+  initialDateRange = { startDate: null, endDate: null },
   updateDateInfo,
   required = false,
 }: DateInputProps) => {
-  const [inputValue, setInputValue] = useState(dateRangeToString(initialDateRange));
+  const [inputValue, setInputValue] = useState(formatDateRange(initialDateRange));
   const [selectedDateRange, setSelectedDateRange] = useState(initialDateRange);
-  const { isOpen: isCalendarOpen, close: closeCalendar, toggle: toggleCalendar } = useOverlay();
-
-  useEffect(() => {
-    updateDateInfo(selectedDateRange);
-  }, [selectedDateRange]);
+  const {
+    isOpen: isCalendarOpen,
+    open: openCalendar,
+    close: closeCalendar,
+    toggle: toggleCalendar,
+  } = useOverlay();
 
   const handleDateClick = (dateRange: DateRangeData) => {
-    if (!dateRange.end) return;
+    if (!dateRange.endDate) return;
 
     setSelectedDateRange(dateRange);
-    setInputValue(dateRangeToString(dateRange));
+    setInputValue(formatDateRange(dateRange));
+    updateDateInfo(dateRange);
+  };
+
+  const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      openCalendar();
+    }
   };
 
   return (
-    <Flex styles={{ direction: 'column', width: '400px', margin: '0 auto', align: 'flex-start' }}>
+    <Flex styles={{ direction: 'column', width: '100%', margin: '0 auto', align: 'flex-start' }}>
       <Label required={required}>방문 기간</Label>
       <Menu closeMenu={closeCalendar} css={containerStyling}>
         <Box onClick={toggleCalendar} css={getInputStyling(isCalendarOpen)}>
           <Input
+            id="date"
             placeholder="방문 날짜를 입력해주세요"
             icon={<CalendarIcon aria-label="캘린더 아이콘" />}
             value={inputValue}
+            onKeyDown={handleEnter}
             readOnly
           />
         </Box>
@@ -54,9 +65,9 @@ const DateInput = ({
             <DateRangePicker
               onDateSelect={handleDateClick}
               maxDateRange={60}
-              hasRangeRestriction={true}
+              hasRangeRestriction
               initialSelectedDateRange={
-                selectedDateRange.start !== null ? selectedDateRange : undefined
+                selectedDateRange.startDate !== null ? selectedDateRange : undefined
               }
             />
           </Box>

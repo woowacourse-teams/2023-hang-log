@@ -1,44 +1,37 @@
 import MoreIcon from '@assets/svg/more-icon.svg';
 import type { TripItemData } from '@type/tripItem';
-import { Menu, MenuItem, MenuList, Toast, useOverlay } from 'hang-log-design-system';
+import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
 
 import {
+  getMoreMenuStyling,
   moreButtonStyling,
   moreMenuListStyling,
-  moreMenuStyling,
 } from '@components/common/TripItem/EditMenu/EditMenu.style';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 interface EditMenuProps extends TripItemData {
   tripId: number;
   dayLogId: number;
+  hasImage: boolean;
+  imageHeight: number;
 }
 
-const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
+const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: EditMenuProps) => {
   const deleteTripItemMutation = useDeleteTripItemMutation();
 
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
-  const { isOpen: isErrorTostOpen, open: openErrorToast, close: closeErrorToast } = useOverlay();
 
   const handleTripItemDelete = () => {
-    deleteTripItemMutation.mutate(
-      { tripId, itemId: information.id },
-      {
-        onError: () => {
-          openErrorToast();
-          closeMenu();
-        },
-      }
-    );
+    deleteTripItemMutation.mutate({ tripId, itemId: information.id });
   };
 
   return (
     <>
-      <Menu css={moreMenuStyling} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" onClick={openMenu}>
+      <Menu css={getMoreMenuStyling(hasImage, imageHeight)} closeMenu={closeMenu}>
+        <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
           <MoreIcon />
         </button>
         {isMenuOpen && (
@@ -72,11 +65,6 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
             imageUrls: information.imageUrls,
           }}
         />
-      )}
-      {isErrorTostOpen && (
-        <Toast variant="error" closeToast={closeErrorToast}>
-          아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.
-        </Toast>
       )}
     </>
   );

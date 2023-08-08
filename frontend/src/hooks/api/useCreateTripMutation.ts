@@ -1,15 +1,26 @@
-import { ERROR_MESSAGE, NETWORK } from '@constants/api';
+import { toastListState } from '@store/toast';
 import { useMutation } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
 
-import { postNewTrip } from '@api/trips/postNewTrip';
+import { generateUniqueId } from '@utils/uniqueId';
+
+import { postTrip } from '@api/trip/postTrip';
 
 export const useCreateTripMutation = () => {
-  const newTripMutation = useMutation(postNewTrip(), {
-    onError: (err, _, context) => {
-      //TODO:toast 띄우기
-      alert(ERROR_MESSAGE);
+  const setToastList = useSetRecoilState(toastListState);
+
+  const newTripMutation = useMutation({
+    mutationFn: postTrip,
+    onError: () => {
+      setToastList((prevToastList) => [
+        ...prevToastList,
+        {
+          id: generateUniqueId(),
+          variant: 'error',
+          message: '새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.',
+        },
+      ]);
     },
-    retry: NETWORK.RETRY_COUNT,
   });
 
   return newTripMutation;
