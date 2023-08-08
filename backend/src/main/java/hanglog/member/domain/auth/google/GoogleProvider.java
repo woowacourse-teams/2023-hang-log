@@ -4,7 +4,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 
 import hanglog.global.exception.AuthException;
-import hanglog.member.dto.AccessTokenResponse;
+import hanglog.member.domain.auth.AccessTokenResponse;
 import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.auth.Provider;
 import java.util.Optional;
