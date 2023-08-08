@@ -10,6 +10,10 @@ export const containerStyling = css({
   '@media screen and (max-width: 1200px)': {
     width: '60vw',
   },
+
+  '@media screen and (max-width: 600px)': {
+    width: '100vw',
+  },
 });
 
 export const mapContainerStyling = css({

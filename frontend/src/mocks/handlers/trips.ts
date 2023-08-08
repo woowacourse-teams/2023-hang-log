@@ -1,6 +1,7 @@
 import { END_POINTS } from '@constants/api';
 import { trip } from '@mocks/data/trip';
 import { trips } from '@mocks/data/trips';
+import type { TripFormData } from '@type/trip';
 import { rest } from 'msw';
 
 export const tripsHandlers = [
@@ -17,10 +18,18 @@ export const tripsHandlers = [
   }),
 
   rest.get(`${END_POINTS.TRIPS}/:tripId`, (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(trip));
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(trip));
   }),
 
-  rest.put(`${END_POINTS.TRIPS}/:tripId`, (req, res, ctx) => {
+  rest.put(`${END_POINTS.TRIPS}/:tripId`, async (req, res, ctx) => {
+    const response = await req.json<TripFormData>();
+
+    trip.title = response.title;
+    trip.startDate = response.startDate;
+    trip.endDate = response.endDate;
+    trip.description = response.description;
+    trip.imageUrl = response.imageUrl;
+
     return res(ctx.status(204));
   }),
 

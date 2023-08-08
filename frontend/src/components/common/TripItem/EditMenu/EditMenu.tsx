@@ -5,18 +5,20 @@ import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
 
 import {
+  getMoreMenuStyling,
   moreButtonStyling,
   moreMenuListStyling,
-  moreMenuStyling,
 } from '@components/common/TripItem/EditMenu/EditMenu.style';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 interface EditMenuProps extends TripItemData {
   tripId: number;
   dayLogId: number;
+  hasImage: boolean;
+  imageHeight: number;
 }
 
-const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
+const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: EditMenuProps) => {
   const deleteTripItemMutation = useDeleteTripItemMutation();
 
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
@@ -28,7 +30,7 @@ const EditMenu = ({ tripId, dayLogId, ...information }: EditMenuProps) => {
 
   return (
     <>
-      <Menu css={moreMenuStyling} closeMenu={closeMenu}>
+      <Menu css={getMoreMenuStyling(hasImage, imageHeight)} closeMenu={closeMenu}>
         <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
           <MoreIcon />
         </button>
