@@ -21,10 +21,10 @@ jobs:
     steps:
     - name: 레포지토리 체크아웃
       uses: actions/checkout@v3
+      with:
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+          submodules: true
       
-    - name: dev 전용 application.yml을 Secret에서 복사해옵니다.
-      run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
-
     - name: JDK 17을 설치합니다.
       uses: actions/setup-java@v3
       with:
