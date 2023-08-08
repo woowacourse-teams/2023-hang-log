@@ -69,18 +69,18 @@ describe('여행 생성 페이지', () => {
     cy.findByText('기록하기').should('be.not.disabled');
   });
 
-  // it('기록하기 버튼을 누르면 여행수정 페이지로 이동한다.', () => {
-  //   cy.get('input[aria-label="방문 도시"]').click().type('오');
-  //   cy.findByText('오클랜드, 뉴질랜드').click();
+  it('기록하기 버튼을 누르면 여행수정 페이지로 이동한다.', () => {
+    cy.get('input[aria-label="방문 도시"]').click().type('오');
+    cy.findByText('오클랜드, 뉴질랜드').click();
 
-  //   cy.get('#date').click();
+    cy.get('#date').click();
 
-  //   cy.get('span[aria-label="2023년 07월 1일"]').click();
-  //   cy.get('span[aria-label="2023년 07월 12일"]').click();
+    cy.get('span[aria-label="2023년 07월 1일"]').click();
+    cy.get('span[aria-label="2023년 07월 12일"]').click();
 
-  //   cy.get('#date').click();
+    cy.get('#date').click();
 
-  //   cy.findByText('기록하기').click();
-  //   cy.url().should('include', 'trip/1/edit');
-  // });
+    cy.findByText('기록하기').click();
+    cy.url().should('include', 'trip/1/edit');
+  });
 });
