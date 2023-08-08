@@ -22,6 +22,11 @@ export const getContainerStyling = ({
   });
 };
 
+export const wrapperStyling = css({
+  display: 'flex',
+  gap: Theme.spacer.spacing4,
+});
+
 export const informationContainerStyling = css({
   width: '100%',
 });

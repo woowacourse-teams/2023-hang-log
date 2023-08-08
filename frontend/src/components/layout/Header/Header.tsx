@@ -12,30 +12,35 @@ import {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isOpen, open, close } = useOverlay();
+  const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
 
   const handleUserImageEnterKeyPress = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter') {
-      open();
+      openMenu();
     }
+  };
+
+  const goToTargetPage = (path: string) => () => {
+    navigate(path);
+    closeMenu();
   };
 
   return (
     <header css={headerStyling}>
       <Flex styles={{ justify: 'space-between', align: 'center' }}>
         <LogoHorizontal tabIndex={0} onClick={() => navigate(PATH.ROOT)} />
-        <Menu closeMenu={close}>
+        <Menu closeMenu={closeMenu}>
           <button
             type="button"
             css={imageStyling}
             aria-label="유저 프로필 이미지"
-            onClick={open}
+            onClick={openMenu}
             onKeyDown={handleUserImageEnterKeyPress}
           />
-          {isOpen && (
+          {isMenuOpen && (
             <MenuList css={menuListStyling}>
-              <MenuItem onClick={() => navigate(PATH.ROOT)}>마이페이지</MenuItem>
-              <MenuItem onClick={() => navigate(PATH.ROOT)}>로그아웃</MenuItem>
+              <MenuItem onClick={goToTargetPage(PATH.ROOT)}>마이페이지</MenuItem>
+              <MenuItem onClick={goToTargetPage(PATH.ROOT)}>로그아웃</MenuItem>
             </MenuList>
           )}
         </Menu>

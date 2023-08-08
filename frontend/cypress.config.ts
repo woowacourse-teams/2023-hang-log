@@ -7,4 +7,7 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+  env: {
+    NODE_ENV: 'development',
+  },
 });

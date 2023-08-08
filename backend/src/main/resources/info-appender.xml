@@ -7,14 +7,10 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>
                 <pattern>
-                    {
                     "timestamp": "%date{yyyy-MM-dd HH:mm}",
-                    "message": "%message"
-                    }
+                    ${CONSOLE_LOG_PATTERN}\n
                 </pattern>
-            </pattern>
             <charset>utf8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
