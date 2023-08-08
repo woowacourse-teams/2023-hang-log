@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
+import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.domain.repository.CurrencyRepository;
 import hanglog.expense.dto.response.CategoryExpenseResponse;
 import hanglog.expense.dto.response.DayLogExpenseResponse;
 import hanglog.expense.dto.response.ItemDetailResponse;
@@ -88,7 +88,7 @@ class ExpenseServiceTest {
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
-        System.out.println(actual);
+
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual)
@@ -180,6 +180,5 @@ class ExpenseServiceTest {
         // then
         assertThat(actual).extracting("categories").asList().hasSize(6);
         assertThat(actual).extracting("dayLogs").asList().hasSize(3);
-
     }
 }

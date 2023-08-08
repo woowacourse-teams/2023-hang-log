@@ -1,4 +1,4 @@
-package hanglog.expense.domain;
+package hanglog.currency.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -22,7 +22,7 @@ public class Currency {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private LocalDate date;
 
     @Column(nullable = false)
@@ -54,6 +54,22 @@ public class Currency {
 
     @Column(nullable = false)
     private Double krw;
+
+    public Currency(
+            final LocalDate date,
+            final Double usd,
+            final Double eur,
+            final Double gbp,
+            final Double jpy,
+            final Double cny,
+            final Double chf,
+            final Double sgd,
+            final Double thb,
+            final Double hkd,
+            final Double krw
+    ) {
+        this(null, date, usd, eur, gbp, jpy, cny, chf, sgd, thb, hkd, krw);
+    }
 
     public double getUnitRateOfJpy() {
         return this.jpy / 100;
