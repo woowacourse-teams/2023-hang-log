@@ -1,5 +1,7 @@
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import type { ExpenseData } from '@type/expense';
-import { Badge, Flex, Heading, Text, Theme } from 'hang-log-design-system';
+import { Badge, Box, Heading, Text } from 'hang-log-design-system';
+import { useRecoilValue } from 'recoil';
 
 import { formatDate } from '@utils/formatter';
 
@@ -15,14 +17,16 @@ interface ExpenseInformationProps
 }
 
 const ExpenseInformation = ({ ...information }: ExpenseInformationProps) => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+
   return (
     <header css={sectionStyling}>
-      <Flex styles={{ gap: Theme.spacer.spacing1, wrap: 'wrap' }} css={badgeWrapperStyling}>
+      <Box css={badgeWrapperStyling}>
         {information.cities.map(({ id, name }) => (
           <Badge key={id}>{name}</Badge>
         ))}
-      </Flex>
-      <Heading css={titleStyling} size="large">
+      </Box>
+      <Heading css={titleStyling} size={isMobile ? 'medium' : 'large'}>
         {information.title}
       </Heading>
       <Text>
