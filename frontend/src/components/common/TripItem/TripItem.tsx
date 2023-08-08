@@ -2,6 +2,8 @@ import { CURRENCY_ICON } from '@constants/trip';
 import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
 import type { TripItemData } from '@type/tripItem';
 import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+
+import type { ForwardedRef } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -19,6 +21,7 @@ import {
   memoStyling,
   starRatingStyling,
   subInformationStyling,
+  wrapperStyling,
 } from '@components/common/TripItem/TripItem.style';
 
 interface TripListItemProps extends TripItemData {
@@ -26,6 +29,7 @@ interface TripListItemProps extends TripItemData {
   dayLogId: number;
   isEditable?: boolean;
   observer?: IntersectionObserver | null;
+  scrollRef?: ForwardedRef<HTMLDivElement>;
   onDragStart?: () => void;
   onDragEnter?: () => void;
   onDragEnd?: () => void;
@@ -36,6 +40,7 @@ const TripItem = ({
   dayLogId,
   isEditable = true,
   observer,
+  scrollRef,
   onDragStart,
   onDragEnter,
   onDragEnd,
@@ -67,7 +72,7 @@ const TripItem = ({
       onDragEnter={onDragEnter}
       onDragEnd={isEditable ? handleDragEnd : undefined}
     >
-      <div css={contentContainerStyling}>
+      <div ref={scrollRef} css={contentContainerStyling}>
         {information.imageUrls.length > 0 && (
           <ImageCarousel
             width={isMobile ? imageWidth : 250}

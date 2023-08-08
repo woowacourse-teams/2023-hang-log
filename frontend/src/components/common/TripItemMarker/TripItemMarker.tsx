@@ -1,9 +1,11 @@
 import PinIcon from '@assets/svg/pin-icon.svg';
 import SelectedPinIcon from '@assets/svg/selected-pin-icon.svg';
+import { clickedMarkerIdState } from '@store/scrollFocus';
 import { Flex, Text } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
 import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
+import { useSetRecoilState } from 'recoil';
 
 import {
   getLabelStyling,
@@ -19,7 +21,6 @@ interface TripItemMarkerProps {
   isSelected: boolean;
   isZoomedOut: boolean;
 }
-
 const TripItemMarker = ({
   map,
   id,
@@ -29,6 +30,8 @@ const TripItemMarker = ({
   isSelected,
   isZoomedOut,
 }: TripItemMarkerProps) => {
+  const setClickedMarkerId = useSetRecoilState(clickedMarkerIdState);
+
   const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
   const rootRef = useRef<Root | null>(null);
 
@@ -67,8 +70,12 @@ const TripItemMarker = ({
 
       markerRef.current.position = { lat, lng };
       markerRef.current.map = map;
+
+      markerRef.current.addListener('click', () => {
+        setClickedMarkerId(id);
+      });
     }
-  }, [isSelected, isZoomedOut, lat, lng, map, name]);
+  }, [id, isSelected, isZoomedOut, lat, lng, map, name, setClickedMarkerId]);
 
   return null;
 };
