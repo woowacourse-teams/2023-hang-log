@@ -3,9 +3,8 @@ package hanglog.currency.presentation;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import hanglog.currency.service.CurrencyService;
 import java.time.LocalDate;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(CurrencyController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -37,7 +35,6 @@ class CurrencyControllerTest {
 
         // when & then
         mockMvc.perform(post("/currency/today"))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(header().string(LOCATION, "/currency/" + DEFAULT_CURRENCY.getDate()));
+                .andExpect(status().isOk());
     }
 }
