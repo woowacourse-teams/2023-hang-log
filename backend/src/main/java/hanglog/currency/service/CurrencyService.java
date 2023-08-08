@@ -19,7 +19,7 @@ import static java.time.DayOfWeek.SUNDAY;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
-import hanglog.currency.dto.CurrencyResponse;
+import hanglog.currency.dto.SingleCurrencyResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.DayOfWeek;
@@ -40,7 +40,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CurrencyService {
 
     private static final String CURRENCY_API_URI = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
-    private static final String JAPAN_UNIT_STRING = "(100)";
     private static final String NUMBER_SEPARATOR = ",";
     private static final String DATE_SEPARATOR = "-";
 
@@ -63,14 +62,13 @@ public class CurrencyService {
         }
 
         validateWeekend(date);
-        final List<CurrencyResponse> currencyResponses = requestFilteredCurrencyResponses(date);
+        final List<SingleCurrencyResponse> singleCurrencyResponses = requestFilteredCurrencyResponses(date);
         final Map<CurrencyType, Double> rateOfCurrencyType = new EnumMap<>(CurrencyType.class);
 
-        for (final CurrencyResponse currencyResponse : currencyResponses) {
-            final String code = currencyResponse.getCode().toLowerCase().replace(JAPAN_UNIT_STRING, "");
+        for (final SingleCurrencyResponse singleCurrencyResponse : singleCurrencyResponses) {
             rateOfCurrencyType.put(
-                    CurrencyType.getMappedCurrencyType(code),
-                    Double.valueOf(currencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
+                    CurrencyType.getMappedCurrencyType(singleCurrencyResponse.getCode()),
+                    Double.valueOf(singleCurrencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
             );
         }
 
@@ -85,16 +83,12 @@ public class CurrencyService {
         }
     }
 
-    private List<CurrencyResponse> requestFilteredCurrencyResponses(final LocalDate date) {
+    private List<SingleCurrencyResponse> requestFilteredCurrencyResponses(final LocalDate date) {
         return Arrays.stream(
-                        Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), CurrencyResponse[].class))
+                        Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), SingleCurrencyResponse[].class))
                                 .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
                 )
-                .filter(
-                        response -> CurrencyType.provide(
-                                response.getCode().toLowerCase().replace(JAPAN_UNIT_STRING, "")
-                        )
-                )
+                .filter(response -> CurrencyType.beProvided(response.getCode()))
                 .toList();
     }
 

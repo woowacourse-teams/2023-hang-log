@@ -46,11 +46,11 @@ public enum CurrencyType {
                 .orElseThrow(() -> new InvalidDomainException(INVALID_CURRENCY));
     }
 
-    public static boolean provide(final String currencyCode) {
+    public static boolean beProvided(final String currencyCode) {
         final List<String> values = Arrays.stream(CurrencyType.values())
                 .map(CurrencyType::getCode)
                 .toList();
-        return values.contains(currencyCode);
+        return values.contains(currencyCode.toLowerCase().replace(JPY_UNIT_STRING, ""));
     }
 
     public double getCurrencyRate(final Currency currency) {
