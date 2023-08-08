@@ -22,8 +22,8 @@ jobs:
     - name: 레포지토리 체크아웃
       uses: actions/checkout@v3
       with:
-        submodules: recursive
-        token: ${{ secrets.SUBMODULE_TOKEN }}
+        repo-token: ${{ secrets.SUBMODULE_TOKEN }}
+        submodules: true
 
     - name: 서브모듈 업데이트
       run: |
