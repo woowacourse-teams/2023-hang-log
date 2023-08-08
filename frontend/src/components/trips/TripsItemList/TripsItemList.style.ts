@@ -32,6 +32,24 @@ export const toggleGroupStyling = css({
   },
 });
 
+export const headingStyling = css({
+  fontSize: Theme.heading.small.fontSize,
+  '@media screen and (max-width: 600px)': {
+    fontSize: Theme.heading.xSmall.fontSize,
+  },
+});
+
+export const textStyling = css({
+  padding: '8px 0 16px',
+  fontSize: Theme.text.large.fontSize,
+  '@media screen and (max-width: 600px)': {
+    fontSize: Theme.text.medium.fontSize,
+  },
+});
+
 export const emptyBoxStyling = css({
   marginLeft: '50px',
+  '@media screen and (max-width: 600px)': {
+    marginLeft: '24px',
+  },
 });

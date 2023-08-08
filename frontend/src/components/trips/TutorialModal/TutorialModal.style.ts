@@ -9,8 +9,14 @@ export const boxStyling = css({
   height: '581px',
   marginTop: '30px',
   '@media screen and (max-width: 600px)': {
-    width: '382px',
+    width: '346px',
     height: '493px',
+  },
+});
+
+export const modalStyling = css({
+  '@media screen and (max-width: 600px)': {
+    padding: '18px',
   },
 });
 
