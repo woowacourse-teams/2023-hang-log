@@ -8,6 +8,15 @@ export const boxStyling = css({
   width: '450px',
   height: '581px',
   marginTop: '30px',
+  '@media screen and (max-width: 600px)': {
+    width: '382px',
+    height: '493px',
+  },
+});
+
+export const carouselStyling = css({
+  width: '385px',
+  height: '412px',
 });
 
 export const buttonStyling = css({

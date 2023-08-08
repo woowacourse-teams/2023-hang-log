@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Theme } from 'hang-log-design-system';
 
 export const imageStyling = css({
   width: '854px',
@@ -6,5 +7,19 @@ export const imageStyling = css({
 
   '@media screen and (max-width: 1200px)': {
     width: '65%',
+  },
+
+  '@media screen and (max-width: 600px)': {
+    display: 'none',
+  },
+});
+
+export const headingStyling = css({
+  marginLeft: '50px',
+
+  '@media screen and (max-width: 600px)': {
+    marginLeft: '24px',
+    padding: '36px 0',
+    fontSize: Theme.heading.medium.fontSize,
   },
 });
