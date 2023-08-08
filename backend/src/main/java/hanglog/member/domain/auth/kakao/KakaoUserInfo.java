@@ -1,12 +1,13 @@
-package hanglog.member.service.dto;
+package hanglog.member.domain.auth.kakao;
 
 import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hanglog.member.domain.auth.UserInfo;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class KakaoUserInfoResponseDto implements UserInfoDto {
+public class KakaoUserInfo implements UserInfo {
 
     @JsonProperty("id")
     private String id;

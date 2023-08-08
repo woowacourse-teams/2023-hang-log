@@ -1,4 +1,4 @@
-package hanglog.member.service.dto;
+package hanglog.member.domain.auth;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = PRIVATE)
-public class AccessTokenResponseDto {
+public class AccessToken {
 
     @JsonProperty("access_token")
     private String accessToken;

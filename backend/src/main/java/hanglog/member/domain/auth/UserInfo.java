@@ -1,6 +1,6 @@
-package hanglog.member.service.dto;
+package hanglog.member.domain.auth;
 
-public interface UserInfoDto {
+public interface UserInfo {
     String getId();
 
     String getNickname();

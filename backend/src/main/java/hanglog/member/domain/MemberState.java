@@ -1,4 +1,4 @@
-package hanglog.member;
+package hanglog.member.domain;
 
 public enum MemberState {
 

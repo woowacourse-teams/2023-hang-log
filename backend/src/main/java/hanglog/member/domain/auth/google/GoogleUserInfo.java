@@ -1,12 +1,13 @@
-package hanglog.member.service.dto;
+package hanglog.member.domain.auth.google;
 
 import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hanglog.member.domain.auth.UserInfo;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class GoogleUserInfoResponseDto implements UserInfoDto {
+public class GoogleUserInfo implements UserInfo {
 
     @JsonProperty("id")
     private String id;
