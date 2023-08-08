@@ -7,7 +7,7 @@ import lombok.Getter;
 public class CurrencyResponse {
 
     @JsonProperty("cur_unit")
-    private String currencyCode;
+    private String code;
 
     @JsonProperty("deal_bas_r")
     private String rate;

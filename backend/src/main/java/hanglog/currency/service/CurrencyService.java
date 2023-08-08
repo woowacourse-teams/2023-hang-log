@@ -57,21 +57,21 @@ public class CurrencyService {
 
     public Currency saveDailyCurrency(final LocalDate date) {
         validateWeekend(date);
-        final List<CurrencyResponse> currencyResponseList = getCurrencyList(date);
-        final Map<CurrencyType, Double> currencyTypeRateMap = new EnumMap<>(CurrencyType.class);
+        final List<CurrencyResponse> currencyResponses = getCurrencyResponses(date);
+        final Map<CurrencyType, Double> rateOfCurrencyType = new EnumMap<>(CurrencyType.class);
 
-        for (final CurrencyResponse currencyResponse : currencyResponseList) {
-            final String currencyUnit = currencyResponse.getCurrencyCode().toLowerCase().replace(JAPAN_UNIT_STRING, "");
+        for (final CurrencyResponse currencyResponse : currencyResponses) {
+            final String code = currencyResponse.getCode().toLowerCase().replace(JAPAN_UNIT_STRING, "");
 
-            if (CurrencyType.provide(currencyUnit)) {
-                currencyTypeRateMap.put(
-                        CurrencyType.getMappedCurrencyType(currencyUnit),
+            if (CurrencyType.provide(code)) {
+                rateOfCurrencyType.put(
+                        CurrencyType.getMappedCurrencyType(code),
                         Double.valueOf(currencyResponse.getRate().replace(NUMBER_SEPARATOR, ""))
                 );
             }
         }
 
-        final Currency currency = getCurrency(date, currencyTypeRateMap);
+        final Currency currency = getCurrency(date, rateOfCurrencyType);
         return currencyRepository.save(currency);
     }
 
@@ -82,7 +82,7 @@ public class CurrencyService {
         }
     }
 
-    private List<CurrencyResponse> getCurrencyList(final LocalDate today) {
+    private List<CurrencyResponse> getCurrencyResponses(final LocalDate today) {
         final CurrencyResponse[] responses = Optional.ofNullable(
                         restTemplate.getForObject(getCurrencyUrl(today), CurrencyResponse[].class)
                 )
