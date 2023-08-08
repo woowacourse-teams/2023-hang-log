@@ -11,7 +11,5 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     Optional<Currency> findTopByOrderByDateAsc();
 
-    Currency findByDate(LocalDate date);
-
     boolean existsByDate(LocalDate date);
 }

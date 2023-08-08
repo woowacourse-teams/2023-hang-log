@@ -39,7 +39,7 @@ class CurrencyServiceTest {
 
         // when
         currencyService.saveDailyCurrency(date);
-        final Currency actual = currencyRepository.findByDate(date);
+        final Currency actual = currencyRepository.findTopByOrderByDateAsc().get();
 
         // then
         assertSoftly(
