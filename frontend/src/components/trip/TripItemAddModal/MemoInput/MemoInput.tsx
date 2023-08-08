@@ -1,3 +1,4 @@
+import { TRIP_ITEM_MEMO_MAX_LENGTH } from '@constants/ui';
 import type { TripItemFormData } from '@type/tripItem';
 import { Textarea } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
@@ -23,6 +24,7 @@ const MemoInput = ({ value, updateInputValue }: MemoInputProps) => {
       name="memo"
       value={value ?? ''}
       placeholder="메모를 입력해 주세요"
+      maxLength={TRIP_ITEM_MEMO_MAX_LENGTH}
       onChange={handleMemoChange}
     />
   );
