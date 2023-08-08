@@ -16,7 +16,8 @@ export const boxStyling = css({
   paddingTop: '72px',
 
   '@media screen and (max-width: 600px)': {
-    width: '85%',
+    width: '100%',
+    padding: ` 56px ${Theme.spacer.spacing4} 0 ${Theme.spacer.spacing4}`,
   },
 });
 

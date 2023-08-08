@@ -13,12 +13,13 @@ export const formStyling = css({
   },
 
   '@media screen and (max-width: 600px)': {
-    minHeight: 'calc(100vh - 100px)',
+    minHeight: 'calc(100vh - 124px)',
     marginTop: Theme.spacer.spacing4,
 
     '> button': {
       position: 'absolute',
-      bottom: '17%',
+      width: 'calc(100% - 48px)',
+      bottom: '100px',
     },
   },
 });

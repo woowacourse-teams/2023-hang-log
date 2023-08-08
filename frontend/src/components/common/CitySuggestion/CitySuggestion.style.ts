@@ -11,7 +11,7 @@ export const containerStyling = css({
   transform: 'translateY(0)',
 
   '@media screen and (max-width: 600px)': {
-    width: '100%',
+    width: 'calc(100% - 48px)',
   },
 });
 

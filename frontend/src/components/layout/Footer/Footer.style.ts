@@ -22,8 +22,4 @@ export const containerStyling = css({
   '& *': {
     color: Theme.color.gray600,
   },
-
-  '@media screen and (max-width: 600px)': {
-    height: '100px',
-  },
 });
