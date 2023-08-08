@@ -5,20 +5,17 @@ import hanglog.member.domain.auth.Provider;
 import hanglog.member.domain.auth.Providers;
 import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AuthService {
 
     private final MemberRepository memberRepository;
     private final Providers providers;
-
-    public AuthService(final MemberRepository memberRepository, final Providers providers) {
-        this.memberRepository = memberRepository;
-        this.providers = providers;
-    }
 
     public Long login(final String providerName, final String code) {
         final Provider provider = providers.mapping(providerName);
