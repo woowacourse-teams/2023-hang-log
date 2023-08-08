@@ -11,6 +11,7 @@ import static hanglog.currency.domain.type.CurrencyType.SGD;
 import static hanglog.currency.domain.type.CurrencyType.THB;
 import static hanglog.currency.domain.type.CurrencyType.USD;
 import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY_DATE;
+import static hanglog.global.exception.ExceptionCode.INVALID_DATE_ALREADY_EXIST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
@@ -19,6 +20,7 @@ import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.currency.dto.CurrencyResponse;
+import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -57,8 +59,9 @@ public class CurrencyService {
 
     public void saveDailyCurrency(final LocalDate date) {
         if (currencyRepository.existsByDate(date)) {
-            return;
+            throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
         }
+
         validateWeekend(date);
         final List<CurrencyResponse> currencyResponses = getCurrencyResponses(date);
         final Map<CurrencyType, Double> rateOfCurrencyType = new EnumMap<>(CurrencyType.class);

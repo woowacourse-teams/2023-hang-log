@@ -5,6 +5,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
+import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidDomainException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,7 @@ class CurrencyServiceTest {
         // when
         currencyService.saveDailyCurrency(date);
         final Currency actual = currencyRepository.findByDate(date);
-        
+
         // then
         assertSoftly(
                 softly -> {
@@ -68,5 +69,19 @@ class CurrencyServiceTest {
                 .isInstanceOf(InvalidDomainException.class)
                 .extracting("code")
                 .isEqualTo(3006);
+    }
+
+    @DisplayName("이미 정보가 존재하는 날짜의 데이터는 받아오지 못한다.")
+    @Test
+    void saveCurrency_FailAtExistDate() {
+        // given
+        final LocalDate date = LocalDate.of(2023, 8, 3);
+        currencyService.saveDailyCurrency(date);
+
+        // when & then
+        assertThatThrownBy(() -> currencyService.saveDailyCurrency(date))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(3007);
     }
 }
