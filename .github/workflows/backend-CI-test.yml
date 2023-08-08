@@ -23,13 +23,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.SUBMODULE_TOKEN }}
-
-    - name: 서브모듈 업데이트
-      run: |
-        git config --global user.name '${{ secrtets.USER_NAME }}'
-        git config --global user.email '${{ secrtets.USER_EMAIL }}'
-        git submodule init
-        git submodule update --remote
+        submodules: true
       
     - name: JDK 17을 설치합니다.
       uses: actions/setup-java@v3
