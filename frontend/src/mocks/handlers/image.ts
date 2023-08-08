@@ -4,6 +4,6 @@ import { rest } from 'msw';
 
 export const imageHandlers = [
   rest.post(END_POINTS.IMAGES, (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(images));
+    return res(ctx.status(200), ctx.json({ imageUrls: images }));
   }),
 ];
