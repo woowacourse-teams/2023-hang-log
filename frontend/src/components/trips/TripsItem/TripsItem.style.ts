@@ -60,6 +60,7 @@ export const badgeBoxStyling = css({
   '::-webkit-scrollbar': {
     display: 'none',
   },
+
   '@media screen and (max-width: 600px)': {
     width: '100%',
   },
