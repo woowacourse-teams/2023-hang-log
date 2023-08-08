@@ -4,6 +4,11 @@ import { Theme } from 'hang-log-design-system';
 export const containerStyling = css({
   width: '400px',
   margin: '0 auto',
+
+  '@media screen and (max-width: 600px)': {
+    width: '100%',
+    margin: 0,
+  },
 });
 
 export const wrapperStyling = css({
