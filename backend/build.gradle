@@ -74,6 +74,14 @@ tasks.register('copyApiDocument', Copy) {
     into file("src/main/resources/static/docs")
 }
 
+processResources.dependsOn('copySecret')
+
+tasks.register('copySecret', Copy) {
+    from './backend-submodule'
+    include 'application.yml'
+    into './src/main/resources'
+}
+
 build {
     dependsOn copyApiDocument
 }

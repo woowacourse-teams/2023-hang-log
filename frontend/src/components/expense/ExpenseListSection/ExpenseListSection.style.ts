@@ -9,6 +9,13 @@ export const containerStyling = css({
   width: '50vw',
   marginTop: '140px',
   padding: '0 50px',
+
+  '@media screen and (max-width: 600px)': {
+    marginTop: Theme.spacer.spacing0,
+
+    width: '100vw',
+    padding: `0 ${Theme.spacer.spacing4}`,
+  },
 });
 
 export const toggleGroupStyling = css({

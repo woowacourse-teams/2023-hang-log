@@ -1,0 +1,3 @@
+[submodule "backend/backend-submodule"]
+	path = backend/backend-submodule
+	url = http://github.com/HangLog/backend-submodule.git

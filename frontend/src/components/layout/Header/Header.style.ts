@@ -11,6 +11,10 @@ export const headerStyling = css({
   backgroundColor: Theme.color.white,
   padding: `${Theme.spacer.spacing4} 50px`,
 
+  '@media screen and (max-width: 600px)': {
+    padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing4}`,
+  },
+
   '& > *': {
     cursor: 'pointer',
   },

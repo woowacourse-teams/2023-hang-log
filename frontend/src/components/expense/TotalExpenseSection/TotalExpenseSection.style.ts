@@ -8,6 +8,11 @@ export const containerStyling = css({
 
   width: '50vw',
   padding: '0 50px',
+
+  '@media screen and (max-width: 600px)': {
+    width: '100vw',
+    padding: `0 ${Theme.spacer.spacing4}`,
+  },
 });
 
 export const totalAmountStyling = css({
