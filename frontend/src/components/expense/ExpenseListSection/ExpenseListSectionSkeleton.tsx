@@ -1,4 +1,6 @@
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import { Flex, Skeleton, Theme } from 'hang-log-design-system';
+import { useRecoilValue } from 'recoil';
 
 import ExpenseListSkeleton from '@components/expense/ExpenseList/ExpenseListSkeleton';
 import {
@@ -7,9 +9,14 @@ import {
 } from '@components/expense/ExpenseListSection/ExpenseListSection.style';
 
 const ExpenseListSectionSkeleton = () => {
+  const isMobile = useRecoilValue(mediaQueryMobileState);
+
   return (
     <section css={containerStyling}>
-      <Skeleton width="125px" height="38px" css={toggleGroupStyling} />
+      <Flex styles={{ justify: isMobile ? 'space-between' : 'flex-end' }}>
+        {isMobile && <Skeleton width="150px" height="38px" />}
+        <Skeleton width="125px" height="38px" css={toggleGroupStyling} />
+      </Flex>
       <Skeleton width="100%" height="48px" />
       <ExpenseListSkeleton />
       <Flex

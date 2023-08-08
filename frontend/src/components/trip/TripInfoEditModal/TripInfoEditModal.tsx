@@ -68,6 +68,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
         <Input
           required
           label="여행 제목"
+          id="title"
           maxLength={15}
           value={tripInfo.title}
           isError={isTitleError}
@@ -83,7 +84,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           css={textareaStyling}
         />
         <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
-        <Button variant="primary">여행 정보 수정</Button>
+        <Button variant="primary">여행 정보 수정하기</Button>
       </form>
     </Modal>
   );

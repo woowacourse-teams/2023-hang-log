@@ -1,6 +1,8 @@
+import { mediaQueryMobileState } from '@store/mediaQuery';
 import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 import { useTripQuery } from '@hooks/api/useTripQuery';
@@ -21,6 +23,8 @@ const TripEditPage = () => {
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
+
+  const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { tripData } = useTripQuery(Number(tripId));
   useExpenseCategoryQuery();
@@ -66,15 +70,17 @@ const TripEditPage = () => {
           />
         )}
       </section>
-      <section css={mapContainerStyling}>
-        <GoogleMapWrapper>
-          <TripMap
-            places={places}
-            centerLat={tripData.cities[0].latitude}
-            centerLng={tripData.cities[0].longitude}
-          />
-        </GoogleMapWrapper>
-      </section>
+      {!isMobile && (
+        <section css={mapContainerStyling}>
+          <GoogleMapWrapper>
+            <TripMap
+              places={places}
+              centerLat={tripData.cities[0].latitude}
+              centerLng={tripData.cities[0].longitude}
+            />
+          </GoogleMapWrapper>
+        </section>
+      )}
     </Flex>
   );
 };

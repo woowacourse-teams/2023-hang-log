@@ -19,11 +19,17 @@ export const moreButtonStyling = css({
   },
 });
 
-export const moreMenuStyling = css({
-  position: 'absolute',
-  top: 0,
-  right: 0,
-});
+export const getMoreMenuStyling = (hasImage: boolean, imageHeight: number) => {
+  return css({
+    position: 'absolute',
+    top: 0,
+    right: 0,
+
+    '@media screen and (max-width: 600px)': {
+      top: hasImage ? `calc(${imageHeight}px + ${Theme.spacer.spacing3})` : 0,
+    },
+  });
+};
 
 export const moreMenuListStyling = css({
   minWidth: 'unset',

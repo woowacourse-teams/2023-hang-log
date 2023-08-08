@@ -20,6 +20,7 @@ const TitleInput = ({ isError, value, updateInputValue, disableError }: TitleInp
   return (
     <Input
       label="제목"
+      id="title"
       name="title"
       maxLength={25}
       value={value}
