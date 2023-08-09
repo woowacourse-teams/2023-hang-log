@@ -5,6 +5,7 @@ export const headerStyling = css({
   position: 'sticky',
   top: 0,
 
+  height: '81px',
   borderBottom: `1px solid ${Theme.color.gray200}`,
   zIndex: Theme.zIndex.overlayMiddle,
 
@@ -12,6 +13,7 @@ export const headerStyling = css({
   padding: `${Theme.spacer.spacing4} 50px`,
 
   '@media screen and (max-width: 600px)': {
+    height: '65px',
     padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing4}`,
   },
 
@@ -36,4 +38,9 @@ export const menuListStyling = css({
   '& > li': {
     padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
   },
+});
+
+export const buttonContainerStyling = css({
+  position: 'relative',
+  top: '-2px',
 });

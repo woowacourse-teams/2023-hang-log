@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         element: <RedirectPage />,
       },
       {
-        path: PATH.SIGN_IN,
+        path: PATH.SIGN_UP,
         element: <SignInPage />,
       },
       {
