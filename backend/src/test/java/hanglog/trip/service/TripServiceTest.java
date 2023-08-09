@@ -241,15 +241,32 @@ class TripServiceTest {
         void update_DecreasePeriod() {
             // given
             changeDate(1, 2);
+            given(tripRepository.findById(trip.getId()))
+                    .willReturn(Optional.of(new Trip(
+                                            trip.getId(),
+                                            trip.getTitle(),
+                                            trip.getImageName(),
+                                            updateRequest.getStartDate(),
+                                            updateRequest.getEndDate(),
+                                            trip.getDescription(),
+                                            List.of(
+                                                    dayLog1,
+                                                    dayLog2,
+                                                    extraDayLog
+                                            )
+                                    )
+                            )
+                    );
 
             // when
             tripService.update(trip.getId(), updateRequest);
+            final List<DayLog> actualDayLogs = tripRepository.findById(trip.getId()).get().getDayLogs();
 
             // then
             assertSoftly(
                     softly -> {
-                        softly.assertThat(trip.getDayLogs().size()).isEqualTo(3);
-                        softly.assertThat(trip.getDayLogs()).containsExactly(dayLog1, dayLog2, extraDayLog);
+                        softly.assertThat(actualDayLogs.size()).isEqualTo(3);
+                        softly.assertThat(actualDayLogs).containsExactly(dayLog1, dayLog2, extraDayLog);
                     }
             );
         }
@@ -281,7 +298,7 @@ class TripServiceTest {
 
             // when
             tripService.update(trip.getId(), updateRequest);
-            List<DayLog> actualDayLogs = tripRepository.findById(trip.getId()).get().getDayLogs();
+            final List<DayLog> actualDayLogs = tripRepository.findById(trip.getId()).get().getDayLogs();
 
             // then
             assertSoftly(
