@@ -2,6 +2,7 @@ import { cityHandlers } from '@mocks/handlers/city';
 import { dayLogHandlers } from '@mocks/handlers/dayLog';
 import { expenseHandlers } from '@mocks/handlers/expense';
 import { imageHandlers } from '@mocks/handlers/image';
+import { memberHandlers } from '@mocks/handlers/member';
 import { tripItemHandlers } from '@mocks/handlers/tripItem';
 import { tripsHandlers } from '@mocks/handlers/trips';
 
@@ -12,4 +13,5 @@ export const handlers = [
   ...tripsHandlers,
   ...tripItemHandlers,
   ...imageHandlers,
+  ...memberHandlers,
 ];

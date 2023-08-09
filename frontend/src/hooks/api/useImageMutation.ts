@@ -17,7 +17,7 @@ export const useImageMutation = () => {
         {
           id: generateUniqueId(),
           variant: 'error',
-          message: '이미지 업로드를 실패했습니다. 잠시 후 다시 시도해 주세요.',
+          message: '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
         },
       ]);
     },
