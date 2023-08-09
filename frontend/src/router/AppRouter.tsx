@@ -74,6 +74,8 @@ const router = createBrowserRouter([
       {
         path: PATH.LOGIN,
         element: <LogInPage />,
+      },
+      {
         path: PATH.MY_PAGE,
         element: (
           <Suspense fallback={<div>LOADING</div>}>
