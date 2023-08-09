@@ -25,11 +25,15 @@ export const headerStyling = css({
 export const imageStyling = css({
   minWidth: '32px',
   minHeight: '32px',
+  maxWidth: '32px',
+  maxHeight: '32px',
   border: 'none',
   outline: 0,
   borderRadius: '50%',
 
   backgroundColor: Theme.color.gray200,
+
+  objectFit: 'cover',
 });
 
 export const menuListStyling = css({
@@ -40,7 +44,9 @@ export const menuListStyling = css({
   },
 });
 
-export const buttonContainerStyling = css({
-  position: 'relative',
-  top: '-2px',
-});
+export const getItemStyling = (isLoggedIn: boolean) => {
+  return css({
+    position: 'relative',
+    top: !isLoggedIn ? '-2px' : 'undefined',
+  });
+};
