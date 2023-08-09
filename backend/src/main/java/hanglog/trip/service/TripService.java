@@ -2,7 +2,6 @@ package hanglog.trip.service;
 
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.City;
@@ -104,17 +103,8 @@ public class TripService {
 
         updateTripCities(tripId, trip, cities);
         updateDayLog(updateRequest, trip);
-
-        final Trip updatedTrip = new Trip(
-                trip.getId(),
-                updateRequest.getTitle(),
-                convertUrlToName(updateRequest.getImageUrl()),
-                updateRequest.getStartDate(),
-                updateRequest.getEndDate(),
-                updateRequest.getDescription(),
-                trip.getDayLogs()
-        );
-        tripRepository.save(updatedTrip);
+        trip.update(updateRequest);
+        tripRepository.save(trip);
     }
 
     private void updateTripCities(final Long tripId, final Trip trip, final List<City> cities) {
