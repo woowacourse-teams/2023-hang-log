@@ -2,33 +2,30 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
-  flexDirection: 'column',
-  alignItems: 'center',
-
-  width: '100%',
+  position: 'relative',
   height: 'calc(100vh - 81px)',
+  padding: Theme.spacer.spacing4,
 
   '@media screen and (max-width: 600px)': {
     height: 'calc(100vh - 65px)',
+    padding: ` 56px ${Theme.spacer.spacing4} 0 ${Theme.spacer.spacing4}`,
   },
 });
 
-export const boxStyling = css({
-  position: 'relative',
-  gap: Theme.spacer.spacing5,
+export const headingStyling = css({
+  marginTop: Theme.spacer.spacing5,
+});
 
-  paddingTop: '72px',
-
-  '@media screen and (max-width: 600px)': {
-    width: '100%',
-    padding: ` 56px ${Theme.spacer.spacing4} 0 ${Theme.spacer.spacing4}`,
-  },
+export const buttonContainerStyling = css({
+  width: '350px',
+  maxWidth: '100%',
+  marginTop: Theme.spacer.spacing6,
 });
 
 export const backgroundImageStyling = css({
   position: 'absolute',
   bottom: Theme.spacer.spacing4,
-  right: 0,
+  left: 0,
   zIndex: -1,
 
   '@media screen and (max-width: 600px)': {
