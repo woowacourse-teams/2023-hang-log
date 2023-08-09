@@ -1,12 +1,11 @@
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { Box, Flex, Toggle, ToggleGroup } from 'hang-log-design-system';
 
+import TripsItemSkeleton from '@components/trips/TripsItem/TripsItemSkeleton';
 import {
   gridBoxStyling,
   toggleGroupStyling,
 } from '@components/trips/TripsItemList/TripsItemList.style';
-
-import TripsItemSkeleton from '../TripsItem/TripsItemSkeleton';
 
 const TripsItemListSkeleton = () => {
   return (
