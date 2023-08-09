@@ -13,7 +13,7 @@ export const containerStyling = css({
 
 export const getInputStyling = (isCalendarOpen: boolean) => {
   return css({
-    width: '400px',
+    width: '100%',
     marginTop: Theme.spacer.spacing2,
 
     '> *': {

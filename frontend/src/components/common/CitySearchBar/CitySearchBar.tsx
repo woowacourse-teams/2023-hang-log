@@ -78,7 +78,7 @@ const CitySearchBar = ({ initialCities, updateCityInfo, required = false }: City
   };
 
   return (
-    <Menu closeMenu={closeSuggestion}>
+    <Menu closeMenu={closeSuggestion} css={{ width: '100%' }}>
       <Box css={containerStyling} onClick={focusInput}>
         <Label required={required}>방문 도시</Label>
         <div css={wrapperStyling}>

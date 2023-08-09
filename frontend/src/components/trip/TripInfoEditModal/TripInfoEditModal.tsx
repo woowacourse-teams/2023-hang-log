@@ -11,8 +11,8 @@ import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput
 import {
   dateInputSupportingText,
   formStyling,
-  modalStyling,
   textareaStyling,
+  wrapperStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
@@ -38,7 +38,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
       closeModal={onClose}
       isBackdropClosable={false}
       hasCloseButton
-      css={modalStyling}
+      css={wrapperStyling}
     >
       <form onSubmit={handleSubmit} css={formStyling} noValidate>
         <Flex styles={{ direction: 'column', gap: '4px' }}>
@@ -59,7 +59,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
             initialDateRange={{ startDate: tripInfo.startDate, endDate: tripInfo.endDate }}
             updateDateInfo={updateDateInfo}
           />
-          <Flex styles={{ width: '400px', align: 'center', gap: '10px' }}>
+          <Flex styles={{ width: '100%', align: 'center', gap: '10px' }}>
             <WarningIcon />
             <SupportingText css={dateInputSupportingText}>
               방문 기간을 단축하면 마지막 날짜부터 작성한 기록들이 삭제됩니다.
