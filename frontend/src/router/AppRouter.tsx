@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ExpensePage from '@pages/ExpensePage/ExpensePage';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import LogInPage from '@pages/LogInPage/LogInPage';
+import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
 import SignInPage from '@pages/SignInPage/SignInPage';
@@ -73,6 +74,12 @@ const router = createBrowserRouter([
       {
         path: PATH.LOGIN,
         element: <LogInPage />,
+        path: PATH.MY_PAGE,
+        element: (
+          <Suspense fallback={<div>LOADING</div>}>
+            <MyPage />
+          </Suspense>
+        ),
       },
     ],
   },

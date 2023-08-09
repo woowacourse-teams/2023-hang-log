@@ -15,6 +15,7 @@ export const containerStyling = css({
 
 export const boxStyling = css({
   position: 'relative',
+  width: '400px',
   gap: Theme.spacer.spacing5,
 
   paddingTop: '72px',
