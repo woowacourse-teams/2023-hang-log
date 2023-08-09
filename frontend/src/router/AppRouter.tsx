@@ -5,7 +5,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ExpensePage from '@pages/ExpensePage/ExpensePage';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
+import LogInPage from '@pages/LogInPage/LogInPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import RedirectPage from '@pages/RedirectPage/RedirectPage';
+import SignInPage from '@pages/SignInPage/SignInPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripPage from '@pages/TripPage/TripPage';
@@ -58,6 +61,18 @@ const router = createBrowserRouter([
             <ExpensePage />
           </Suspense>
         ),
+      },
+      {
+        path: process.env.REDIRECT_URI,
+        element: <RedirectPage />,
+      },
+      {
+        path: PATH.SIGN_IN,
+        element: <SignInPage />,
+      },
+      {
+        path: PATH.LOGIN,
+        element: <LogInPage />,
       },
     ],
   },
