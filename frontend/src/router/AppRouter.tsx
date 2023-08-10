@@ -9,7 +9,7 @@ import LogInPage from '@pages/LogInPage/LogInPage';
 import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
-import SignInPage from '@pages/SignInPage/SignInPage';
+import SignUpPage from '@pages/SignUpPage/SignUpPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripPage from '@pages/TripPage/TripPage';
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
       },
       {
         path: PATH.SIGN_UP,
-        element: <SignInPage />,
+        element: <SignUpPage />,
       },
       {
         path: PATH.LOGIN,

@@ -7,7 +7,7 @@ import {
   buttonContainerStyling,
   containerStyling,
   headingStyling,
-} from '@pages/SignInPage/SignInPage.style';
+} from '@pages/SignUpPage/SignUpPage.style';
 
 import GoogleButton from '@components/common/GoogleButton/GoogleButton';
 import KakaoButton from '@components/common/KakaoButton/KakaoButton';
