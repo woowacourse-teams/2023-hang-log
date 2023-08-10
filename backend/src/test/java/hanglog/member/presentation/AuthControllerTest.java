@@ -14,11 +14,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.member.dto.AccessTokenRequest;
 import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.LoginRequest;
 import hanglog.member.dto.MemberTokens;
 import hanglog.member.service.AuthService;
 import hanglog.trip.restdocs.RestDocsTest;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,11 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureRestDocs
 class AuthControllerTest extends RestDocsTest {
 
+    private final static String GOOGLE_PROVIDER = "google";
+    private final static String REFRESH_TOKEN = "refreshToken";
+    private final static String ACCESS_TOKEN = "accessToken";
+    private final static String RENEW_ACCESS_TOKEN = "I'mNewAccessToken!";
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -46,15 +53,14 @@ class AuthControllerTest extends RestDocsTest {
     @Test
     void login() throws Exception {
         // given
-        final String provider = "google";
         final LoginRequest loginRequest = new LoginRequest("code");
-        final MemberTokens memberTokens = new MemberTokens("refreshToken", "accessToken");
+        final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, ACCESS_TOKEN);
 
         when(authService.login(anyString(), anyString()))
                 .thenReturn(memberTokens);
 
         // when
-        final ResultActions resultActions = mockMvc.perform(post("/login/{provider}", provider)
+        final ResultActions resultActions = mockMvc.perform(post("/login/{provider}", GOOGLE_PROVIDER)
                 .param("loginRequest", loginRequest.getCode())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest))
@@ -77,7 +83,7 @@ class AuthControllerTest extends RestDocsTest {
                                         fieldWithPath("accessToken")
                                                 .type(JsonFieldType.STRING)
                                                 .description("access token")
-                                                .attributes(field("constraint", "문자열"))
+                                                .attributes(field("constraint", "문자열(jwt)"))
                                 )
                         )
                 )
@@ -92,6 +98,59 @@ class AuthControllerTest extends RestDocsTest {
                 AccessTokenResponse.class
         );
 
+        // then
+        assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectResponse);
+    }
+
+    @DisplayName("accessToken 재발급을 통해 로그인을 연장할 수 있다.")
+    @Test
+    void extendLogin() throws Exception {
+        // given
+        final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
+        final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
+        AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
+
+        when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
+                .thenReturn(memberTokens);
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(post("/token")
+                .param("accessTokenRequest", accessTokenRequest.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(accessTokenRequest))
+                .cookie(cookie)
+        );
+
+        final MvcResult mvcResult = resultActions.andExpect(status().isOk())
+                .andDo(
+                        restDocs.document(
+                                requestFields(
+                                        fieldWithPath("accessToken")
+                                                .type(JsonFieldType.STRING)
+                                                .description("access token")
+                                                .attributes(field("constraint", "문자열(jwt)"))
+                                ),
+                                responseFields(
+                                        fieldWithPath("accessToken")
+                                                .type(JsonFieldType.STRING)
+                                                .description("access token")
+                                                .attributes(field("constraint", "문자열(jwt)"))
+                                )
+                        )
+                )
+                .andExpect(cookie().exists("refresh-token"))
+                .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
+                .andReturn();
+
+        // then
+        final AccessTokenResponse expectResponse = new AccessTokenResponse(memberTokens.getAccessToken());
+
+        final AccessTokenResponse actualResponse = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                AccessTokenResponse.class
+        );
+
+        // then
         assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectResponse);
     }
 }

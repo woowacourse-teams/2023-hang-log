@@ -1,5 +1,6 @@
 package hanglog.member.presentation;
 
+import hanglog.member.dto.AccessTokenRequest;
 import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.LoginRequest;
 import hanglog.member.dto.MemberTokens;
@@ -39,10 +40,10 @@ public class AuthController {
     @PostMapping("/token")
     public ResponseEntity<AccessTokenResponse> extendLogin(
             @CookieValue("refresh-token") String refreshToken,
-            @RequestBody final String accessToken,
+            @RequestBody final AccessTokenRequest request,
             HttpServletResponse response
     ) {
-        final MemberTokens memberTokens = authService.renewalAccessToken(refreshToken, accessToken);
+        final MemberTokens memberTokens = authService.renewalAccessToken(refreshToken, request.getAccessToken());
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
@@ -52,9 +53,9 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @CookieValue("refresh-token") String refreshToken,
-            @RequestBody final String accessToken
+            @RequestBody final AccessTokenRequest request
     ) {
-        authService.removeMemberRefreshToken(refreshToken, accessToken);
+        authService.removeMemberRefreshToken(refreshToken, request.getAccessToken());
         return ResponseEntity.ok().build();
     }
 }

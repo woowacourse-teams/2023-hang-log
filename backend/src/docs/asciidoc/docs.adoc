@@ -225,3 +225,13 @@ include::{snippets}/auth-controller-test/login/request-fields.adoc[]
 ==== 응답
 include::{snippets}/auth-controller-test/login/http-response.adoc[]
 include::{snippets}/auth-controller-test/login/response-fields.adoc[]
+
+=== 토큰 재발급 (POST /token)
+
+==== 요청
+include::{snippets}/auth-controller-test/extend-login/http-request.adoc[]
+include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/extend-login/http-response.adoc[]
+include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
