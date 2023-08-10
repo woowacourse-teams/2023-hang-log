@@ -1,6 +1,4 @@
 package hanglog.global;
-//
-//import io.restassured.RestAssured;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
