@@ -82,18 +82,14 @@ public class TripExpenseFixture {
     }
 
     private static void addDayLogsToTrip(final Trip trip, final List<DayLog> dayLogs) {
-        for (final DayLog dayLog : dayLogs) {
-            if (!trip.getDayLogs().contains(dayLog)) {
-                trip.getDayLogs().add(dayLog);
-            }
-        }
+        dayLogs.stream()
+                .filter(dayLog -> !trip.getDayLogs().contains(dayLog))
+                .forEachOrdered(dayLog -> trip.getDayLogs().add(dayLog));
     }
 
     private static void addItemsToDayLog(final DayLog dayLog, final List<Item> items) {
-        for (final Item item : items) {
-            if (!dayLog.getItems().contains(item)) {
-                dayLog.getItems().add(item);
-            }
-        }
+        items.stream()
+                .filter(item -> !dayLog.getItems().contains(item))
+                .forEachOrdered(item -> dayLog.getItems().add(item));
     }
 }
