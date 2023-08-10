@@ -1,5 +1,6 @@
 package hanglog.member.presentation;
 
+import hanglog.member.dto.TokenResponse;
 import hanglog.member.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,11 @@ public class OAuthLoginController {
     }
 
     @GetMapping("/code/{provider}")
-    public ResponseEntity<Void> loginOAuth(@PathVariable final String provider, @RequestParam final String code) {
-        final Long memberId = authService.login(provider, code);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<TokenResponse> loginOAuth(
+            @PathVariable final String provider,
+            @RequestParam final String code
+    ) {
+        final TokenResponse tokenResponse = authService.login(provider, code);
+        return ResponseEntity.ok(tokenResponse);
     }
 }

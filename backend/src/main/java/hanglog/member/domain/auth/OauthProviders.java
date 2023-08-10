@@ -7,15 +7,15 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Providers {
+public class OauthProviders {
 
-    private final List<Provider> providers;
+    private final List<OauthProvider> providers;
 
-    public Providers(final List<Provider> providers) {
+    public OauthProviders(final List<OauthProvider> providers) {
         this.providers = providers;
     }
 
-    public Provider mapping(final String providerName) {
+    public OauthProvider mapping(final String providerName) {
         return providers.stream()
                 .filter(provider -> provider.is(providerName))
                 .findFirst()

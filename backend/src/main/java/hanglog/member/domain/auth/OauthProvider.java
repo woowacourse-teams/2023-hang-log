@@ -2,7 +2,7 @@ package hanglog.member.domain.auth;
 
 import org.springframework.web.client.RestTemplate;
 
-public interface Provider {
+public interface OauthProvider {
 
     RestTemplate restTemplate = new RestTemplate();
 
