@@ -26,23 +26,23 @@ VALUES (1, 'etc', 8, now(), now(), 'USABLE');
 
 -- day 1 1st usd food 10
 INSERT INTO place(category_id, latitude, longitude, name, created_at, modified_at, status)
-VALUES (264, 37.8701510000000, -122.2594606000000, '켈리포니아 대학교', now(), now(), 'USABLE');
+VALUES (264, 37.8701510000000, -122.2594606000000, '캘리포니아 대학교', now(), now(), 'USABLE');
 INSERT INTO expense(category_id, currency, amount, created_at, modified_at, status)
 VALUES (100, 'usd', 10, now(), now(), 'USABLE');
 INSERT INTO item(day_log_id, expense_id, place_id, title, item_type, memo, ordinal, rating, created_at, modified_at,
                  status)
-VALUES (1, 1, 1, '켈리포니아 대학 제목', 'SPOT', '켈리포니아 학식 메모', 1, 3.5, now(), now(), 'USABLE');
+VALUES (1, 1, 1, '캘리포니아 대학 제목', 'SPOT', '캘리포니아 학식 메모', 1, 3.5, now(), now(), 'USABLE');
 INSERT INTO image(item_id, `name`, created_at, modified_at, status)
 VALUES (1, 'test1.jpeg', now(), now(), 'USABLE');
 
 -- day 1 2nd usd culture 5
 INSERT INTO place(category_id, latitude, longitude, name, created_at, modified_at, status)
-VALUES (264, 33.6423814000000, -117.8416747000000, '켈리포니아, 어바인 대학', now(), now(), 'USABLE');
+VALUES (264, 33.6423814000000, -117.8416747000000, '캘리포니아, 어바인 대학', now(), now(), 'USABLE');
 INSERT INTO expense(category_id, currency, amount, created_at, modified_at, status)
 VALUES (200, 'usd', 5, now(), now(), 'USABLE');
 INSERT INTO item(day_log_id, expense_id, place_id, title, item_type, memo, ordinal, rating, created_at, modified_at,
                  status)
-VALUES (1, 2, 2, '켈리포니아 어바인 대학 제목', 'SPOT', '켈리포니아 어바인 메모', 2, 3.5, now(), now(), 'USABLE');
+VALUES (1, 2, 2, '캘리포니아 어바인 대학 제목', 'SPOT', '캘리포니아 어바인 메모', 2, 3.5, now(), now(), 'USABLE');
 INSERT INTO image(item_id, `name`, created_at, modified_at, status)
 VALUES (2, 'test2.jpeg', now(), now(), 'USABLE');
 
@@ -51,7 +51,7 @@ INSERT INTO expense(category_id, currency, amount, created_at, modified_at, stat
 VALUES (300, 'usd', 100, now(), now(), 'USABLE');
 INSERT INTO item(day_log_id, expense_id, place_id, title, item_type, memo, ordinal, rating, created_at, modified_at,
                  status)
-VALUES (1, 3, null, '켈리포니아 어바인 쇼핑 제목', 'SPOT', '켈리포니아 어바인 쇼핑 메모', 3, 4.5, now(), now(), 'USABLE');
+VALUES (1, 3, null, '캘리포니아 어바인 쇼핑 제목', 'SPOT', '캘리포니아 어바인 쇼핑 메모', 3, 4.5, now(), now(), 'USABLE');
 INSERT INTO image(item_id, `name`, created_at, modified_at, status)
 VALUES (3, 'test3.jpeg', now(), now(), 'USABLE');
 
