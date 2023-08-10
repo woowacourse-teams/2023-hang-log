@@ -5,7 +5,8 @@ import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKE
 import static hanglog.global.exception.ExceptionCode.INVALID_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
-import hanglog.global.exception.AuthException;
+import hanglog.global.exception.ExpiredPeriodJwtException;
+import hanglog.global.exception.InvalidJwtException;
 import hanglog.member.dto.MemberTokens;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
@@ -57,7 +58,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public void validateToken(final MemberTokens memberTokens) {
+    public void validateTokens(final MemberTokens memberTokens) {
         validateRefreshToken(memberTokens.getRefreshToken());
         validateAccessToken(memberTokens.getAccessToken());
     }
@@ -66,9 +67,9 @@ public class JwtProvider {
         try {
             parseToken(refreshToken);
         } catch (ExpiredJwtException e) {
-            throw new AuthException(EXPIRED_PERIOD_REFRESH_TOKEN);
+            throw new ExpiredPeriodJwtException(EXPIRED_PERIOD_REFRESH_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthException(INVALID_REFRESH_TOKEN);
+            throw new InvalidJwtException(INVALID_REFRESH_TOKEN);
         }
     }
 
@@ -76,9 +77,9 @@ public class JwtProvider {
         try {
             parseToken(accessToken);
         } catch (ExpiredJwtException e) {
-            throw new AuthException(EXPIRED_PERIOD_ACCESS_TOKEN);
+            throw new ExpiredPeriodJwtException(EXPIRED_PERIOD_ACCESS_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthException(INVALID_ACCESS_TOKEN);
+            throw new InvalidJwtException(INVALID_ACCESS_TOKEN);
         }
     }
 
@@ -92,6 +93,7 @@ public class JwtProvider {
     public String getSubject(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
+                .setAllowedClockSkewSeconds(refreshExpirationTime)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -101,11 +103,12 @@ public class JwtProvider {
     public MemberTokens regenerateAccessToken(final String refreshToken, final String accessToken) {
         validateRefreshToken(refreshToken);
         try {
-            parseToken(refreshToken);
-        } catch (ExpiredJwtException e) {
-            final String renewalAccessToken = createToken(getSubject(accessToken), accessExpirationTime);
+            validateAccessToken(accessToken);
+        } catch (ExpiredPeriodJwtException e) {
+            final String subject = getSubject(accessToken);
+            final String renewalAccessToken = createToken(subject, accessExpirationTime);
             return new MemberTokens(refreshToken, renewalAccessToken);
         }
-        throw new AuthException(INVALID_ACCESS_TOKEN);
+        throw new InvalidJwtException(INVALID_ACCESS_TOKEN);
     }
 }
