@@ -1,4 +1,4 @@
-package filter;
+package hanglog.filter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
