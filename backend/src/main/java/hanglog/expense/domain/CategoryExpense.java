@@ -2,7 +2,6 @@ package hanglog.expense.domain;
 
 import hanglog.category.domain.Category;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import lombok.Getter;
 
 @Getter
@@ -24,6 +23,6 @@ public class CategoryExpense {
         if (totalAmount.equals(new Amount(0))) {
             return BigDecimal.ZERO;
         }
-        return amount.multiply(PERCENTAGE_CONSTANT).divide(totalAmount).getAmount();
+        return amount.multiply(PERCENTAGE_CONSTANT).divide(totalAmount).getValue();
     }
 }
