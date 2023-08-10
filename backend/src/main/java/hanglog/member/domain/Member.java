@@ -37,6 +37,8 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
+    private String refreshToken;
+
     @Enumerated(value = EnumType.STRING)
     private MemberState status;
 
@@ -50,9 +52,13 @@ public class Member {
     public Member(final String socialLoginId, final String nickname, final String imageUrl) {
         this.socialLoginId = socialLoginId;
         this.nickname = nickname;
-        this.imageUrl = imageUrl;
         this.lastLoginDate = LocalDateTime.now();
-        this.createdAt = LocalDateTime.now();
+        this.imageUrl = imageUrl;
         this.status = ACTIVE;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public void assignRefreshToken(final String token) {
+        this.refreshToken = token;
     }
 }
