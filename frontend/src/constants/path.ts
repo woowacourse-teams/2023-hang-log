@@ -5,5 +5,6 @@ export const PATH = {
   TRIP: (tripId: number | string) => `/trip/${tripId}`,
   EXPENSE: (tripId: number | string) => `/trip/${tripId}/expense`,
   SHARED: (code: string) => `/trip/share/${code}`,
+  MY_PAGE: '/users/:userId',
   RELOAD: 0,
 } as const;

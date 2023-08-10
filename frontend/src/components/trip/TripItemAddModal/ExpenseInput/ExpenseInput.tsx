@@ -46,7 +46,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
         >
           {Object.entries(CURRENCY_ICON).map(([key, value]) => (
             <option key={key} value={key}>
-              {value}
+              {value}&nbsp;&nbsp;&nbsp;&nbsp;({key})
             </option>
           ))}
         </Select>

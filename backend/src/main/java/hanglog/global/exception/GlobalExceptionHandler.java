@@ -53,6 +53,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(EXCEED_IMAGE_CAPACITY.getCode(), message));
     }
 
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthException(final AuthException e) {
+        return ResponseEntity.internalServerError()
+                .body(new ExceptionResponse(e.getCode(), e.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(final Exception e) {
         log.error(e.getMessage(), e);

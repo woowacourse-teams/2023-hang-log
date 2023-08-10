@@ -44,3 +44,6 @@ src/main/resources/static/docs/
 
 ### Ignore .DS_Store ###
 **/.DS_Store
+
+### application*.yml ###
+/src/main/resources/*.yml

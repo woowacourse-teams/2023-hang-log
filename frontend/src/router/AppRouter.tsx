@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ExpensePage from '@pages/ExpensePage/ExpensePage';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
+import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<ExpensePageSkeleton />}>
             <ExpensePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: PATH.MY_PAGE,
+        element: (
+          <Suspense fallback={<div>LOADING</div>}>
+            <MyPage />
           </Suspense>
         ),
       },

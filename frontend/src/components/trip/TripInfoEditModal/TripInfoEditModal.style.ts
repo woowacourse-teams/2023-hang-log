@@ -6,6 +6,7 @@ export const wrapperStyling = css({
 
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing4})`,
+    height: `calc(100vh - ${Theme.spacer.spacing9})`,
   },
 });
 

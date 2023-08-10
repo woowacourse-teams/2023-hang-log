@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ExceptionCode {
 
-    INVALID_REQUEST(0000, "올바르지 않은 요청입니다."),
+    INVALID_REQUEST(1000, "올바르지 않은 요청입니다."),
 
     NOT_FOUND_TRIP_ID(1001, "요청한 ID에 해당하는 여행이 존재하지 않습니다."),
     NOT_FOUND_DAY_LOG_ID(1002, "요청한 ID에 해당하는 데이로그가 존재하지 않습니다."),
@@ -28,6 +28,8 @@ public enum ExceptionCode {
     INVALID_NULL_PLACE(3003, "아이템의 장소 정보가 필요합니다."),
     INVALID_NOT_NULL_PLACE(3004, "아이템의 장소 정보가 불필요합니다."),
     INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT(3005, "아이템이 기타일 때, 장소를 업데이트할 수 없습니다."),
+    INVALID_CURRENCY_DATE_WHEN_WEEKEND(3006, "주말의 공공 환율 api를 조회할 수 없습니다."),
+    INVALID_DATE_ALREADY_EXIST(3007, "요청한 날짜의 환율 정보는 이미 존재합니다."),
 
     INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
 
@@ -40,6 +42,10 @@ public enum ExceptionCode {
     FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다."),
 
     NOT_ASSOCIATE_DAYLOG_WITH_TRIP(6001, "요청한 DayLog와 Trip은 연관관계가 아닙니다."),
+
+    INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
+    NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),
+    FAIL_TO_CONVERT_URL_PARAMETER(9003, "Url Parameter 변환 중 오류가 발생했습니다."),
 
     INTERNAL_SEVER_ERROR(9999, "서버 에러가 발생하였습니다. 관리자에게 문의해 주세요.");
 

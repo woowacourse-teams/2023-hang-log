@@ -1,3 +1,4 @@
+import { DAYLOG_TITLE_MAX_LENGTH } from '@constants/ui';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -36,6 +37,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
     <input
       css={inputStyling}
       value={title}
+      maxLength={DAYLOG_TITLE_MAX_LENGTH}
       placeholder="소제목"
       onChange={handleTitleChange}
       onBlur={handleInputBlur}
