@@ -78,7 +78,9 @@ export const switchToggleStyling = css({
 
 export const shareUrlWrapperStyling = css({
   display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
+  width: '100%',
 
   border: `1px solid ${Theme.color.gray200}`,
   borderRadius: Theme.borderRadius.small,

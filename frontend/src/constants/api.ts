@@ -15,6 +15,7 @@ export const END_POINTS = {
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
+  SHARE: (tripId: number | string) => `/trips/${tripId}/share`,
 } as const;
 
 export const NETWORK = {

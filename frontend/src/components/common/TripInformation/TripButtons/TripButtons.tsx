@@ -2,11 +2,12 @@ import MoreIcon from '@assets/svg/more-icon.svg';
 import ShareIcon from '@assets/svg/share-icon.svg';
 import { PATH } from '@constants/path';
 import { Button, Flex, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
+import { useTripShareStatusMutation } from '@hooks/api/useTripShareStatusMutation';
 
 import {
   copyButtonStyling,
@@ -30,9 +31,25 @@ interface TripButtonsProps {
 export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
+  const patchTripSharedStatus = useTripShareStatusMutation();
   const [isSharable, setIsSharable] = useState(sharedStatus);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
+
+  useEffect(() => {
+    patchTripSharedStatus.mutate(
+      {
+        tripId,
+        sharedStatus,
+      },
+      {
+        onSuccess: ({ sharedUrl }: { sharedUrl: string | null }) => {
+          setShareUrl(sharedUrl);
+        },
+      }
+    );
+  }, []);
 
   const goToEditPage = () => {
     navigate(PATH.EDIT_TRIP(tripId));
@@ -44,11 +61,23 @@ export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
 
   const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsSharable(e.target.checked);
+
+    patchTripSharedStatus.mutate(
+      {
+        tripId,
+        sharedStatus: e.target.checked,
+      },
+      {
+        onSuccess: ({ sharedUrl }: { sharedUrl: string | null }) => {
+          setShareUrl(sharedUrl);
+        },
+      }
+    );
   };
 
   const handleCopyButtonClick = () => {
     navigator.clipboard
-      .writeText('sdhfkjsd')
+      .writeText(shareUrl ?? '')
       .then(() => {
         console.log('success');
       })
@@ -95,7 +124,7 @@ export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
             </div>
             {isSharable && (
               <Flex css={shareUrlWrapperStyling}>
-                <div css={shareUrlStyling}>hanglog.com/trip/1/share/:code</div>
+                <div css={shareUrlStyling}>{shareUrl}</div>
                 <button type="button" onClick={handleCopyButtonClick} css={copyButtonStyling}>
                   링크 복사
                 </button>
