@@ -27,7 +27,7 @@ public class ShareController {
     }
 
     @PatchMapping("/trips/{tripId}/share")
-    public ResponseEntity<TripSharedCodeResponse> createOrUpdateShareTrip(
+    public ResponseEntity<TripSharedCodeResponse> updateSharedStatus(
             @PathVariable final Long tripId,
             @RequestBody @Valid final TripSharedStatusRequest tripSharedStatusRequest
     ) {

@@ -1,11 +1,14 @@
 package hanglog.share.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.share.dto.request.TripSharedStatusRequest;
 import hanglog.share.dto.response.TripSharedCodeResponse;
 import hanglog.trip.domain.City;
@@ -28,12 +31,20 @@ public class ShareService {
     private final TripCityRepository tripCityRepository;
 
     public TripDetailResponse getTripDetail(final String sharedCode) {
-        final Long tripId = sharedTripRepository.findByShareCode(sharedCode)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE)).getId();
+        final SharedTrip sharedTrip = sharedTripRepository.findByShareCode(sharedCode)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
+        validateSharedStatus(sharedTrip.getSharedStatus());
+        final Long tripId = sharedTrip.getTrip().getId();
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
         return TripDetailResponse.of(trip, cities);
+    }
+
+    private void validateSharedStatus(final SharedStatusType sharedStatusType) {
+        if (sharedStatusType == UNSHARED) {
+            throw new BadRequestException(INVALID_SHARE_CODE);
+        }
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
