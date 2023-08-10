@@ -14,7 +14,7 @@ import {
   wrapperStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
-interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
+interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs' | 'sharedStatus'> {
   isOpen: boolean;
   onClose: () => void;
 }

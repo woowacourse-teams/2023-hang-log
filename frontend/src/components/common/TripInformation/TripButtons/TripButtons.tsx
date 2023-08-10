@@ -3,6 +3,7 @@ import ShareIcon from '@assets/svg/share-icon.svg';
 import { PATH } from '@constants/path';
 import { Button, Flex, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
@@ -22,17 +23,38 @@ import {
 
 interface TripButtonsProps {
   tripId: number;
+
+  sharedStatus: boolean;
 }
 
-export const TripButtons = ({ tripId }: TripButtonsProps) => {
+export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
-  const [isSharable, setIsSharable] = useState(false);
+  const [isSharable, setIsSharable] = useState(sharedStatus);
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
 
   const goToEditPage = () => {
     navigate(PATH.EDIT_TRIP(tripId));
+  };
+
+  const goToExpensePage = () => {
+    navigate(PATH.EXPENSE(tripId));
+  };
+
+  const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsSharable(e.target.checked);
+  };
+
+  const handleCopyButtonClick = () => {
+    navigator.clipboard
+      .writeText('sdhfkjsd')
+      .then(() => {
+        console.log('success');
+      })
+      .catch(() => {
+        console.log('error');
+      });
   };
 
   const handleDeleteButtonClick = () => {
@@ -46,12 +68,7 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
 
   return (
     <>
-      <Button
-        type="button"
-        variant="primary"
-        size="small"
-        onClick={() => navigate(PATH.EXPENSE(tripId))}
-      >
+      <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
         가계부
       </Button>
       <Menu closeMenu={closeShareMenu}>
@@ -72,16 +89,14 @@ export const TripButtons = ({ tripId }: TripButtonsProps) => {
                 role="switch"
                 aria-checked={isSharable}
                 checked={isSharable}
-                onChange={(e) => {
-                  setIsSharable(e.target.checked);
-                }}
+                onChange={handleShareStateChange}
                 css={switchToggleStyling}
               />
             </div>
             {isSharable && (
               <Flex css={shareUrlWrapperStyling}>
-                <div css={shareUrlStyling}>hanglog.com.share/blahbalhblah</div>
-                <button type="button" css={copyButtonStyling}>
+                <div css={shareUrlStyling}>hanglog.com/trip/1/share/:code</div>
+                <button type="button" onClick={handleCopyButtonClick} css={copyButtonStyling}>
                   링크 복사
                 </button>
               </Flex>

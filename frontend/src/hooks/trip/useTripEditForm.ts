@@ -16,7 +16,7 @@ export const useTripEditForm = (
     endDate,
     description,
     imageUrl,
-  }: Omit<TripData, 'dayLogs'>,
+  }: Omit<TripData, 'dayLogs' | 'sharedStatus'>,
   onClose: () => void
 ) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
