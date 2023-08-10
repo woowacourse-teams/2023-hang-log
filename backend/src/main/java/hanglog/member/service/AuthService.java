@@ -35,4 +35,12 @@ public class AuthService {
     public MemberTokens renewalAccessToken(final String refreshToken, final String accessToken) {
         return jwtProvider.regenerateAccessToken(refreshToken, accessToken);
     }
+
+    public void removeMemberRefreshToken(final String refreshToken, final String accessToken) {
+        jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
+        final Long memberId = Long.valueOf(jwtProvider.getSubject(accessToken));
+        final Member member = memberRepository.findById(memberId).orElseThrow();
+        member.removeRefreshToken();
+        memberRepository.save(member);
+    }
 }

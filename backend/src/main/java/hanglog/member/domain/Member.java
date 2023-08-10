@@ -61,4 +61,8 @@ public class Member {
     public void assignRefreshToken(final String token) {
         this.refreshToken = token;
     }
+
+    public void removeRefreshToken() {
+        this.refreshToken = null;
+    }
 }

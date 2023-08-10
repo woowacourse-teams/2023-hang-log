@@ -47,4 +47,13 @@ public class AuthController {
         response.addCookie(cookie);
         return ResponseEntity.ok(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @CookieValue("refresh-token") String refreshToken,
+            @RequestBody final String accessToken
+    ) {
+        authService.removeMemberRefreshToken(refreshToken, accessToken);
+        return ResponseEntity.ok().build();
+    }
 }
