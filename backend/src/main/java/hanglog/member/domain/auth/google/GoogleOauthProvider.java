@@ -4,7 +4,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 
 import hanglog.global.exception.AuthException;
-import hanglog.member.domain.auth.AccessToken;
+import hanglog.member.domain.auth.OauthAccessToken;
 import hanglog.member.domain.auth.OauthProvider;
 import hanglog.member.domain.auth.UserInfo;
 import java.util.Optional;
@@ -77,11 +77,11 @@ public class GoogleOauthProvider implements OauthProvider {
         params.add("grant_type", "authorization_code");
         final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params);
 
-        final ResponseEntity<AccessToken> accessTokenResponse = restTemplate.exchange(
+        final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
                 tokenUri,
                 HttpMethod.POST,
                 accessTokenRequestEntity,
-                AccessToken.class
+                OauthAccessToken.class
         );
 
         return Optional.ofNullable(accessTokenResponse.getBody())

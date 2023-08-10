@@ -3,9 +3,10 @@ package hanglog.member.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
-public class TokenResponse {
+@Getter
+public class MemberTokens {
 
-    private final String token;
+    private final String refreshToken;
+    private final String accessToken;
 }

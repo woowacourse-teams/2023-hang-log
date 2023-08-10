@@ -6,7 +6,7 @@ import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE
 import hanglog.global.exception.AuthException;
 import hanglog.member.domain.auth.OauthProvider;
 import hanglog.member.domain.auth.UserInfo;
-import hanglog.member.domain.auth.AccessToken;
+import hanglog.member.domain.auth.OauthAccessToken;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -80,11 +80,11 @@ public class KakaoOauthProvider implements OauthProvider {
         params.add("grant_type", "authorization_code");
         final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
 
-        final ResponseEntity<AccessToken> accessTokenResponse = restTemplate.exchange(
+        final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
                 tokenUri,
                 HttpMethod.POST,
                 accessTokenRequestEntity,
-                AccessToken.class
+                OauthAccessToken.class
         );
 
         return Optional.ofNullable(accessTokenResponse.getBody())

@@ -6,7 +6,8 @@ import hanglog.member.domain.auth.OauthProvider;
 import hanglog.member.domain.auth.OauthProviders;
 import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.TokenResponse;
+import hanglog.member.dto.AccessTokenResponse;
+import hanglog.member.dto.MemberTokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +21,15 @@ public class AuthService {
     private final OauthProviders oauthProviders;
     private final JwtProvider jwtProvider;
 
-    public TokenResponse login(final String providerName, final String code) {
+    public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
         final UserInfo userInfo = provider.getUserInfo(code);
-        final Member member = save(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
-        final String accessToken = jwtProvider.createToken(member.getId());
-        return new TokenResponse(accessToken);
+        final Member member = findOrCreateMember(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
+        return jwtProvider.generateLoginToken(member.getId().toString());
     }
 
-    private Member save(final String socialLoginId, final String nickname, final String imageUrl) {
-        final Member member = new Member(socialLoginId, nickname, imageUrl);
+    private Member findOrCreateMember(final String socialLoginId, final String nickname, final String imageUrl) {
         return memberRepository.findBySocialLoginId(socialLoginId)
-                .orElseGet(() -> memberRepository.save(member));
+                .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
     }
 }

@@ -1,10 +1,13 @@
 package hanglog.member.presentation;
 
-import hanglog.member.dto.TokenResponse;
+import hanglog.member.dto.AccessTokenResponse;
+import hanglog.member.dto.MemberTokens;
 import hanglog.member.service.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,12 +20,16 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("/login/{provider}")
-    public ResponseEntity<TokenResponse> loginOAuth(
+    @PostMapping("/login/{provider}")
+    public ResponseEntity<AccessTokenResponse> loginOAuth(
             @PathVariable final String provider,
-            @RequestParam final String code
+            @RequestParam final String code,
+            HttpServletResponse response
     ) {
-        final TokenResponse tokenResponse = authService.login(provider, code);
-        return ResponseEntity.ok(tokenResponse);
+        final MemberTokens memberTokens = authService.login(provider, code);
+        final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+        return ResponseEntity.ok(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
 }
