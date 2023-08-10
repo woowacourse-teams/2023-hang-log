@@ -41,12 +41,8 @@ export const tripsHandlers = [
 
   rest.patch(`${END_POINTS.TRIPS}/:tripId/share`, async (req, res, ctx) => {
     const { sharedStatus } = await req.json();
-    const sharedUrl = sharedStatus ? 'https://hanglog.com/sharedTrips/xxxxxxx' : null;
+    const sharedCode = sharedStatus ? '123456' : null;
 
-    return res(ctx.status(200), ctx.json({ sharedUrl }));
-  }),
-
-  rest.get(`${END_POINTS.TRIPS}/:tripId/share`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ sharedCode: '123456' }));
+    return res(ctx.status(200), ctx.json({ sharedCode }));
   }),
 ];

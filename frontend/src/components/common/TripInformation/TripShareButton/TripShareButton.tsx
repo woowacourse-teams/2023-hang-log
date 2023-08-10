@@ -1,4 +1,6 @@
 import ShareIcon from '@assets/svg/share-icon.svg';
+import { BASE_URL } from '@constants/api';
+import { PATH } from '@constants/path';
 import { toastListState } from '@store/toast';
 import { Flex, Menu, MenuList, useOverlay } from 'hang-log-design-system';
 import { useEffect, useState } from 'react';
@@ -38,29 +40,33 @@ const TripShareButton = ({ tripId, sharedStatus }: TripShareButtonProps) => {
         sharedStatus,
       },
       {
-        onSuccess: (sharedUrl: string | null) => {
-          if (!sharedUrl) return;
+        onSuccess: (sharedCode: string | null) => {
+          if (!sharedCode || !!shareUrl) return;
 
-          setShareUrl(sharedUrl);
+          setShareUrl(BASE_URL + PATH.SHARE(sharedCode));
         },
       }
     );
   };
 
   useEffect(() => {
-    communicateWithServer(sharedStatus);
+    if (sharedStatus) {
+      communicateWithServer(sharedStatus);
+    }
   }, []);
 
   const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isShared = e.target.checked;
+    const isChecked = e.target.checked;
 
-    setIsSharable(isShared);
-    communicateWithServer(isShared);
+    setIsSharable(isChecked);
+    communicateWithServer(isChecked);
   };
 
   const handleCopyButtonClick = () => {
+    if (!shareUrl) return;
+
     navigator.clipboard
-      .writeText(shareUrl ?? '')
+      .writeText(shareUrl)
       .then(() => {
         setToastList((prevToastList) => [
           ...prevToastList,
