@@ -1,38 +1,36 @@
 package hanglog.expense.service;
 
 
+import static hanglog.category.fixture.CategoryFixture.ACCOMMODATION;
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
+import static hanglog.category.fixture.CategoryFixture.FOOD;
+import static hanglog.category.fixture.CategoryFixture.SHOPPING;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
+import static hanglog.expense.fixture.ExchangeableExpenseFixture.EUR_100_SHOPPING;
+import static hanglog.expense.fixture.ExchangeableExpenseFixture.KRW_100_FOOD;
+import static hanglog.expense.fixture.ExchangeableExpenseFixture.USD_100_ACCOMMODATION;
+import static hanglog.expense.fixture.TripExpenseFixture.DAYLOG_1_FOR_EXPENSE;
+import static hanglog.expense.fixture.TripExpenseFixture.DAYLOG_2_FOR_EXPENSE;
+import static hanglog.expense.fixture.TripExpenseFixture.TRIP_FOR_EXPENSE;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
-import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
-import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
-import static hanglog.trip.fixture.ExpenseFixture.EURO_10000;
-import static hanglog.trip.fixture.ExpenseFixture.JPY_10000;
-import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
-import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
-import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
-import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.repository.CategoryRepository;
-import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.repository.CurrencyRepository;
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.dto.response.CategoryExpenseResponse;
-import hanglog.expense.dto.response.DayLogExpenseResponse;
-import hanglog.expense.dto.response.ItemDetailResponse;
 import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.expense.fixture.ExchangeableExpenseFixture.ExchangeableExpense;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -67,24 +65,54 @@ class ExpenseServiceTest {
     @Test
     void getAllExpenses() {
         // given
+        final List<TripCity> tripCities = List.of(
+                new TripCity(TRIP_FOR_EXPENSE, LONDON),
+                new TripCity(TRIP_FOR_EXPENSE, TOKYO)
+        );
         when(tripRepository.findById(1L))
-                .thenReturn(Optional.of(LONDON_TO_JAPAN));
+                .thenReturn(Optional.of(TRIP_FOR_EXPENSE));
         when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(tripCityRepository.findByTripId(1L))
-                .thenReturn(List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)));
+                .thenReturn(tripCities);
         when(categoryRepository.findExpenseCategory())
                 .thenReturn(EXPENSE_CATEGORIES);
 
-        final List<ItemDetailResponse> expectItemList = List.of(
-                ItemDetailResponse.of(LONDON_EYE_ITEM),
-                ItemDetailResponse.of(JAPAN_HOTEL),
-                ItemDetailResponse.of(AIRPLANE_ITEM)
-        );
+        final Amount day1Amount = getTotalAmount(Arrays.asList(KRW_100_FOOD, EUR_100_SHOPPING));
+        final Amount day2Amount = getTotalAmount(List.of(USD_100_ACCOMMODATION));
+        final Amount totalAmount = getTotalAmount(Arrays.asList(
+                KRW_100_FOOD,
+                EUR_100_SHOPPING,
+                USD_100_ACCOMMODATION
+        ));
 
-        final int japanAmount = (int) (JPY_10000.getAmount() * DEFAULT_CURRENCY.getUnitRateOfJpy());
-        final int londonAmount = (int) (EURO_10000.getAmount() * DEFAULT_CURRENCY.getEur());
-        final int totalAmount = japanAmount + londonAmount * 2;
+        final TripExpenseResponse expected = TripExpenseResponse.of(
+                TRIP_FOR_EXPENSE,
+                totalAmount,
+                tripCities,
+                List.of(
+                        new CategoryExpense(
+                                FOOD,
+                                KRW_100_FOOD.exchangeAmount,
+                                totalAmount
+                        ),
+                        new CategoryExpense(
+                                SHOPPING,
+                                EUR_100_SHOPPING.exchangeAmount,
+                                totalAmount
+                        ),
+                        new CategoryExpense(
+                                ACCOMMODATION,
+                                USD_100_ACCOMMODATION.exchangeAmount,
+                                totalAmount
+                        )
+                ),
+                DEFAULT_CURRENCY,
+                List.of(
+                        new DayLogExpense(DAYLOG_1_FOR_EXPENSE, day1Amount),
+                        new DayLogExpense(DAYLOG_2_FOR_EXPENSE, day2Amount)
+                )
+        );
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
@@ -93,72 +121,19 @@ class ExpenseServiceTest {
         assertSoftly(softly -> {
             softly.assertThat(actual)
                     .usingRecursiveComparison()
-                    .ignoringFields("categories", "categoryExpense", "dayLogs")
-                    .isEqualTo(
-                            TripExpenseResponse.of(
-                                    LONDON_TO_JAPAN,
-                                    totalAmount,
-                                    List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                                    List.of(
-                                            new CategoryExpense(
-                                                    EXPENSE_CATEGORIES.get(1),
-                                                    londonAmount * 2,
-                                                    totalAmount
-                                            ),
-                                            new CategoryExpense(
-                                                    EXPENSE_CATEGORIES.get(1),
-                                                    londonAmount * 2,
-                                                    totalAmount
-                                            )
-                                    ),
-                                    DEFAULT_CURRENCY,
-                                    List.of(
-                                            new DayLogExpense(EXPENSE_JAPAN_DAYLOG, japanAmount),
-                                            new DayLogExpense(EXPENSE_LONDON_DAYLOG, londonAmount * 2)
-                                    )
-                            )
-                    );
+                    .ignoringFields("categories")
+                    .isEqualTo(expected);
             softly.assertThat(actual.getCategories())
-                    .usingRecursiveFieldByFieldElementComparator()
-                    .contains(
-                            new CategoryExpenseResponse(
-                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(3)),
-                                    japanAmount,
-                                    BigDecimal.valueOf((double) 100 * japanAmount / totalAmount)
-                                            .setScale(2, RoundingMode.CEILING)),
-                            new CategoryExpenseResponse(
-                                    CategoryResponse.of(EXPENSE_CATEGORIES.get(1)),
-                                    londonAmount * 2,
-                                    BigDecimal.valueOf((double) 100 * londonAmount * 2 / totalAmount)
-                                            .setScale(2, RoundingMode.CEILING))
-                    );
-            softly.assertThat(actual.getDayLogs())
-                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("items")
-                    .contains(
-                            new DayLogExpenseResponse(
-                                    1L,
-                                    1,
-                                    LocalDate.of(2023, 7, 1),
-                                    londonAmount * 2,
-                                    List.of()
-                            ),
-                            new DayLogExpenseResponse(
-                                    1L,
-                                    2,
-                                    LocalDate.of(2023, 7, 2),
-                                    japanAmount,
-                                    List.of()
-                            )
-                    );
-
-            for (final DayLogExpenseResponse response : actual.getDayLogs()) {
-                for (final ItemDetailResponse item : response.getItems()) {
-                    softly.assertThat(expectItemList)
-                            .usingRecursiveFieldByFieldElementComparator()
-                            .contains(item);
-                }
-            }
+                    .usingRecursiveFieldByFieldElementComparatorOnFields()
+                    .containsAll(expected.getCategories());
         });
+    }
+
+    public Amount getTotalAmount(final List<ExchangeableExpense> expenses) {
+        return expenses.stream()
+                .map(exchangeableExpense -> exchangeableExpense.exchangeAmount)
+                .reduce(Amount::add)
+                .orElseGet(() -> new Amount(BigDecimal.ZERO));
     }
 
     @DisplayName("경비가 없는 여행일 경우 총 경비가 0으로 반환된다.")
