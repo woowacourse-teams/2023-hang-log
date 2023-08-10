@@ -17,6 +17,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
@@ -44,11 +45,11 @@ class ExpenseControllerTest extends RestDocsTest {
         // given
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
-                20000,
+                new Amount(20000),
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), 20000, 20000)),
+                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), new Amount(20000), new Amount(20000))),
                 DEFAULT_CURRENCY,
-                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, 20000))
+                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, new Amount(20000)))
         );
 
         // when & then

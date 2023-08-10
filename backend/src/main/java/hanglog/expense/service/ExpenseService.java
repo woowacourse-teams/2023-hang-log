@@ -8,6 +8,7 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.domain.Expense;
@@ -43,15 +44,15 @@ public class ExpenseService {
         final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
                 .orElse(findOldestCurrency());
 
-        final Map<DayLog, Integer> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
-        final Map<Category, Integer> categoryAmounts = getCategoryAmounts();
+        final Map<DayLog, Amount> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
+        final Map<Category, Amount> categoryAmounts = getCategoryAmounts();
         final List<TripCity> tripCities = tripCityRepository.findByTripId(tripId);
 
         for (final DayLog dayLog : trip.getDayLogs()) {
             calculateAmounts(dayLog, currency, dayLogAmounts, categoryAmounts);
         }
 
-        final int totalAmount = calculateTotalAmount(dayLogAmounts);
+        final Amount totalAmount = calculateTotalAmount(dayLogAmounts);
 
         final List<CategoryExpense> categoryExpenses = categoryAmounts.entrySet().stream()
                 .map(entry -> new CategoryExpense(entry.getKey(), entry.getValue(), totalAmount))
@@ -79,46 +80,48 @@ public class ExpenseService {
     private void calculateAmounts(
             final DayLog dayLog,
             final Currency currency,
-            final Map<DayLog, Integer> dayLogAmounts,
-            final Map<Category, Integer> categoryAmounts
+            final Map<DayLog, Amount> dayLogAmounts,
+            final Map<Category, Amount> categoryAmounts
     ) {
         for (final Item item : dayLog.getItems()) {
             final Optional<Expense> expense = Optional.ofNullable(item.getExpense());
 
             if (expense.isPresent()) {
-                final int dayLogAmount = dayLogAmounts.get(dayLog);
-                dayLogAmounts.put(dayLog, dayLogAmount + changeToKRW(expense.get(), currency));
+                final Amount KRWAmount = changeToKRW(expense.get(), currency);
 
-                final int categoryAmount = categoryAmounts.get(expense.get().getCategory());
-                categoryAmounts.put(expense.get().getCategory(), categoryAmount + changeToKRW(expense.get(), currency));
+                final Amount dayLogAmount = dayLogAmounts.get(dayLog);
+                dayLogAmounts.put(dayLog, dayLogAmount.add(KRWAmount));
+
+                final Amount categoryAmount = categoryAmounts.get(expense.get().getCategory());
+                categoryAmounts.put(expense.get().getCategory(), categoryAmount.add(KRWAmount));
             }
         }
     }
 
-    private int changeToKRW(final Expense expense, final Currency currency) {
+    private Amount changeToKRW(final Expense expense, final Currency currency) {
         final double rate = CurrencyType.getMappedCurrencyRate(expense.getCurrency(), currency);
-        return (int) (expense.getAmount() * rate);
+        return expense.getAmount().multiply(rate);
     }
 
-    private int calculateTotalAmount(final Map<DayLog, Integer> dayLogAmounts) {
+    private Amount calculateTotalAmount(final Map<DayLog, Amount> dayLogAmounts) {
         return dayLogAmounts.values().stream()
-                .reduce(Integer::sum)
-                .orElse(0);
+                .reduce(Amount::add)
+                .orElse(new Amount(0));
     }
 
-    private Map<DayLog, Integer> getDayLogAmounts(final List<DayLog> dayLogs) {
-        final Map<DayLog, Integer> dayLogAmounts = new LinkedHashMap<>();
+    private Map<DayLog, Amount> getDayLogAmounts(final List<DayLog> dayLogs) {
+        final Map<DayLog, Amount> dayLogAmounts = new LinkedHashMap<>();
         for (final DayLog dayLog : dayLogs) {
-            dayLogAmounts.put(dayLog, 0);
+            dayLogAmounts.put(dayLog, new Amount(0));
         }
         return dayLogAmounts;
     }
 
-    private Map<Category, Integer> getCategoryAmounts() {
+    private Map<Category, Amount> getCategoryAmounts() {
         final List<Category> categories = categoryRepository.findExpenseCategory();
-        final Map<Category, Integer> categoryAmounts = new LinkedHashMap<>();
+        final Map<Category, Amount> categoryAmounts = new LinkedHashMap<>();
         for (final Category category : categories) {
-            categoryAmounts.put(category, 0);
+            categoryAmounts.put(category, new Amount(0));
         }
         return categoryAmounts;
     }

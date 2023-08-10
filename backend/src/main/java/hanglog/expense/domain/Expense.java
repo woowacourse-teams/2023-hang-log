@@ -33,7 +33,7 @@ public class Expense extends BaseEntity {
     private String currency;
 
     @Column(nullable = false)
-    private Double amount;
+    private Amount amount;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", nullable = false)
@@ -42,7 +42,7 @@ public class Expense extends BaseEntity {
     public Expense(
             final Long id,
             final String currency,
-            final Double amount,
+            final Amount amount,
             final Category category
     ) {
         this.id = id;
@@ -53,7 +53,7 @@ public class Expense extends BaseEntity {
 
     public Expense(
             final String currency,
-            final Double amount,
+            final Amount amount,
             final Category category
     ) {
         this(null, currency, amount, category);

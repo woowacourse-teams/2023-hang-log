@@ -11,20 +11,19 @@ public class CategoryExpense {
     private static final int PERCENTAGE_CONSTANT = 100;
 
     private final Category category;
-    private final int amount;
+    private final Amount amount;
     private final BigDecimal percentage;
 
-    public CategoryExpense(final Category category, final int amount, final int totalAmount) {
+    public CategoryExpense(final Category category, final Amount amount, final Amount totalAmount) {
         this.category = category;
         this.amount = amount;
         this.percentage = calculatePercentage(amount, totalAmount);
     }
 
-    private BigDecimal calculatePercentage(final int amount, final int totalAmount) {
-        if (totalAmount == 0) {
+    private BigDecimal calculatePercentage(final Amount amount, final Amount totalAmount) {
+        if (totalAmount.equals(new Amount(0))) {
             return BigDecimal.ZERO;
         }
-        return BigDecimal.valueOf((double) PERCENTAGE_CONSTANT * amount / totalAmount)
-                .setScale(2, RoundingMode.CEILING);
+        return amount.multiply(PERCENTAGE_CONSTANT).divide(totalAmount).getAmount();
     }
 }
