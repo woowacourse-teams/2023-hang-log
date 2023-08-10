@@ -42,8 +42,8 @@ public class ShareService {
                 .toList();
     }
 
-    public TripSharedCodeResponse createOrUpdateSharedTrip(final Long tripId,
-                                                           final TripSharedStatusRequest tripSharedStatusRequest) {
+    public TripSharedCodeResponse updateSharedStatus(final Long tripId,
+                                                     final TripSharedStatusRequest tripSharedStatusRequest) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
 

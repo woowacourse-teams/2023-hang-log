@@ -31,7 +31,7 @@ public class ShareController {
             @PathVariable final Long tripId,
             @RequestBody @Valid final TripSharedStatusRequest tripSharedStatusRequest
     ) {
-        final TripSharedCodeResponse tripSharedCodeResponse = shareService.createOrUpdateSharedTrip(tripId,
+        final TripSharedCodeResponse tripSharedCodeResponse = shareService.updateSharedStatus(tripId,
                 tripSharedStatusRequest);
         return ResponseEntity.ok().body(tripSharedCodeResponse);
     }
