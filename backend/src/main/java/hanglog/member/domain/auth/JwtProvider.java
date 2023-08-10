@@ -58,13 +58,13 @@ public class JwtProvider {
     }
 
     public void validateToken(final MemberTokens memberTokens) {
-        validateRefreshToken(memberTokens);
-        validateAccessToken(memberTokens);
+        validateRefreshToken(memberTokens.getRefreshToken());
+        validateAccessToken(memberTokens.getAccessToken());
     }
 
-    private void validateRefreshToken(final MemberTokens memberTokens) {
+    private void validateRefreshToken(final String refreshToken) {
         try {
-            parseToken(memberTokens.getRefreshToken());
+            parseToken(refreshToken);
         } catch (ExpiredJwtException e) {
             throw new AuthException(EXPIRED_PERIOD_REFRESH_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
@@ -72,9 +72,9 @@ public class JwtProvider {
         }
     }
 
-    private void validateAccessToken(final MemberTokens memberTokens) {
+    private void validateAccessToken(final String accessToken) {
         try {
-            parseToken(memberTokens.getAccessToken());
+            parseToken(accessToken);
         } catch (ExpiredJwtException e) {
             throw new AuthException(EXPIRED_PERIOD_ACCESS_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {
@@ -96,5 +96,16 @@ public class JwtProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public MemberTokens regenerateAccessToken(final String refreshToken, final String accessToken) {
+        validateRefreshToken(refreshToken);
+        try {
+            parseToken(refreshToken);
+        } catch (ExpiredJwtException e) {
+            final String renewalAccessToken = createToken(getSubject(accessToken), accessExpirationTime);
+            return new MemberTokens(refreshToken, renewalAccessToken);
+        }
+        throw new AuthException(INVALID_ACCESS_TOKEN);
     }
 }

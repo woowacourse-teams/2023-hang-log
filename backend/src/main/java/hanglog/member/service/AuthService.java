@@ -6,7 +6,6 @@ import hanglog.member.domain.auth.OauthProvider;
 import hanglog.member.domain.auth.OauthProviders;
 import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.MemberTokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,5 +30,9 @@ public class AuthService {
     private Member findOrCreateMember(final String socialLoginId, final String nickname, final String imageUrl) {
         return memberRepository.findBySocialLoginId(socialLoginId)
                 .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
+    }
+
+    public MemberTokens renewalAccessToken(final String refreshToken, final String accessToken) {
+        return jwtProvider.regenerateAccessToken(refreshToken, accessToken);
     }
 }
