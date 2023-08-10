@@ -235,3 +235,12 @@ include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
 ==== 응답
 include::{snippets}/auth-controller-test/extend-login/http-response.adoc[]
 include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
+
+=== 로그아웃 (POST /logout)
+
+==== 요청
+include::{snippets}/auth-controller-test/logout/http-request.adoc[]
+include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/logout/http-response.adoc[]

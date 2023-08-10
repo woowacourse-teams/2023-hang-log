@@ -3,6 +3,7 @@ package hanglog.member.presentation;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -67,26 +68,24 @@ class AuthControllerTest extends RestDocsTest {
         );
 
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("provider")
-                                                .description("로그인 유형")
-                                ),
-                                requestFields(
-                                        fieldWithPath("code")
-                                                .type(JsonFieldType.STRING)
-                                                .description("인가 코드")
-                                                .attributes(field("constraint", "문자열"))
-                                ),
-                                responseFields(
-                                        fieldWithPath("accessToken")
-                                                .type(JsonFieldType.STRING)
-                                                .description("access token")
-                                                .attributes(field("constraint", "문자열(jwt)"))
-                                )
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("provider")
+                                        .description("로그인 유형")
+                        ),
+                        requestFields(
+                                fieldWithPath("code")
+                                        .type(JsonFieldType.STRING)
+                                        .description("인가 코드")
+                                        .attributes(field("constraint", "문자열"))
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken")
+                                        .type(JsonFieldType.STRING)
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
                         )
-                )
+                ))
                 .andExpect(cookie().exists("refresh-token"))
                 .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
@@ -108,7 +107,7 @@ class AuthControllerTest extends RestDocsTest {
         // given
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
+        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
                 .thenReturn(memberTokens);
@@ -122,22 +121,20 @@ class AuthControllerTest extends RestDocsTest {
         );
 
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                requestFields(
-                                        fieldWithPath("accessToken")
-                                                .type(JsonFieldType.STRING)
-                                                .description("access token")
-                                                .attributes(field("constraint", "문자열(jwt)"))
-                                ),
-                                responseFields(
-                                        fieldWithPath("accessToken")
-                                                .type(JsonFieldType.STRING)
-                                                .description("access token")
-                                                .attributes(field("constraint", "문자열(jwt)"))
-                                )
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("accessToken")
+                                        .type(JsonFieldType.STRING)
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken")
+                                        .type(JsonFieldType.STRING)
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
                         )
-                )
+                ))
                 .andExpect(cookie().exists("refresh-token"))
                 .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
@@ -152,5 +149,34 @@ class AuthControllerTest extends RestDocsTest {
 
         // then
         assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectResponse);
+    }
+
+    @DisplayName("멤버의 refreshToken을 삭제하고 로그아웃 할 수 있다.")
+    @Test
+    void logout() throws Exception {
+        // given
+        final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
+        final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
+        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(post("/logout")
+                .param("accessTokenRequest", accessTokenRequest.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(accessTokenRequest))
+                .cookie(cookie)
+        );
+
+        resultActions.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("accessToken")
+                                        .type(JsonFieldType.STRING)
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
+                        )
+                ));
+
+        verify(authService).removeMemberRefreshToken(anyString(), anyString());
     }
 }
