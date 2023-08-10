@@ -19,5 +19,5 @@ export const patchTripSharedStatus = async ({
     sharedStatus,
   });
 
-  return { sharedUrl: data.sharedUrl };
+  return data.sharedUrl;
 };
