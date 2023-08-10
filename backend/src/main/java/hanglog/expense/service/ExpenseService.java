@@ -19,7 +19,7 @@ import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -107,7 +107,7 @@ public class ExpenseService {
     }
 
     private Map<DayLog, Integer> getDayLogAmounts(final List<DayLog> dayLogs) {
-        final Map<DayLog, Integer> dayLogAmounts = new HashMap<>();
+        final Map<DayLog, Integer> dayLogAmounts = new LinkedHashMap<>();
         for (final DayLog dayLog : dayLogs) {
             dayLogAmounts.put(dayLog, 0);
         }
@@ -116,7 +116,7 @@ public class ExpenseService {
 
     private Map<Category, Integer> getCategoryAmounts() {
         final List<Category> categories = categoryRepository.findExpenseCategory();
-        final Map<Category, Integer> categoryAmounts = new HashMap<>();
+        final Map<Category, Integer> categoryAmounts = new LinkedHashMap<>();
         for (final Category category : categories) {
             categoryAmounts.put(category, 0);
         }

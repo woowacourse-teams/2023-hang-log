@@ -257,6 +257,11 @@ class TripControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
                                         .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("sharedCode")
+                                        .type(JsonFieldType.STRING)
+                                        .description("공유 코")
+                                        .attributes(field("constraint", "문자열 비공유시 null 입력"))
+                                        .optional(),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
