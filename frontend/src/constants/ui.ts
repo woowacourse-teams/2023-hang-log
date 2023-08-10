@@ -20,4 +20,6 @@ export const TRIP_ITEM_TITLE_MAX_LENGTH = 50;
 
 export const TRIP_ITEM_MEMO_MAX_LENGTH = 255;
 
+export const NICKNAME_MAX_LENGTH = 15;
+
 export const MOBILE_MEDIA_QUERY_SIZE = '(max-width: 600px)';
