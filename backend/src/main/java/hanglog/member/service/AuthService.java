@@ -24,7 +24,9 @@ public class AuthService {
         final OauthProvider provider = oauthProviders.mapping(providerName);
         final UserInfo userInfo = provider.getUserInfo(code);
         final Member member = findOrCreateMember(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
-        return jwtProvider.generateLoginToken(member.getId().toString());
+        final MemberTokens memberTokens = jwtProvider.generateLoginToken(member.getId().toString());
+        member.assignRefreshToken(memberTokens.getRefreshToken());
+        return memberTokens;
     }
 
     private Member findOrCreateMember(final String socialLoginId, final String nickname, final String imageUrl) {
