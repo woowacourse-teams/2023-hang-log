@@ -1,7 +1,6 @@
 SET referential_integrity FALSE;
 INSERT INTO trip(title, image_name, start_date, end_date, description, created_at, modified_at, status)
-VALUES ('test', 'f3a2e5ae4ff3ebcf4711b23b1a06975a6a873fb1770b6b1ea855fe39d4fe6033.jpeg', '2023-08-01', '2023-08-07',
-        'description', now(), now(), 'USABLE');
+VALUES ('test', '123.jpeg', '2023-08-01', '2023-08-07', 'description', now(), now(), 'USABLE');
 INSERT INTO trip_city(trip_id, city_id, created_at, modified_at, status)
 VALUES (1, 1, now(), now(), 'USABLE');
 INSERT INTO trip_city(trip_id, city_id, created_at, modified_at, status)
