@@ -2,7 +2,7 @@ export const PROD = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = PROD
   ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
-  : '/';
+  : 'http://localhost:3000';
 
 export const END_POINTS = {
   TRIPS: '/trips',
@@ -15,16 +15,33 @@ export const END_POINTS = {
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
+  TOKEN: '/token',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+  MY_PAGE: '/mypage',
 } as const;
 
 export const NETWORK = {
   RETRY_COUNT: 3,
+  TIMEOUT: 10000,
 } as const;
 
 export const HTTP_STATUS_CODE = {
+  SUCCESS: 200,
+  CREATED: 201,
+  NO_CONTENT: 204,
   BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+} as const;
+
+export const ERROR_CODE = {
+  TOKEN_ERROR_RANGE: 9000,
+  INVALID_REFRESH_TOKEN: 9101,
+  INVALID_ACCESS_TOKEN: 9102,
+  EXPIRED_REFRESH_TOKEN: 9103,
+  EXPIRED_ACCESS_TOKEN: 9104,
 } as const;
 
 export const HTTP_ERROR_MESSAGE = {
@@ -46,3 +63,9 @@ export const HTTP_ERROR_MESSAGE = {
 } as const;
 
 export const ERROR_MESSAGE = '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+
+export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
+
+export const KAKAO_AUTH_API_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${BASE_URL}/${process.env.REDIRECT_URI}&response_type=code`;
+
+export const GOOGLE_AUTH_API_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${BASE_URL}/${process.env.REDIRECT_URI}&scope=https%3A//www.googleapis.com/auth/userinfo.email https%3A//www.googleapis.com/auth/userinfo.profile openid`;

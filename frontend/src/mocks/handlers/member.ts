@@ -1,5 +1,5 @@
 import { END_POINTS } from '@constants/api';
-import { userInfo } from '@mocks/data/member';
+import { accessToken, refreshToken, userInfo } from '@mocks/data/member';
 import type { UserData } from '@type/member';
 import { rest } from 'msw';
 
@@ -7,11 +7,13 @@ export const memberHandlers = [
   rest.post(END_POINTS.LOGIN, (_, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.cookie('refreshToken', 'RjY2NjM5NzA2OWJjuE7c'),
-      ctx.json({
-        accessToken: 'AYjcyMzY3ZDhiNmJkNTY',
-      })
+      ctx.cookie('refreshToken', refreshToken),
+      ctx.json({ accessToken })
     );
+  }),
+
+  rest.post(END_POINTS.LOGOUT, (_, res, ctx) => {
+    return res(ctx.status(204));
   }),
 
   rest.get(END_POINTS.MY_PAGE, (_, res, ctx) => {
