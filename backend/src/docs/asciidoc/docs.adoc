@@ -212,3 +212,16 @@ include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
 ==== 응답
 include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
 include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]
+
+== 멤버 API
+
+=== 로그인 (POST /login/:provider)
+
+==== 요청
+include::{snippets}/auth-controller-test/login/http-request.adoc[]
+include::{snippets}/auth-controller-test/login/path-parameters.adoc[]
+include::{snippets}/auth-controller-test/login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/login/http-response.adoc[]
+include::{snippets}/auth-controller-test/login/response-fields.adoc[]

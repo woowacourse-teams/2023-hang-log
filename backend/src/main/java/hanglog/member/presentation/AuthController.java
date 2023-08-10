@@ -1,6 +1,7 @@
 package hanglog.member.presentation;
 
 import hanglog.member.dto.AccessTokenResponse;
+import hanglog.member.dto.LoginRequest;
 import hanglog.member.dto.MemberTokens;
 import hanglog.member.service.AuthService;
 import jakarta.servlet.http.Cookie;
@@ -23,12 +24,12 @@ public class AuthController {
     }
 
     @PostMapping("/login/{provider}")
-    public ResponseEntity<AccessTokenResponse> loginOAuth(
+    public ResponseEntity<AccessTokenResponse> login(
             @PathVariable final String provider,
-            @RequestParam final String code,
+            @RequestParam final LoginRequest loginRequest,
             HttpServletResponse response
     ) {
-        final MemberTokens memberTokens = authService.login(provider, code);
+        final MemberTokens memberTokens = authService.login(provider, loginRequest.getCode());
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
