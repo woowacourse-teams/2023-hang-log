@@ -112,6 +112,7 @@ public class TripService {
                 updateRequest.getStartDate(),
                 updateRequest.getEndDate(),
                 updateRequest.getDescription(),
+                trip.getSharedTrip(),
                 trip.getDayLogs()
         );
         tripRepository.save(updatedTrip);

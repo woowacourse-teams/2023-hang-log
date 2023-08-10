@@ -184,6 +184,7 @@ class TripServiceTest {
                     LocalDate.of(2023, 7, 1),
                     LocalDate.of(2023, 7, 3),
                     "",
+                    null,
                     new ArrayList<>(List.of(dayLog1, dayLog2, dayLog3, extraDayLog))
             );
         }
@@ -205,6 +206,7 @@ class TripServiceTest {
                     updateRequest.getStartDate(),
                     updateRequest.getEndDate(),
                     updateRequest.getDescription(),
+                    trip.getSharedTrip(),
                     trip.getDayLogs()
             );
 
@@ -249,6 +251,7 @@ class TripServiceTest {
                                             updateRequest.getStartDate(),
                                             updateRequest.getEndDate(),
                                             trip.getDescription(),
+                                            trip.getSharedTrip(),
                                             List.of(
                                                     dayLog1,
                                                     dayLog2,
@@ -284,6 +287,7 @@ class TripServiceTest {
                                             updateRequest.getStartDate(),
                                             updateRequest.getEndDate(),
                                             trip.getDescription(),
+                                            trip.getSharedTrip(),
                                             List.of(
                                                     dayLog1,
                                                     dayLog2,
