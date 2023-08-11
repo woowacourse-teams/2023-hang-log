@@ -4,7 +4,7 @@ import type { UserData } from '@type/member';
 import { rest } from 'msw';
 
 export const memberHandlers = [
-  rest.post(END_POINTS.LOGIN, (_, res, ctx) => {
+  rest.post(END_POINTS.LOGIN(':provider'), (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.cookie('refreshToken', refreshToken),
