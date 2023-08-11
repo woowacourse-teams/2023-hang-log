@@ -4,22 +4,21 @@ import { useMutation } from '@tanstack/react-query';
 
 import { useSetRecoilState } from 'recoil';
 
+import { useToast } from '@hooks/common/useToast';
+
 import { isLoggedInState } from '@store/auth';
-import { toastListState } from '@store/toast';
 
 import { axiosInstance } from '@api/axiosInstance';
 import { postLogIn } from '@api/member/postLogIn';
-
-import { generateUniqueId } from '@utils/uniqueId';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
 
 export const useLogInMutation = () => {
   const navigate = useNavigate();
+  const { generateToast } = useToast();
 
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
-  const setToastList = useSetRecoilState(toastListState);
 
   const logInMutation = useMutation({
     mutationFn: postLogIn,
@@ -32,14 +31,7 @@ export const useLogInMutation = () => {
     onError: () => {
       setIsLoggedIn(false);
 
-      setToastList((prevToastList) => [
-        ...prevToastList,
-        {
-          id: generateUniqueId(),
-          variant: 'error',
-          message: '오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-        },
-      ]);
+      generateToast('오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
     },
     onSettled: () => {
       navigate(PATH.ROOT);

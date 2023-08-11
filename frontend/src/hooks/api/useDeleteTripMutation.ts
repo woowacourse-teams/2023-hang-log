@@ -1,23 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useSetRecoilState } from 'recoil';
-
+import { useToast } from '@hooks/common/useToast';
 import { useTokenError } from '@hooks/member/useTokenError';
-
-import { toastListState } from '@store/toast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 import { deleteTrip } from '@api/trip/deleteTrip';
-
-import { generateUniqueId } from '@utils/uniqueId';
 
 import { ERROR_CODE } from '@constants/api';
 
 export const useDeleteTripMutation = () => {
   const queryClient = useQueryClient();
 
-  const setToastList = useSetRecoilState(toastListState);
-
+  const { generateToast } = useToast();
   const { handleTokenError } = useTokenError();
 
   const deleteTripMutation = useMutation({
@@ -32,14 +26,7 @@ export const useDeleteTripMutation = () => {
         return;
       }
 
-      setToastList((prevToastList) => [
-        ...prevToastList,
-        {
-          id: generateUniqueId(),
-          variant: 'error',
-          message: '여행 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-        },
-      ]);
+      generateToast('여행 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 
