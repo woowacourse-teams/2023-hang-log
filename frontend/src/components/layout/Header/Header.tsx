@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { getItemStyling, headerStyling } from '@components/layout/Header/Header.style';
-import LoggedInOption from '@components/layout/Header/LoggedInOption/LoggedInOption';
-import LoggedOutOption from '@components/layout/Header/LoggedOutOption/LoggedOutOption';
+import LoggedInOption from '@components/layout/Header/LoggedInMenu/LoggedInMenu';
+import LoggedOutOption from '@components/layout/Header/LoggedOutMenu/LoggedOutMenu';
 
 const Header = () => {
   const navigate = useNavigate();

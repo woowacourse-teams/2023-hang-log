@@ -16,7 +16,7 @@ export const END_POINTS = {
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
   TOKEN: '/token',
-  LOGIN: '/login',
+  LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
 } as const;
@@ -66,6 +66,6 @@ export const ERROR_MESSAGE = '오류가 발생했습니다. 잠시 후 다시 �
 
 export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
 
-export const KAKAO_AUTH_API_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${BASE_URL}/${process.env.REDIRECT_URI}&response_type=code`;
+export const KAKAO_AUTH_API_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${BASE_URL}/${process.env.KAKAO_REDIRECT_URI}&response_type=code`;
 
-export const GOOGLE_AUTH_API_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${BASE_URL}/${process.env.REDIRECT_URI}&scope=https%3A//www.googleapis.com/auth/userinfo.email https%3A//www.googleapis.com/auth/userinfo.profile openid`;
+export const GOOGLE_AUTH_API_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${BASE_URL}/${process.env.GOOGLE_REDIRECT_URI}&scope=https%3A//www.googleapis.com/auth/userinfo.email https%3A//www.googleapis.com/auth/userinfo.profile openid`;
