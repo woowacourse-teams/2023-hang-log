@@ -13,6 +13,7 @@ import { useTripItemExpenseInput } from '@hooks/trip/useTripItemExpenseInput';
 import type { TripItemFormData } from '@type/tripItem';
 
 import { CURRENCY_ICON } from '@constants/trip';
+import { AMOUNT_MAX_LIMIT } from '@constants/ui';
 
 interface ExpenseInputProps {
   initialExpenseValue: TripItemFormData['expense'];
@@ -57,6 +58,8 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           type="number"
           placeholder="0"
           aria-label="비용"
+          min={0}
+          max={AMOUNT_MAX_LIMIT}
           value={initialExpenseValue?.amount}
           onChange={handleAmountChange}
         />
