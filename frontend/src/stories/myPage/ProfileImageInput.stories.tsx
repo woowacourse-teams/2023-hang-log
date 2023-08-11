@@ -7,7 +7,7 @@ const meta = {
   title: 'myPage/ProfileImageInput',
   component: ProfileImageInput,
   args: {
-    imageUrl: images[0],
+    initialImageUrl: images[0],
   },
 } satisfies Meta<typeof ProfileImageInput>;
 
