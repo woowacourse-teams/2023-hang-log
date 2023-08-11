@@ -7,6 +7,7 @@ import hanglog.member.dto.LoginRequest;
 import hanglog.member.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(final AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/login/{provider}")
     public ResponseEntity<AccessTokenResponse> login(
@@ -39,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/token")
     public ResponseEntity<AccessTokenResponse> extendLogin(
-            @CookieValue("refresh-token") String refreshToken,
+            @CookieValue("refresh-token") final String refreshToken,
             @RequestBody final AccessTokenRequest request,
             final HttpServletResponse response
     ) {
@@ -49,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue("refresh-token") String refreshToken,
+            @CookieValue("refresh-token") final String refreshToken,
             @RequestBody final AccessTokenRequest request
     ) {
         authService.removeMemberRefreshToken(refreshToken, request.getAccessToken());
