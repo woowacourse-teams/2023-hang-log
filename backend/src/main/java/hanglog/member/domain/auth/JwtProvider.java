@@ -8,8 +8,10 @@ import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;
 import hanglog.member.domain.MemberTokens;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -83,32 +85,30 @@ public class JwtProvider {
         }
     }
 
-    private void parseToken(final String token) {
-        Jwts.parserBuilder()
+    public String getSubject(final String token) {
+        return parseToken(token)
+                .getBody()
+                .getSubject();
+    }
+
+    private Jws<Claims> parseToken(final String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token);
     }
 
-    public String getSubject(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .setAllowedClockSkewSeconds(refreshExpirationTime)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public MemberTokens regenerateAccessToken(final String refreshToken, final String accessToken) {
+    public boolean isValidRefreshAndInvalidAccess(final String refreshToken, final String accessToken) {
         validateRefreshToken(refreshToken);
         try {
             validateAccessToken(accessToken);
         } catch (final ExpiredPeriodJwtException e) {
-            final String subject = getSubject(accessToken);
-            final String renewalAccessToken = createToken(subject, accessExpirationTime);
-            return new MemberTokens(refreshToken, renewalAccessToken);
+            return true;
         }
-        throw new InvalidJwtException(INVALID_ACCESS_TOKEN);
+        return false;
+    }
+
+    public String regenerateAccessToken(final String subject) {
+        return createToken(subject, accessExpirationTime);
     }
 }

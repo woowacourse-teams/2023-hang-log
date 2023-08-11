@@ -6,9 +6,9 @@ import static hanglog.global.exception.ExceptionCode.INVALID_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import hanglog.global.exception.AuthException;
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;
 import hanglog.member.domain.MemberTokens;
@@ -138,61 +138,53 @@ class JwtProviderTest {
                 .hasMessage(INVALID_ACCESS_TOKEN.getMessage());
     }
 
-    @DisplayName("accessToken을 재발급할 수 있다.")
+    @DisplayName("refreshToken이 유효하고 accessToken의 유효기간이 지났다면 true를 반환한다.")
     @Test
-    void regenerateAccessToken_Success() {
+    void isValidRefreshAndInvalidAccess() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
         final String accessToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, realSecretKey);
-        final MemberTokens beforeTokens = new MemberTokens(refreshToken, accessToken);
 
         // when & then
-        assertSoftly(softly -> {
-            final MemberTokens afterTokens = jwtProvider.regenerateAccessToken(refreshToken, accessToken);
-            assertThatThrownBy(() -> jwtProvider.validateTokens(beforeTokens))
-                    .isInstanceOf(ExpiredPeriodJwtException.class)
-                    .hasMessage(EXPIRED_PERIOD_ACCESS_TOKEN.getMessage());
-            assertDoesNotThrow(() -> jwtProvider.validateTokens(afterTokens));
-            assertThat(jwtProvider.getSubject(afterTokens.getAccessToken())).isEqualTo(SAMPLE_SUBJECT);
-        });
+        assertThat(jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken)).isTrue();
     }
 
-    @DisplayName("accessToken 재발급 요청 시 refreshToken이 올바르지 않은 형태이면 예외 처리한다.")
+    @DisplayName("refreshToken이 올바르지 않은 형태이면 예외 처리한다.")
     @Test
-    void regenerateAccessToken_InvalidRefreshToken() {
+    void isValidRefreshAndInvalidAccess_InvalidRefreshToken() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
-        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
+        final String accessToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, realSecretKey);
 
         // when & then
-        assertThatThrownBy(() -> jwtProvider.regenerateAccessToken(refreshToken, accessToken))
-                .isInstanceOf(InvalidJwtException.class)
+        assertThatThrownBy(() -> jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken))
+                .isInstanceOf(AuthException.class)
                 .hasMessage(INVALID_REFRESH_TOKEN.getMessage());
     }
 
-    @DisplayName("accessToken 재발급 요청 시 refreshToken이 만료되어 있으면 예외 처리한다.")
+    @DisplayName("accessToken이 올바르지 않은 형태이면 예외 처리한다.")
     @Test
-    void regenerateAccessToken_ExpiredPeriodRefreshToken() {
-        // given
-        final String refreshToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, realSecretKey);
-        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
-
-        // when & then
-        assertThatThrownBy(() -> jwtProvider.regenerateAccessToken(refreshToken, accessToken))
-                .isInstanceOf(ExpiredPeriodJwtException.class)
-                .hasMessage(EXPIRED_PERIOD_REFRESH_TOKEN.getMessage());
-    }
-
-    @DisplayName("accessToken 재발급 요청 시 accessToken이 올바르지 않은 형태이면 예외 처리한다.")
-    @Test
-    void regenerateAccessToken_InvalidAccessToken() {
+    void isValidRefreshAndInvalidAccess_InvalidAccessToken() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
-        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
+        final String accessToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
 
         // when & then
-        assertThatThrownBy(() -> jwtProvider.regenerateAccessToken(refreshToken, accessToken))
-                .isInstanceOf(InvalidJwtException.class)
+        assertThatThrownBy(() -> jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken))
+                .isInstanceOf(AuthException.class)
                 .hasMessage(INVALID_ACCESS_TOKEN.getMessage());
+    }
+
+    @DisplayName("refreshToken이 만료되어 있으면 예외 처리한다.")
+    @Test
+    void isValidRefreshAndInvalidAccess_ExpiredPeriodRefreshToken() {
+        // given
+        final String refreshToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, realSecretKey);
+        final String accessToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
+
+        // when & then
+        assertThatThrownBy(() -> jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken))
+                .isInstanceOf(AuthException.class)
+                .hasMessage(EXPIRED_PERIOD_REFRESH_TOKEN.getMessage());
     }
 }

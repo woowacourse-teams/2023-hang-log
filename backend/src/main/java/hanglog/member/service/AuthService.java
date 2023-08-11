@@ -1,5 +1,8 @@
 package hanglog.member.service;
 
+import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
+
+import hanglog.global.exception.AuthException;
 import hanglog.member.domain.MemberTokens;
 import hanglog.member.domain.auth.JwtProvider;
 import hanglog.member.domain.auth.OauthProvider;
@@ -32,7 +35,7 @@ public class AuthService {
                 userInfo.getImageUrl()
         );
         final MemberTokens memberTokens = jwtProvider.generateLoginToken(member.getId().toString());
-        final RefreshToken savedRefreshToken = new RefreshToken(member, memberTokens.getRefreshToken());
+        final RefreshToken savedRefreshToken = new RefreshToken(memberTokens.getRefreshToken(), member.getId());
         refreshTokenRepository.save(savedRefreshToken);
         return memberTokens;
     }
@@ -43,8 +46,11 @@ public class AuthService {
     }
 
     public String renewalAccessToken(final String refreshToken, final String accessToken) {
-        final MemberTokens memberTokens = jwtProvider.regenerateAccessToken(refreshToken, accessToken);
-        return memberTokens.getAccessToken();
+        if (jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken)) {
+            final Long memberId = refreshTokenRepository.findMemberIdByToken(refreshToken);
+            return jwtProvider.regenerateAccessToken(memberId.toString());
+        }
+        throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
 
     public void removeMemberRefreshToken(final String refreshToken, final String accessToken) {
