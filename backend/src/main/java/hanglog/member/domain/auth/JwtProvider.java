@@ -66,9 +66,9 @@ public class JwtProvider {
     private void validateRefreshToken(final String refreshToken) {
         try {
             parseToken(refreshToken);
-        } catch (ExpiredJwtException e) {
+        } catch (final ExpiredJwtException e) {
             throw new ExpiredPeriodJwtException(EXPIRED_PERIOD_REFRESH_TOKEN);
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (final JwtException | IllegalArgumentException e) {
             throw new InvalidJwtException(INVALID_REFRESH_TOKEN);
         }
     }
@@ -76,9 +76,9 @@ public class JwtProvider {
     private void validateAccessToken(final String accessToken) {
         try {
             parseToken(accessToken);
-        } catch (ExpiredJwtException e) {
+        } catch (final ExpiredJwtException e) {
             throw new ExpiredPeriodJwtException(EXPIRED_PERIOD_ACCESS_TOKEN);
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (final JwtException | IllegalArgumentException e) {
             throw new InvalidJwtException(INVALID_ACCESS_TOKEN);
         }
     }
@@ -104,7 +104,7 @@ public class JwtProvider {
         validateRefreshToken(refreshToken);
         try {
             validateAccessToken(accessToken);
-        } catch (ExpiredPeriodJwtException e) {
+        } catch (final ExpiredPeriodJwtException e) {
             final String subject = getSubject(accessToken);
             final String renewalAccessToken = createToken(subject, accessExpirationTime);
             return new MemberTokens(refreshToken, renewalAccessToken);
