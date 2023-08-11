@@ -108,7 +108,7 @@ class AuthControllerTest extends RestDocsTest {
         final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
-                .thenReturn(memberTokens);
+                .thenReturn(RENEW_ACCESS_TOKEN);
 
         // when
         final ResultActions resultActions = mockMvc.perform(post("/token")
@@ -132,8 +132,6 @@ class AuthControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "문자열(jwt)"))
                         )
                 ))
-                .andExpect(cookie().exists("refresh-token"))
-                .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
 
         final AccessTokenResponse expectResponse = new AccessTokenResponse(memberTokens.getAccessToken());

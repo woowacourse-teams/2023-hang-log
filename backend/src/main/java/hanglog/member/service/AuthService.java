@@ -34,8 +34,9 @@ public class AuthService {
                 .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
     }
 
-    public MemberTokens renewalAccessToken(final String refreshToken, final String accessToken) {
-        return jwtProvider.regenerateAccessToken(refreshToken, accessToken);
+    public String renewalAccessToken(final String refreshToken, final String accessToken) {
+        final MemberTokens memberTokens = jwtProvider.regenerateAccessToken(refreshToken, accessToken);
+        return memberTokens.getAccessToken();
     }
 
     public void removeMemberRefreshToken(final String refreshToken, final String accessToken) {
