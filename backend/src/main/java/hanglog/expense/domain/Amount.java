@@ -1,23 +1,15 @@
 package hanglog.expense.domain;
 
-import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_OVER_MAX;
-import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_UNDER_MIN;
-
-import hanglog.global.exception.InvalidDomainException;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Embeddable
 @RequiredArgsConstructor
 @Getter
-@EqualsAndHashCode
-@ToString
 public class Amount extends Number {
 
     private static final BigDecimal MAX_AMOUNT = BigDecimal.valueOf(100_000_000);
@@ -26,17 +18,7 @@ public class Amount extends Number {
     private BigDecimal value;
 
     public <T extends Number> Amount(final T value) {
-        validateAmount(new BigDecimal(value.toString()));
         this.value = new BigDecimal(value.toString());
-    }
-
-    public void validateAmount(final BigDecimal amount) {
-        if (amount.compareTo(MIN_AMOUNT) < 0) {
-            throw new InvalidDomainException(INVALID_EXPENSE_UNDER_MIN);
-        }
-        if (amount.compareTo(MAX_AMOUNT) > 0) {
-            throw new InvalidDomainException(INVALID_EXPENSE_OVER_MAX);
-        }
     }
 
     public <T extends Number> Amount add(final T addendValue) {
@@ -52,6 +34,10 @@ public class Amount extends Number {
     public <T extends Number> Amount divide(final T divisorValue) {
         final BigDecimal divisor = new BigDecimal(divisorValue.toString());
         return new Amount(value.divide(divisor, 9, RoundingMode.HALF_UP));
+    }
+
+    public <T extends Number> int compareTo(final T targetValue) {
+        return this.value.compareTo(new BigDecimal(targetValue.toString()));
     }
 
     @Override
