@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,12 +26,13 @@ public class AuthController {
     @PostMapping("/login/{provider}")
     public ResponseEntity<AccessTokenResponse> login(
             @PathVariable final String provider,
-            @RequestParam final LoginRequest loginRequest,
-            HttpServletResponse response
+            @RequestBody final LoginRequest loginRequest,
+            final HttpServletResponse response
     ) {
         final MemberTokens memberTokens = authService.login(provider, loginRequest.getCode());
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return ResponseEntity.ok(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
@@ -41,11 +41,12 @@ public class AuthController {
     public ResponseEntity<AccessTokenResponse> extendLogin(
             @CookieValue("refresh-token") String refreshToken,
             @RequestBody final AccessTokenRequest request,
-            HttpServletResponse response
+            final HttpServletResponse response
     ) {
         final MemberTokens memberTokens = authService.renewalAccessToken(refreshToken, request.getAccessToken());
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return ResponseEntity.ok(new AccessTokenResponse(memberTokens.getAccessToken()));
     }

@@ -60,9 +60,7 @@ class AuthControllerTest extends RestDocsTest {
         when(authService.login(anyString(), anyString()))
                 .thenReturn(memberTokens);
 
-        // when
         final ResultActions resultActions = mockMvc.perform(post("/login/{provider}", GOOGLE_PROVIDER)
-                .param("loginRequest", loginRequest.getCode())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest))
         );
@@ -114,7 +112,6 @@ class AuthControllerTest extends RestDocsTest {
 
         // when
         final ResultActions resultActions = mockMvc.perform(post("/token")
-                .param("accessTokenRequest", accessTokenRequest.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
@@ -139,7 +136,6 @@ class AuthControllerTest extends RestDocsTest {
                 .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
 
-        // then
         final AccessTokenResponse expectResponse = new AccessTokenResponse(memberTokens.getAccessToken());
 
         final AccessTokenResponse actualResponse = objectMapper.readValue(
@@ -161,7 +157,6 @@ class AuthControllerTest extends RestDocsTest {
 
         // when
         final ResultActions resultActions = mockMvc.perform(post("/logout")
-                .param("accessTokenRequest", accessTokenRequest.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
@@ -177,6 +172,7 @@ class AuthControllerTest extends RestDocsTest {
                         )
                 ));
 
+        // then
         verify(authService).removeMemberRefreshToken(anyString(), anyString());
     }
 }

@@ -1,11 +1,15 @@
 package hanglog.member.dto;
 
+import static lombok.AccessLevel.PRIVATE;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = PRIVATE)
 public class LoginRequest {
 
-    private final String code;
+    private String code;
 }
