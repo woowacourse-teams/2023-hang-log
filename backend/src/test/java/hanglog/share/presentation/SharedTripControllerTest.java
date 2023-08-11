@@ -149,7 +149,7 @@ class SharedTripControllerTest extends RestDocsTest {
     void updateSharedStatus() throws Exception {
         // given
         final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(true);
-        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
+        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("sharedCode");
         when(sharedTripService.updateSharedStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
 
