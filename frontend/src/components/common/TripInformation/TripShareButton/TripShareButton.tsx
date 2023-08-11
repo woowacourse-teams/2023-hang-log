@@ -1,13 +1,7 @@
-import ShareIcon from '@assets/svg/share-icon.svg';
-import { BASE_URL } from '@constants/api';
-import { PATH } from '@constants/path';
-import type { TripData } from '@type/trip';
-import { Flex, Menu, MenuList, SwitchToggle, useOverlay } from 'hang-log-design-system';
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 
-import { useTripShareStatusMutation } from '@hooks/api/useTripShareStatusMutation';
-import { useTripShare } from '@hooks/trip/useTripShare';
+import { Flex, Menu, MenuList, SwitchToggle, useOverlay } from 'hang-log-design-system';
 
 import {
   copyButtonStyling,
@@ -17,6 +11,16 @@ import {
   shareUrlStyling,
   shareUrlWrapperStyling,
 } from '@components/common/TripInformation/TripShareButton/TripShareButton.style';
+
+import { useTripShareStatusMutation } from '@hooks/api/useTripShareStatusMutation';
+import { useTripShare } from '@hooks/trip/useTripShare';
+
+import type { TripData } from '@type/trip';
+
+import { BASE_URL } from '@constants/api';
+import { PATH } from '@constants/path';
+
+import ShareIcon from '@assets/svg/share-icon.svg';
 
 interface TripShareButtonProps {
   tripId: number;

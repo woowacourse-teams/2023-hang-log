@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+
 import { Theme } from 'hang-log-design-system';
 
 export const shareButtonStyling = css({
@@ -56,7 +57,7 @@ export const shareUrlWrapperStyling = css({
 });
 
 export const shareUrlStyling = css({
-  padding: '4px 8px',
+  padding: `${Theme.spacer.spacing1} ${Theme.spacer.spacing2}`,
 
   overflow: 'hidden',
 
@@ -64,7 +65,7 @@ export const shareUrlStyling = css({
 });
 
 export const copyButtonStyling = css({
-  width: '75px',
+  minWidth: 'fit-content',
   padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
   border: 'none',
   borderLeft: `1px solid ${Theme.color.gray200}`,

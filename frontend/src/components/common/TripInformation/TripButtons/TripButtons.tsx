@@ -11,10 +11,11 @@ import TripShareButton from '@components/common/TripInformation/TripShareButton/
 
 import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
 
+import type { TripData } from '@type/trip';
+
 import { PATH } from '@constants/path';
 
 import MoreIcon from '@assets/svg/more-icon.svg';
-import ShareIcon from '@assets/svg/share-icon.svg';
 
 interface TripButtonsProps {
   tripId: number;
