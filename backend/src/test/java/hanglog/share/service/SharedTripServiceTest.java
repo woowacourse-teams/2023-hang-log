@@ -55,7 +55,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.of(LONDON_TRIP));
         given(tripCityRepository.findByTripId(1L))
                 .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
-        given(sharedTripRepository.findByShareCode(anyString()))
+        given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.of(sharedTrip));
 
         // when
@@ -72,7 +72,7 @@ class SharedTripServiceTest {
         // given
         final SharedTrip sharedTrip = new SharedTrip(1L, LONDON_TRIP, "xxxxx", UNSHARED);
 
-        given(sharedTripRepository.findByShareCode(anyString()))
+        given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.of(sharedTrip));
 
         // when & then
@@ -86,7 +86,7 @@ class SharedTripServiceTest {
     @Test
     void getSharedTrip_NoExistCode() {
         // given
-        given(sharedTripRepository.findByShareCode(anyString()))
+        given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.ofNullable(null));
 
         // when & then
@@ -112,7 +112,7 @@ class SharedTripServiceTest {
 
         //then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(new SharedTripCodeResponse(sharedTrip.getShareCode()));
+                .isEqualTo(new SharedTripCodeResponse(sharedTrip.getSharedCode()));
     }
 
     @DisplayName("존재하지 않는 여행의 공유 상태 변경은 예외처리한다.")

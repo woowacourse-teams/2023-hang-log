@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SharedTripRepository extends JpaRepository<SharedTrip, Long> {
 
-    Optional<SharedTrip> findByShareCode(final String sharedCode);
+    Optional<SharedTrip> findBySharedCode(final String sharedCode);
 
     Optional<SharedTrip> findByTripId(final Long tripId);
 }

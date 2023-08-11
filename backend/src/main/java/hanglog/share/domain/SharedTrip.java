@@ -42,15 +42,15 @@ public class SharedTrip {
     private Trip trip;
 
     @Column(nullable = false)
-    private String shareCode;
+    private String sharedCode;
 
     @Column(nullable = false)
     @Enumerated(value = STRING)
     private SharedStatusType sharedStatus;
 
-    private SharedTrip(final Trip trip, final String shareCode, final SharedStatusType sharedStatus) {
+    private SharedTrip(final Trip trip, final String sharedCode, final SharedStatusType sharedStatus) {
         this.trip = trip;
-        this.shareCode = shareCode;
+        this.sharedCode = sharedCode;
         this.sharedStatus = sharedStatus;
     }
 

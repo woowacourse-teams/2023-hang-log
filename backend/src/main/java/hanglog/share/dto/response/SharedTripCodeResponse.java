@@ -16,6 +16,6 @@ public class SharedTripCodeResponse {
         if (sharedTrip.getSharedStatus() == UNSHARED) {
             return new SharedTripCodeResponse(null);
         }
-        return new SharedTripCodeResponse(sharedTrip.getShareCode());
+        return new SharedTripCodeResponse(sharedTrip.getSharedCode());
     }
 }

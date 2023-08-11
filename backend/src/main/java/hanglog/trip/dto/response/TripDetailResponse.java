@@ -60,7 +60,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                value.getShareCode(),
+                value.getSharedCode(),
                 dayLogGetResponses
         )).orElseGet(() -> new TripDetailResponse(
                 trip.getId(),

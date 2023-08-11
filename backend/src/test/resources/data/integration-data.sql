@@ -78,7 +78,7 @@ INSERT INTO item(day_log_id, expense_id, place_id, title, item_type, memo, ordin
 VALUES (4, 6, null, '유럽', 'NON_SPOT', '유우럽', 1, 2.5, now(), now(), 'USABLE');
 
 -- shareTrips
-INSERT INTO shared_trip(trip_id, share_code, shared_status)
+INSERT INTO shared_trip(trip_id, shared_code, shared_status)
 VALUES (1,'shareCode','SHARED');
 
 SET referential_integrity TRUE;

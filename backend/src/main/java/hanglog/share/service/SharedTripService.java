@@ -32,7 +32,7 @@ public class SharedTripService {
     private final TripCityRepository tripCityRepository;
 
     public TripDetailResponse getTripDetail(final String sharedCode) {
-        final SharedTrip sharedTrip = sharedTripRepository.findByShareCode(sharedCode)
+        final SharedTrip sharedTrip = sharedTripRepository.findBySharedCode(sharedCode)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
 
         validateSharedStatus(sharedTrip.getSharedStatus());
