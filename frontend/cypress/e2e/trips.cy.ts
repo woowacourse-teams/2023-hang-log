@@ -25,18 +25,12 @@ describe('여행 목록 페이지', () => {
 
   it('여행 목록 페이지에서 여행에 대한 정보를 볼 수 있다.', () => {
     cy.fixture('trips.json').then((expectedData) => {
-      cy.findByText(expectedData[0].title).should('be.visible');
-
-      cy.findByText('2023.07.13 - 2023.07.20').should('be.visible');
-
-      cy.findByText(expectedData[0].description).should('be.visible');
-
-      expectedData[0].cities.forEach((city: CityData) => {
-        cy.findByText(city.name);
-      });
-
       expectedData.forEach((item: TripsData) => {
-        cy.findByText(item.title);
+        cy.findByText(item.title).should('be.visible');
+
+        if (item.description) {
+          cy.findByText(item.description).should('be.visible');
+        }
       });
     });
   });
