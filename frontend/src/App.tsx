@@ -5,6 +5,7 @@ import { useSetRecoilState } from 'recoil';
 
 import Error from '@components/common/Error/Error';
 import ErrorBoundary from '@components/common/ErrorBoundary/ErrorBoundary';
+import ScrollTop from '@components/common/ScrollTop/ScrollTop';
 import ToastContainer from '@components/common/ToastContainer/ToastContainer';
 import Footer from '@components/layout/Footer/Footer';
 import Header from '@components/layout/Header/Header';
@@ -30,6 +31,7 @@ const App = () => {
 
   return (
     <ErrorBoundary Fallback={Error} onReset={handleErrorReset}>
+      <ScrollTop />
       <Header />
       <main>
         <Outlet />
