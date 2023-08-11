@@ -1,16 +1,13 @@
 import ShareIcon from '@assets/svg/share-icon.svg';
 import { BASE_URL } from '@constants/api';
 import { PATH } from '@constants/path';
-import { toastListState } from '@store/toast';
 import type { TripData } from '@type/trip';
 import { Flex, Menu, MenuList, SwitchToggle, useOverlay } from 'hang-log-design-system';
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
-import { useSetRecoilState } from 'recoil';
-
-import { generateUniqueId } from '@utils/uniqueId';
 
 import { useTripShareStatusMutation } from '@hooks/api/useTripShareStatusMutation';
+import { useTripShare } from '@hooks/trip/useTripShare';
 
 import {
   copyButtonStyling,
@@ -29,9 +26,9 @@ interface TripShareButtonProps {
 const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
   const tripShareStatusMutation = useTripShareStatusMutation();
   const [isSharable, setIsSharable] = useState(!!sharedCode);
-  const [shareUrl, setShareUrl] = useState(sharedCode ? BASE_URL + PATH.SHARE(sharedCode) : '');
+  const [sharedUrl, setShareUrl] = useState(sharedCode ? BASE_URL + PATH.SHARE(sharedCode) : null);
   const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
-  const setToastList = useSetRecoilState(toastListState);
+  const { handleCopyButtonClick } = useTripShare(sharedUrl);
 
   const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
@@ -45,39 +42,12 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
       },
       {
         onSuccess: (sharedCode: string | null) => {
-          if (!sharedCode || !!shareUrl) return;
+          if (!sharedCode || !!sharedUrl) return;
 
           setShareUrl(BASE_URL + PATH.SHARE(sharedCode));
         },
       }
     );
-  };
-
-  const handleCopyButtonClick = () => {
-    if (!shareUrl) return;
-
-    navigator.clipboard
-      .writeText(shareUrl)
-      .then(() => {
-        setToastList((prevToastList) => [
-          ...prevToastList,
-          {
-            id: generateUniqueId(),
-            variant: 'default',
-            message: '공유 링크가 클립보드에 복사되었습니다.',
-          },
-        ]);
-      })
-      .catch(() => {
-        setToastList((prevToastList) => [
-          ...prevToastList,
-          {
-            id: generateUniqueId(),
-            variant: 'error',
-            message: '복사에 실패했습니다. 잠시 후 다시 시도해주세요.',
-          },
-        ]);
-      });
   };
 
   return (
@@ -98,7 +68,7 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
           </div>
           {isSharable && (
             <Flex css={shareUrlWrapperStyling}>
-              <div css={shareUrlStyling}>{shareUrl}</div>
+              <div css={shareUrlStyling}>{sharedUrl}</div>
               <button type="button" onClick={handleCopyButtonClick} css={copyButtonStyling}>
                 링크 복사
               </button>
