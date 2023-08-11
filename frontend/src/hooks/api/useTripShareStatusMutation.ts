@@ -9,7 +9,7 @@ import { patchTripSharedStatus } from '@api/trip/patchTripShareStatus';
 export const useTripShareStatusMutation = () => {
   const setToastList = useSetRecoilState(toastListState);
 
-  const tripMutation = useMutation({
+  const tripShareStatusMutation = useMutation({
     mutationFn: patchTripSharedStatus,
 
     onError: () => {
@@ -24,5 +24,5 @@ export const useTripShareStatusMutation = () => {
     },
   });
 
-  return tripMutation;
+  return tripShareStatusMutation;
 };

@@ -57,6 +57,7 @@ export const buttonContainerStyling = css({
   top: Theme.spacer.spacing4,
   right: Theme.spacer.spacing4,
   display: 'flex',
+  alignItems: 'center',
   gap: Theme.spacer.spacing1,
 });
 

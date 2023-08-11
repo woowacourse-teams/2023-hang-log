@@ -41,7 +41,7 @@ export const tripsHandlers = [
 
   rest.patch(`${END_POINTS.TRIPS}/:tripId/share`, async (req, res, ctx) => {
     const { sharedStatus } = await req.json();
-    const sharedCode = sharedStatus ? '123456' : null;
+    const sharedCode = sharedStatus ? '789456123' : null;
 
     return res(ctx.status(200), ctx.json({ sharedCode }));
   }),

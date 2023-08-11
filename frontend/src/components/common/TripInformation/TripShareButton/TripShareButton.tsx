@@ -2,8 +2,9 @@ import ShareIcon from '@assets/svg/share-icon.svg';
 import { BASE_URL } from '@constants/api';
 import { PATH } from '@constants/path';
 import { toastListState } from '@store/toast';
-import { Flex, Menu, MenuList, useOverlay } from 'hang-log-design-system';
-import { useEffect, useState } from 'react';
+import type { TripData } from '@type/trip';
+import { Flex, Menu, MenuList, SwitchToggle, useOverlay } from 'hang-log-design-system';
+import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { useSetRecoilState } from 'recoil';
 
@@ -18,26 +19,29 @@ import {
   shareItemStyling,
   shareUrlStyling,
   shareUrlWrapperStyling,
-  switchToggleStyling,
 } from '@components/common/TripInformation/TripShareButton/TripShareButton.style';
 
 interface TripShareButtonProps {
   tripId: number;
-  sharedStatus: boolean;
+  sharedCode: TripData['sharedCode'];
 }
 
-const TripShareButton = ({ tripId, sharedStatus }: TripShareButtonProps) => {
-  const patchTripSharedStatus = useTripShareStatusMutation();
-  const [isSharable, setIsSharable] = useState(sharedStatus);
-  const [shareUrl, setShareUrl] = useState<string | null>(null);
+const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
+  const tripShareStatusMutation = useTripShareStatusMutation();
+  const [isSharable, setIsSharable] = useState(!!sharedCode);
+  const [shareUrl, setShareUrl] = useState(sharedCode ? BASE_URL + PATH.SHARE(sharedCode) : '');
   const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
   const setToastList = useSetRecoilState(toastListState);
 
-  const communicateWithServer = (sharedStatus: boolean) => {
-    patchTripSharedStatus.mutate(
+  const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+
+    setIsSharable(isChecked);
+
+    tripShareStatusMutation.mutate(
       {
         tripId,
-        sharedStatus,
+        sharedStatus: isChecked,
       },
       {
         onSuccess: (sharedCode: string | null) => {
@@ -47,19 +51,6 @@ const TripShareButton = ({ tripId, sharedStatus }: TripShareButtonProps) => {
         },
       }
     );
-  };
-
-  useEffect(() => {
-    if (sharedStatus) {
-      communicateWithServer(sharedStatus);
-    }
-  }, []);
-
-  const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-
-    setIsSharable(isChecked);
-    communicateWithServer(isChecked);
   };
 
   const handleCopyButtonClick = () => {
@@ -103,14 +94,7 @@ const TripShareButton = ({ tripId, sharedStatus }: TripShareButtonProps) => {
         <MenuList css={shareContainerStyling}>
           <div css={shareItemStyling}>
             <span css={{ color: 'black' }}>여행 공유</span>
-            <input
-              type="checkbox"
-              role="switch"
-              aria-checked={isSharable}
-              checked={isSharable}
-              onChange={handleShareStateChange}
-              css={switchToggleStyling}
-            />
+            <SwitchToggle checkedState={isSharable} onChange={handleShareStateChange} />
           </div>
           {isSharable && (
             <Flex css={shareUrlWrapperStyling}>

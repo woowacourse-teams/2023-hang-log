@@ -4,7 +4,7 @@ import type { DayLogData } from '@type/dayLog';
 export interface TripData {
   id: number;
   title: string;
-  sharedStatus: boolean;
+  sharedCode: string | null;
   startDate: string;
   endDate: string;
   description: string | null;
@@ -13,7 +13,7 @@ export interface TripData {
   dayLogs: DayLogData[];
 }
 
-export interface TripFormData extends Omit<TripData, 'cities' | 'id' | 'dayLogs' | 'sharedStatus'> {
+export interface TripFormData extends Omit<TripData, 'cities' | 'id' | 'dayLogs' | 'sharedCode'> {
   cityIds: number[];
 }
 
@@ -25,8 +25,4 @@ export interface TripPlaceType {
 
 export interface TripSharedStatusData {
   sharedStatus: boolean;
-}
-
-export interface TripSharedCodeData {
-  sharedCode: string;
 }

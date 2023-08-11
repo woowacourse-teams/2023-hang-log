@@ -1,5 +1,6 @@
 import MoreIcon from '@assets/svg/more-icon.svg';
 import { PATH } from '@constants/path';
+import type { TripData } from '@type/trip';
 import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,10 +15,10 @@ import TripShareButton from '@components/common/TripInformation/TripShareButton/
 
 interface TripButtonsProps {
   tripId: number;
-  sharedStatus: boolean;
+  sharedCode: TripData['sharedCode'];
 }
 
-export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
+export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
@@ -44,7 +45,7 @@ export const TripButtons = ({ tripId, sharedStatus }: TripButtonsProps) => {
       <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
         가계부
       </Button>
-      <TripShareButton tripId={tripId} sharedStatus={sharedStatus} />
+      <TripShareButton tripId={tripId} sharedCode={sharedCode} />
       <Menu css={moreMenuStyling} closeMenu={closeMenu}>
         <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
           <MoreIcon />
