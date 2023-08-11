@@ -1,11 +1,18 @@
 import type { Preview } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { HangLogProvider, Spinner } from 'hang-log-design-system';
-import { initialize, mswDecorator } from 'msw-storybook-addon';
+
 import React, { Suspense } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { RecoilRoot } from 'recoil';
 
+import { initialize, mswDecorator } from 'msw-storybook-addon';
+
+import { HangLogProvider, Spinner } from 'hang-log-design-system';
+
+import { axiosInstance } from '../src/api/axiosInstance';
+import { ACCESS_TOKEN_KEY } from '../src/constants/api';
 import { handlers } from '../src/mocks/handlers';
 
 initialize();
@@ -43,6 +50,13 @@ export default preview;
 
 const queryClient = new QueryClient();
 
+const localStorageResetDecorator = (Story) => {
+  window.localStorage.clear();
+  window.localStorage.setItem(ACCESS_TOKEN_KEY, 'hanglogAccessToken');
+
+  return <Story />;
+};
+
 export const decorators = [
   (Story) => (
     <MemoryRouter initialEntries={['/']}>
@@ -57,5 +71,6 @@ export const decorators = [
       </QueryClientProvider>
     </MemoryRouter>
   ),
+  localStorageResetDecorator,
   mswDecorator,
 ];
