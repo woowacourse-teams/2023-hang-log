@@ -1,3 +1,4 @@
 export const REGEX = {
-  ONLY_LETTER: '^[A-Za-z가-힣ㄱ-ㅎ]+$',
+  ONLY_LETTER: /^[A-Za-z가-힣ㄱ-ㅎ]+$/g,
+  ALPHABET_AND_KOREAN_CHARACTERS: /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]*$/,
 };

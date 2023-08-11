@@ -1,3 +1,4 @@
+import { REGEX } from '@constants/regex';
 import { DEFAULT_CURRENCY } from '@constants/trip';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ExpenseCategoryData } from '@type/expense';
@@ -41,6 +42,10 @@ export const useTripItemExpenseInput = (
   };
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (REGEX.ALPHABET_AND_KOREAN_CHARACTERS.test(event.target.value)) {
+      return;
+    }
+
     if (Number(event.target.value) < 0) {
       // eslint-disable-next-line no-param-reassign
       event.target.value = '0';
