@@ -1,8 +1,9 @@
-import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
+
+import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface UseImageUploadParams {
   initialImageUrls: string[];

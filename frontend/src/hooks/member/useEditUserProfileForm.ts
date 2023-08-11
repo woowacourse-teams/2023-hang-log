@@ -1,10 +1,11 @@
-import type { UserData } from '@type/member';
 import type { FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
+import { useUserInfoMutation } from '@hooks/api/useUserInfoMutation';
+
 import { isEmptyString } from '@utils/validator';
 
-import { useUserInfoMutation } from '@hooks/api/useUserInfoMutation';
+import type { UserData } from '@type/member';
 
 export const useEditUserProfileForm = (initialData: UserData) => {
   const userInfoMutation = useUserInfoMutation();

@@ -1,7 +1,10 @@
-import { MOBILE_MEDIA_QUERY_SIZE } from '@constants/ui';
-import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
 import { useCallback, useEffect, useRef } from 'react';
+
 import { useSetRecoilState } from 'recoil';
+
+import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
+
+import { MOBILE_MEDIA_QUERY_SIZE } from '@constants/ui';
 
 export const useMediaQuery = () => {
   const setViewportWidth = useSetRecoilState(viewportWidthState);

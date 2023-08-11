@@ -1,7 +1,8 @@
-import { END_POINTS } from '@constants/api';
+import { axiosInstance } from '@api/axiosInstance';
+
 import type { TripsData } from '@type/trips';
 
-import { axiosInstance } from '@api/axiosInstance';
+import { END_POINTS } from '@constants/api';
 
 export const getTrips = async () => {
   const { data } = await axiosInstance.get<TripsData[]>(END_POINTS.TRIPS);

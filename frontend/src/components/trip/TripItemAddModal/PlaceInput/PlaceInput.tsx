@@ -1,10 +1,12 @@
-import type { TripItemFormData } from '@type/tripItem';
-import { Box, Input } from 'hang-log-design-system';
 import { memo } from 'react';
+
+import { Box, Input } from 'hang-log-design-system';
+
+import { wrapperStyling } from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput.style';
 
 import { useTripItemPlaceInput } from '@hooks/trip/useTripItemPlaceInput';
 
-import { wrapperStyling } from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput.style';
+import type { TripItemFormData } from '@type/tripItem';
 
 interface PlaceInputProps {
   value: string;

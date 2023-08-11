@@ -1,10 +1,13 @@
-import { TRIP_ITEM_MEMO_MAX_LENGTH } from '@constants/ui';
-import type { TripItemFormData } from '@type/tripItem';
-import { Textarea } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
+import { Textarea } from 'hang-log-design-system';
+
 import { textareaStyling } from '@components/trip/TripItemAddModal/MemoInput/MemoInput.style';
+
+import type { TripItemFormData } from '@type/tripItem';
+
+import { TRIP_ITEM_MEMO_MAX_LENGTH } from '@constants/ui';
 
 interface MemoInputProps {
   value: TripItemFormData['memo'];

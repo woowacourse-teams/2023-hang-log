@@ -1,8 +1,10 @@
-import { HTTP_STATUS_CODE } from '@constants/api';
-import { trip } from '@mocks/data/trip';
 import { rest } from 'msw';
 
 import type { PatchDayLogTitleRequestBody } from '@api/dayLog/patchDayLogTitle';
+
+import { HTTP_STATUS_CODE } from '@constants/api';
+
+import { trip } from '@mocks/data/trip';
 
 export const dayLogHandlers = [
   rest.patch('/trips/:tripId/daylogs/:dayLogId/order', async (req, res, ctx) => {

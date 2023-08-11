@@ -1,12 +1,6 @@
-import { EXPENSE_CHART_COLORS } from '@constants/expense';
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Box, Heading } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { formatNumberToMoney } from '@utils/formatter';
-
-import { useExpense } from '@hooks/expense/useExpense';
+import { Box, Heading } from 'hang-log-design-system';
 
 import type { Segment } from '@components/common/DonutChart/DonutChart';
 import DonutChart from '@components/common/DonutChart/DonutChart';
@@ -16,6 +10,15 @@ import {
   containerStyling,
   totalAmountStyling,
 } from '@components/expense/TotalExpenseSection/TotalExpenseSection.style';
+
+import { useExpense } from '@hooks/expense/useExpense';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { formatNumberToMoney } from '@utils/formatter';
+
+import { EXPENSE_CHART_COLORS } from '@constants/expense';
+import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface TotalExpenseSectionProps {
   tripId: number;

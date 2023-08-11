@@ -1,17 +1,20 @@
-import { ACCESS_TOKEN_KEY } from '@constants/api';
-import { isLoggedInState } from '@store/auth';
 import { useLayoutEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 
-import { useMediaQuery } from '@hooks/common/useMediaQuery';
-import { useResetError } from '@hooks/common/useResetError';
+import { useSetRecoilState } from 'recoil';
 
 import Error from '@components/common/Error/Error';
 import ErrorBoundary from '@components/common/ErrorBoundary/ErrorBoundary';
 import ToastContainer from '@components/common/ToastContainer/ToastContainer';
 import Footer from '@components/layout/Footer/Footer';
 import Header from '@components/layout/Header/Header';
+
+import { useMediaQuery } from '@hooks/common/useMediaQuery';
+import { useResetError } from '@hooks/common/useResetError';
+
+import { isLoggedInState } from '@store/auth';
+
+import { ACCESS_TOKEN_KEY } from '@constants/api';
 
 const App = () => {
   const { handleErrorReset } = useResetError();

@@ -1,9 +1,12 @@
-import { NETWORK } from '@constants/api';
 import { useQuery } from '@tanstack/react-query';
-import type { TripsData } from '@type/trips';
+
 import type { AxiosError } from 'axios';
 
 import { getTrips } from '@api/trips/getTrips';
+
+import type { TripsData } from '@type/trips';
+
+import { NETWORK } from '@constants/api';
 
 export const useTripsQuery = () => {
   const { data } = useQuery<TripsData[], AxiosError>(['trips'], getTrips, {

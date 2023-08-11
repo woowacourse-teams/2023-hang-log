@@ -1,14 +1,20 @@
 import { Global } from '@emotion/react';
-import { worker } from '@mocks/browser';
-import AppRouter from '@router/AppRouter';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { HangLogProvider } from 'hang-log-design-system';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 import { RecoilRoot } from 'recoil';
 
+import { HangLogProvider } from 'hang-log-design-system';
+
+import AppRouter from '@router/AppRouter';
+
 import { GlobalStyle } from '@styles/index';
+
+import { worker } from '@mocks/browser';
 
 const main = async () => {
   if (process.env.NODE_ENV === 'development') {

@@ -1,8 +1,10 @@
-import { END_POINTS } from '@constants/api';
-import type { TokenData } from '@type/member';
 import type { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '@api/axiosInstance';
+
+import type { TokenData } from '@type/member';
+
+import { END_POINTS } from '@constants/api';
 
 interface PostLogInRequestBody {
   code: string;

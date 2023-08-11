@@ -1,14 +1,17 @@
-import { ERROR_CODE } from '@constants/api';
-import { toastListState } from '@store/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { useSetRecoilState } from 'recoil';
 
-import { generateUniqueId } from '@utils/uniqueId';
+import { useTokenError } from '@hooks/member/useTokenError';
+
+import { toastListState } from '@store/toast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 import { putTrip } from '@api/trip/putTrip';
 
-import { useTokenError } from '@hooks/member/useTokenError';
+import { generateUniqueId } from '@utils/uniqueId';
+
+import { ERROR_CODE } from '@constants/api';
 
 export const useTripEditMutation = () => {
   const queryClient = useQueryClient();

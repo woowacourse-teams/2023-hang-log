@@ -1,15 +1,18 @@
-import { CURRENCY_ICON } from '@constants/trip';
-import type { TripItemFormData } from '@type/tripItem';
-import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 import { memo } from 'react';
 
-import { useTripItemExpenseInput } from '@hooks/trip/useTripItemExpenseInput';
+import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 
 import {
   categorySelectStyling,
   currencySelectStyling,
   leftContainerStyling,
 } from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput.style';
+
+import { useTripItemExpenseInput } from '@hooks/trip/useTripItemExpenseInput';
+
+import type { TripItemFormData } from '@type/tripItem';
+
+import { CURRENCY_ICON } from '@constants/trip';
 
 interface ExpenseInputProps {
   initialExpenseValue: TripItemFormData['expense'];

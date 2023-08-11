@@ -1,12 +1,14 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Flex, Skeleton, Theme } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
+
+import { Flex, Skeleton, Theme } from 'hang-log-design-system';
 
 import ExpenseListSkeleton from '@components/expense/ExpenseList/ExpenseListSkeleton';
 import {
   containerStyling,
   toggleGroupStyling,
 } from '@components/expense/ExpenseListSection/ExpenseListSection.style';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const ExpenseListSectionSkeleton = () => {
   const isMobile = useRecoilValue(mediaQueryMobileState);

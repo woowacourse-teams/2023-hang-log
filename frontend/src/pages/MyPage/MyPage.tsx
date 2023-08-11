@@ -1,12 +1,14 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Box, Heading } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
+import { Box, Heading } from 'hang-log-design-system';
 
 import { containerStyling, headingStyling } from '@pages/MyPage/MyPage.style';
 
 import EditUserProfileForm from '@components/myPage/EditUserProfileForm/EditUserProfileForm';
+
+import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const MyPage = () => {
   const isMobile = useRecoilValue(mediaQueryMobileState);

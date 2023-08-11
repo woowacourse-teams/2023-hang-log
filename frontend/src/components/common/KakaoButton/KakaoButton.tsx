@@ -1,8 +1,9 @@
-import { KAKAO_AUTH_API_URL } from '@constants/api';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { buttonStyling } from '@components/common/KakaoButton/KakaoButton.style';
+
+import { KAKAO_AUTH_API_URL } from '@constants/api';
 
 interface KakaoButtonProps extends ComponentPropsWithoutRef<'a'> {
   children: ReactNode;
