@@ -4,21 +4,22 @@ import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hanglog.member.domain.auth.UserInfo;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
+@AllArgsConstructor
 public class GoogleUserInfo implements UserInfo {
 
     @JsonProperty("id")
-    private String id;
+    private String socialLoginId;
     @JsonProperty("name")
     private String name;
     @JsonProperty("picture")
     private String picture;
 
-    @Override
-    public String getId() {
-        return id;
+    public String getSocialLoginId() {
+        return socialLoginId;
     }
 
     @Override

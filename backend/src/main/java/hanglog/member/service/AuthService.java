@@ -23,7 +23,7 @@ public class AuthService {
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
         final UserInfo userInfo = provider.getUserInfo(code);
-        final Member member = findOrCreateMember(userInfo.getId(), userInfo.getNickname(), userInfo.getImageUrl());
+        final Member member = findOrCreateMember(userInfo.getSocialLoginId(), userInfo.getNickname(), userInfo.getImageUrl());
         final MemberTokens memberTokens = jwtProvider.generateLoginToken(member.getId().toString());
         member.assignRefreshToken(memberTokens.getRefreshToken());
         return memberTokens;

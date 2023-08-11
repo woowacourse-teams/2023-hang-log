@@ -1,7 +1,7 @@
 package hanglog.member.domain.auth;
 
 public interface UserInfo {
-    String getId();
+    String getSocialLoginId();
 
     String getNickname();
 
