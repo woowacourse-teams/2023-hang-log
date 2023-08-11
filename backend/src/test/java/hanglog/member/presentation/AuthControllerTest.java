@@ -15,11 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.member.dto.AccessTokenRequest;
-import hanglog.member.dto.AccessTokenResponse;
-import hanglog.member.dto.LoginRequest;
-import hanglog.member.domain.MemberTokens;
-import hanglog.member.service.AuthService;
+import hanglog.auth.presentation.AuthController;
+import hanglog.auth.dto.AccessTokenRequest;
+import hanglog.auth.dto.AccessTokenResponse;
+import hanglog.auth.dto.LoginRequest;
+import hanglog.auth.domain.MemberTokens;
+import hanglog.auth.service.AuthService;
 import hanglog.trip.restdocs.RestDocsTest;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;

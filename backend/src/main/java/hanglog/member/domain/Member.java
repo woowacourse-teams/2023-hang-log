@@ -1,11 +1,10 @@
-package hanglog.member.domain.entity;
+package hanglog.member.domain;
 
 import static hanglog.member.domain.MemberState.ACTIVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.member.domain.MemberState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;

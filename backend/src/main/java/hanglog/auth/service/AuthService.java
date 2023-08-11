@@ -1,17 +1,17 @@
-package hanglog.member.service;
+package hanglog.auth.service;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
 
 import hanglog.global.exception.AuthException;
-import hanglog.member.domain.MemberTokens;
-import hanglog.member.domain.auth.JwtProvider;
-import hanglog.member.domain.auth.OauthProvider;
-import hanglog.member.domain.auth.OauthProviders;
-import hanglog.member.domain.auth.UserInfo;
-import hanglog.member.domain.entity.Member;
-import hanglog.member.domain.entity.RefreshToken;
+import hanglog.auth.domain.MemberTokens;
+import hanglog.auth.JwtProvider;
+import hanglog.auth.domain.oauthprovider.OauthProvider;
+import hanglog.auth.domain.oauthprovider.OauthProviders;
+import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
+import hanglog.member.domain.Member;
+import hanglog.auth.domain.RefreshToken;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.domain.repository.RefreshTokenRepository;
+import hanglog.auth.domain.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +28,11 @@ public class AuthService {
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
-        final UserInfo userInfo = provider.getUserInfo(code);
+        final OauthUserInfo oauthUserInfo = provider.getUserInfo(code);
         final Member member = findOrCreateMember(
-                userInfo.getSocialLoginId(),
-                userInfo.getNickname(),
-                userInfo.getImageUrl()
+                oauthUserInfo.getSocialLoginId(),
+                oauthUserInfo.getNickname(),
+                oauthUserInfo.getImageUrl()
         );
         final MemberTokens memberTokens = jwtProvider.generateLoginToken(member.getId().toString());
         final RefreshToken savedRefreshToken = new RefreshToken(memberTokens.getRefreshToken(), member.getId());

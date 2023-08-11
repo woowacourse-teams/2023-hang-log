@@ -1,12 +1,12 @@
-package hanglog.member.domain.auth.kakao;
+package hanglog.auth.domain.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 
+import hanglog.auth.domain.OauthAccessToken;
+import hanglog.auth.domain.oauthuserinfo.KakaoUserInfo;
 import hanglog.global.exception.AuthException;
-import hanglog.member.domain.auth.OauthProvider;
-import hanglog.member.domain.auth.UserInfo;
-import hanglog.member.domain.auth.OauthAccessToken;
+import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -50,7 +50,7 @@ public class KakaoOauthProvider implements OauthProvider {
     }
 
     @Override
-    public UserInfo getUserInfo(final String code) {
+    public OauthUserInfo getUserInfo(final String code) {
         final String accessToken = requestAccessToken(code);
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);

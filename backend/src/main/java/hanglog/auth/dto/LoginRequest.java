@@ -1,4 +1,4 @@
-package hanglog.member.dto;
+package hanglog.auth.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 

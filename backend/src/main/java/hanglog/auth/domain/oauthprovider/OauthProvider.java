@@ -1,5 +1,6 @@
-package hanglog.member.domain.auth;
+package hanglog.auth.domain.oauthprovider;
 
+import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import org.springframework.web.client.RestTemplate;
 
 public interface OauthProvider {
@@ -7,5 +8,5 @@ public interface OauthProvider {
     RestTemplate restTemplate = new RestTemplate();
 
     boolean is(String name);
-    UserInfo getUserInfo(String code);
+    OauthUserInfo getUserInfo(String code);
 }

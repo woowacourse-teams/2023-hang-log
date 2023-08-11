@@ -1,6 +1,6 @@
-package hanglog.member.domain.repository;
+package hanglog.auth.domain.repository;
 
-import hanglog.member.domain.entity.RefreshToken;
+import hanglog.auth.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {

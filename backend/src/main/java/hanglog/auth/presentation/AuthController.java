@@ -1,10 +1,10 @@
-package hanglog.member.presentation;
+package hanglog.auth.presentation;
 
-import hanglog.member.domain.MemberTokens;
-import hanglog.member.dto.AccessTokenRequest;
-import hanglog.member.dto.AccessTokenResponse;
-import hanglog.member.dto.LoginRequest;
-import hanglog.member.service.AuthService;
+import hanglog.auth.domain.MemberTokens;
+import hanglog.auth.service.AuthService;
+import hanglog.auth.dto.AccessTokenRequest;
+import hanglog.auth.dto.AccessTokenResponse;
+import hanglog.auth.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package hanglog.member.domain.entity;
+package hanglog.auth.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 

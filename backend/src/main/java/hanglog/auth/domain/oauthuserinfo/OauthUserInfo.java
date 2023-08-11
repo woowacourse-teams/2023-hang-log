@@ -1,6 +1,6 @@
-package hanglog.member.domain.auth;
+package hanglog.auth.domain.oauthuserinfo;
 
-public interface UserInfo {
+public interface OauthUserInfo {
     String getSocialLoginId();
 
     String getNickname();

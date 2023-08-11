@@ -1,6 +1,6 @@
 package hanglog.member.domain.repository;
 
-import hanglog.member.domain.entity.Member;
+import hanglog.member.domain.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
