@@ -65,6 +65,7 @@ class AuthControllerTest extends RestDocsTest {
                 .content(objectMapper.writeValueAsString(loginRequest))
         );
 
+        // when
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         pathParameters(

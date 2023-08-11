@@ -86,7 +86,6 @@ class JwtProviderTest {
     void validateToken_ExpiredPeriodRefreshToken() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRED_TIME, SAMPLE_SUBJECT, realSecretKey);
-
         final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
         final MemberTokens memberTokens = new MemberTokens(refreshToken, accessToken);
 
