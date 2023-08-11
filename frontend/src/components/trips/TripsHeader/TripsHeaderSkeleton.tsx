@@ -1,13 +1,9 @@
 import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
-import { Flex, Heading, Theme } from 'hang-log-design-system';
-
-import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
+import { Flex, Skeleton, Theme } from 'hang-log-design-system';
 
 import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
 
-const TripsHeader = () => {
-  const { userInfoData } = useUserInfoQuery();
-
+const TripsHeaderSkeleton = () => {
   return (
     <Flex
       tag="section"
@@ -19,12 +15,10 @@ const TripsHeader = () => {
         marginBottom: Theme.spacer.spacing4,
       }}
     >
-      <Heading css={headingStyling} size="large">
-        {userInfoData.nickname}의 여행
-      </Heading>
+      <Skeleton width="250px" height="42px" css={headingStyling} />
       <TripsHeaderImage css={imageStyling} />
     </Flex>
   );
 };
 
-export default TripsHeader;
+export default TripsHeaderSkeleton;
