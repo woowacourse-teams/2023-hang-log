@@ -1,8 +1,9 @@
 package hanglog.share.presentation;
 
-import static hanglog.trip.fixture.CityFixture.LONDON;
-import static hanglog.trip.fixture.CityFixture.PARIS;
-import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
+import static hanglog.share.fixture.ShareFixture.LONDON;
+import static hanglog.share.fixture.ShareFixture.LONDON_TRIP;
+import static hanglog.share.fixture.ShareFixture.PARIS;
+import static hanglog.share.fixture.ShareFixture.setDayLogs;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -15,6 +16,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +53,7 @@ class ShareControllerTest extends RestDocsTest {
     @Test
     void getSharedTrip() throws Exception {
         // given
+        setDayLogs();
         when(shareService.getTripDetail(anyString()))
                 .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
 
@@ -170,5 +173,22 @@ class ShareControllerTest extends RestDocsTest {
                         )
                 )
                 .andReturn();
+    }
+
+    @DisplayName("공유 상태가 없는 공유 수정 요청은 예외처리한다.")
+    @Test
+    void getSharedTrip_NullSharedStatus() throws Exception {
+        // given
+        final TripSharedStatusRequest sharedStatusRequest = new TripSharedStatusRequest(null);
+        final TripSharedCodeResponse sharedCodeResponse = new TripSharedCodeResponse("xxxxxx");
+        when(shareService.updateSharedStatus(anyLong(), any(TripSharedStatusRequest.class)))
+                .thenReturn(sharedCodeResponse);
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/share", 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sharedStatusRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("공유 상태를 선택해주세요."));
     }
 }
