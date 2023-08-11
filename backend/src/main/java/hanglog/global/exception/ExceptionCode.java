@@ -30,8 +30,8 @@ public enum ExceptionCode {
     INVALID_IS_PLACE_UPDATED_WHEN_NON_SPOT(3005, "아이템이 기타일 때, 장소를 업데이트할 수 없습니다."),
     INVALID_CURRENCY_DATE_WHEN_WEEKEND(3006, "주말의 공공 환율 api를 조회할 수 없습니다."),
     INVALID_DATE_ALREADY_EXIST(3007, "요청한 날짜의 환율 정보는 이미 존재합니다."),
-    INVALID_EXPENSE_OVER_MAX(3008, "금액이 최댓값보다 큽니다."),
-    INVALID_EXPENSE_UNDER_MIN(3009, "금액이 최솟값보다 작습니다."),
+    INVALID_EXPENSE_OVER_MAX(3008, "금액이 1억원보다 클 수 없습니다."),
+    INVALID_EXPENSE_UNDER_MIN(3009, "금액이 0원보다 작을 수 없습니다."),
 
     INVALID_ORDERED_ITEM_IDS(4001, "날짜에 속한 모든 여행 아이템들의 ID가 필요합니다."),
 
