@@ -1,14 +1,17 @@
-import { ERROR_CODE } from '@constants/api';
-import { toastListState } from '@store/toast';
 import { useMutation } from '@tanstack/react-query';
+
 import { useSetRecoilState } from 'recoil';
 
-import { generateUniqueId } from '@utils/uniqueId';
+import { useTokenError } from '@hooks/member/useTokenError';
+
+import { toastListState } from '@store/toast';
 
 import { postImage } from '@api/image/postImage';
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { useTokenError } from '@hooks/member/useTokenError';
+import { generateUniqueId } from '@utils/uniqueId';
+
+import { ERROR_CODE } from '@constants/api';
 
 export const useImageMutation = () => {
   const setToastList = useSetRecoilState(toastListState);

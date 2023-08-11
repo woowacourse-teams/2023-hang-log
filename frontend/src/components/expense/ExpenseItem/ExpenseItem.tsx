@@ -1,10 +1,12 @@
-import { CURRENCY_ICON } from '@constants/trip';
-import type { ExpenseItemData } from '@type/expense';
 import { Flex, Heading, Text, Theme } from 'hang-log-design-system';
+
+import { amountStyling, containerStyling } from '@components/expense/ExpenseItem/ExpenseItem.style';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
-import { amountStyling, containerStyling } from '@components/expense/ExpenseItem/ExpenseItem.style';
+import type { ExpenseItemData } from '@type/expense';
+
+import { CURRENCY_ICON } from '@constants/trip';
 
 type ExpenseItemProps = ExpenseItemData;
 

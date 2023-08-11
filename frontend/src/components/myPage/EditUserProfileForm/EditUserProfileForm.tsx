@@ -1,8 +1,6 @@
-import type { UserData } from '@type/member';
-import { Button } from 'hang-log-design-system';
 import { Link } from 'react-router-dom';
 
-import { useEditUserProfileForm } from '@hooks/member/useEditUserProfileForm';
+import { Button } from 'hang-log-design-system';
 
 import {
   buttonStyling,
@@ -12,6 +10,10 @@ import {
 } from '@components/myPage/EditUserProfileForm/EditUserProfileForm.style';
 import NicknameInput from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput';
 import ProfileImageInput from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput';
+
+import { useEditUserProfileForm } from '@hooks/member/useEditUserProfileForm';
+
+import type { UserData } from '@type/member';
 
 interface EditUserProfileForm {
   initialData: UserData;

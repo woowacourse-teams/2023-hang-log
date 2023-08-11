@@ -1,10 +1,6 @@
-import MoreIcon from '@assets/svg/more-icon.svg';
-import { PATH } from '@constants/path';
-import type { TripData } from '@type/trip';
-import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
-import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
+import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 
 import {
   moreButtonStyling,
@@ -12,6 +8,13 @@ import {
   moreMenuStyling,
 } from '@components/common/TripInformation/TripButtons/TripButtons.style';
 import TripShareButton from '@components/common/TripInformation/TripShareButton/TripShareButton';
+
+import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
+
+import { PATH } from '@constants/path';
+
+import MoreIcon from '@assets/svg/more-icon.svg';
+import ShareIcon from '@assets/svg/share-icon.svg';
 
 interface TripButtonsProps {
   tripId: number;

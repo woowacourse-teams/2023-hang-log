@@ -2,6 +2,24 @@
   "name": "hang-log",
   "version": "0.0.1",
   "description": "장소 기반 여행 기록 서비스, \"행록\"",
+  "repository": "https://github.com/woowacourse-teams/2023-hang-log",
+  "contributors": [
+    {
+      "name": "Ashley Heo",
+      "email": "ashleysyheo@gmail.com",
+      "url": "https://github.com/ashleysyheo"
+    },
+    {
+      "name": "Woochan Lim",
+      "email": "dlaxodud1217@gmail.com",
+      "url": "https://github.com/dladncks1217"
+    },
+    {
+      "name": "Dahye Yun",
+      "email": "06robin11@gmail.com",
+      "url": "https://github.com/Dahyeeee"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --mode development",
@@ -15,7 +33,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

@@ -1,11 +1,8 @@
-import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import type { TripData } from '@type/trip';
-import { Badge, Box, Heading, Text, useOverlay } from 'hang-log-design-system';
 import { memo } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
-import { formatDate } from '@utils/formatter';
+import { Badge, Box, Heading, Text, useOverlay } from 'hang-log-design-system';
 
 import TripButtons from '@components/common/TripInformation/TripButtons/TripButtons';
 import TripEditButtons from '@components/common/TripInformation/TripEditButtons/TripEditButtons';
@@ -19,6 +16,14 @@ import {
   titleStyling,
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { formatDate } from '@utils/formatter';
+
+import type { TripData } from '@type/trip';
+
+import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
 interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
   isEditable?: boolean;

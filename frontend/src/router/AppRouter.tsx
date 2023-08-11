@@ -1,8 +1,8 @@
 import App from '@/App';
-import { PATH } from '@constants/path';
-import { isLoggedInState } from '@store/auth';
+
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
 import { useRecoilValue } from 'recoil';
 
 import ExpensePage from '@pages/ExpensePage/ExpensePage';
@@ -19,6 +19,10 @@ import TripPage from '@pages/TripPage/TripPage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 import TripsPage from '@pages/TripsPage/TripsPage';
 import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
+
+import { isLoggedInState } from '@store/auth';
+
+import { PATH } from '@constants/path';
 
 const AppRouter = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);

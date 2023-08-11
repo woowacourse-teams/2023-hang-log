@@ -1,6 +1,8 @@
-import { CITY_TAG_MAX_LENGTH } from '@constants/ui';
-import type { CityData } from '@type/city';
 import { useState } from 'react';
+
+import type { CityData } from '@type/city';
+
+import { CITY_TAG_MAX_LENGTH } from '@constants/ui';
 
 export const useCityTags = (initialCityTags: CityData[]) => {
   const [cityTags, setCityTags] = useState(initialCityTags);

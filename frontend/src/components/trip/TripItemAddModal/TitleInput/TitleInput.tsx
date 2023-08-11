@@ -1,8 +1,11 @@
-import { TRIP_ITEM_TITLE_MAX_LENGTH } from '@constants/ui';
-import type { TripItemFormData } from '@type/tripItem';
-import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
+
+import { Input } from 'hang-log-design-system';
+
+import type { TripItemFormData } from '@type/tripItem';
+
+import { TRIP_ITEM_TITLE_MAX_LENGTH } from '@constants/ui';
 
 interface TitleInputProps {
   value: string;

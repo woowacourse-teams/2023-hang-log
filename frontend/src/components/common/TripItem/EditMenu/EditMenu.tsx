@@ -1,8 +1,4 @@
-import MoreIcon from '@assets/svg/more-icon.svg';
-import type { TripItemData } from '@type/tripItem';
 import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
-
-import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
 
 import {
   getMoreMenuStyling,
@@ -10,6 +6,12 @@ import {
   moreMenuListStyling,
 } from '@components/common/TripItem/EditMenu/EditMenu.style';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
+
+import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation';
+
+import type { TripItemData } from '@type/tripItem';
+
+import MoreIcon from '@assets/svg/more-icon.svg';
 
 interface EditMenuProps extends TripItemData {
   tripId: number;

@@ -4,6 +4,10 @@ export const BASE_URL = PROD
   ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
   : 'http://localhost:3000';
 
+export const AXIOS_BASE_URL = PROD
+  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  : '/';
+
 export const END_POINTS = {
   TRIPS: '/trips',
   TRIP: (tripId: number) => `/trips/${tripId}`,

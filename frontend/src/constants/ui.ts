@@ -23,3 +23,5 @@ export const TRIP_ITEM_MEMO_MAX_LENGTH = 255;
 export const NICKNAME_MAX_LENGTH = 15;
 
 export const MOBILE_MEDIA_QUERY_SIZE = '(max-width: 600px)';
+
+export const AMOUNT_MAX_LIMIT = 100_000_000;

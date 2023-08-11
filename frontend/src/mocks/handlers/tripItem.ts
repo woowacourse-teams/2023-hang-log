@@ -1,8 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import { HTTP_STATUS_CODE } from '@constants/api';
-import { trip } from '@mocks/data/trip';
-import type { CurrencyType, TripItemFormData } from '@type/tripItem';
 import { rest } from 'msw';
+
+import type { CurrencyType, TripItemFormData } from '@type/tripItem';
+
+import { HTTP_STATUS_CODE } from '@constants/api';
+
+import { trip } from '@mocks/data/trip';
 
 export const tripItemHandlers = [
   rest.post('/trips/:tripId/items', async (req, res, ctx) => {

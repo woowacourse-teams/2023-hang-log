@@ -1,11 +1,9 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useRecoilValue } from 'recoil';
 
-import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
-import { useTripQuery } from '@hooks/api/useTripQuery';
+import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
 
 import {
   addButtonStyling,
@@ -18,6 +16,11 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import TripInformation from '@components/common/TripInformation/TripInformation';
 import TripMap from '@components/common/TripMap/TripMap';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
+
+import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
+import { useTripQuery } from '@hooks/api/useTripQuery';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const TripEditPage = () => {
   const { tripId } = useParams();

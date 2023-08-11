@@ -1,9 +1,12 @@
-import { NICKNAME_MAX_LENGTH } from '@constants/ui';
-import type { UserData } from '@type/member';
-import { Input } from 'hang-log-design-system';
 import { type ChangeEvent, useCallback } from 'react';
 
+import { Input } from 'hang-log-design-system';
+
 import { inputStyling } from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput.style';
+
+import type { UserData } from '@type/member';
+
+import { NICKNAME_MAX_LENGTH } from '@constants/ui';
 
 interface NicknameInputProps {
   value: string;

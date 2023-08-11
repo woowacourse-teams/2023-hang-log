@@ -1,11 +1,12 @@
-import type { TripData } from '@type/trip';
 import { useEffect, useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
-import { isEmptyString } from '@utils/validator';
-
 import { useTripEditMutation } from '@hooks/api/useTripEditMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
+
+import { isEmptyString } from '@utils/validator';
+
+import type { TripData } from '@type/trip';
 
 export const useTripEditForm = (
   {

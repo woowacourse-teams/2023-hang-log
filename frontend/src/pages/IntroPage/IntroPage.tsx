@@ -1,10 +1,8 @@
-import SampleTripImage from '@assets/png/sample-trip-image.png';
-import SampleTripImageMobile from '@assets/png/sample-trip-image_mobile.png';
-import { PATH } from '@constants/path';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Button, Flex, Heading, Theme } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
+
 import { useRecoilValue } from 'recoil';
+
+import { Button, Flex, Heading, Theme } from 'hang-log-design-system';
 
 import {
   containerStyling,
@@ -12,6 +10,13 @@ import {
   imageStyling,
   titleStyling,
 } from '@pages/IntroPage/IntroPage.style';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { PATH } from '@constants/path';
+
+import SampleTripImage from '@assets/png/sample-trip-image.png';
+import SampleTripImageMobile from '@assets/png/sample-trip-image_mobile.png';
 
 const IntroPage = () => {
   const navigate = useNavigate();

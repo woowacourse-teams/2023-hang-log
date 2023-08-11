@@ -1,9 +1,10 @@
-import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 import { Flex, Heading, Theme } from 'hang-log-design-system';
+
+import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
 
 import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
 
-import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
+import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 
 const TripsHeader = () => {
   const { userInfoData } = useUserInfoQuery();

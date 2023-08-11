@@ -1,9 +1,11 @@
-import { EXPENSE_LIST_SKELETON_LENGTH } from '@constants/ui';
-import { Divider, Flex, Theme } from 'hang-log-design-system';
 import { Fragment } from 'react';
+
+import { Divider, Flex, Theme } from 'hang-log-design-system';
 
 import ExpenseItemSkeleton from '@components/expense/ExpenseItem/ExpenseItemSkeleton';
 import { containerStyling } from '@components/expense/ExpenseList/ExpenseList.style';
+
+import { EXPENSE_LIST_SKELETON_LENGTH } from '@constants/ui';
 
 const ExpenseListSkeleton = () => {
   return (

@@ -1,7 +1,8 @@
-import { END_POINTS } from '@constants/api';
+import { axiosInstance } from '@api/axiosInstance';
+
 import type { TripItemFormData } from '@type/tripItem';
 
-import { axiosInstance } from '@api/axiosInstance';
+import { END_POINTS } from '@constants/api';
 
 export interface PostTripItemParams extends TripItemFormData {
   tripId: number;

@@ -1,12 +1,13 @@
-import { Flex, Heading, Spinner, Theme } from 'hang-log-design-system';
 import { useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import { isAuthProvider } from '@utils/auth';
+import { Flex, Heading, Spinner, Theme } from 'hang-log-design-system';
+
+import { containerStyling } from '@pages/RedirectPage/RedirectPage.style';
 
 import { useLogInMutation } from '@hooks/api/useLogInMutation';
 
-import { containerStyling } from '@pages/RedirectPage/RedirectPage.style';
+import { isAuthProvider } from '@utils/auth';
 
 const RedirectPage = () => {
   const { provider } = useParams();
