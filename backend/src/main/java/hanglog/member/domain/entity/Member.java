@@ -1,12 +1,13 @@
-package hanglog.member.domain;
+package hanglog.member.domain.entity;
 
 import static hanglog.member.domain.MemberState.ACTIVE;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.member.domain.MemberState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -37,9 +38,7 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
-    private String refreshToken;
-
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private MemberState status;
 
     @CreatedDate
@@ -56,13 +55,5 @@ public class Member {
         this.imageUrl = imageUrl;
         this.status = ACTIVE;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public void assignRefreshToken(final String token) {
-        this.refreshToken = token;
-    }
-
-    public void removeRefreshToken() {
-        this.refreshToken = null;
     }
 }
