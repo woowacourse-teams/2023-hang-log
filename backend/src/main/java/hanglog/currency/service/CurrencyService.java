@@ -84,10 +84,14 @@ public class CurrencyService {
     }
 
     private List<SingleCurrencyResponse> requestFilteredCurrencyResponses(final LocalDate date) {
-        return Arrays.stream(
-                        Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), SingleCurrencyResponse[].class))
-                                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
-                )
+        final SingleCurrencyResponse[] responses = restTemplate.getForObject(
+                createCurrencyUrl(date),
+                SingleCurrencyResponse[].class
+        );
+        if (Objects.requireNonNull(responses).length == 0) {
+            throw new InvalidCurrencyDateException(NOT_FOUND_CURRENCY_DATA);
+        }
+        return Arrays.stream(responses)
                 .filter(response -> CurrencyType.isProvided(response.getCode()))
                 .toList();
     }
