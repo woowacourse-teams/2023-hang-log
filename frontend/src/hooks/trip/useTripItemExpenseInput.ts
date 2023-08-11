@@ -43,9 +43,7 @@ export const useTripItemExpenseInput = (
   };
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (REGEX.ALPHABET_AND_KOREAN_CHARACTERS.test(event.target.value)) {
-      return;
-    }
+    if (REGEX.ALPHABET_AND_KOREAN_CHARACTERS.test(event.target.value)) return;  
 
     if (Number(event.target.value) < 0) {
       // eslint-disable-next-line no-param-reassign
