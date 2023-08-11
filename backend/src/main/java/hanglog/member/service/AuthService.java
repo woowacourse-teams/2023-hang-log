@@ -6,7 +6,7 @@ import hanglog.member.domain.auth.OauthProvider;
 import hanglog.member.domain.auth.OauthProviders;
 import hanglog.member.domain.auth.UserInfo;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.MemberTokens;
+import hanglog.member.domain.MemberTokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

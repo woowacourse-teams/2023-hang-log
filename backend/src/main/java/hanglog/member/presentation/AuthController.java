@@ -3,7 +3,7 @@ package hanglog.member.presentation;
 import hanglog.member.dto.AccessTokenRequest;
 import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.LoginRequest;
-import hanglog.member.dto.MemberTokens;
+import hanglog.member.domain.MemberTokens;
 import hanglog.member.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

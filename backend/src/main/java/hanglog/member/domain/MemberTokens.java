@@ -1,4 +1,4 @@
-package hanglog.member.dto;
+package hanglog.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

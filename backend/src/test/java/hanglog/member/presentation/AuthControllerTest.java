@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.member.dto.AccessTokenRequest;
 import hanglog.member.dto.AccessTokenResponse;
 import hanglog.member.dto.LoginRequest;
-import hanglog.member.dto.MemberTokens;
+import hanglog.member.domain.MemberTokens;
 import hanglog.member.service.AuthService;
 import hanglog.trip.restdocs.RestDocsTest;
 import jakarta.servlet.http.Cookie;

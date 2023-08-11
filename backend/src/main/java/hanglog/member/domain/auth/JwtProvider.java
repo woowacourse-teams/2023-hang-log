@@ -7,7 +7,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;
-import hanglog.member.dto.MemberTokens;
+import hanglog.member.domain.MemberTokens;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtException;
