@@ -1,4 +1,5 @@
 import { CURRENCY_ICON } from '@constants/trip';
+import { AMOUNT_MAX_LIMIT } from '@constants/ui';
 import type { TripItemFormData } from '@type/tripItem';
 import { Flex, Input, Label, Select, Theme } from 'hang-log-design-system';
 import { memo } from 'react';
@@ -55,6 +56,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           placeholder="0"
           aria-label="비용"
           min={0}
+          max={AMOUNT_MAX_LIMIT}
           value={initialExpenseValue?.amount}
           onChange={handleAmountChange}
         />
