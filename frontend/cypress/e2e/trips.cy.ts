@@ -1,14 +1,15 @@
+import { ACCESS_TOKEN_KEY } from '@constants/api';
+import { accessToken } from '@mocks/data/member';
 import type { CityData } from '@type/city';
 import type { TripsData } from '@type/trips';
 
-describe('여행 목록 페이지', () => {
-  const TEST_URL = 'http://localhost:3000';
+const TEST_URL = 'http://localhost:3000';
 
+describe('여행 목록 페이지', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
-
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(TEST_URL);
-
     cy.wait(3000);
   });
 

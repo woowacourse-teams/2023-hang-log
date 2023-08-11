@@ -18,7 +18,7 @@ export const tripsHandlers = [
   }),
 
   rest.get(`${END_POINTS.TRIPS}/:tripId`, (_, res, ctx) => {
-    return res(ctx.delay(2000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
+    return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
   }),
 
   rest.put(`${END_POINTS.TRIPS}/:tripId`, async (req, res, ctx) => {
