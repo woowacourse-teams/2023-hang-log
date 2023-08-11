@@ -14,8 +14,8 @@ import static org.mockito.BDDMockito.given;
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
-import hanglog.share.dto.request.TripSharedStatusRequest;
-import hanglog.share.dto.response.TripSharedCodeResponse;
+import hanglog.share.dto.request.SharedTripStatusRequest;
+import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -32,10 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
-class ShareServiceTest {
+class SharedTripServiceTest {
 
     @InjectMocks
-    private ShareService shareService;
+    private SharedTripService sharedTripService;
 
     @Mock
     private SharedTripRepository sharedTripRepository;
@@ -59,7 +59,7 @@ class ShareServiceTest {
                 .willReturn(Optional.of(sharedTrip));
 
         // when
-        final TripDetailResponse actual = shareService.getTripDetail("xxxxx");
+        final TripDetailResponse actual = sharedTripService.getTripDetail("xxxxx");
 
         //then
         assertThat(actual).usingRecursiveComparison()
@@ -76,7 +76,7 @@ class ShareServiceTest {
                 .willReturn(Optional.of(sharedTrip));
 
         // when & then
-        assertThatThrownBy(() -> shareService.getTripDetail("xxxxx"))
+        assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(9004);
@@ -90,7 +90,7 @@ class ShareServiceTest {
                 .willReturn(Optional.ofNullable(null));
 
         // when & then
-        assertThatThrownBy(() -> shareService.getTripDetail("xxxxx"))
+        assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1010);
@@ -101,30 +101,30 @@ class ShareServiceTest {
     void updateSharedStatus() {
         // given
         final SharedTrip sharedTrip = new SharedTrip(1L, LONDON_TRIP, "xxxxx", SHARED);
-        final TripSharedStatusRequest tripSharedStatusRequest = new TripSharedStatusRequest(true);
+        final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
                 .willReturn(Optional.of(LONDON_TRIP));
         given(sharedTripRepository.findByTripId(anyLong()))
                 .willReturn(Optional.of(sharedTrip));
 
         // when
-        final TripSharedCodeResponse actual = shareService.updateSharedStatus(1L, tripSharedStatusRequest);
+        final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
 
         //then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(new TripSharedCodeResponse(sharedTrip.getShareCode()));
+                .isEqualTo(new SharedTripCodeResponse(sharedTrip.getShareCode()));
     }
 
     @DisplayName("존재하지 않는 여행의 공유 상태 변경은 예외처리한다.")
     @Test
     void updateSharedStatus_NotExistTripFail() {
         // given
-        final TripSharedStatusRequest tripSharedStatusRequest = new TripSharedStatusRequest(true);
+        final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
                 .willReturn(Optional.ofNullable(null));
 
         // when & then
-        assertThatThrownBy(() -> shareService.updateSharedStatus(1L, tripSharedStatusRequest))
+        assertThatThrownBy(() -> sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);

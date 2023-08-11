@@ -9,8 +9,8 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.domain.type.SharedStatusType;
-import hanglog.share.dto.request.TripSharedStatusRequest;
-import hanglog.share.dto.response.TripSharedCodeResponse;
+import hanglog.share.dto.request.SharedTripStatusRequest;
+import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
@@ -18,13 +18,14 @@ import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ShareService {
+@RequiredArgsConstructor
+@Transactional
+public class SharedTripService {
 
     private final SharedTripRepository sharedTripRepository;
     private final TripRepository tripRepository;
@@ -33,11 +34,14 @@ public class ShareService {
     public TripDetailResponse getTripDetail(final String sharedCode) {
         final SharedTrip sharedTrip = sharedTripRepository.findByShareCode(sharedCode)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
+
         validateSharedStatus(sharedTrip.getSharedStatus());
+
         final Long tripId = sharedTrip.getTrip().getId();
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
+
         return TripDetailResponse.of(trip, cities);
     }
 
@@ -53,15 +57,18 @@ public class ShareService {
                 .toList();
     }
 
-    public TripSharedCodeResponse updateSharedStatus(final Long tripId,
-                                                     final TripSharedStatusRequest tripSharedStatusRequest) {
+    public SharedTripCodeResponse updateSharedStatus(
+            final Long tripId,
+            final SharedTripStatusRequest sharedTripStatusRequest
+    ) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
 
         final SharedTrip sharedTrip = sharedTripRepository.findByTripId(tripId)
                 .orElseGet(() -> SharedTrip.createdBy(trip));
-        sharedTrip.updateSharedStatus(tripSharedStatusRequest);
+
+        sharedTrip.updateSharedStatus(sharedTripStatusRequest);
         sharedTripRepository.save(sharedTrip);
-        return TripSharedCodeResponse.of(sharedTrip);
+        return SharedTripCodeResponse.of(sharedTrip);
     }
 }

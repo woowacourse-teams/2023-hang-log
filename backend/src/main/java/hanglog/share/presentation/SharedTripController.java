@@ -1,8 +1,8 @@
 package hanglog.share.presentation;
 
-import hanglog.share.dto.request.TripSharedStatusRequest;
-import hanglog.share.dto.response.TripSharedCodeResponse;
-import hanglog.share.service.ShareService;
+import hanglog.share.dto.request.SharedTripStatusRequest;
+import hanglog.share.dto.response.SharedTripCodeResponse;
+import hanglog.share.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,23 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class ShareController {
+public class SharedTripController {
 
-    private final ShareService shareService;
+    private final SharedTripService sharedTripService;
 
     @GetMapping("/shared-trips/{sharedCode}")
     public ResponseEntity<TripDetailResponse> getSharedTrip(@PathVariable final String sharedCode) {
-        final TripDetailResponse tripDetailResponse = shareService.getTripDetail(sharedCode);
+        final TripDetailResponse tripDetailResponse = sharedTripService.getTripDetail(sharedCode);
         return ResponseEntity.ok().body(tripDetailResponse);
     }
 
     @PatchMapping("/trips/{tripId}/share")
-    public ResponseEntity<TripSharedCodeResponse> updateSharedStatus(
+    public ResponseEntity<SharedTripCodeResponse> updateSharedStatus(
             @PathVariable final Long tripId,
-            @RequestBody @Valid final TripSharedStatusRequest tripSharedStatusRequest
+            @RequestBody @Valid final SharedTripStatusRequest sharedTripStatusRequest
     ) {
-        final TripSharedCodeResponse tripSharedCodeResponse = shareService.updateSharedStatus(tripId,
-                tripSharedStatusRequest);
-        return ResponseEntity.ok().body(tripSharedCodeResponse);
+        final SharedTripCodeResponse sharedTripCodeResponse = sharedTripService.updateSharedStatus(
+                tripId,
+                sharedTripStatusRequest
+        );
+        return ResponseEntity.ok().body(sharedTripCodeResponse);
     }
 }

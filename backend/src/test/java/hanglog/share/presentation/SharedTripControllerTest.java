@@ -20,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.share.dto.request.TripSharedStatusRequest;
-import hanglog.share.dto.response.TripSharedCodeResponse;
-import hanglog.share.service.ShareService;
+import hanglog.share.dto.request.SharedTripStatusRequest;
+import hanglog.share.dto.response.SharedTripCodeResponse;
+import hanglog.share.service.SharedTripService;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.restdocs.RestDocsTest;
@@ -36,10 +36,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-@WebMvcTest(ShareController.class)
+@WebMvcTest(SharedTripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class ShareControllerTest extends RestDocsTest {
+class SharedTripControllerTest extends RestDocsTest {
 
     private static final List<City> CITIES = List.of(PARIS, LONDON);
 
@@ -47,14 +47,14 @@ class ShareControllerTest extends RestDocsTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ShareService shareService;
+    private SharedTripService sharedTripService;
 
     @DisplayName("ShareCode로 단일 여행을 조회한다.")
     @Test
     void getSharedTrip() throws Exception {
         // given
         setDayLogs();
-        when(shareService.getTripDetail(anyString()))
+        when(sharedTripService.getTripDetail(anyString()))
                 .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
 
         // when
@@ -148,9 +148,9 @@ class ShareControllerTest extends RestDocsTest {
     @Test
     void updateSharedStatus() throws Exception {
         // given
-        final TripSharedStatusRequest sharedStatusRequest = new TripSharedStatusRequest(true);
-        final TripSharedCodeResponse sharedCodeResponse = new TripSharedCodeResponse("xxxxxx");
-        when(shareService.updateSharedStatus(anyLong(), any(TripSharedStatusRequest.class)))
+        final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(true);
+        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
+        when(sharedTripService.updateSharedStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
 
         // when & then
@@ -179,9 +179,9 @@ class ShareControllerTest extends RestDocsTest {
     @Test
     void getSharedTrip_NullSharedStatus() throws Exception {
         // given
-        final TripSharedStatusRequest sharedStatusRequest = new TripSharedStatusRequest(null);
-        final TripSharedCodeResponse sharedCodeResponse = new TripSharedCodeResponse("xxxxxx");
-        when(shareService.updateSharedStatus(anyLong(), any(TripSharedStatusRequest.class)))
+        final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(null);
+        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
+        when(sharedTripService.updateSharedStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
 
         // when & then

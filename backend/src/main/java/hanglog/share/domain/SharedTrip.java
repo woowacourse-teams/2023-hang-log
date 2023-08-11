@@ -6,7 +6,7 @@ import static jakarta.persistence.EnumType.STRING;
 
 import hanglog.global.exception.ImageException;
 import hanglog.share.domain.type.SharedStatusType;
-import hanglog.share.dto.request.TripSharedStatusRequest;
+import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.trip.domain.Trip;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -75,7 +75,7 @@ public class SharedTrip {
                 .collect(Collectors.joining());
     }
 
-    public void updateSharedStatus(final TripSharedStatusRequest tripSharedStatusRequest) {
-        this.sharedStatus = SharedStatusType.mappingType(tripSharedStatusRequest.getSharedStatus());
+    public void updateSharedStatus(final SharedTripStatusRequest sharedTripStatusRequest) {
+        this.sharedStatus = SharedStatusType.mappingType(sharedTripStatusRequest.getSharedStatus());
     }
 }

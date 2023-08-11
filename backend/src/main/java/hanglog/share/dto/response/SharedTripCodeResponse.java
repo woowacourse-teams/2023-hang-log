@@ -8,14 +8,14 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TripSharedCodeResponse {
+public class SharedTripCodeResponse {
 
     private final String sharedCode;
 
-    public static TripSharedCodeResponse of(final SharedTrip sharedTrip) {
+    public static SharedTripCodeResponse of(final SharedTrip sharedTrip) {
         if (sharedTrip.getSharedStatus() == UNSHARED) {
-            return new TripSharedCodeResponse(null);
+            return new SharedTripCodeResponse(null);
         }
-        return new TripSharedCodeResponse(sharedTrip.getShareCode());
+        return new SharedTripCodeResponse(sharedTrip.getShareCode());
     }
 }

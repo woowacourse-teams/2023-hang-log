@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
-public class TripSharedStatusRequest {
+public class SharedTripStatusRequest {
 
     @NotNull(message = "공유 상태를 선택해주세요.")
     private Boolean sharedStatus;

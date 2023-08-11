@@ -1,6 +1,7 @@
 package hanglog.share.domain.type;
 
 public enum SharedStatusType {
+
     SHARED,
     UNSHARED;
 
