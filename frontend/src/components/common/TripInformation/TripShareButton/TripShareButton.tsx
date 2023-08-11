@@ -73,7 +73,7 @@ const TripShareButton = ({ tripId, sharedStatus }: TripShareButtonProps) => {
           {
             id: generateUniqueId(),
             variant: 'default',
-            message: '공유 url이 클립보드에 복사되었습니다.',
+            message: '공유 링크가 클립보드에 복사되었습니다.',
           },
         ]);
       })

@@ -31,6 +31,10 @@ export const shareContainerStyling = css({
 
   fontSize: Theme.text.small.fontSize,
   lineHeight: Theme.text.small.lineHeight,
+
+  '@media screen and (max-width:600px)': {
+    width: '230px',
+  },
 });
 
 export const shareItemStyling = css({
@@ -96,7 +100,7 @@ export const shareUrlStyling = css({
 });
 
 export const copyButtonStyling = css({
-  width: '45%',
+  width: '75px',
   padding: '8px 4px',
 
   border: 'none',
