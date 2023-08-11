@@ -12,8 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class Amount extends Number {
 
-    private static final BigDecimal MAX_AMOUNT = BigDecimal.valueOf(100_000_000);
-    private static final BigDecimal MIN_AMOUNT = BigDecimal.ZERO;
+    public static final Amount ZERO = new Amount(0);
 
     private BigDecimal value;
 

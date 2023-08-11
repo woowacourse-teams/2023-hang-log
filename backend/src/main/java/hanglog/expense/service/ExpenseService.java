@@ -106,13 +106,13 @@ public class ExpenseService {
     private Amount calculateTotalAmount(final Map<DayLog, Amount> dayLogAmounts) {
         return dayLogAmounts.values().stream()
                 .reduce(Amount::add)
-                .orElse(new Amount(0));
+                .orElse(Amount.ZERO);
     }
 
     private Map<DayLog, Amount> getDayLogAmounts(final List<DayLog> dayLogs) {
         final Map<DayLog, Amount> dayLogAmounts = new LinkedHashMap<>();
         for (final DayLog dayLog : dayLogs) {
-            dayLogAmounts.put(dayLog, new Amount(0));
+            dayLogAmounts.put(dayLog, Amount.ZERO);
         }
         return dayLogAmounts;
     }
@@ -121,7 +121,7 @@ public class ExpenseService {
         final List<Category> categories = categoryRepository.findExpenseCategory();
         final Map<Category, Amount> categoryAmounts = new LinkedHashMap<>();
         for (final Category category : categories) {
-            categoryAmounts.put(category, new Amount(0));
+            categoryAmounts.put(category, Amount.ZERO);
         }
         return categoryAmounts;
     }
