@@ -1,7 +1,8 @@
-import { END_POINTS } from '@constants/api';
+import { axiosInstance } from '@api/axiosInstance';
+
 import type { ImageData } from '@type/image';
 
-import { axiosInstance } from '@api/axiosInstance';
+import { END_POINTS } from '@constants/api';
 
 interface PostImageRequestBody {
   images: FormData;

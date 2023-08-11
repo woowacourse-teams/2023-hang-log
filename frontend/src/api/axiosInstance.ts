@@ -1,7 +1,8 @@
-import { BASE_URL, NETWORK } from '@constants/api';
 import axios from 'axios';
 
 import { checkAndSetToken, handleAPIError, handleTokenError } from '@api/interceptors';
+
+import { BASE_URL, NETWORK } from '@constants/api';
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,

@@ -1,12 +1,6 @@
-import ErrorImage from '@assets/svg/error-image.svg';
-import { ERROR_CODE, HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@constants/api';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { hasKeyInObject } from '@utils/typeGuard';
-
-import { useTokenError } from '@hooks/member/useTokenError';
+import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
 
 import {
   buttonStyling,
@@ -14,6 +8,16 @@ import {
   headingStyling,
   textStyling,
 } from '@components/common/Error/Error.style';
+
+import { useTokenError } from '@hooks/member/useTokenError';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { hasKeyInObject } from '@utils/typeGuard';
+
+import { ERROR_CODE, HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@constants/api';
+
+import ErrorImage from '@assets/svg/error-image.svg';
 
 export interface ErrorProps {
   statusCode?: number;

@@ -1,5 +1,3 @@
-import AuthImage from '@assets/svg/auth-image.svg';
-import LogoVertical from '@assets/svg/logo-vertical.svg';
 import { Flex, Heading, Theme } from 'hang-log-design-system';
 
 import {
@@ -11,6 +9,9 @@ import {
 
 import GoogleButton from '@components/common/GoogleButton/GoogleButton';
 import KakaoButton from '@components/common/KakaoButton/KakaoButton';
+
+import AuthImage from '@assets/svg/auth-image.svg';
+import LogoVertical from '@assets/svg/logo-vertical.svg';
 
 const LogInPage = () => {
   return (

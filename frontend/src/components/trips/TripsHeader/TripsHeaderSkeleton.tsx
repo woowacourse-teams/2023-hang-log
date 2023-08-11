@@ -1,7 +1,8 @@
-import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 import { Flex, Skeleton, Theme } from 'hang-log-design-system';
 
 import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
+
+import TripsHeaderImage from '@assets/svg/TripsHeader.svg';
 
 const TripsHeaderSkeleton = () => {
   return (

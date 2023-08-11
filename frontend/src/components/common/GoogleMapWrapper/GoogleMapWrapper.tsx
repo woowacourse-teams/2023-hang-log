@@ -1,6 +1,8 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { Spinner } from 'hang-log-design-system';
+
 import type { PropsWithChildren } from 'react';
+
+import { Spinner } from 'hang-log-design-system';
 
 type GoogleMapWrapperProps = PropsWithChildren;
 

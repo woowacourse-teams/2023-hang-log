@@ -1,19 +1,21 @@
-import type { CityData } from '@type/city';
+import { useEffect, useRef } from 'react';
+
 import {
   MenuList as SuggestionList,
   MenuItem as SuggestionsItem,
   Text,
 } from 'hang-log-design-system';
-import { useEffect, useRef } from 'react';
-
-import { useAutoScroll } from '@hooks/common/useAutoScroll';
-import { useCitySuggestion } from '@hooks/common/useCitySuggestion';
 
 import {
   containerStyling,
   emptyTextStyling,
   getItemStyling,
 } from '@components/common/CitySuggestion/CitySuggestion.style';
+
+import { useAutoScroll } from '@hooks/common/useAutoScroll';
+import { useCitySuggestion } from '@hooks/common/useCitySuggestion';
+
+import type { CityData } from '@type/city';
 
 interface SuggestionProps {
   queryWord: string;

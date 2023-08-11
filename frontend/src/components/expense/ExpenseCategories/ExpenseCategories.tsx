@@ -1,12 +1,13 @@
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { Flex, Heading, Tab, Tabs, Text, Theme, useSelect } from 'hang-log-design-system';
-
-import { formatDate, formatNumberToMoney } from '@utils/formatter';
-
-import { useExpense } from '@hooks/expense/useExpense';
 
 import { totalAmountContainerStyling } from '@components/expense/ExpenseCategories/ExpenseCategories.style';
 import ExpenseList from '@components/expense/ExpenseList/ExpenseList';
+
+import { useExpense } from '@hooks/expense/useExpense';
+
+import { formatDate, formatNumberToMoney } from '@utils/formatter';
+
+import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseCategoriesProps {
   tripId: number;

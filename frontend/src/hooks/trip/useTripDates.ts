@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+
 import type { TripData } from '@type/trip';
 
 export const useTripDates = (tripId: number) => {

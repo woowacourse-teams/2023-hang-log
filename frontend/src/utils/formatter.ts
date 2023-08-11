@@ -1,5 +1,6 @@
-import { REGEX } from '@constants/regex';
 import type { DateRangeData } from '@type/trips';
+
+import { REGEX } from '@constants/regex';
 
 export const formatDate = (date: string) => {
   return date.replace(/-/g, '.');

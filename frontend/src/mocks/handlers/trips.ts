@@ -1,8 +1,11 @@
+import { rest } from 'msw';
+
+import type { TripFormData } from '@type/trip';
+
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
+
 import { trip } from '@mocks/data/trip';
 import { trips } from '@mocks/data/trips';
-import type { TripFormData } from '@type/trip';
-import { rest } from 'msw';
 
 export const tripsHandlers = [
   rest.get(`${END_POINTS.TRIPS}`, (_, res, ctx) => {

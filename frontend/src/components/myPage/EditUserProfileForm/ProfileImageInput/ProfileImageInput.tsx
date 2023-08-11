@@ -1,9 +1,7 @@
-import type { UserData } from '@type/member';
-import { Box, Button } from 'hang-log-design-system';
 import type { ComponentPropsWithoutRef } from 'react';
 import { memo, useCallback, useRef } from 'react';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { Box, Button } from 'hang-log-design-system';
 
 import {
   imageStyling,
@@ -11,6 +9,10 @@ import {
   uploadButtonStyling,
   wrapperStyling,
 } from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput.style';
+
+import { useImageUpload } from '@hooks/common/useImageUpload';
+
+import type { UserData } from '@type/member';
 
 interface ProfileImageInputProps extends ComponentPropsWithoutRef<'div'> {
   initialImageUrl: string;

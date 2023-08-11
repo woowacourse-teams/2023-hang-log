@@ -1,16 +1,20 @@
-import PinIcon from '@assets/svg/pin-icon.svg';
-import SelectedPinIcon from '@assets/svg/selected-pin-icon.svg';
-import { clickedMarkerIdState } from '@store/scrollFocus';
-import { Flex, Text } from 'hang-log-design-system';
 import { useEffect, useRef } from 'react';
 import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
+
 import { useSetRecoilState } from 'recoil';
+
+import { Flex, Text } from 'hang-log-design-system';
 
 import {
   getLabelStyling,
   getMarkerContainerStyling,
 } from '@components/common/TripItemMarker/TripItemMarker.style';
+
+import { clickedMarkerIdState } from '@store/scrollFocus';
+
+import PinIcon from '@assets/svg/pin-icon.svg';
+import SelectedPinIcon from '@assets/svg/selected-pin-icon.svg';
 
 interface TripItemMarkerProps {
   map: google.maps.Map;

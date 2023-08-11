@@ -1,8 +1,11 @@
-import { TRIP_ITEM_ADD_CATEGORIES } from '@constants/trip';
-import type { TripItemFormData } from '@type/tripItem';
-import { RadioButton } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
+
+import { RadioButton } from 'hang-log-design-system';
+
+import type { TripItemFormData } from '@type/tripItem';
+
+import { TRIP_ITEM_ADD_CATEGORIES } from '@constants/trip';
 
 interface CategoryInputProps {
   itemType: TripItemFormData['itemType'];

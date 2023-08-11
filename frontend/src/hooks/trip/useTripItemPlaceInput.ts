@@ -1,6 +1,7 @@
-import type { TripItemFormData } from '@type/tripItem';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import type { TripItemFormData } from '@type/tripItem';
 
 export const useTripItemPlaceInput = (
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,

@@ -1,8 +1,10 @@
-import { PATH } from '@constants/path';
-import { Button, Flex, Theme } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
+import { Button, Flex, Theme } from 'hang-log-design-system';
+
 import { getItemStyling } from '@components/layout/Header/Header.style';
+
+import { PATH } from '@constants/path';
 
 const LoggedOutMenu = () => {
   const navigate = useNavigate();

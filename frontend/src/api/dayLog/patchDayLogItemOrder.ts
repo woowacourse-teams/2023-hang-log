@@ -1,6 +1,6 @@
-import { END_POINTS } from '@constants/api';
-
 import { axiosInstance } from '@api/axiosInstance';
+
+import { END_POINTS } from '@constants/api';
 
 export interface PatchDayLogItemOrderParams {
   tripId: number;

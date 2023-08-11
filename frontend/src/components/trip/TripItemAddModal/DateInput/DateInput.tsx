@@ -1,14 +1,16 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import type { TripItemFormData } from '@type/tripItem';
-import { Select } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-import { formatMonthDate } from '@utils/formatter';
+import { Select } from 'hang-log-design-system';
+
+import { selectStyling } from '@components/trip/TripItemAddModal/DateInput/DateInput.style';
 
 import { useTripDates } from '@hooks/trip/useTripDates';
 
-import { selectStyling } from '@components/trip/TripItemAddModal/DateInput/DateInput.style';
+import { formatMonthDate } from '@utils/formatter';
+
+import type { TripItemFormData } from '@type/tripItem';
 
 interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];

@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { TripItemFormData } from '@type/tripItem';
+
 import { useState } from 'react';
 
 import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
+
+import type { TripItemFormData } from '@type/tripItem';
 
 const meta = {
   title: 'trip/TripItemAddModal/MemoInput',

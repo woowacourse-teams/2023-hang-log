@@ -1,11 +1,14 @@
+import type { ChangeEvent } from 'react';
+import { useState } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
+
+import type { ExpenseCategoryData } from '@type/expense';
+import type { TripItemFormData } from '@type/tripItem';
+
 import { REGEX } from '@constants/regex';
 import { DEFAULT_CURRENCY } from '@constants/trip';
 import { AMOUNT_MAX_LIMIT } from '@constants/ui';
-import { useQueryClient } from '@tanstack/react-query';
-import type { ExpenseCategoryData } from '@type/expense';
-import type { TripItemFormData } from '@type/tripItem';
-import type { ChangeEvent } from 'react';
-import { useState } from 'react';
 
 export const useTripItemExpenseInput = (
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void,
@@ -43,7 +46,7 @@ export const useTripItemExpenseInput = (
   };
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (REGEX.ALPHABET_AND_KOREAN_CHARACTERS.test(event.target.value)) return;  
+    if (REGEX.ALPHABET_AND_KOREAN_CHARACTERS.test(event.target.value)) return;
 
     if (Number(event.target.value) < 0) {
       // eslint-disable-next-line no-param-reassign
