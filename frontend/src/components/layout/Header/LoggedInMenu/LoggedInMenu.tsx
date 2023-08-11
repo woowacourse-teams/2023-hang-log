@@ -1,17 +1,23 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
-import { userInfo } from '@mocks/data/member';
 import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 import type { KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useLogOutMutation } from '@hooks/api/useLogOutMutation';
+import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
+
 import {
   imageStyling,
   menuListStyling,
-} from '@components/layout/Header/LoggedInOption/LoggedInOption.style';
+} from '@components/layout/Header/LoggedInMenu/LoggedInMenu.style';
 
-const LoggedInOption = () => {
+const LoggedInMenu = () => {
   const navigate = useNavigate();
+
+  const { userInfoData } = useUserInfoQuery();
+  const logOutMutation = useLogOutMutation();
 
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
 
@@ -26,11 +32,16 @@ const LoggedInOption = () => {
     closeMenu();
   };
 
+  const handleLogOut = () => {
+    logOutMutation.mutate({ accessToken: localStorage.getItem(ACCESS_TOKEN_KEY) ?? '' });
+    closeMenu();
+  };
+
   return (
     <Menu closeMenu={closeMenu}>
       <img
         css={imageStyling}
-        src={userInfo.imageUrl}
+        src={userInfoData.imageUrl}
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         alt="유저 프로필 이미지"
@@ -40,11 +51,11 @@ const LoggedInOption = () => {
       {isMenuOpen && (
         <MenuList css={menuListStyling}>
           <MenuItem onClick={goToTargetPage(PATH.MY_PAGE)}>마이페이지</MenuItem>
-          <MenuItem onClick={goToTargetPage(PATH.ROOT)}>로그아웃</MenuItem>
+          <MenuItem onClick={handleLogOut}>로그아웃</MenuItem>
         </MenuList>
       )}
     </Menu>
   );
 };
 
-export default LoggedInOption;
+export default LoggedInMenu;

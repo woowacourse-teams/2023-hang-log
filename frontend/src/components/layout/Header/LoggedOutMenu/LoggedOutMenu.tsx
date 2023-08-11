@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getItemStyling } from '@components/layout/Header/Header.style';
 
-const LoggedOutOption = () => {
+const LoggedOutMenu = () => {
   const navigate = useNavigate();
 
   return (
@@ -19,4 +19,4 @@ const LoggedOutOption = () => {
   );
 };
 
-export default LoggedOutOption;
+export default LoggedOutMenu;
