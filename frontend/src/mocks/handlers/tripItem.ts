@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+import { HTTP_STATUS_CODE } from '@constants/api';
 import { trip } from '@mocks/data/trip';
 import type { CurrencyType, TripItemFormData } from '@type/tripItem';
 import { rest } from 'msw';
@@ -40,7 +41,7 @@ export const tripItemHandlers = [
 
     trip.dayLogs[0].items.push(newTripItem);
 
-    return res(ctx.status(200));
+    return res(ctx.status(HTTP_STATUS_CODE.CREATED));
   }),
 
   rest.delete('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
@@ -56,7 +57,7 @@ export const tripItemHandlers = [
 
     trip.dayLogs[dayLogIndex].items.splice(itemIndex, 1);
 
-    return res(ctx.status(204));
+    return res(ctx.status(HTTP_STATUS_CODE.NO_CONTENT));
   }),
 
   rest.put('/trips/:tripId/items/:itemId', async (req, res, ctx) => {
@@ -104,6 +105,6 @@ export const tripItemHandlers = [
       imageUrls: response.imageUrls,
     };
 
-    return res(ctx.status(204));
+    return res(ctx.status(HTTP_STATUS_CODE.NO_CONTENT));
   }),
 ];

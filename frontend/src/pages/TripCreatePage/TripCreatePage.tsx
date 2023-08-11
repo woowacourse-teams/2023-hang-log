@@ -4,7 +4,7 @@ import { Box, Flex, Heading } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
 import {
-  backgroundImage,
+  backgroundImageStyling,
   boxStyling,
   containerStyling,
 } from '@pages/TripCreatePage/TripCreatePage.style';
@@ -20,7 +20,7 @@ const TripCreatePage = () => {
         <Heading size={isMobile ? 'small' : 'medium'}>여행을 기록해 보세요</Heading>
         <TripCreateForm />
       </Box>
-      <CreatePageImage aria-label="세계 랜드마크 이미지" css={backgroundImage} />
+      <CreatePageImage aria-label="세계 랜드마크 이미지" css={backgroundImageStyling} />
     </Flex>
   );
 };

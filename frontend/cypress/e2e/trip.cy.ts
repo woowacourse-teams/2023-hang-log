@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN_KEY } from '@constants/api';
+import { accessToken } from '@mocks/data/member';
 import type { CityData } from '@type/city';
 import type { TripItemData } from '@type/tripItem';
 
@@ -6,8 +8,9 @@ const TEST_URL = 'http://localhost:3000';
 describe('여행 수정 페이지', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(`${TEST_URL}/trip/1/edit`);
-    cy.wait(3000);
+    cy.wait(1000);
   });
 
   it('여행 수정 페이지에 처음 방문 시 여행 데이터가 렌더링되기 전에 skeleton을 볼 수 있다.', () => {
@@ -15,7 +18,7 @@ describe('여행 수정 페이지', () => {
 
     cy.visit(`${TEST_URL}/trip/1/edit`);
 
-    cy.tick(3000);
+    cy.tick(1000);
 
     cy.get('.skeleton').should('be.visible');
   });
@@ -91,6 +94,7 @@ describe('여행 수정 페이지', () => {
 describe('여행 정보 수정', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(`${TEST_URL}/trip/1/edit`);
     cy.wait(4000);
   });
@@ -200,6 +204,7 @@ describe('여행 정보 수정', () => {
 describe('여행 아이템 추가', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(`${TEST_URL}/trip/1/edit`);
     cy.wait(4000);
   });
@@ -340,6 +345,7 @@ describe('여행 아이템 추가', () => {
 describe('여행 아이템 수정', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(`${TEST_URL}/trip/1/edit`);
     cy.wait(4000);
   });

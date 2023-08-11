@@ -27,6 +27,7 @@ const TripItemMarkerContainer = ({ map, places }: TripItemMarkerContainerProps) 
 
   return places.map((place) => (
     <TripItemMarker
+      key={place.id}
       map={map}
       isZoomedOut={isZoomedOut}
       id={place.id}

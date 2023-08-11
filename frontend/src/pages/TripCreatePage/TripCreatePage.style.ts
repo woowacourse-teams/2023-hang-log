@@ -7,6 +7,10 @@ export const containerStyling = css({
 
   width: '100%',
   height: 'calc(100vh - 81px)',
+
+  '@media screen and (max-width: 600px)': {
+    height: 'calc(100vh - 65px)',
+  },
 });
 
 export const boxStyling = css({
@@ -22,7 +26,7 @@ export const boxStyling = css({
   },
 });
 
-export const backgroundImage = css({
+export const backgroundImageStyling = css({
   position: 'absolute',
   bottom: Theme.spacer.spacing4,
   right: 0,
