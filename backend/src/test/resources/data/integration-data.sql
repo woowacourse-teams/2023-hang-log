@@ -82,3 +82,4 @@ INSERT INTO shared_trip(trip_id, shared_code, shared_status)
 VALUES (1,'shareCode','SHARED');
 
 SET referential_integrity TRUE;
+징

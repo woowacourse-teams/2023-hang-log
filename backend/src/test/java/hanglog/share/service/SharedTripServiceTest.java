@@ -2,9 +2,10 @@ package hanglog.share.service;
 
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
-import static hanglog.share.fixture.ShareFixture.LONDON;
-import static hanglog.share.fixture.ShareFixture.LONDON_TRIP;
-import static hanglog.share.fixture.ShareFixture.PARIS;
+import static hanglog.share.fixture.ShareFixture.BEIJING;
+import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
+import static hanglog.share.fixture.ShareFixture.TOKYO;
+import static hanglog.share.fixture.ShareFixture.TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -50,11 +51,12 @@ class SharedTripServiceTest {
     @Test
     void getSharedTrip() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, LONDON_TRIP, "xxxxx", SHARED);
+        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", SHARED);
         given(tripRepository.findById(1L))
-                .willReturn(Optional.of(LONDON_TRIP));
+                .willReturn(Optional.of(TRIP));
         given(tripCityRepository.findByTripId(1L))
-                .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
+                .willReturn(List.of(new TripCity(TRIP, CALIFORNIA), new TripCity(TRIP, TOKYO),
+                        new TripCity(TRIP, BEIJING)));
         given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.of(sharedTrip));
 
@@ -63,14 +65,14 @@ class SharedTripServiceTest {
 
         //then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripDetailResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
+                .isEqualTo(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
     }
 
     @DisplayName("비공유 상태의 여행 조회시 실패한다.")
     @Test
     void getSharedTrip_UnsharedFail() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, LONDON_TRIP, "xxxxx", UNSHARED);
+        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", UNSHARED);
 
         given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.of(sharedTrip));
@@ -100,10 +102,10 @@ class SharedTripServiceTest {
     @Test
     void updateSharedStatus() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, LONDON_TRIP, "xxxxx", SHARED);
+        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", SHARED);
         final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
-                .willReturn(Optional.of(LONDON_TRIP));
+                .willReturn(Optional.of(TRIP));
         given(sharedTripRepository.findByTripId(anyLong()))
                 .willReturn(Optional.of(sharedTrip));
 

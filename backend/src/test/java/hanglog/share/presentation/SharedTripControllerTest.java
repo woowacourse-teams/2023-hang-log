@@ -1,8 +1,9 @@
 package hanglog.share.presentation;
 
-import static hanglog.share.fixture.ShareFixture.LONDON;
-import static hanglog.share.fixture.ShareFixture.LONDON_TRIP;
-import static hanglog.share.fixture.ShareFixture.PARIS;
+import static hanglog.share.fixture.ShareFixture.BEIJING;
+import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
+import static hanglog.share.fixture.ShareFixture.TOKYO;
+import static hanglog.share.fixture.ShareFixture.TRIP;
 import static hanglog.share.fixture.ShareFixture.setDayLogs;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
-import hanglog.trip.domain.City;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import java.util.List;
@@ -41,8 +41,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 @AutoConfigureRestDocs
 class SharedTripControllerTest extends RestDocsTest {
 
-    private static final List<City> CITIES = List.of(PARIS, LONDON);
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -55,7 +53,7 @@ class SharedTripControllerTest extends RestDocsTest {
         // given
         setDayLogs();
         when(sharedTripService.getTripDetail(anyString()))
-                .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
+                .thenReturn(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
         // when
         mockMvc.perform(get("/shared-trips/{sharedCode}", "xxxxxx").contentType(APPLICATION_JSON))

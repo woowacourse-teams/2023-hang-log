@@ -26,21 +26,6 @@ public class TripDetailResponse {
     private final String sharedCode;
     private final List<DayLogGetResponse> dayLogs;
 
-    public TripDetailResponse(final Long id, final List<CityWithPositionResponse> cities, final String title,
-                              final LocalDate startDate,
-                              final LocalDate endDate, final String description, final String imageUrl,
-                              final List<DayLogGetResponse> dayLogs) {
-        this.id = id;
-        this.cities = cities;
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.sharedCode = null;
-        this.dayLogs = dayLogs;
-    }
-
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
         final List<DayLogGetResponse> dayLogGetResponses = trip.getDayLogs().stream()
                 .map(DayLogGetResponse::of)
@@ -51,8 +36,9 @@ public class TripDetailResponse {
                 .toList();
 
         final Optional<SharedTrip> sharedTrip = Optional.ofNullable(trip.getSharedTrip());
+        final String sharedCode = sharedTrip.map(SharedTrip::getSharedCode).orElse(null);
 
-        return sharedTrip.map(value -> new TripDetailResponse(
+        return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
                 trip.getTitle(),
@@ -60,17 +46,8 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                value.getSharedCode(),
+                sharedCode,
                 dayLogGetResponses
-        )).orElseGet(() -> new TripDetailResponse(
-                trip.getId(),
-                cityWithPositionResponses,
-                trip.getTitle(),
-                trip.getStartDate(),
-                trip.getEndDate(),
-                trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
-                dayLogGetResponses
-        ));
+        );
     }
 }
