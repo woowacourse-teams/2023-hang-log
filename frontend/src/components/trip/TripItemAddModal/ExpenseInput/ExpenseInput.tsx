@@ -54,6 +54,7 @@ const ExpenseInput = ({ initialExpenseValue, updateInputValue }: ExpenseInputPro
           type="number"
           placeholder="0"
           aria-label="비용"
+          min={0}
           value={initialExpenseValue?.amount}
           onChange={handleAmountChange}
         />

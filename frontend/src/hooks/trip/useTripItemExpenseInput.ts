@@ -41,6 +41,13 @@ export const useTripItemExpenseInput = (
   };
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (Number(event.target.value) < 0) {
+      // eslint-disable-next-line no-param-reassign
+      event.target.value = '0';
+
+      return;
+    }
+
     setExpenseValue((prevExpenseValue) => {
       const newExpenseValue = {
         ...prevExpenseValue!,
@@ -52,5 +59,10 @@ export const useTripItemExpenseInput = (
     });
   };
 
-  return { expenseCategoryData, handleCategoryChange, handleCurrencyChange, handleAmountChange };
+  return {
+    expenseCategoryData,
+    handleCategoryChange,
+    handleCurrencyChange,
+    handleAmountChange,
+  };
 };
