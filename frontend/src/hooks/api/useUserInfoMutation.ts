@@ -1,15 +1,21 @@
+import { ERROR_CODE } from '@constants/api';
 import { toastListState } from '@store/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
 import { generateUniqueId } from '@utils/uniqueId';
 
+import type { ErrorResponseData } from '@api/interceptors';
 import { putUserInfo } from '@api/member/putUserInfo';
+
+import { useTokenError } from '@hooks/member/useTokenError';
 
 export const useUserInfoMutation = () => {
   const queryClient = useQueryClient();
 
   const setToastList = useSetRecoilState(toastListState);
+
+  const { handleTokenError } = useTokenError();
 
   const userInfoMutation = useMutation({
     mutationFn: putUserInfo,
@@ -24,7 +30,13 @@ export const useUserInfoMutation = () => {
       ]);
       queryClient.invalidateQueries(['userInfo']);
     },
-    onError: () => {
+    onError: (error: ErrorResponseData) => {
+      if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
+        handleTokenError();
+
+        return;
+      }
+
       setToastList((prevToastList) => [
         ...prevToastList,
         {
