@@ -5,6 +5,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,8 +37,10 @@ public class ItemRequest {
     @Size(max = 10, message = "여행 아이템의 이미지는 최대 10개까지 첨부할 수 있습니다.")
     private final List<String> imageUrls;
 
+    @Valid
     private final PlaceRequest place;
 
+    @Valid
     private final ExpenseRequest expense;
 
 

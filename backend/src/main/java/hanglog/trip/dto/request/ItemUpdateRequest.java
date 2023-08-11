@@ -6,6 +6,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_NULL_PLACE;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 
 import hanglog.global.exception.BadRequestException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,8 +41,10 @@ public class ItemUpdateRequest {
     @NotNull(message = "장소의 업데이트 여부를 입력해 주세요.")
     private final Boolean isPlaceUpdated;
 
+    @Valid
     private final PlaceRequest place;
 
+    @Valid
     private final ExpenseRequest expense;
 
     public ItemUpdateRequest(

@@ -35,7 +35,7 @@ public class ItemController {
     public ResponseEntity<Void> updateItem(
             @PathVariable final Long tripId,
             @PathVariable final Long itemId,
-            @RequestBody final ItemUpdateRequest itemUpdateRequest
+            @RequestBody @Valid final ItemUpdateRequest itemUpdateRequest
     ) {
         itemService.update(tripId, itemId, itemUpdateRequest);
         return ResponseEntity.noContent().build();
