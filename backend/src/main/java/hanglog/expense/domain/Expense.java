@@ -8,6 +8,7 @@ import hanglog.category.domain.Category;
 import hanglog.global.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Expense extends BaseEntity {
     @Column(nullable = false)
     private String currency;
 
-    @Column(nullable = false)
+    @Embedded
     private Amount amount;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)

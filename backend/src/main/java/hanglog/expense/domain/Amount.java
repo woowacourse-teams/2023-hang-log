@@ -1,19 +1,23 @@
 package hanglog.expense.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Embeddable
-@RequiredArgsConstructor
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class Amount extends Number {
 
     public static final Amount ZERO = new Amount(0);
 
+    @Column(name = "amount", precision = 38, scale = 3)
     private BigDecimal value;
 
     public <T extends Number> Amount(final T value) {
@@ -32,7 +36,7 @@ public class Amount extends Number {
 
     public <T extends Number> Amount divide(final T divisorValue) {
         final BigDecimal divisor = new BigDecimal(divisorValue.toString());
-        return new Amount(value.divide(divisor, 9, RoundingMode.HALF_UP));
+        return new Amount(value.divide(divisor, 3, RoundingMode.HALF_UP));
     }
 
     public <T extends Number> int compareTo(final T targetValue) {
