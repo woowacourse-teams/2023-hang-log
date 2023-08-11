@@ -32,7 +32,7 @@ class JwtProviderTest {
     private static final Long SAMPLE_EXPIRATION_TIME = 60000L;
     private static final Long SAMPLE_EXPIRED_TIME = 0L;
     private static final String SAMPLE_SUBJECT = "thisIsSampleSubject";
-    private static final String SAMPLE_SECRET_KEY = "LJW25,jjongwa,mcodnjs,hgo641,waterricecake,Let'sGo";
+    private static final String SAMPLE_INVALID_SECRET_KEY = "LJW25,jjongwa,mcodnjs,hgo641,waterricecake,Let'sGo";
 
     @Value("${security.jwt.secret-key}")
     private String realSecretKey;
@@ -100,7 +100,7 @@ class JwtProviderTest {
     @Test
     void validateToken_InvalidRefreshToken() {
         // given
-        final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_SECRET_KEY);
+        final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
         final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
         final MemberTokens memberTokens = new MemberTokens(refreshToken, accessToken);
 
@@ -129,7 +129,7 @@ class JwtProviderTest {
     void validateToken_InvalidAccessToken() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
-        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_SECRET_KEY);
+        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
         final MemberTokens memberTokens = new MemberTokens(refreshToken, accessToken);
 
         // when & then
@@ -161,7 +161,7 @@ class JwtProviderTest {
     @Test
     void regenerateAccessToken_InvalidRefreshToken() {
         // given
-        final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_SECRET_KEY);
+        final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
         final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
 
         // when & then
@@ -188,7 +188,7 @@ class JwtProviderTest {
     void regenerateAccessToken_InvalidAccessToken() {
         // given
         final String refreshToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, realSecretKey);
-        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_SECRET_KEY);
+        final String accessToken = makeTestJwt(SAMPLE_EXPIRATION_TIME, SAMPLE_SUBJECT, SAMPLE_INVALID_SECRET_KEY);
 
         // when & then
         assertThatThrownBy(() -> jwtProvider.regenerateAccessToken(refreshToken, accessToken))

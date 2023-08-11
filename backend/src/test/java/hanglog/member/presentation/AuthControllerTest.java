@@ -88,15 +88,15 @@ class AuthControllerTest extends RestDocsTest {
                 .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
 
-        final AccessTokenResponse expectResponse = new AccessTokenResponse(memberTokens.getAccessToken());
+        final AccessTokenResponse expected = new AccessTokenResponse(memberTokens.getAccessToken());
 
-        final AccessTokenResponse actualResponse = objectMapper.readValue(
+        final AccessTokenResponse actual = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
                 AccessTokenResponse.class
         );
 
         // then
-        assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectResponse);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("accessToken 재발급을 통해 로그인을 연장할 수 있다.")
@@ -134,15 +134,15 @@ class AuthControllerTest extends RestDocsTest {
                 ))
                 .andReturn();
 
-        final AccessTokenResponse expectResponse = new AccessTokenResponse(memberTokens.getAccessToken());
+        final AccessTokenResponse expected = new AccessTokenResponse(memberTokens.getAccessToken());
 
-        final AccessTokenResponse actualResponse = objectMapper.readValue(
+        final AccessTokenResponse actual = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
                 AccessTokenResponse.class
         );
 
         // then
-        assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectResponse);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("멤버의 refreshToken을 삭제하고 로그아웃 할 수 있다.")
