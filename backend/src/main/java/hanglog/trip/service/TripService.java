@@ -129,13 +129,13 @@ public class TripService {
 
     private void updateDayLogByPeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {
         final DayLog extraDayLog = trip.getDayLogs().get(currentPeriod);
-        extraDayLog.updateOrdinal(requestPeriod + 1);
         if (currentPeriod < requestPeriod) {
             addEmptyDayLogs(trip, currentPeriod, requestPeriod);
         }
         if (currentPeriod > requestPeriod) {
             removeRemainingDayLogs(trip, currentPeriod, requestPeriod);
         }
+        extraDayLog.updateOrdinal(requestPeriod + 1);
     }
 
     private void addEmptyDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
