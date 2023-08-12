@@ -6,6 +6,7 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
 import hanglog.global.exception.BadRequestException;
+import hanglog.global.exception.InvalidDomainException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.domain.type.SharedStatusType;
@@ -62,7 +63,7 @@ public class SharedTripService {
             final SharedTripStatusRequest sharedTripStatusRequest
     ) {
         final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_TRIP_ID));
 
         final SharedTrip sharedTrip = sharedTripRepository.findByTripId(tripId)
                 .orElseGet(() -> SharedTrip.createdBy(trip));
