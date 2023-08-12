@@ -1,7 +1,8 @@
-import { END_POINTS } from '@constants/api';
+import { axiosInstance } from '@api/axiosInstance';
+
 import type { TripData, TripSharedStatusData } from '@type/trip';
 
-import { axiosInstance } from '@api/axiosInstance';
+import { END_POINTS } from '@constants/api';
 
 interface PatchTripSharedStatusParams extends TripSharedStatusData {
   tripId: number;

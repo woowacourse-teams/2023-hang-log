@@ -1,10 +1,12 @@
-import { toastListState } from '@store/toast';
 import { useMutation } from '@tanstack/react-query';
+
 import { useSetRecoilState } from 'recoil';
 
-import { generateUniqueId } from '@utils/uniqueId';
+import { toastListState } from '@store/toast';
 
 import { patchTripSharedStatus } from '@api/trip/patchTripShareStatus';
+
+import { generateUniqueId } from '@utils/uniqueId';
 
 export const useTripShareStatusMutation = () => {
   const setToastList = useSetRecoilState(toastListState);
