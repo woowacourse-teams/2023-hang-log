@@ -1,17 +1,9 @@
-import { PATH } from '@constants/path';
-import { clickedMarkerIdState } from '@store/scrollFocus';
-import type { TripItemData } from '@type/tripItem';
-import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 import { Fragment, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { useRecoilValue } from 'recoil';
 
-import { sortByOrdinal } from '@utils/sort';
-
-import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
-import { useAutoScroll } from '@hooks/common/useAutoScroll';
-import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
-import { useScrollFocus } from '@hooks/common/useScrollFocus';
+import { Button, Divider, Heading, Text } from 'hang-log-design-system';
 
 import TripItem from '@components/common/TripItem/TripItem';
 import {
@@ -19,6 +11,19 @@ import {
   containerStyling,
   emptyTextStyling,
 } from '@components/common/TripItemList/TripItemList.style';
+
+import { useDayLogOrderMutation } from '@hooks/api/useDayLogOrderMutation';
+import { useAutoScroll } from '@hooks/common/useAutoScroll';
+import { useDragAndDrop } from '@hooks/common/useDragAndDrop';
+import { useScrollFocus } from '@hooks/common/useScrollFocus';
+
+import { clickedMarkerIdState } from '@store/scrollFocus';
+
+import { sortByOrdinal } from '@utils/sort';
+
+import type { TripItemData } from '@type/tripItem';
+
+import { PATH } from '@constants/path';
 
 interface TripItemListProps {
   tripId: number;

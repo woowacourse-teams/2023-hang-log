@@ -1,7 +1,9 @@
-import { ACCESS_TOKEN_KEY } from '@constants/api';
-import { accessToken } from '@mocks/data/member';
 import type { CityData } from '@type/city';
 import type { TripItemData } from '@type/tripItem';
+
+import { ACCESS_TOKEN_KEY } from '@constants/api';
+
+import { accessToken } from '@mocks/data/member';
 
 const TEST_URL = 'http://localhost:3000';
 

@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { UserData } from '@type/member';
+
 import { useState } from 'react';
 
 import NicknameInput from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput';
+
+import type { UserData } from '@type/member';
 
 const meta = {
   title: 'myPage/NicknameInput',

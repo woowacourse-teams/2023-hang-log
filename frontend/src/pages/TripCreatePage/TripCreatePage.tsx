@@ -1,7 +1,6 @@
-import CreatePageImage from '@assets/svg/create-page-image.svg';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Box, Flex, Heading } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
+
+import { Box, Flex, Heading } from 'hang-log-design-system';
 
 import {
   backgroundImageStyling,
@@ -10,6 +9,10 @@ import {
 } from '@pages/TripCreatePage/TripCreatePage.style';
 
 import TripCreateForm from '@components/trip/TripCreateForm/TripCreateForm';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import CreatePageImage from '@assets/svg/create-page-image.svg';
 
 const TripCreatePage = () => {
   const isMobile = useRecoilValue(mediaQueryMobileState);

@@ -1,8 +1,12 @@
 export const PROD = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = PROD
-  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}`
   : 'http://localhost:3000';
+
+export const AXIOS_BASE_URL = PROD
+  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  : '/';
 
 export const END_POINTS = {
   TRIPS: '/trips',
@@ -15,6 +19,7 @@ export const END_POINTS = {
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
+  SHARE: (tripId: number | string) => `/trips/${tripId}/share`,
   TOKEN: '/token',
   LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',

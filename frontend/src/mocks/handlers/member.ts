@@ -1,7 +1,10 @@
-import { END_POINTS } from '@constants/api';
-import { accessToken, refreshToken, userInfo } from '@mocks/data/member';
-import type { UserData } from '@type/member';
 import { rest } from 'msw';
+
+import type { UserData } from '@type/member';
+
+import { END_POINTS } from '@constants/api';
+
+import { accessToken, refreshToken, userInfo } from '@mocks/data/member';
 
 export const memberHandlers = [
   rest.post(END_POINTS.LOGIN(':provider'), (_, res, ctx) => {

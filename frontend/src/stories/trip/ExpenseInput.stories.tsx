@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { TripItemFormData } from '@type/tripItem';
+
 import { useState } from 'react';
+
+import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 
-import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
+import type { TripItemFormData } from '@type/tripItem';
 
 const meta = {
   title: 'trip/TripItemAddModal/ExpenseInput',

@@ -1,10 +1,6 @@
-import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
-import { PATH } from '@constants/path';
-import type { TripsData } from '@type/trips';
-import { Box, Button, Flex, Heading, Text, Toggle, ToggleGroup } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
-import { formatDate } from '@utils/formatter';
+import { Box, Button, Flex, Heading, Text, Toggle, ToggleGroup } from 'hang-log-design-system';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import {
@@ -16,6 +12,13 @@ import {
   toggleGroupStyling,
 } from '@components/trips/TripsItemList/TripsItemList.style';
 import TutorialModal from '@components/trips/TutorialModal/TutorialModal';
+
+import { formatDate } from '@utils/formatter';
+
+import type { TripsData } from '@type/trips';
+
+import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
+import { PATH } from '@constants/path';
 
 interface TripsItemListProps {
   trips: TripsData[];

@@ -1,7 +1,8 @@
-import { END_POINTS } from '@constants/api';
+import { axiosInstance } from '@api/axiosInstance';
+
 import type { CityData } from '@type/city';
 
-import { axiosInstance } from '@api/axiosInstance';
+import { END_POINTS } from '@constants/api';
 
 export const getCity = async () => {
   const { data } = await axiosInstance.get<CityData[]>(END_POINTS.CITY);

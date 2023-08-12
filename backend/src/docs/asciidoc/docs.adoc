@@ -212,3 +212,35 @@ include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
 ==== 응답
 include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
 include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]
+
+== 멤버 API
+
+=== 로그인 (POST /login/:provider)
+
+==== 요청
+include::{snippets}/auth-controller-test/login/http-request.adoc[]
+include::{snippets}/auth-controller-test/login/path-parameters.adoc[]
+include::{snippets}/auth-controller-test/login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/login/http-response.adoc[]
+include::{snippets}/auth-controller-test/login/response-fields.adoc[]
+
+=== 토큰 재발급 (POST /token)
+
+==== 요청
+include::{snippets}/auth-controller-test/extend-login/http-request.adoc[]
+include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/extend-login/http-response.adoc[]
+include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
+
+=== 로그아웃 (POST /logout)
+
+==== 요청
+include::{snippets}/auth-controller-test/logout/http-request.adoc[]
+include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/logout/http-response.adoc[]

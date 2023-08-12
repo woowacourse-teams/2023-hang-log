@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
 import type { RefObject } from 'react';
+import { useCallback } from 'react';
 
 export const useAutoScroll = (
   listRef: RefObject<HTMLElement>,

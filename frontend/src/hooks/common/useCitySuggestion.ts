@@ -1,9 +1,11 @@
-import { useQueryClient } from '@tanstack/react-query';
-import type { CityData } from '@type/city';
 import { useCallback, useEffect, useState } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import { makeRegexByCho } from '@utils/cityFilter';
 import { formatStringToLetter } from '@utils/formatter';
+
+import type { CityData } from '@type/city';
 
 interface useCitySuggestionPrams {
   onItemSelect: (city: CityData) => void;

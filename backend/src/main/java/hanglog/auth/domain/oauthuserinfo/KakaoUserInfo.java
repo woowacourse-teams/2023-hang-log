@@ -1,22 +1,23 @@
-package hanglog.member.domain.auth.kakao;
+package hanglog.auth.domain.oauthuserinfo;
 
 import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hanglog.member.domain.auth.UserInfo;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class KakaoUserInfo implements UserInfo {
+@AllArgsConstructor
+public class KakaoUserInfo implements OauthUserInfo {
 
     @JsonProperty("id")
-    private String id;
+    private String socialLoginId;
     @JsonProperty("properties")
     private Properties properties;
 
     @Override
-    public String getId() {
-        return id;
+    public String getSocialLoginId() {
+        return socialLoginId;
     }
 
     @Override

@@ -1,14 +1,9 @@
-import { CURRENCY_ICON } from '@constants/trip';
-import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
-import type { TripItemData } from '@type/tripItem';
-import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
 import type { ForwardedRef } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
-import { formatNumberToMoney } from '@utils/formatter';
-
-import { useDraggedItem } from '@hooks/common/useDraggedItem';
+import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
@@ -21,6 +16,16 @@ import {
   starRatingStyling,
   subInformationStyling,
 } from '@components/common/TripItem/TripItem.style';
+
+import { useDraggedItem } from '@hooks/common/useDraggedItem';
+
+import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
+
+import { formatNumberToMoney } from '@utils/formatter';
+
+import type { TripItemData } from '@type/tripItem';
+
+import { CURRENCY_ICON } from '@constants/trip';
 
 interface TripListItemProps extends TripItemData {
   tripId: number;

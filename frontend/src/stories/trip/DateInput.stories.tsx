@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { useTripQuery } from '@hooks/api/useTripQuery';
-
 import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
+
+import { useTripQuery } from '@hooks/api/useTripQuery';
 
 const meta = {
   title: 'trip/TripItemAddModal/DateInput',

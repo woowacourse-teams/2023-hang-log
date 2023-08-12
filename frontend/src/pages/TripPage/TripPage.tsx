@@ -1,10 +1,9 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Flex, useSelect } from 'hang-log-design-system';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useRecoilValue } from 'recoil';
 
-import { useTripQuery } from '@hooks/api/useTripQuery';
+import { Flex, useSelect } from 'hang-log-design-system';
 
 import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
 
@@ -12,6 +11,10 @@ import DayLogList from '@components/common/DayLogList/DayLogList';
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import TripInformation from '@components/common/TripInformation/TripInformation';
 import TripMap from '@components/common/TripMap/TripMap';
+
+import { useTripQuery } from '@hooks/api/useTripQuery';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const TripPage = () => {
   const { tripId } = useParams();

@@ -1,7 +1,8 @@
-import { images } from '@mocks/data/image';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import ProfileImageInput from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput';
+
+import { images } from '@mocks/data/image';
 
 const meta = {
   title: 'myPage/ProfileImageInput',

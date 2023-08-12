@@ -1,5 +1,6 @@
-import { FloatingButton } from 'hang-log-design-system';
 import { Suspense } from 'react';
+
+import { FloatingButton } from 'hang-log-design-system';
 
 import { addButtonStyling } from '@pages/TripsPage/TripsPage.style';
 

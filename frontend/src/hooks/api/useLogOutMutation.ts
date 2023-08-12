@@ -1,14 +1,18 @@
-import { ACCESS_TOKEN_KEY } from '@constants/api';
-import { PATH } from '@constants/path';
+import { useNavigate } from 'react-router-dom';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { useSetRecoilState } from 'recoil';
+
 import { isLoggedInState } from '@store/auth';
 import { toastListState } from '@store/toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+
+import { postLogout } from '@api/member/postLogOut';
 
 import { generateUniqueId } from '@utils/uniqueId';
 
-import { postLogout } from '@api/member/postLogOut';
+import { ACCESS_TOKEN_KEY } from '@constants/api';
+import { PATH } from '@constants/path';
 
 export const useLogOutMutation = () => {
   const navigate = useNavigate();

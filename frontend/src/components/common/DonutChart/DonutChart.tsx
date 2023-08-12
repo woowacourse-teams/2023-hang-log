@@ -2,8 +2,6 @@ import { Theme } from 'hang-log-design-system';
 
 import { calculateDonutChartSegmentData, calculateTotalPercentage } from '@utils/chart';
 
-// import WholeDonut from '@components/common/DonutChart/WholeDonut/WholeDonut';
-
 export interface Segment {
   id: number;
   percentage: number;

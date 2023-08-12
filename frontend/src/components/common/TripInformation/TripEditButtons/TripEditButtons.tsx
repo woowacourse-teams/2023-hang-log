@@ -1,5 +1,6 @@
-import { Button } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from 'hang-log-design-system';
 
 import { editButtonStyling } from '@components/common/TripInformation/TripEditButtons/TripEditButtons.style';
 

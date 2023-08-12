@@ -1,10 +1,11 @@
-import { ACCESS_TOKEN_KEY, ERROR_CODE, HTTP_STATUS_CODE } from '@constants/api';
-import { PATH } from '@constants/path';
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 import { HTTPError } from '@api/HTTPError';
 import { axiosInstance } from '@api/axiosInstance';
 import { postNewToken } from '@api/member/postNewToken';
+
+import { ACCESS_TOKEN_KEY, ERROR_CODE, HTTP_STATUS_CODE } from '@constants/api';
+import { PATH } from '@constants/path';
 
 export interface ErrorResponseData {
   statusCode?: number;

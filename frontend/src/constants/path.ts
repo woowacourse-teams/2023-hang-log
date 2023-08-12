@@ -4,6 +4,7 @@ export const PATH = {
   EDIT_TRIP: (tripId: number | string) => `/trip/${tripId}/edit`,
   TRIP: (tripId: number | string) => `/trip/${tripId}`,
   EXPENSE: (tripId: number | string) => `/trip/${tripId}/expense`,
+  SHARE: (shareCode: string) => `/trip/share/${shareCode}`,
   LOGIN: '/login',
   SIGN_UP: '/sign-up',
   MY_PAGE: '/my-page',

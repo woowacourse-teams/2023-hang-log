@@ -1,9 +1,4 @@
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { Flex, Text, Theme } from 'hang-log-design-system';
-
-import { formatNumberToMoney } from '@utils/formatter';
-
-import { useExpense } from '@hooks/expense/useExpense';
 
 import {
   categoryNameStyling,
@@ -11,6 +6,12 @@ import {
   getCategoryIconStyling,
   wrapperStyling,
 } from '@components/expense/ExpenseCategoryInformation/ExpenseCategoryInformation.style';
+
+import { useExpense } from '@hooks/expense/useExpense';
+
+import { formatNumberToMoney } from '@utils/formatter';
+
+import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseCategoryInformationProps {
   tripId: number;

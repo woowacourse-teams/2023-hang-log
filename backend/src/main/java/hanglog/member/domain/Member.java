@@ -1,12 +1,12 @@
 package hanglog.member.domain;
 
 import static hanglog.member.domain.MemberState.ACTIVE;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -37,7 +37,7 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private MemberState status;
 
     @CreatedDate
@@ -50,9 +50,9 @@ public class Member {
     public Member(final String socialLoginId, final String nickname, final String imageUrl) {
         this.socialLoginId = socialLoginId;
         this.nickname = nickname;
-        this.imageUrl = imageUrl;
         this.lastLoginDate = LocalDateTime.now();
-        this.createdAt = LocalDateTime.now();
+        this.imageUrl = imageUrl;
         this.status = ACTIVE;
+        this.createdAt = LocalDateTime.now();
     }
 }
