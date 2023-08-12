@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -15,11 +16,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.presentation.AuthController;
+import hanglog.auth.domain.MemberTokens;
 import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
-import hanglog.auth.domain.MemberTokens;
+import hanglog.auth.presentation.AuthController;
 import hanglog.auth.service.AuthService;
 import hanglog.trip.restdocs.RestDocsTest;
 import jakarta.servlet.http.Cookie;
@@ -67,7 +68,7 @@ class AuthControllerTest extends RestDocsTest {
         );
 
         // when
-        final MvcResult mvcResult = resultActions.andExpect(status().isOk())
+        final MvcResult mvcResult = resultActions.andExpect(status().isCreated())
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("provider")
@@ -119,7 +120,7 @@ class AuthControllerTest extends RestDocsTest {
                 .cookie(cookie)
         );
 
-        final MvcResult mvcResult = resultActions.andExpect(status().isOk())
+        final MvcResult mvcResult = resultActions.andExpect(status().isCreated())
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("accessToken")
@@ -156,13 +157,13 @@ class AuthControllerTest extends RestDocsTest {
         final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         // when
-        final ResultActions resultActions = mockMvc.perform(post("/logout")
+        final ResultActions resultActions = mockMvc.perform(delete("/logout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
         );
 
-        resultActions.andExpect(status().isOk())
+        resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("accessToken")

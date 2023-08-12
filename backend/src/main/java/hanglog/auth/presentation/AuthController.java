@@ -1,15 +1,18 @@
 package hanglog.auth.presentation;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.service.AuthService;
 import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
+import hanglog.auth.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,25 +35,24 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         response.addCookie(cookie);
-        return ResponseEntity.ok(new AccessTokenResponse(memberTokens.getAccessToken()));
+        return ResponseEntity.status(CREATED).body(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
 
     @PostMapping("/token")
     public ResponseEntity<AccessTokenResponse> extendLogin(
             @CookieValue("refresh-token") final String refreshToken,
-            @RequestBody final AccessTokenRequest request,
-            final HttpServletResponse response
+            @RequestBody final AccessTokenRequest request
     ) {
         final String renewalRefreshToken = authService.renewalAccessToken(refreshToken, request.getAccessToken());
-        return ResponseEntity.ok(new AccessTokenResponse(renewalRefreshToken));
+        return ResponseEntity.status(CREATED).body(new AccessTokenResponse(renewalRefreshToken));
     }
 
-    @PostMapping("/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(
             @CookieValue("refresh-token") final String refreshToken,
             @RequestBody final AccessTokenRequest request
     ) {
         authService.removeMemberRefreshToken(refreshToken, request.getAccessToken());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
