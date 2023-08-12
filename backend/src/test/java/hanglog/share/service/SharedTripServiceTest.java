@@ -117,6 +117,23 @@ class SharedTripServiceTest {
                 .isEqualTo(new SharedTripCodeResponse(sharedTrip.getSharedCode()));
     }
 
+    @DisplayName("공유 허용을 처음 할 경우 새로운 공유 code를 생성한다.")
+    @Test
+    void updateSharedStatus_CreateSharedTrip() {
+        // given
+        final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
+        given(tripRepository.findById(anyLong()))
+                .willReturn(Optional.of(TRIP));
+        given(sharedTripRepository.findByTripId(anyLong()))
+                .willReturn(Optional.ofNullable(null));
+
+        // when
+        final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
+
+        //then
+        assertThat(actual.getSharedCode()).isNotNull();
+    }
+
     @DisplayName("존재하지 않는 여행의 공유 상태 변경은 예외처리한다.")
     @Test
     void updateSharedStatus_NotExistTripFail() {
