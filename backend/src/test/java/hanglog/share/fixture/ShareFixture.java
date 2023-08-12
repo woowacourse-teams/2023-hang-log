@@ -37,13 +37,7 @@ public class ShareFixture {
             List.of()
     );
 
-    public static final DayLog LONDON_DAYLOG_EXTRA = new DayLog(
-            2L,
-            "런던 여행 2일차",
-            2,
-            TRIP,
-            List.of()
-    );
+
     public static final City CALIFORNIA = new City(
             1L,
             "미국",
@@ -70,6 +64,5 @@ public class ShareFixture {
         final List<DayLog> dayLogs = TRIP.getDayLogs();
         dayLogs.add(LONDON_DAYLOG_1);
         dayLogs.add(LONDON_DAYLOG_2);
-        dayLogs.add(LONDON_DAYLOG_EXTRA);
     }
 }

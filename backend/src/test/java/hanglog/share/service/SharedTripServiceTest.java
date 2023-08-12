@@ -81,7 +81,7 @@ class SharedTripServiceTest {
         assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
-                .isEqualTo(9004);
+                .isEqualTo(7002);
     }
 
     @DisplayName("존재하지 않는 코드로 조회시 실패한다.")
@@ -95,7 +95,7 @@ class SharedTripServiceTest {
         assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
-                .isEqualTo(1010);
+                .isEqualTo(7001);
     }
 
     @DisplayName("여행의 공유 허용상태로 변경한다.")
