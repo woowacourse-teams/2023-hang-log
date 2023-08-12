@@ -1,9 +1,11 @@
 package hanglog.trip.integration;
 
 import static hanglog.IntegrationFixture.EDINBURGH;
+import static hanglog.IntegrationFixture.END_DATE;
 import static hanglog.IntegrationFixture.LAHGON_TRIP;
 import static hanglog.IntegrationFixture.LONDON;
 import static hanglog.IntegrationFixture.PARIS;
+import static hanglog.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -25,9 +27,9 @@ import org.springframework.http.HttpStatus;
 public class TripIntegrationTest extends IntegrationTest {
 
     final TripCreateRequest tripCreateRequest = new TripCreateRequest(
-            LocalDate.of(2023, 8, 1),
-            LocalDate.of(2023, 8, 3),
-            Arrays.asList(1L, 2L)
+            START_DATE,
+            END_DATE,
+            Arrays.asList(LONDON.getId(), EDINBURGH.getId())
     );
 
     @DisplayName("Trip을 생성한다.")
@@ -35,12 +37,24 @@ public class TripIntegrationTest extends IntegrationTest {
     void createTrip() {
         // when
         final ExtractableResponse<Response> response = 여행_생성_요청(tripCreateRequest);
+        final Long tripId = Long.parseLong(parseUri(response.header("Location")));
+
+        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                     softly.assertThat(response.header("Location")).isNotBlank();
+                    softly.assertThat(tripDetailResponse)
+                            .usingRecursiveComparison()
+                            .ignoringFields("id", "cities", "dayLogs")
+                            .isEqualTo(TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
+                    softly.assertThat(tripDetailResponse.getCities())
+                            .usingRecursiveComparison()
+                            .ignoringFieldsOfTypes(BigDecimal.class)
+                            .isEqualTo(List.of(LONDON, EDINBURGH));
+                    softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
                 }
         );
     }
@@ -92,15 +106,12 @@ public class TripIntegrationTest extends IntegrationTest {
 
         // when
         final ExtractableResponse<Response> response = 여행_수정_요청(tripId, tripUpdateRequest);
-
-        final ExtractableResponse<Response> tripGetResponse = 여행_조회_요청(tripId);
-        final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
+        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(tripGetResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
                             .comparingOnlyFields("title", "startDate", "endDate", "description")
@@ -132,15 +143,12 @@ public class TripIntegrationTest extends IntegrationTest {
 
         // when
         final ExtractableResponse<Response> response = 여행_수정_요청(tripId, tripUpdateRequest);
-
-        final ExtractableResponse<Response> tripGetResponse = 여행_조회_요청(tripId);
-        final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
+        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(tripGetResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
                             .comparingOnlyFields("title", "startDate", "endDate", "description")
@@ -173,7 +181,7 @@ public class TripIntegrationTest extends IntegrationTest {
         );
     }
 
-    private ExtractableResponse<Response> 여행_생성_요청(final TripCreateRequest tripCreateRequest) {
+    protected static ExtractableResponse<Response> 여행_생성_요청(final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
@@ -183,7 +191,7 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 여행_조회_요청(final Long tripId) {
+    protected static ExtractableResponse<Response> 여행_조회_요청(final Long tripId) {
         return RestAssured
                 .given().log().all()
                 .when().get("/trips/{tripId}", tripId)

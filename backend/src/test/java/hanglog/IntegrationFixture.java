@@ -80,13 +80,9 @@ public class IntegrationFixture {
     );
 
     /* Trip */
-    private static final Image DEFAULT_IMAGE = new Image("default-image.png");
-
-    public static final Trip LAHGON_TRIP = Trip.of(
-            "런던 여행",
-            LocalDate.of(2023, 8, 1),
-            LocalDate.of(2023, 8, 3)
-    );
+    public static final LocalDate START_DATE = LocalDate.of(2023, 8, 1);
+    public static final LocalDate END_DATE = LocalDate.of(2023, 8, 3);
+    public static final Trip LAHGON_TRIP = Trip.of("런던 여행", START_DATE, END_DATE);
 
     /* DayLog */
     private static final DayLog DAY_LOG_1 = new DayLog(
@@ -96,6 +92,8 @@ public class IntegrationFixture {
     );
 
     /* Item */
+    private static final Image DEFAULT_IMAGE = new Image("default-image.png");
+
     private static final Item PICCADILLY_CIRCUS_ITEM = new Item(
             SPOT,
             "피카딜리 서커스",
