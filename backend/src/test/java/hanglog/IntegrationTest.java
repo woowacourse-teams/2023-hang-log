@@ -1,4 +1,4 @@
-package hanglog.global;
+package hanglog;
 
 import static hanglog.trip.fixture.IntegrationFixture.CULTURE_CATEGORY;
 import static hanglog.trip.fixture.IntegrationFixture.EDINBURGH;

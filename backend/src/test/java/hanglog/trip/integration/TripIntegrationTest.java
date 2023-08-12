@@ -7,7 +7,7 @@ import static hanglog.trip.fixture.IntegrationFixture.PARIS;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import hanglog.global.IntegrationTest;
+import hanglog.IntegrationTest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
