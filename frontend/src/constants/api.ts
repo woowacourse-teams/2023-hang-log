@@ -1,7 +1,7 @@
 export const PROD = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = PROD
-  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}`
   : 'http://localhost:3000';
 
 export const AXIOS_BASE_URL = PROD
