@@ -67,7 +67,7 @@ public class SharedTripService {
         final SharedTrip sharedTrip = sharedTripRepository.findByTripId(tripId)
                 .orElseGet(() -> SharedTrip.createdBy(trip));
 
-        sharedTrip.updateSharedStatus(sharedTripStatusRequest);
+        sharedTrip.updateSharedStatus(sharedTripStatusRequest.getSharedStatus());
         sharedTripRepository.save(sharedTrip);
         return SharedTripCodeResponse.of(sharedTrip);
     }

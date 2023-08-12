@@ -1,18 +1,19 @@
 package hanglog.share.domain;
 
-import static hanglog.global.exception.ExceptionCode.FAIL_IMAGE_NAME_HASH;
+import static hanglog.global.exception.ExceptionCode.FAIL_SHARE_CODE_HASH;
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.exception.ImageException;
 import hanglog.share.domain.type.SharedStatusType;
-import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.trip.domain.Trip;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -22,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,14 +30,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 public class SharedTrip {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
@@ -48,14 +48,8 @@ public class SharedTrip {
     @Enumerated(value = STRING)
     private SharedStatusType sharedStatus;
 
-    private SharedTrip(final Trip trip, final String sharedCode, final SharedStatusType sharedStatus) {
-        this.trip = trip;
-        this.sharedCode = sharedCode;
-        this.sharedStatus = sharedStatus;
-    }
-
     public static SharedTrip createdBy(final Trip trip) {
-        return new SharedTrip(trip, createCode(trip.getId()), SHARED);
+        return new SharedTrip(null, trip, createCode(trip.getId()), SHARED);
     }
 
     private static String createCode(final Long tripId) {
@@ -65,7 +59,7 @@ public class SharedTrip {
             final byte[] hashBytes = hashAlgorithm.digest(tripIdAndDate.getBytes(StandardCharsets.UTF_8));
             return bytesToHex(hashBytes);
         } catch (final NoSuchAlgorithmException e) {
-            throw new ImageException(FAIL_IMAGE_NAME_HASH);
+            throw new ImageException(FAIL_SHARE_CODE_HASH);
         }
     }
 
@@ -75,7 +69,7 @@ public class SharedTrip {
                 .collect(Collectors.joining());
     }
 
-    public void updateSharedStatus(final SharedTripStatusRequest sharedTripStatusRequest) {
-        this.sharedStatus = SharedStatusType.mappingType(sharedTripStatusRequest.getSharedStatus());
+    public void updateSharedStatus(final Boolean sharedStatus) {
+        this.sharedStatus = SharedStatusType.mappingType(sharedStatus);
     }
 }
