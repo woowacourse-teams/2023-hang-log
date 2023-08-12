@@ -63,7 +63,7 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
           {isEditable ? (
             <TripEditButtons tripId={information.id} openEditModal={openEditModal} />
           ) : (
-            <TripButtons tripId={information.id} />
+            <TripButtons tripId={information.id} sharedCode={information.sharedCode} />
           )}
         </Box>
       </header>

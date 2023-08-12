@@ -2,25 +2,6 @@ import { css } from '@emotion/react';
 
 import { Theme } from 'hang-log-design-system';
 
-export const iconButtonStyling = css({
-  marginLeft: Theme.spacer.spacing3,
-  border: 'none',
-
-  backgroundColor: 'transparent',
-
-  cursor: 'pointer',
-
-  '& svg': {
-    width: '20px',
-    height: '20px',
-
-    '& path': {
-      stroke: Theme.color.white,
-      strokeWidth: 1.5,
-    },
-  },
-});
-
 export const moreButtonStyling = css({
   border: 'none',
   outline: 0,
