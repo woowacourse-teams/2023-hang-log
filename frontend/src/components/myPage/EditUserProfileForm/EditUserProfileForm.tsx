@@ -1,6 +1,6 @@
-import { images } from '@mocks/data/image';
-import { Button } from 'hang-log-design-system';
 import { Link } from 'react-router-dom';
+
+import { Button } from 'hang-log-design-system';
 
 import {
   buttonStyling,
@@ -11,11 +11,31 @@ import {
 import NicknameInput from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput';
 import ProfileImageInput from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput';
 
-const EditUserProfileForm = () => {
+import { useEditUserProfileForm } from '@hooks/member/useEditUserProfileForm';
+
+import type { UserData } from '@type/member';
+
+interface EditUserProfileForm {
+  initialData: UserData;
+}
+
+const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
+  const { userInfo, isNicknameError, updateInputValue, disableNicknameError, handleSubmit } =
+    useEditUserProfileForm(initialData);
+
   return (
-    <form css={formStyling}>
-      <ProfileImageInput css={imageInputStyling} imageUrl={images[0]} />
-      <NicknameInput />
+    <form css={formStyling} onSubmit={handleSubmit} noValidate>
+      <ProfileImageInput
+        css={imageInputStyling}
+        initialImageUrl={userInfo.imageUrl}
+        updateInputValue={updateInputValue}
+      />
+      <NicknameInput
+        value={userInfo.nickname}
+        isError={isNicknameError}
+        updateInputValue={updateInputValue}
+        disableError={disableNicknameError}
+      />
       <Button variant="primary" css={buttonStyling}>
         수정하기
       </Button>

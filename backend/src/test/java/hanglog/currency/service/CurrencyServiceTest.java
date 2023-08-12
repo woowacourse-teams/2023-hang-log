@@ -1,12 +1,14 @@
 package hanglog.currency.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_CURRENCY_DATE_WHEN_WEEKEND;
+import static hanglog.global.exception.ExceptionCode.INVALID_DATE_ALREADY_EXIST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.global.exception.BadRequestException;
-import hanglog.global.exception.InvalidDomainException;
+import hanglog.global.exception.InvalidCurrencyDateException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,9 +68,10 @@ class CurrencyServiceTest {
 
         // when & then
         assertThatThrownBy(() -> currencyService.saveDailyCurrency(weekend))
-                .isInstanceOf(InvalidDomainException.class)
+                .isInstanceOf(InvalidCurrencyDateException.class)
+                .hasMessage(INVALID_CURRENCY_DATE_WHEN_WEEKEND.getMessage())
                 .extracting("code")
-                .isEqualTo(3006);
+                .isEqualTo(INVALID_CURRENCY_DATE_WHEN_WEEKEND.getCode());
     }
 
     @DisplayName("이미 정보가 존재하는 날짜의 데이터는 받아오지 못한다.")
@@ -81,7 +84,8 @@ class CurrencyServiceTest {
         // when & then
         assertThatThrownBy(() -> currencyService.saveDailyCurrency(date))
                 .isInstanceOf(BadRequestException.class)
+                .hasMessage(INVALID_DATE_ALREADY_EXIST.getMessage())
                 .extracting("code")
-                .isEqualTo(3007);
+                .isEqualTo(INVALID_DATE_ALREADY_EXIST.getCode());
     }
 }

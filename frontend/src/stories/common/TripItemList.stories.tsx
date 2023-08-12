@@ -1,7 +1,8 @@
-import { trip } from '@mocks/data/trip';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import TripItemList from '@components/common/TripItemList/TripItemList';
+
+import { trip } from '@mocks/data/trip';
 
 const meta = {
   title: 'common/TripItemList',

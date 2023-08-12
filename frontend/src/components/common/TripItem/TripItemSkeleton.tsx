@@ -1,13 +1,16 @@
-import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
-import { Box, Skeleton } from 'hang-log-design-system';
 import { useMemo } from 'react';
+
 import { useRecoilValue } from 'recoil';
+
+import { Box, Skeleton } from 'hang-log-design-system';
 
 import {
   contentContainerStyling,
   getContainerStyling,
   informationContainerStyling,
 } from '@components/common/TripItem/TripItem.style';
+
+import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
 
 const TripItemSkeleton = () => {
   const isMobile = useRecoilValue(mediaQueryMobileState);

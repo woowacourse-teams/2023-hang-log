@@ -1,10 +1,6 @@
-import ErrorImage from '@assets/svg/error-image.svg';
-import { HTTP_ERROR_MESSAGE } from '@constants/api';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { hasKeyInObject } from '@utils/typeGuard';
+import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
 
 import {
   buttonStyling,
@@ -13,16 +9,35 @@ import {
   textStyling,
 } from '@components/common/Error/Error.style';
 
+import { useTokenError } from '@hooks/member/useTokenError';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { hasKeyInObject } from '@utils/typeGuard';
+
+import { ERROR_CODE, HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@constants/api';
+
+import ErrorImage from '@assets/svg/error-image.svg';
+
 export interface ErrorProps {
   statusCode?: number;
+  errorCode?: number;
   resetError?: () => void;
 }
 
-const Error = ({ statusCode = 404, resetError }: ErrorProps) => {
+const Error = ({ statusCode = HTTP_STATUS_CODE.NOT_FOUND, errorCode, resetError }: ErrorProps) => {
   const isHTTPError = hasKeyInObject(HTTP_ERROR_MESSAGE, statusCode);
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
+  const { handleTokenError } = useTokenError();
+
   if (!isHTTPError) return null;
+
+  if (errorCode && errorCode > ERROR_CODE.TOKEN_ERROR_RANGE) {
+    handleTokenError();
+
+    return null;
+  }
 
   return (
     <Box>

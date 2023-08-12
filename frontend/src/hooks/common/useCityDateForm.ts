@@ -1,6 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
+
 import type { CityData } from '@type/city';
 import type { DateRangeData, NewTripData } from '@type/trips';
-import { useCallback, useEffect, useState } from 'react';
 
 const defaultTripData = {
   startDate: null,

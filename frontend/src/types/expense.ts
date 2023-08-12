@@ -1,5 +1,6 @@
-import type { EXPENSE_CATEGORY_NAMES } from '@constants/expense';
 import type { CurrencyType } from '@type/tripItem';
+
+import type { EXPENSE_CATEGORY_NAMES } from '@constants/expense';
 
 export type ExpenseCategoryNameType = (typeof EXPENSE_CATEGORY_NAMES)[number];
 

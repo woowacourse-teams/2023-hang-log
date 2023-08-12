@@ -1,6 +1,8 @@
-import type { StarRatingData, TripItemFormData } from '@type/tripItem';
-import { StarRatingInput as StarRating, useStarRatingInput } from 'hang-log-design-system';
 import { memo } from 'react';
+
+import { StarRatingInput as StarRating, useStarRatingInput } from 'hang-log-design-system';
+
+import type { StarRatingData, TripItemFormData } from '@type/tripItem';
 
 interface StarRatingInputProps {
   rating: StarRatingData | null;

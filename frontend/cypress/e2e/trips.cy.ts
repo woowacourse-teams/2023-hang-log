@@ -1,14 +1,17 @@
 import type { CityData } from '@type/city';
 import type { TripsData } from '@type/trips';
 
-describe('여행 목록 페이지', () => {
-  const TEST_URL = 'http://localhost:3000';
+import { ACCESS_TOKEN_KEY } from '@constants/api';
 
+import { accessToken } from '@mocks/data/member';
+
+const TEST_URL = 'http://localhost:3000';
+
+describe('여행 목록 페이지', () => {
   beforeEach(() => {
     cy.viewport(1280, 832);
-
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
     cy.visit(TEST_URL);
-
     cy.wait(3000);
   });
 
@@ -24,18 +27,12 @@ describe('여행 목록 페이지', () => {
 
   it('여행 목록 페이지에서 여행에 대한 정보를 볼 수 있다.', () => {
     cy.fixture('trips.json').then((expectedData) => {
-      cy.findByText(expectedData[0].title).should('be.visible');
-
-      cy.findByText('2023.07.13 - 2023.07.20').should('be.visible');
-
-      cy.findByText(expectedData[0].description).should('be.visible');
-
-      expectedData[0].cities.forEach((city: CityData) => {
-        cy.findByText(city.name);
-      });
-
       expectedData.forEach((item: TripsData) => {
-        cy.findByText(item.title);
+        cy.findByText(item.title).should('be.visible');
+
+        if (item.description) {
+          cy.findByText(item.description).should('be.visible');
+        }
       });
     });
   });

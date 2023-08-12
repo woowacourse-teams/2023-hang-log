@@ -1,5 +1,6 @@
-import { Theme } from 'hang-log-design-system';
 import { useEffect } from 'react';
+
+import { Theme } from 'hang-log-design-system';
 
 interface MapPolylineProps {
   coordinates: { lat: number; lng: number }[];

@@ -1,9 +1,11 @@
-import { STAR_RATING_LENGTH } from '@constants/ui';
-import { Flex } from 'hang-log-design-system';
 import type { ComponentPropsWithoutRef } from 'react';
+
+import { Flex } from 'hang-log-design-system';
 
 import Star from '@components/common/StarRating/Star/Star';
 import { containerStyling } from '@components/common/StarRating/StarRating.style';
+
+import { STAR_RATING_LENGTH } from '@constants/ui';
 
 interface StarRatingProps extends ComponentPropsWithoutRef<'div'> {
   rate: 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;

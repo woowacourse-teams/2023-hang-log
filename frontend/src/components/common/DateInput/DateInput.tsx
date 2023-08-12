@@ -1,16 +1,19 @@
-import CalendarIcon from '@assets/svg/calendar-icon.svg';
-import type { DateRangeData } from '@type/trips';
-import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import { useState } from 'react';
 import type { KeyboardEvent } from 'react';
 
-import { formatDateRange } from '@utils/formatter';
+import { Box, DateRangePicker, Flex, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 
 import {
   calendarStyling,
   containerStyling,
   getInputStyling,
 } from '@components/common/DateInput/DateInput.style';
+
+import { formatDateRange } from '@utils/formatter';
+
+import type { DateRangeData } from '@type/trips';
+
+import CalendarIcon from '@assets/svg/calendar-icon.svg';
 
 interface DateInputProps {
   initialDateRange?: DateRangeData;

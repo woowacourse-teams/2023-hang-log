@@ -1,5 +1,6 @@
-import type { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 import type { TripItemData } from '@type/tripItem';
+
+import type { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 
 export interface DayLogData {
   id: number;

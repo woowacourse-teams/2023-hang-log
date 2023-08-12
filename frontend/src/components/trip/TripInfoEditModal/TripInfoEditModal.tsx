@@ -1,9 +1,4 @@
-import WarningIcon from '@assets/svg/warning-icon.svg';
-import { TRIP_DESCRIPTION_MAX_LENGTH, TRIP_TITLE_MAX_LENGTH } from '@constants/ui';
-import type { TripData } from '@type/trip';
 import { Button, Flex, Input, Modal, SupportingText, Textarea } from 'hang-log-design-system';
-
-import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
@@ -14,6 +9,14 @@ import {
   textareaStyling,
   wrapperStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
+
+import { useTripEditForm } from '@hooks/trip/useTripEditForm';
+
+import type { TripData } from '@type/trip';
+
+import { TRIP_DESCRIPTION_MAX_LENGTH, TRIP_TITLE_MAX_LENGTH } from '@constants/ui';
+
+import WarningIcon from '@assets/svg/warning-icon.svg';
 
 interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs'> {
   isOpen: boolean;

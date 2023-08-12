@@ -213,24 +213,34 @@ include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
 include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
 include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]
 
-== 공유 API
+== 멤버 API
 
-=== 공유된 여행 조회 (GET /shared-trips/:shareCode)
-
-==== 요청
-include::{snippets}/shared-trip-controller-test/get-shared-trip/http-request.adoc[]
-include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
-
-==== 응답
-include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
-include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
-
-=== 공유 상태 수정 (PATCH /trips/:tripId/share)
+=== 로그인 (POST /login/:provider)
 
 ==== 요청
-include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
-include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+include::{snippets}/auth-controller-test/login/http-request.adoc[]
+include::{snippets}/auth-controller-test/login/path-parameters.adoc[]
+include::{snippets}/auth-controller-test/login/request-fields.adoc[]
 
 ==== 응답
-include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
-include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+include::{snippets}/auth-controller-test/login/http-response.adoc[]
+include::{snippets}/auth-controller-test/login/response-fields.adoc[]
+
+=== 토큰 재발급 (POST /token)
+
+==== 요청
+include::{snippets}/auth-controller-test/extend-login/http-request.adoc[]
+include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/extend-login/http-response.adoc[]
+include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
+
+=== 로그아웃 (POST /logout)
+
+==== 요청
+include::{snippets}/auth-controller-test/logout/http-request.adoc[]
+include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/auth-controller-test/logout/http-response.adoc[]

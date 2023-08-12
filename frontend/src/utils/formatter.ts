@@ -1,5 +1,6 @@
-import { REGEX } from '@constants/regex';
 import type { DateRangeData } from '@type/trips';
+
+import { REGEX } from '@constants/regex';
 
 export const formatDate = (date: string) => {
   return date.replace(/-/g, '.');
@@ -20,9 +21,7 @@ export const formatDateRange = ({ startDate, endDate }: DateRangeData) => {
 };
 
 export const formatStringToLetter = (string: string) => {
-  const letterRegex = new RegExp(REGEX.ONLY_LETTER, 'g');
-
-  const matches = string.match(letterRegex);
+  const matches = string.match(REGEX.ONLY_LETTER);
 
   if (!matches) {
     return '';

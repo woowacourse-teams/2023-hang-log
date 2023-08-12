@@ -1,10 +1,11 @@
-import { trip } from '@mocks/data/trip';
 import type { Meta, StoryObj } from '@storybook/react';
+
+import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
 import { useTripQuery } from '@hooks/api/useTripQuery';
 
-import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
+import { trip } from '@mocks/data/trip';
 
 const meta = {
   title: 'trip/TripItemAddModal',

@@ -1,9 +1,11 @@
-import { MAP_INITIAL_ZOOM_SIZE, MAP_MAX_ZOOM_SIZE, MAP_MIN_ZOOM_SIZE } from '@constants/map';
-import type { TripPlaceType } from '@type/trip';
 import { useEffect, useRef, useState } from 'react';
 
 import MapDashedLine from '@components/common/MapDashedLine/MapDashedLine';
 import TripItemMarkerContainer from '@components/common/TripItemMarkerContainer/TripItemMarkerContainer';
+
+import type { TripPlaceType } from '@type/trip';
+
+import { MAP_INITIAL_ZOOM_SIZE, MAP_MAX_ZOOM_SIZE, MAP_MIN_ZOOM_SIZE } from '@constants/map';
 
 interface TripMapProps {
   centerLat: number;

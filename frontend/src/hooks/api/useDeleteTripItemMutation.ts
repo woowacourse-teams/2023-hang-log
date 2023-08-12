@@ -1,15 +1,26 @@
-import { toastListState } from '@store/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { TripData } from '@type/trip';
+
 import { useSetRecoilState } from 'recoil';
+
+import { useTokenError } from '@hooks/member/useTokenError';
+
+import { toastListState } from '@store/toast';
+
+import type { ErrorResponseData } from '@api/interceptors';
+import { deleteTripItem } from '@api/tripItem/deleteTripItem';
 
 import { generateUniqueId } from '@utils/uniqueId';
 
-import { deleteTripItem } from '@api/tripItem/deleteTripItem';
+import type { TripData } from '@type/trip';
+
+import { ERROR_CODE } from '@constants/api';
 
 export const useDeleteTripItemMutation = () => {
   const queryClient = useQueryClient();
+
   const setToastList = useSetRecoilState(toastListState);
+
+  const { handleTokenError } = useTokenError();
 
   const deleteTripItemMutation = useMutation({
     mutationFn: deleteTripItem,
@@ -30,7 +41,13 @@ export const useDeleteTripItemMutation = () => {
 
       return { tripData };
     },
-    onError: (_, { tripId }, context) => {
+    onError: (error: ErrorResponseData, { tripId }, context) => {
+      if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
+        handleTokenError();
+
+        return;
+      }
+
       queryClient.setQueryData<TripData>(['trip', tripId], context?.tripData);
 
       setToastList((prevToastList) => [

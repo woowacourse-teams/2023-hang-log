@@ -1,7 +1,6 @@
-import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
-import type { CityData } from '@type/city';
-import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
+
+import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
 import {
   badgeBoxStyling,
@@ -10,6 +9,10 @@ import {
   imageStyling,
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
+
+import type { CityData } from '@type/city';
+
+import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
 
 interface TripsItemProps {
   id: number;

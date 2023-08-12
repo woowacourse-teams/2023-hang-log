@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { StarRatingData, TripItemFormData } from '@type/tripItem';
+
 import { useState } from 'react';
 
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
+
+import type { StarRatingData, TripItemFormData } from '@type/tripItem';
 
 const meta = {
   title: 'trip/TripItemAddModal/StarRatingInput',
