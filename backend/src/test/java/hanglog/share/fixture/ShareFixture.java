@@ -37,7 +37,6 @@ public class ShareFixture {
             List.of()
     );
 
-
     public static final City CALIFORNIA = new City(
             1L,
             "미국",
@@ -45,6 +44,7 @@ public class ShareFixture {
             BigDecimal.valueOf(37.9838096),
             BigDecimal.valueOf(23.7275388)
     );
+
     public static final City TOKYO = new City(
             2L,
             "일본",
@@ -52,6 +52,7 @@ public class ShareFixture {
             BigDecimal.valueOf(-33.9248685),
             BigDecimal.valueOf(18.4240553)
     );
+
     public static final City BEIJING = new City(
             3L,
             "중국",
