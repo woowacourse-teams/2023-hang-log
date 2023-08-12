@@ -1,12 +1,12 @@
-package hanglog.member.domain.auth.kakao;
+package hanglog.auth.domain.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 
+import hanglog.auth.domain.OauthAccessToken;
+import hanglog.auth.domain.oauthuserinfo.KakaoUserInfo;
 import hanglog.global.exception.AuthException;
-import hanglog.member.domain.auth.Provider;
-import hanglog.member.domain.auth.UserInfo;
-import hanglog.member.domain.auth.AccessToken;
+import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,7 +19,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @Component
-public class KakaoProvider implements Provider {
+public class KakaoOauthProvider implements OauthProvider {
 
     private static final String PROPERTIES_PATH = "${oauth2.provider.kakao.";
     private static final String PROVIDER_NAME = "kakao";
@@ -30,7 +30,7 @@ public class KakaoProvider implements Provider {
     protected final String tokenUri;
     protected final String userUri;
 
-    public KakaoProvider(
+    public KakaoOauthProvider(
             @Value(PROPERTIES_PATH + "client-id}") final String clientId,
             @Value(PROPERTIES_PATH + "client-secret}") final String clientSecret,
             @Value(PROPERTIES_PATH + "redirect-uri}") final String redirectUri,
@@ -50,7 +50,7 @@ public class KakaoProvider implements Provider {
     }
 
     @Override
-    public UserInfo getUserInfo(final String code) {
+    public OauthUserInfo getUserInfo(final String code) {
         final String accessToken = requestAccessToken(code);
         final HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -80,11 +80,11 @@ public class KakaoProvider implements Provider {
         params.add("grant_type", "authorization_code");
         final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
 
-        final ResponseEntity<AccessToken> accessTokenResponse = restTemplate.exchange(
+        final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
                 tokenUri,
                 HttpMethod.POST,
                 accessTokenRequestEntity,
-                AccessToken.class
+                OauthAccessToken.class
         );
 
         return Optional.ofNullable(accessTokenResponse.getBody())

@@ -21,15 +21,16 @@ import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.currency.dto.SingleCurrencyResponse;
 import hanglog.global.exception.BadRequestException;
-import hanglog.global.exception.InvalidDomainException;
+import hanglog.global.exception.InvalidCurrencyDateException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -42,6 +43,7 @@ public class CurrencyService {
     private static final String CURRENCY_API_URI = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
     private static final String NUMBER_SEPARATOR = ",";
     private static final String DATE_SEPARATOR = "-";
+    private static final LocalDate YESTERDAY = LocalDate.now().minusDays(1);
 
     private final RestTemplate restTemplate;
     private final CurrencyRepository currencyRepository;
@@ -54,6 +56,14 @@ public class CurrencyService {
         this.restTemplate = new RestTemplate();
         this.currencyRepository = currencyRepository;
         this.authKey = authKey;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void saveYesterdayCurrency() {
+        try {
+            saveDailyCurrency(YESTERDAY);
+        } catch (final InvalidCurrencyDateException ignored) {
+        }
     }
 
     public void saveDailyCurrency(final LocalDate date) {
@@ -79,15 +89,19 @@ public class CurrencyService {
     private void validateWeekend(final LocalDate date) {
         final DayOfWeek dayOfWeek = date.getDayOfWeek();
         if (dayOfWeek.equals(SUNDAY) || dayOfWeek.equals(SATURDAY)) {
-            throw new InvalidDomainException(INVALID_CURRENCY_DATE_WHEN_WEEKEND);
+            throw new InvalidCurrencyDateException(INVALID_CURRENCY_DATE_WHEN_WEEKEND);
         }
     }
 
     private List<SingleCurrencyResponse> requestFilteredCurrencyResponses(final LocalDate date) {
-        return Arrays.stream(
-                        Optional.ofNullable(restTemplate.getForObject(createCurrencyUrl(date), SingleCurrencyResponse[].class))
-                                .orElseThrow(() -> new InvalidDomainException(NOT_FOUND_CURRENCY_DATA))
-                )
+        final SingleCurrencyResponse[] responses = restTemplate.getForObject(
+                createCurrencyUrl(date),
+                SingleCurrencyResponse[].class
+        );
+        if (Objects.requireNonNull(responses).length == 0) {
+            throw new InvalidCurrencyDateException(NOT_FOUND_CURRENCY_DATA);
+        }
+        return Arrays.stream(responses)
                 .filter(response -> CurrencyType.isProvided(response.getCode()))
                 .toList();
     }
