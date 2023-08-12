@@ -19,7 +19,7 @@ public enum ExceptionCode {
     NOT_FOUND_CATEGORY_ID(1007, "요청한 ID에 해당하는 카테고리가 존재하지 않습니다."),
     NOT_FOUNT_IMAGE_URL(1008, "요청한 URL에 해당하는 이미지가 존재하지 않습니다."),
     NOT_FOUND_CURRENCY_DATA(1009, "요청한 날짜에 해당하는 환율 정보가 존재하지 않습니다."),
-    NOT_FOUND_SHARED_CODE(1010, "요청한 URL에 해당하는 공유된 여행이 존재하지 않습니다."),
+
     ALREADY_DELETED_TRIP_ITEM(2001, "이미 삭제된 여행 아이템입니다."),
     ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다."),
 
@@ -43,10 +43,13 @@ public enum ExceptionCode {
 
     NOT_ASSOCIATE_DAYLOG_WITH_TRIP(6001, "요청한 DayLog와 Trip은 연관관계가 아닙니다."),
 
+    NOT_FOUND_SHARED_CODE(7001, "요청한 URL에 해당하는 공유된 여행이 존재하지 않습니다."),
+    INVALID_SHARE_CODE(7002, "공유가 허용되지 않은 코드입니다."),
+    FAIL_SHARE_CODE_HASH(7101, "공유 코드를 해싱하는 데 실패했습니다."),
+
     INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
     NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),
     FAIL_TO_CONVERT_URL_PARAMETER(9003, "Url Parameter 변환 중 오류가 발생했습니다."),
-    INVALID_SHARE_CODE(9004, "공유가 허용되지 않은 코드입니다."),
 
     INTERNAL_SEVER_ERROR(9999, "서버 에러가 발생하였습니다. 관리자에게 문의해 주세요.");
 
