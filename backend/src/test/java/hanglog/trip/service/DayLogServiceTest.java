@@ -15,7 +15,7 @@ import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.response.DayLogResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +42,7 @@ class DayLogServiceTest {
     @Test
     void getDayLogById() {
         // given
-        final DayLogGetResponse expected = new DayLogGetResponse(
+        final DayLogResponse expected = new DayLogResponse(
                 1L,
                 "런던 여행 1일차",
                 1,
@@ -53,7 +53,7 @@ class DayLogServiceTest {
                 .willReturn(Optional.of(LONDON_DAYLOG_1));
 
         // when
-        final DayLogGetResponse actual = dayLogService.getById(LONDON_DAYLOG_1.getId());
+        final DayLogResponse actual = dayLogService.getById(LONDON_DAYLOG_1.getId());
 
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);

@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.response.DayLogResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
 import java.time.LocalDate;
@@ -47,7 +47,7 @@ class DayLogControllerTest extends RestDocsTest {
     @Test
     void getDayLog() throws Exception {
         // given
-        final DayLogGetResponse response = new DayLogGetResponse(
+        final DayLogResponse response = new DayLogResponse(
                 1L,
                 "런던 여행 첫날",
                 1,
