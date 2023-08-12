@@ -7,7 +7,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.global.exception.BadRequestException;
+import hanglog.global.exception.InvalidDomainException;
 import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.Trip;
 import jakarta.persistence.Column;
@@ -59,7 +59,7 @@ public class SharedTrip {
             final byte[] hashBytes = hashAlgorithm.digest(tripIdAndDate.getBytes(StandardCharsets.UTF_8));
             return bytesToHex(hashBytes);
         } catch (final NoSuchAlgorithmException e) {
-            throw new BadRequestException(FAIL_SHARE_CODE_HASH);
+            throw new InvalidDomainException(FAIL_SHARE_CODE_HASH);
         }
     }
 
