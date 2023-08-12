@@ -1,4 +1,4 @@
-package hanglog.trip.fixture;
+package hanglog;
 
 import static hanglog.trip.domain.type.ItemType.SPOT;
 

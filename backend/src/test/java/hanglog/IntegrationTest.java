@@ -1,11 +1,11 @@
 package hanglog;
 
-import static hanglog.trip.fixture.IntegrationFixture.CULTURE_CATEGORY;
-import static hanglog.trip.fixture.IntegrationFixture.EDINBURGH;
-import static hanglog.trip.fixture.IntegrationFixture.FOOD_CATEGORY;
-import static hanglog.trip.fixture.IntegrationFixture.LONDON;
-import static hanglog.trip.fixture.IntegrationFixture.PARIS;
-import static hanglog.trip.fixture.IntegrationFixture.TOKYO;
+import static hanglog.IntegrationFixture.CULTURE_CATEGORY;
+import static hanglog.IntegrationFixture.EDINBURGH;
+import static hanglog.IntegrationFixture.FOOD_CATEGORY;
+import static hanglog.IntegrationFixture.LONDON;
+import static hanglog.IntegrationFixture.PARIS;
+import static hanglog.IntegrationFixture.TOKYO;
 
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.trip.domain.repository.CityRepository;

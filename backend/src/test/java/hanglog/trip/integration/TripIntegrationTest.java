@@ -1,9 +1,9 @@
 package hanglog.trip.integration;
 
-import static hanglog.trip.fixture.IntegrationFixture.EDINBURGH;
-import static hanglog.trip.fixture.IntegrationFixture.LAHGON_TRIP;
-import static hanglog.trip.fixture.IntegrationFixture.LONDON;
-import static hanglog.trip.fixture.IntegrationFixture.PARIS;
+import static hanglog.IntegrationFixture.EDINBURGH;
+import static hanglog.IntegrationFixture.LAHGON_TRIP;
+import static hanglog.IntegrationFixture.LONDON;
+import static hanglog.IntegrationFixture.PARIS;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
