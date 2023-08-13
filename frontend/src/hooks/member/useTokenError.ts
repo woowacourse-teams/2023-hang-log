@@ -4,10 +4,9 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { useSetRecoilState } from 'recoil';
 
-import { isLoggedInState } from '@store/auth';
-import { toastListState } from '@store/toast';
+import { useToast } from '@hooks/common/useToast';
 
-import { generateUniqueId } from '@utils/uniqueId';
+import { isLoggedInState } from '@store/auth';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
@@ -17,8 +16,9 @@ export const useTokenError = () => {
 
   const queryClient = useQueryClient();
 
+  const { createToast } = useToast();
+
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
-  const setToastList = useSetRecoilState(toastListState);
 
   const handleTokenError = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
@@ -26,14 +26,7 @@ export const useTokenError = () => {
     setIsLoggedIn(false);
     navigate(PATH.ROOT);
 
-    setToastList((prevToastList) => [
-      ...prevToastList,
-      {
-        id: generateUniqueId(),
-        variant: 'error',
-        message: '다시 로그인해 주세요.',
-      },
-    ]);
+    createToast('다시 로그인해 주세요.');
   };
 
   return { handleTokenError };
