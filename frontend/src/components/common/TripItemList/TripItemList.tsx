@@ -19,8 +19,6 @@ import { useScrollFocus } from '@hooks/common/useScrollFocus';
 
 import { clickedMarkerIdState } from '@store/scrollFocus';
 
-import { sortByOrdinal } from '@utils/sort';
-
 import type { TripItemData } from '@type/tripItem';
 
 import { PATH } from '@constants/path';
@@ -58,15 +56,13 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
   const { items, handleItemsUpdate, handleDragStart, handleDragEnter, handleDragEnd } =
     useDragAndDrop(tripItems, handlePositionChange);
 
-  const sortedItems = items.sort(sortByOrdinal);
-
   useEffect(() => {
     handleItemsUpdate(tripItems);
   }, [handleItemsUpdate, tripItems]);
 
   return (
     <ol ref={listRef} css={containerStyling}>
-      {sortedItems.map((item, index) => (
+      {items.map((item, index) => (
         <Fragment key={item.id}>
           <TripItem
             scrollRef={item.id === clickedMarkerId ? itemRef : null}
