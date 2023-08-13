@@ -248,7 +248,7 @@ describe('여행 아이템 추가', () => {
     cy.get('select[aria-label="비용 카테고리"]').select('문화').should('have.value', '200');
 
     cy.get('select[aria-label="통화"')
-      .select('€&nbsp;&nbsp;&nbsp;&nbsp;(EUR)')
+      .select('€&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(EUR)')
       .should('have.value', 'EUR');
 
     cy.get('input[aria-label="비용"]').type('400').should('have.value', '400');
@@ -312,7 +312,7 @@ describe('여행 아이템 추가', () => {
     cy.get('#title').type('샹젤리제 거리 -> 에펠탑 지하철');
     cy.get('.star-box > div').eq(6).click();
     cy.get('select[aria-label="비용 카테고리"]').select('문화');
-    cy.get('select[aria-label="통화"').select('€&nbsp;&nbsp;&nbsp;&nbsp;(EUR)');
+    cy.get('select[aria-label="통화"').select('€&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(EUR)');
     cy.get('input[aria-label="비용"]').type('400');
     cy.findByPlaceholderText('메모를 입력해 주세요').type('즐거운 여행');
     cy.get('input[type=file]')
