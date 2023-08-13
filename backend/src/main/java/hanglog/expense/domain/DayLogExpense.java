@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class DayLogExpense {
-    
+
     private final DayLog dayLog;
-    private final int amount;
+    private final Amount amount;
 }

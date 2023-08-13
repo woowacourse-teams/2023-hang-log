@@ -55,7 +55,7 @@ public class ItemControllerTest extends RestDocsTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
@@ -154,7 +154,7 @@ public class ItemControllerTest extends RestDocsTest {
                 List.of("culture")
         );
 
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", new BigDecimal(10000), 1L);
 
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,

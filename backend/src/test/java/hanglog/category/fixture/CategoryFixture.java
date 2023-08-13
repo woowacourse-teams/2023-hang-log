@@ -13,4 +13,11 @@ public class CategoryFixture {
             new Category(500L, "transportation", "교통"),
             new Category(600L, "etc", "기타")
     );
+
+    public static final Category FOOD = EXPENSE_CATEGORIES.get(0);
+    public static final Category CULTURE = EXPENSE_CATEGORIES.get(1);
+    public static final Category SHOPPING = EXPENSE_CATEGORIES.get(2);
+    public static final Category ACCOMMODATION = EXPENSE_CATEGORIES.get(3);
+    public static final Category TRANSPORTATION = EXPENSE_CATEGORIES.get(4);
+    public static final Category ETC = EXPENSE_CATEGORIES.get(5);
 }
