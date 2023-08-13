@@ -4,7 +4,7 @@ import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
 
 import hanglog.global.exception.AuthException;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.JwtProvider;
+import hanglog.global.jwt.JwtProvider;
 import hanglog.auth.domain.oauthprovider.OauthProvider;
 import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;

@@ -1,4 +1,4 @@
-package hanglog.auth;
+package hanglog.global.jwt;
 
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKEN;
