@@ -1,5 +1,9 @@
 package hanglog.share.fixture;
 
+import static hanglog.share.domain.type.SharedStatusType.SHARED;
+import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
+
+import hanglog.share.domain.SharedTrip;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
@@ -61,7 +65,10 @@ public class ShareFixture {
             BigDecimal.valueOf(18.4240553)
     );
 
-    public static void setDayLogs() {
+    public static final SharedTrip SHARED_TRIP = new SharedTrip(1L, TRIP, "sharedCode", SHARED);
+    public static final SharedTrip UNSHARED_TRIP = new SharedTrip(2L, TRIP, "sharedCode", UNSHARED);
+
+    static {
         final List<DayLog> dayLogs = TRIP.getDayLogs();
         dayLogs.add(LONDON_DAYLOG_1);
         dayLogs.add(LONDON_DAYLOG_2);

@@ -1,11 +1,11 @@
 package hanglog.share.service;
 
-import static hanglog.share.domain.type.SharedStatusType.SHARED;
-import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 import static hanglog.share.fixture.ShareFixture.BEIJING;
 import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
+import static hanglog.share.fixture.ShareFixture.SHARED_TRIP;
 import static hanglog.share.fixture.ShareFixture.TOKYO;
 import static hanglog.share.fixture.ShareFixture.TRIP;
+import static hanglog.share.fixture.ShareFixture.UNSHARED_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -13,7 +13,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import hanglog.global.exception.BadRequestException;
-import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
@@ -51,14 +50,13 @@ class SharedTripServiceTest {
     @Test
     void getSharedTrip() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", SHARED);
         given(tripRepository.findById(1L))
                 .willReturn(Optional.of(TRIP));
         given(tripCityRepository.findByTripId(1L))
                 .willReturn(List.of(new TripCity(TRIP, CALIFORNIA), new TripCity(TRIP, TOKYO),
                         new TripCity(TRIP, BEIJING)));
         given(sharedTripRepository.findBySharedCode(anyString()))
-                .willReturn(Optional.of(sharedTrip));
+                .willReturn(Optional.of(SHARED_TRIP));
 
         // when
         final TripDetailResponse actual = sharedTripService.getTripDetail("xxxxx");
@@ -72,10 +70,8 @@ class SharedTripServiceTest {
     @Test
     void getSharedTrip_UnsharedFail() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", UNSHARED);
-
         given(sharedTripRepository.findBySharedCode(anyString()))
-                .willReturn(Optional.of(sharedTrip));
+                .willReturn(Optional.of(UNSHARED_TRIP));
 
         // when & then
         assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
@@ -89,10 +85,10 @@ class SharedTripServiceTest {
     void getSharedTrip_NoExistCode() {
         // given
         given(sharedTripRepository.findBySharedCode(anyString()))
-                .willReturn(Optional.ofNullable(null));
+                .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
+        assertThatThrownBy(() -> sharedTripService.getTripDetail("sharedCode"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(7001);
@@ -102,19 +98,18 @@ class SharedTripServiceTest {
     @Test
     void updateSharedStatus() {
         // given
-        final SharedTrip sharedTrip = new SharedTrip(1L, TRIP, "xxxxx", SHARED);
         final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
                 .willReturn(Optional.of(TRIP));
         given(sharedTripRepository.findByTripId(anyLong()))
-                .willReturn(Optional.of(sharedTrip));
+                .willReturn(Optional.of(SHARED_TRIP));
 
         // when
         final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
 
         //then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(new SharedTripCodeResponse(sharedTrip.getSharedCode()));
+                .isEqualTo(new SharedTripCodeResponse(SHARED_TRIP.getSharedCode()));
     }
 
     @DisplayName("공유 허용을 처음 할 경우 새로운 공유 code를 생성한다.")
@@ -125,7 +120,7 @@ class SharedTripServiceTest {
         given(tripRepository.findById(anyLong()))
                 .willReturn(Optional.of(TRIP));
         given(sharedTripRepository.findByTripId(anyLong()))
-                .willReturn(Optional.ofNullable(null));
+                .willReturn(Optional.empty());
 
         // when
         final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
@@ -140,7 +135,7 @@ class SharedTripServiceTest {
         // given
         final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(null));
+                .willReturn(Optional.empty());
 
         // when & then
         assertThatThrownBy(() -> sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest))
