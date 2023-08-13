@@ -1,14 +1,9 @@
 import { useCallback } from 'react';
 
-import { useSetRecoilState } from 'recoil';
-
 import { ImageUploadInput } from 'hang-log-design-system';
 
 import { useImageUpload } from '@hooks/common/useImageUpload';
-
-import { toastListState } from '@store/toast';
-
-import { generateUniqueId } from '@utils/uniqueId';
+import { useToast } from '@hooks/common/useToast';
 
 import type { TripItemFormData } from '@type/tripItem';
 
@@ -20,7 +15,7 @@ interface ImageInputProps {
 }
 
 const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => {
-  const setToastList = useSetRecoilState(toastListState);
+  const { createToast } = useToast();
 
   const handleImageUrlsChange = useCallback(
     (imageUrls: string[]) => {
@@ -30,14 +25,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
   );
 
   const handleImageUploadError = () => {
-    setToastList((prevToastList) => [
-      ...prevToastList,
-      {
-        id: generateUniqueId(),
-        variant: 'error',
-        message: '이미지는 최대 5개 업로드할 수 있습니다.',
-      },
-    ]);
+    createToast('이미지는 최대 5개 업로드할 수 있습니다.');
   };
 
   const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useImageUpload({
