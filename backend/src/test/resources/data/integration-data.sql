@@ -51,7 +51,7 @@ INSERT INTO expense(category_id, currency, amount, created_at, modified_at, stat
 VALUES (300, 'usd', 100, now(), now(), 'USABLE');
 INSERT INTO item(day_log_id, expense_id, place_id, title, item_type, memo, ordinal, rating, created_at, modified_at,
                  status)
-VALUES (1, 3, null, '캘리포니아 어바인 쇼핑 제목', 'SPOT', '캘리포니아 어바인 쇼핑 메모', 3, 4.5, now(), now(), 'USABLE');
+VALUES (1, 3, null, '캘리포니아 어바인 쇼핑 제목', 'NON_SPOT', '캘리포니아 어바인 쇼핑 메모', 3, 4.5, now(), now(), 'USABLE');
 INSERT INTO image(item_id, `name`, created_at, modified_at, status)
 VALUES (3, 'test3.jpeg', now(), now(), 'USABLE');
 
