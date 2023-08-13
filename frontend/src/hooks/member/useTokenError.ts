@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { useSetRecoilState } from 'recoil';
 
 import { isLoggedInState } from '@store/auth';
@@ -13,11 +15,14 @@ import { PATH } from '@constants/path';
 export const useTokenError = () => {
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setToastList = useSetRecoilState(toastListState);
 
   const handleTokenError = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
+    queryClient.clear();
     setIsLoggedIn(false);
     navigate(PATH.ROOT);
 
