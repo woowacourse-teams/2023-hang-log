@@ -71,6 +71,27 @@ public class DayLogIntegrationTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("데이로그 제목을 업데이트한다")
+    @Test
+    void updateDayLogTitle() {
+        // given
+        final String updatedTitle = "수정된 제목";
+        final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest(updatedTitle);
+
+        // when
+        final ExtractableResponse<Response> response = requestUpdateDayLogTitle(request);
+        final ExtractableResponse<Response> dayLogGetResponse = requestGetDayLog(tripId, dayLogId);
+        final DayLogResponse dayLogResponse = dayLogGetResponse.as(DayLogResponse.class);
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                    softly.assertThat(dayLogResponse.getTitle()).isEqualTo(updatedTitle);
+                }
+        );
+    }
+
     private ExtractableResponse<Response> requestGetDayLog(final Long tripId, final Long dayLogId) {
         return RestAssured
                 .given().log().all()
