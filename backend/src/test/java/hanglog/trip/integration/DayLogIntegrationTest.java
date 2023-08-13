@@ -9,15 +9,18 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
+import hanglog.trip.dto.response.ItemResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +40,8 @@ public class DayLogIntegrationTest extends IntegrationTest {
         );
 
         final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(
-                tripCreateRequest);
+                tripCreateRequest
+        );
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrips(tripId);
@@ -79,7 +83,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
         final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest(updatedTitle);
 
         // when
-        final ExtractableResponse<Response> response = requestUpdateDayLogTitle(request);
+        final ExtractableResponse<Response> response = requestUpdateDayLogTitle(tripId, dayLogId, request);
         final ExtractableResponse<Response> dayLogGetResponse = requestGetDayLog(tripId, dayLogId);
         final DayLogResponse dayLogResponse = dayLogGetResponse.as(DayLogResponse.class);
 
@@ -92,6 +96,61 @@ public class DayLogIntegrationTest extends IntegrationTest {
         );
     }
 
+    private Long createMockItem(final Long tripId, final Long dayLogId) {
+        final ItemRequest itemRequest = new ItemRequest(
+                false,
+                "title",
+                null,
+                null,
+                dayLogId,
+                List.of(),
+                null,
+                null
+        );
+
+        final ExtractableResponse<Response> itemCreateResponse = ItemIntegrationTest.requestCreateItem(
+                tripId,
+                itemRequest
+        );
+        return Long.parseLong(parseUri(itemCreateResponse.header("Location")));
+    }
+
+    @DisplayName("데이로그 아이템 순서를 업데이트한다")
+    @Test
+    void updateOrdinalOfItems() {
+        // given
+        final Long itemId1 = createMockItem(tripId, dayLogId);
+        final Long itemId2 = createMockItem(tripId, dayLogId);
+        final Long itemId3 = createMockItem(tripId, dayLogId);
+        final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest = new ItemsOrdinalUpdateRequest(
+                List.of(itemId2, itemId3, itemId1)
+        );
+
+        // when
+        final ExtractableResponse<Response> response = requestUpdateOrdinalOfItems(
+                tripId,
+                dayLogId,
+                itemsOrdinalUpdateRequest
+        );
+        final ExtractableResponse<Response> dayLogGetResponse = requestGetDayLog(tripId, dayLogId);
+        final DayLogResponse dayLogResponse = dayLogGetResponse.as(DayLogResponse.class);
+        final List<ItemResponse> itemResponses = dayLogResponse.getItems();
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                    softly.assertThat(itemResponses.get(0).getOrdinal()).isEqualTo(1);
+                    softly.assertThat(itemResponses.get(0).getId()).isEqualTo(itemId2);
+                    softly.assertThat(itemResponses.get(1).getOrdinal()).isEqualTo(2);
+                    softly.assertThat(itemResponses.get(1).getId()).isEqualTo(itemId3);
+                    softly.assertThat(itemResponses.get(2).getOrdinal()).isEqualTo(3);
+                    softly.assertThat(itemResponses.get(2).getId()).isEqualTo(itemId1);
+                }
+        );
+    }
+
+
     private ExtractableResponse<Response> requestGetDayLog(final Long tripId, final Long dayLogId) {
         return RestAssured
                 .given().log().all()
@@ -100,7 +159,11 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> requestUpdateDayLogTitle(final DayLogUpdateTitleRequest request) {
+    private ExtractableResponse<Response> requestUpdateDayLogTitle(
+            final Long tripId,
+            final Long dayLogId,
+            final DayLogUpdateTitleRequest request
+    ) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
@@ -110,7 +173,11 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> requestUpdateOrdinalOfItems(final ItemsOrdinalUpdateRequest request) {
+    private ExtractableResponse<Response> requestUpdateOrdinalOfItems(
+            final Long tripId,
+            final Long dayLogId,
+            final ItemsOrdinalUpdateRequest request
+    ) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
