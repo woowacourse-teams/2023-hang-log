@@ -3,13 +3,15 @@ import { useCallback, useState } from 'react';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
 
-interface UseImageUploadParams {
+interface UseSingleImageUploadParams {
   initialImageUrl: string | null;
-  maxUploadCount?: number;
   onSuccess?: CallableFunction;
 }
 
-export const useSingleImageUpload = ({ initialImageUrl, onSuccess }: UseImageUploadParams) => {
+export const useSingleImageUpload = ({
+  initialImageUrl,
+  onSuccess,
+}: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState(initialImageUrl);

@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { ImageUploadInput } from 'hang-log-design-system';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 
 import { toastListState } from '@store/toast';
 
@@ -40,7 +40,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
     ]);
   };
 
-  const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useImageUpload({
+  const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useMultipleImageUpload({
     initialImageUrls,
     onSuccess: handleImageUrlsChange,
     onError: handleImageUploadError,
