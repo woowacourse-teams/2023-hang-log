@@ -1,22 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useSetRecoilState } from 'recoil';
-
+import { useToast } from '@hooks/common/useToast';
 import { useTokenError } from '@hooks/member/useTokenError';
-
-import { toastListState } from '@store/toast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 import { putTripItem } from '@api/tripItem/putTripItem';
-
-import { generateUniqueId } from '@utils/uniqueId';
 
 import { ERROR_CODE } from '@constants/api';
 
 export const useUpdateTripItemMutation = () => {
   const queryClient = useQueryClient();
-  const setToastList = useSetRecoilState(toastListState);
   const { handleTokenError } = useTokenError();
+  const { createToast } = useToast();
 
   const updateTripItemMutation = useMutation({
     mutationFn: putTripItem,
@@ -29,14 +24,8 @@ export const useUpdateTripItemMutation = () => {
 
         return;
       }
-      setToastList((prevToastList) => [
-        ...prevToastList,
-        {
-          id: generateUniqueId(),
-          variant: 'error',
-          message: '아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-        },
-      ]);
+
+      createToast('아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 
