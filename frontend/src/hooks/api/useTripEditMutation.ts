@@ -26,7 +26,7 @@ export const useTripEditMutation = () => {
         return;
       }
 
-      createToast('여행 정보 변경에 실패했습니다. 잠시 후 다시 시도해주세요.', 'error');
+      createToast('여행 정보 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
     },
   });
 

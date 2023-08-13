@@ -21,7 +21,7 @@ export const useCreateTripMutation = () => {
         return;
       }
 
-      createToast('새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.', 'error');
+      createToast('새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.');
     },
   });
 

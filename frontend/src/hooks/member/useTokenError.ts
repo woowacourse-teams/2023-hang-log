@@ -21,7 +21,7 @@ export const useTokenError = () => {
     setIsLoggedIn(false);
     navigate(PATH.ROOT);
 
-    createToast('다시 로그인해 주세요.', 'error');
+    createToast('다시 로그인해 주세요.');
   };
 
   return { handleTokenError };

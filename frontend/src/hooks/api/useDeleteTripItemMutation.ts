@@ -45,7 +45,7 @@ export const useDeleteTripItemMutation = () => {
 
       queryClient.setQueryData<TripData>(['trip', tripId], context?.tripData);
 
-      createToast('아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
 
     onSettled: (data, error, { tripId }) => {

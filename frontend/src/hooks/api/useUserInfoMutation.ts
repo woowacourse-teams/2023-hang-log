@@ -28,7 +28,7 @@ export const useUserInfoMutation = () => {
         return;
       }
 
-      createToast('정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
   });
 

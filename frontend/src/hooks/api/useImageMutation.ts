@@ -21,7 +21,7 @@ export const useImageMutation = () => {
         return;
       }
 
-      createToast('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
   });
 

@@ -29,7 +29,7 @@ export const useLogOutMutation = () => {
       navigate(PATH.ROOT);
     },
     onError: () => {
-      createToast('로그아웃에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('로그아웃에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
   });
 

@@ -25,7 +25,7 @@ export const useUpdateTripItemMutation = () => {
         return;
       }
 
-      createToast('아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
   });
 
