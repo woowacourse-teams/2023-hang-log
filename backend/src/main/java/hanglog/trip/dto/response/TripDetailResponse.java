@@ -3,10 +3,12 @@ package hanglog.trip.dto.response;
 import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
+import hanglog.share.domain.SharedTrip;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ public class TripDetailResponse {
     private final LocalDate endDate;
     private final String description;
     private final String imageUrl;
+    private final String sharedCode;
     private final List<DayLogGetResponse> dayLogs;
 
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
@@ -32,6 +35,9 @@ public class TripDetailResponse {
                 .map(CityWithPositionResponse::of)
                 .toList();
 
+        final Optional<SharedTrip> sharedTrip = Optional.ofNullable(trip.getSharedTrip());
+        final String sharedCode = sharedTrip.map(SharedTrip::getSharedCode).orElse(null);
+
         return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
@@ -40,6 +46,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
+                sharedCode,
                 dayLogGetResponses
         );
     }
