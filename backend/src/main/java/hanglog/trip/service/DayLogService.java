@@ -14,7 +14,7 @@ import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.response.DayLogResponse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,12 +32,12 @@ public class DayLogService {
     private final ItemRepository itemRepository;
 
     @Transactional(readOnly = true)
-    public DayLogGetResponse getById(final Long id) {
+    public DayLogResponse getById(final Long id) {
         final DayLog dayLog = dayLogRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         validateAlreadyDeleted(dayLog);
 
-        return DayLogGetResponse.of(dayLog);
+        return DayLogResponse.of(dayLog);
     }
 
     public void updateTitle(final Long id, final DayLogUpdateTitleRequest request) {
