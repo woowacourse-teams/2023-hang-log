@@ -11,7 +11,7 @@ import { ERROR_CODE } from '@constants/api';
 export const useUserInfoMutation = () => {
   const queryClient = useQueryClient();
 
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
   const { handleTokenError } = useTokenError();
 
   const userInfoMutation = useMutation({
@@ -19,7 +19,7 @@ export const useUserInfoMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
 
-      generateToast('정보를 성공적으로 수정했습니다!', 'success');
+      createToast('정보를 성공적으로 수정했습니다!', 'success');
     },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
@@ -28,7 +28,7 @@ export const useUserInfoMutation = () => {
         return;
       }
 
-      generateToast('정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 

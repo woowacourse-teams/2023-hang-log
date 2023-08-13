@@ -13,7 +13,7 @@ import { ERROR_CODE } from '@constants/api';
 export const useDeleteTripItemMutation = () => {
   const queryClient = useQueryClient();
 
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
   const { handleTokenError } = useTokenError();
 
   const deleteTripItemMutation = useMutation({
@@ -45,7 +45,7 @@ export const useDeleteTripItemMutation = () => {
 
       queryClient.setQueryData<TripData>(['trip', tripId], context?.tripData);
 
-      generateToast('아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
 
     onSettled: (data, error, { tripId }) => {

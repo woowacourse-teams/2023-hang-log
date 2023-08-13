@@ -9,7 +9,7 @@ import { postTrip } from '@api/trip/postTrip';
 import { ERROR_CODE } from '@constants/api';
 
 export const useCreateTripMutation = () => {
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
   const { handleTokenError } = useTokenError();
 
   const newTripMutation = useMutation({
@@ -21,7 +21,7 @@ export const useCreateTripMutation = () => {
         return;
       }
 
-      generateToast('새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.', 'error');
+      createToast('새로운 여행기록을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.', 'error');
     },
   });
 

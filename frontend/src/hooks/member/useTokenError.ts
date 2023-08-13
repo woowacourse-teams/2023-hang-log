@@ -12,7 +12,7 @@ import { PATH } from '@constants/path';
 export const useTokenError = () => {
   const navigate = useNavigate();
 
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
 
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
@@ -21,7 +21,7 @@ export const useTokenError = () => {
     setIsLoggedIn(false);
     navigate(PATH.ROOT);
 
-    generateToast('다시 로그인해 주세요.', 'error');
+    createToast('다시 로그인해 주세요.', 'error');
   };
 
   return { handleTokenError };

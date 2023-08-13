@@ -10,7 +10,7 @@ import { ERROR_CODE } from '@constants/api';
 
 export const useDayLogOrderMutation = () => {
   const queryClient = useQueryClient();
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
 
   const { handleTokenError } = useTokenError();
 
@@ -26,7 +26,7 @@ export const useDayLogOrderMutation = () => {
         return;
       }
 
-      generateToast('아이템 순서 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 순서 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 

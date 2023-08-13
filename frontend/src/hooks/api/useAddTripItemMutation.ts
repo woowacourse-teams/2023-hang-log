@@ -10,7 +10,7 @@ import { ERROR_CODE } from '@constants/api';
 
 export const useAddTripItemMutation = () => {
   const queryClient = useQueryClient();
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
 
   const { handleTokenError } = useTokenError();
 
@@ -26,7 +26,7 @@ export const useAddTripItemMutation = () => {
         return;
       }
 
-      generateToast('아이템 추가에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 추가에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 

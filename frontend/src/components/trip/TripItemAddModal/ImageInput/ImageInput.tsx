@@ -15,7 +15,7 @@ interface ImageInputProps {
 }
 
 const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => {
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
 
   const handleImageUrlsChange = useCallback(
     (imageUrls: string[]) => {
@@ -25,7 +25,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
   );
 
   const handleImageUploadError = () => {
-    generateToast('이미지는 최대 5개 업로드할 수 있습니다.', 'error');
+    createToast('이미지는 최대 5개 업로드할 수 있습니다.', 'error');
   };
 
   const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useImageUpload({

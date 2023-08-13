@@ -15,7 +15,7 @@ import { PATH } from '@constants/path';
 
 export const useLogOutMutation = () => {
   const navigate = useNavigate();
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
   const queryClient = useQueryClient();
 
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
@@ -29,7 +29,7 @@ export const useLogOutMutation = () => {
       navigate(PATH.ROOT);
     },
     onError: () => {
-      generateToast('로그아웃에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('로그아웃에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 

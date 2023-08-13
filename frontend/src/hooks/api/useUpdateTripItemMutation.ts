@@ -11,7 +11,7 @@ import { ERROR_CODE } from '@constants/api';
 export const useUpdateTripItemMutation = () => {
   const queryClient = useQueryClient();
   const { handleTokenError } = useTokenError();
-  const { generateToast } = useToast();
+  const { createToast } = useToast();
 
   const updateTripItemMutation = useMutation({
     mutationFn: putTripItem,
@@ -25,7 +25,7 @@ export const useUpdateTripItemMutation = () => {
         return;
       }
 
-      generateToast('아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+      createToast('아이템 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.', 'error');
     },
   });
 
