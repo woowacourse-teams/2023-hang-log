@@ -1,16 +1,18 @@
-import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
-import { PATH } from '@constants/path';
-import { FloatingButton, useSelect } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
 
-import { sortByStartDate } from '@utils/sort';
-
-import { useTripsQuery } from '@hooks/api/useTripsQuery';
+import { FloatingButton, useSelect } from 'hang-log-design-system';
 
 import { addButtonStyling } from '@pages/TripsPage/TripsPage.style';
 
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
+
+import { useTripsQuery } from '@hooks/api/useTripsQuery';
+
+import { sortByStartDate } from '@utils/sort';
+
+import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
+import { PATH } from '@constants/path';
 
 const TripsPage = () => {
   const navigate = useNavigate();

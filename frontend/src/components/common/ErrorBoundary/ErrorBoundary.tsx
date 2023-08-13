@@ -1,9 +1,9 @@
 import type { ComponentType, PropsWithChildren } from 'react';
 import { Component } from 'react';
 
-import { HTTPError } from '@api/HTTPError';
-
 import type { ErrorProps } from '@components/common/Error/Error';
+
+import { HTTPError } from '@api/HTTPError';
 
 interface ErrorBoundaryProps {
   Fallback: ComponentType<ErrorProps>;
@@ -43,6 +43,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Sta
       return (
         <Fallback
           statusCode={error instanceof HTTPError ? error.statusCode : undefined}
+          errorCode={error instanceof HTTPError ? error.code : undefined}
           resetError={this.resetErrorBoundary}
         />
       );

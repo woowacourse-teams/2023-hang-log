@@ -1,9 +1,10 @@
-import { PATH } from '@constants/path';
 import { useNavigate } from 'react-router-dom';
+
+import Error from '@components/common/Error/Error';
 
 import { useMediaQuery } from '@hooks/common/useMediaQuery';
 
-import Error from '@components/common/Error/Error';
+import { PATH } from '@constants/path';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();

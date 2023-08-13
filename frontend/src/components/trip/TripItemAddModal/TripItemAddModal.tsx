@@ -1,9 +1,6 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import type { TripItemFormData } from '@type/tripItem';
-import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
+import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
@@ -18,6 +15,12 @@ import {
   formStyling,
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
+
+import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import type { TripItemFormData } from '@type/tripItem';
 
 interface TripItemAddModalProps {
   tripId: number;

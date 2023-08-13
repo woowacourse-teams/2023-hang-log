@@ -1,7 +1,8 @@
-import { EXPENSE_CATEGORY_INFORMATION_SKELETON_LENGTH } from '@constants/ui';
 import { Skeleton } from 'hang-log-design-system';
 
 import { containerStyling } from '@components/expense/ExpenseCategoryInformation/ExpenseCategoryInformation.style';
+
+import { EXPENSE_CATEGORY_INFORMATION_SKELETON_LENGTH } from '@constants/ui';
 
 const ExpenseCategoryInformationSkeleton = () => {
   return (

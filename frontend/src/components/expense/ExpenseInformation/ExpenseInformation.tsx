@@ -1,15 +1,18 @@
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import type { ExpenseData } from '@type/expense';
-import { Badge, Box, Heading, Text } from 'hang-log-design-system';
 import { useRecoilValue } from 'recoil';
 
-import { formatDate } from '@utils/formatter';
+import { Badge, Box, Heading, Text } from 'hang-log-design-system';
 
 import {
   badgeWrapperStyling,
   sectionStyling,
   titleStyling,
 } from '@components/expense/ExpenseInformation/ExpenseInformation.style';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import { formatDate } from '@utils/formatter';
+
+import type { ExpenseData } from '@type/expense';
 
 interface ExpenseInformationProps
   extends Pick<ExpenseData, 'title' | 'startDate' | 'endDate' | 'cities'> {

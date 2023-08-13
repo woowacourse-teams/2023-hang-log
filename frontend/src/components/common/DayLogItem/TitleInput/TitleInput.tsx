@@ -1,10 +1,11 @@
-import { DAYLOG_TITLE_MAX_LENGTH } from '@constants/ui';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
+import { inputStyling } from '@components/common/DayLogItem/TitleInput/TitleInput.style';
+
 import { useDayLogTitleMutation } from '@hooks/api/useDayLogTitleMutation';
 
-import { inputStyling } from '@components/common/DayLogItem/TitleInput/TitleInput.style';
+import { DAYLOG_TITLE_MAX_LENGTH } from '@constants/ui';
 
 interface TitleInputProps {
   tripId: number;

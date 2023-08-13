@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+
 import { Theme } from 'hang-log-design-system';
 
 export const sectionStyling = css({
@@ -57,6 +58,7 @@ export const buttonContainerStyling = css({
   top: Theme.spacer.spacing4,
   right: Theme.spacer.spacing4,
   display: 'flex',
+  alignItems: 'center',
   gap: Theme.spacer.spacing1,
 });
 

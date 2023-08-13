@@ -1,8 +1,9 @@
-import { trip } from '@mocks/data/trip';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import TripMap from '@components/common/TripMap/TripMap';
+
+import { trip } from '@mocks/data/trip';
 
 const places = trip.dayLogs[0].items
   .filter((item) => item.itemType)

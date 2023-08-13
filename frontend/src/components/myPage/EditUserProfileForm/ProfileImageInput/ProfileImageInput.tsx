@@ -1,8 +1,7 @@
-import { Box, Button } from 'hang-log-design-system';
 import type { ComponentPropsWithoutRef } from 'react';
-import { memo, useRef } from 'react';
+import { memo, useCallback, useRef } from 'react';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { Box, Button } from 'hang-log-design-system';
 
 import {
   imageStyling,
@@ -11,19 +10,36 @@ import {
   wrapperStyling,
 } from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput.style';
 
+import { useImageUpload } from '@hooks/common/useImageUpload';
+
+import type { UserData } from '@type/member';
+
 interface ProfileImageInputProps extends ComponentPropsWithoutRef<'div'> {
-  imageUrl: string;
+  initialImageUrl: string;
+  updateInputValue: <K extends keyof UserData>(key: K, value: UserData[K]) => void;
 }
 
-const ProfileImageInput = ({ imageUrl, ...attributes }: ProfileImageInputProps) => {
+const ProfileImageInput = ({
+  initialImageUrl,
+  updateInputValue,
+  ...attributes
+}: ProfileImageInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageUploadButtonClick = () => {
     inputRef.current?.click();
   };
 
+  const handleImageUrlsChange = useCallback(
+    (imageUrls: string[]) => {
+      updateInputValue('imageUrl', imageUrls[0]);
+    },
+    [updateInputValue]
+  );
+
   const { uploadedImageUrls, handleImageUpload } = useImageUpload({
-    initialImageUrls: [imageUrl],
+    initialImageUrls: [initialImageUrl],
+    onSuccess: handleImageUrlsChange,
   });
 
   return (

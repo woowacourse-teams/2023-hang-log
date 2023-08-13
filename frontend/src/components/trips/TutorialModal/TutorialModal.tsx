@@ -1,17 +1,21 @@
-import Tutorial1SVG from '@assets/svg/tutorial1.svg';
-import Tutorial2SVG from '@assets/svg/tutorial2.svg';
-import Tutorial3SVG from '@assets/svg/tutorial3.svg';
-import Tutorial4SVG from '@assets/svg/tutorial4.svg';
-import { mediaQueryMobileState } from '@store/mediaQuery';
-import { Button, Flex, Modal, SVGCarousel, useOverlay } from 'hang-log-design-system';
 import { useEffect } from 'react';
+
 import { useRecoilValue } from 'recoil';
+
+import { Button, Flex, Modal, SVGCarousel, useOverlay } from 'hang-log-design-system';
 
 import {
   boxStyling,
   buttonStyling,
   modalStyling,
 } from '@components/trips/TutorialModal/TutorialModal.style';
+
+import { mediaQueryMobileState } from '@store/mediaQuery';
+
+import Tutorial1SVG from '@assets/svg/tutorial1.svg';
+import Tutorial2SVG from '@assets/svg/tutorial2.svg';
+import Tutorial3SVG from '@assets/svg/tutorial3.svg';
+import Tutorial4SVG from '@assets/svg/tutorial4.svg';
 
 const TutorialModal = () => {
   const { isOpen: isTutorialOpen, open: openTutorial, close: closeTutorial } = useOverlay();

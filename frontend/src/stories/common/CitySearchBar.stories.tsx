@@ -1,7 +1,8 @@
-import { cities } from '@mocks/data/city';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
+
+import { cities } from '@mocks/data/city';
 
 const meta = {
   title: 'common/CitySearchBar',

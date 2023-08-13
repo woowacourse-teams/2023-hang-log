@@ -1,10 +1,14 @@
-import { MAP_ZOOM_OUT_LABEL_LIMIT } from '@constants/map';
-import { focusedIdState } from '@store/scrollFocus';
-import type { TripPlaceType } from '@type/trip';
 import { useEffect, useState } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
 import TripItemMarker from '@components/common/TripItemMarker/TripItemMarker';
+
+import { focusedIdState } from '@store/scrollFocus';
+
+import type { TripPlaceType } from '@type/trip';
+
+import { MAP_ZOOM_OUT_LABEL_LIMIT } from '@constants/map';
 
 interface TripItemMarkerContainerProps {
   map: google.maps.Map;
@@ -27,6 +31,7 @@ const TripItemMarkerContainer = ({ map, places }: TripItemMarkerContainerProps) 
 
   return places.map((place) => (
     <TripItemMarker
+      key={place.id}
       map={map}
       isZoomedOut={isZoomedOut}
       id={place.id}

@@ -1,13 +1,7 @@
-import CloseIcon from '@assets/svg/close-icon.svg';
-import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
-import type { CityData } from '@type/city';
-import { Badge, Box, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import { useCityQuery } from '@hooks/api/useCityQuery';
-import { useCityTags } from '@hooks/common/useCityTags';
-import { useDebounce } from '@hooks/common/useDebounce';
+import { Badge, Box, Input, Label, Menu, useOverlay } from 'hang-log-design-system';
 
 import {
   badgeStyling,
@@ -19,6 +13,15 @@ import {
   wrapperStyling,
 } from '@components/common/CitySearchBar/CitySearchBar.style';
 import CitySuggestion from '@components/common/CitySuggestion/CitySuggestion';
+
+import { useCityQuery } from '@hooks/api/useCityQuery';
+import { useCityTags } from '@hooks/common/useCityTags';
+import { useDebounce } from '@hooks/common/useDebounce';
+
+import type { CityData } from '@type/city';
+
+import CloseIcon from '@assets/svg/close-icon.svg';
+import SearchPinIcon from '@assets/svg/search-pin-icon.svg';
 
 interface CitySearchBarProps {
   initialCities?: CityData[];

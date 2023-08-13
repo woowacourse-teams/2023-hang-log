@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { TripItemFormData } from '@type/tripItem';
+
 import { useState } from 'react';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
+
+import type { TripItemFormData } from '@type/tripItem';
 
 const meta = {
   title: 'trip/TripItemAddModal/PlaceInput',

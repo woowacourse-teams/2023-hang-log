@@ -23,6 +23,10 @@ export const mapContainerStyling = css({
 
   width: '50vw',
   height: 'calc(100vh - 81px)',
+
+  '@media screen and (max-width: 600px)': {
+    height: 'calc(100vh - 65px)',
+  },
 });
 
 export const skeletonContainerStyling = css({
