@@ -8,7 +8,6 @@ import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
-import hanglog.share.domain.type.SharedStatusType;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.trip.domain.City;
@@ -24,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class SharedTripService {
 
     private final SharedTripRepository sharedTripRepository;
@@ -35,7 +34,9 @@ public class SharedTripService {
         final SharedTrip sharedTrip = sharedTripRepository.findBySharedCode(sharedCode)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
 
-        validateSharedStatus(sharedTrip.getSharedStatus());
+        if (sharedTrip.getSharedStatus() == UNSHARED) {
+            throw new BadRequestException(INVALID_SHARE_CODE);
+        }
 
         final Long tripId = sharedTrip.getTrip().getId();
         final Trip trip = tripRepository.findById(tripId)
@@ -43,12 +44,6 @@ public class SharedTripService {
         final List<City> cities = getCitiesByTripId(tripId);
 
         return TripDetailResponse.of(trip, cities);
-    }
-
-    private void validateSharedStatus(final SharedStatusType sharedStatusType) {
-        if (sharedStatusType == UNSHARED) {
-            throw new BadRequestException(INVALID_SHARE_CODE);
-        }
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
