@@ -4,7 +4,6 @@ import static hanglog.share.fixture.ShareFixture.BEIJING;
 import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
 import static hanglog.share.fixture.ShareFixture.TOKYO;
 import static hanglog.share.fixture.ShareFixture.TRIP;
-import static hanglog.share.fixture.ShareFixture.setDayLogs;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -51,7 +50,6 @@ class SharedTripControllerTest extends RestDocsTest {
     @Test
     void getSharedTrip() throws Exception {
         // given
-        setDayLogs();
         when(sharedTripService.getTripDetail(anyString()))
                 .thenReturn(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
