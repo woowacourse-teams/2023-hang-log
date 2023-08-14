@@ -3,7 +3,6 @@ package hanglog.share.service;
 import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
-import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
@@ -34,7 +33,7 @@ public class SharedTripService {
         final SharedTrip sharedTrip = sharedTripRepository.findBySharedCode(sharedCode)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
 
-        if (sharedTrip.getSharedStatus() == UNSHARED) {
+        if (sharedTrip.isUnShared()) {
             throw new BadRequestException(INVALID_SHARE_CODE);
         }
 

@@ -2,6 +2,7 @@ package hanglog.share.domain;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_SHARE_CODE_HASH;
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
+import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -71,5 +72,9 @@ public class SharedTrip {
 
     public void updateSharedStatus(final Boolean sharedStatus) {
         this.sharedStatus = SharedStatusType.mappingType(sharedStatus);
+    }
+
+    public boolean isUnShared() {
+        return sharedStatus == UNSHARED;
     }
 }
