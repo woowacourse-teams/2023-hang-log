@@ -1,15 +1,15 @@
 package hanglog.trip.integration;
 
-import static hanglog.IntegrationFixture.EDINBURGH;
-import static hanglog.IntegrationFixture.END_DATE;
-import static hanglog.IntegrationFixture.LAHGON_TRIP;
-import static hanglog.IntegrationFixture.LONDON;
-import static hanglog.IntegrationFixture.PARIS;
-import static hanglog.IntegrationFixture.START_DATE;
+import static hanglog.global.IntegrationFixture.EDINBURGH;
+import static hanglog.global.IntegrationFixture.END_DATE;
+import static hanglog.global.IntegrationFixture.LAHGON_TRIP;
+import static hanglog.global.IntegrationFixture.LONDON;
+import static hanglog.global.IntegrationFixture.PARIS;
+import static hanglog.global.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import hanglog.IntegrationTest;
+import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
