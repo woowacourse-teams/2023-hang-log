@@ -1,8 +1,8 @@
 INSERT INTO city(country, name, latitude, longitude, created_at, modified_at, status)
-VALUES ('미국', '캘리포니아', 37.9838096, 23.7275388, now(), now(), 'USABLE');
+VALUES ('영국', '런던', 51.5072178, -0.1275862, now(), now(), 'USABLE');
 INSERT INTO city(country, name, latitude, longitude, created_at, modified_at, status)
-VALUES ('일본', '도쿄', -33.9248685, 18.4240553, now(), now(), 'USABLE');
+VALUES ('영국', '에든버러', 55.953252, -3.188267, now(), now(), 'USABLE');
 INSERT INTO city(country, name, latitude, longitude, created_at, modified_at, status)
-VALUES ('중국', '베이징', 52.3675734, 4.9041389, now(), now(), 'USABLE');
+VALUES ('프랑스', '파리', 48.856614, 2.3522219, now(), now(), 'USABLE');
 INSERT INTO city(country, name, latitude, longitude, created_at, modified_at, status)
-VALUES ('영국', '런던', 52.3675734, 4.9041389, now(), now(), 'USABLE');
+VALUES ('도쿄', '일본', 35.6761919, 139.6503106, now(), now(), 'USABLE');
