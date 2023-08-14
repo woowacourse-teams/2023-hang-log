@@ -47,12 +47,17 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    public Member(final String socialLoginId, final String nickname, final String imageUrl) {
+    public Member(final Long id, final String socialLoginId, final String nickname, final String imageUrl) {
+        this.id = id;
         this.socialLoginId = socialLoginId;
         this.nickname = nickname;
         this.lastLoginDate = LocalDateTime.now();
         this.imageUrl = imageUrl;
         this.status = ACTIVE;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Member(final String socialLoginId, final String nickname, final String imageUrl) {
+        this(null, socialLoginId, nickname, imageUrl);
     }
 }
