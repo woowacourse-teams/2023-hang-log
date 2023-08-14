@@ -27,7 +27,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
     <form css={formStyling} onSubmit={handleSubmit} noValidate>
       <ProfileImageInput
         css={imageInputStyling}
-        initialImageUrl={userInfo.imageUrl}
+        initialImageUrl={initialData.imageUrl}
         updateInputValue={updateInputValue}
       />
       <NicknameInput

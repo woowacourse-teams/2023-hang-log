@@ -46,6 +46,6 @@ export const tripsHandlers = [
     const { sharedStatus } = await req.json();
     const sharedCode = sharedStatus ? '789456123' : null;
 
-    return res(ctx.status(200), ctx.json({ sharedCode }));
+    return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json({ sharedCode }));
   }),
 ];

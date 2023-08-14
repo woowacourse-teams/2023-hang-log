@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { ImageUploadInput } from 'hang-log-design-system';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 import { useToast } from '@hooks/common/useToast';
 
 import type { TripItemFormData } from '@type/tripItem';
@@ -28,7 +28,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
     createToast('이미지는 최대 5개 업로드할 수 있습니다.');
   };
 
-  const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useImageUpload({
+  const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useMultipleImageUpload({
     initialImageUrls,
     onSuccess: handleImageUrlsChange,
     onError: handleImageUploadError,

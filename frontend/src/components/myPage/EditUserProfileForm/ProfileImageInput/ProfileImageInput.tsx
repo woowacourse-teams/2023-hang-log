@@ -10,7 +10,7 @@ import {
   wrapperStyling,
 } from '@components/myPage/EditUserProfileForm/ProfileImageInput/ProfileImageInput.style';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { useSingleImageUpload } from '@hooks/common/useSingleImageUpload';
 
 import type { UserData } from '@type/member';
 
@@ -31,14 +31,14 @@ const ProfileImageInput = ({
   };
 
   const handleImageUrlsChange = useCallback(
-    (imageUrls: string[]) => {
-      updateInputValue('imageUrl', imageUrls[0]);
+    (imageUrl: string) => {
+      updateInputValue('imageUrl', imageUrl);
     },
     [updateInputValue]
   );
 
-  const { uploadedImageUrls, handleImageUpload } = useImageUpload({
-    initialImageUrls: [initialImageUrl],
+  const { uploadedImageUrl, handleImageUpload } = useSingleImageUpload({
+    initialImageUrl,
     onSuccess: handleImageUrlsChange,
   });
 
@@ -61,7 +61,7 @@ const ProfileImageInput = ({
         ref={inputRef}
         onChange={handleImageUpload}
       />
-      <img css={imageStyling} src={uploadedImageUrls[0]} alt="사용자 프로필 이미지" />
+      <img css={imageStyling} src={uploadedImageUrl!} alt="사용자 프로필 이미지" />
     </Box>
   );
 };
