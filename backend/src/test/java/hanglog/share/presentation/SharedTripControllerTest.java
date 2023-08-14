@@ -25,6 +25,7 @@ import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.trip.service.TripService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,11 +47,16 @@ class SharedTripControllerTest extends RestDocsTest {
     @MockBean
     private SharedTripService sharedTripService;
 
+    @MockBean
+    private TripService tripService;
+
     @DisplayName("ShareCode로 단일 여행을 조회한다.")
     @Test
     void getSharedTrip() throws Exception {
         // given
-        when(sharedTripService.getTripDetail(anyString()))
+        when(sharedTripService.getTripId(anyString()))
+                .thenReturn(1L);
+        when(tripService.getTripDetail(anyLong()))
                 .thenReturn(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
         // when

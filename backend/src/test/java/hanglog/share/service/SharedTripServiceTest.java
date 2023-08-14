@@ -3,10 +3,7 @@ package hanglog.share.service;
 import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
-import static hanglog.share.fixture.ShareFixture.BEIJING;
-import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
 import static hanglog.share.fixture.ShareFixture.SHARED_TRIP;
-import static hanglog.share.fixture.ShareFixture.TOKYO;
 import static hanglog.share.fixture.ShareFixture.TRIP;
 import static hanglog.share.fixture.ShareFixture.UNSHARED_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,11 +16,7 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
-import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.dto.response.TripDetailResponse;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,27 +39,19 @@ class SharedTripServiceTest {
     @Mock
     private TripRepository tripRepository;
 
-    @Mock
-    private TripCityRepository tripCityRepository;
-
     @DisplayName("공유된 여행을 조회한다.")
     @Test
     void getSharedTrip() {
         // given
-        given(tripRepository.findById(1L))
-                .willReturn(Optional.of(TRIP));
-        given(tripCityRepository.findByTripId(1L))
-                .willReturn(List.of(new TripCity(TRIP, CALIFORNIA), new TripCity(TRIP, TOKYO),
-                        new TripCity(TRIP, BEIJING)));
         given(sharedTripRepository.findBySharedCode(anyString()))
                 .willReturn(Optional.of(SHARED_TRIP));
 
         // when
-        final TripDetailResponse actual = sharedTripService.getTripDetail("xxxxx");
+        final Long tripId = sharedTripService.getTripId("xxxxx");
 
         //then
-        assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
+        assertThat(tripId).usingRecursiveComparison()
+                .isEqualTo(1L);
     }
 
     @DisplayName("비공유 상태의 여행 조회시 실패한다.")
@@ -77,7 +62,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.of(UNSHARED_TRIP));
 
         // when & then
-        assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
+        assertThatThrownBy(() -> sharedTripService.getTripId("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(INVALID_SHARE_CODE.getCode());
@@ -91,7 +76,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> sharedTripService.getTripDetail("sharedCode"))
+        assertThatThrownBy(() -> sharedTripService.getTripId("sharedCode"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(NOT_FOUND_SHARED_CODE.getCode());
