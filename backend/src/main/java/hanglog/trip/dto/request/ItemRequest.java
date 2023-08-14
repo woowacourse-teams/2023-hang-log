@@ -51,7 +51,8 @@ public class ItemRequest {
             final String memo,
             final Long dayLogId,
             final List<String> imageUrls,
-            final PlaceRequest place, final ExpenseRequest expense
+            final PlaceRequest place,
+            final ExpenseRequest expense
     ) {
         validateExistPlaceWhenSpot(itemType, place);
         validateNoExistPlaceWhenNonSpot(itemType, place);

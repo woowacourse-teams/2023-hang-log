@@ -12,13 +12,17 @@ import org.springframework.test.context.jdbc.Sql;
         "classpath:data/truncate.sql",
         "classpath:data/currency.sql",
         "classpath:data/cities.sql",
-        "classpath:data/categories.sql",
-        "classpath:data/integration-data.sql"
+        "classpath:data/categories.sql"
 })
 public abstract class IntegrationTest {
 
     @LocalServerPort
     int port;
+
+    public static String parseUri(final String uri) {
+        final String[] parts = uri.split("/");
+        return parts[parts.length - 1];
+    }
 
     @BeforeEach
     void setPort() {

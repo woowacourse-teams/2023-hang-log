@@ -13,12 +13,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.response.DayLogResponse;
 import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
 import java.time.LocalDate;
@@ -47,7 +48,7 @@ class DayLogControllerTest extends RestDocsTest {
     @Test
     void getDayLog() throws Exception {
         // given
-        final DayLogGetResponse response = new DayLogGetResponse(
+        final DayLogResponse response = new DayLogResponse(
                 1L,
                 "런던 여행 첫날",
                 1,
@@ -125,6 +126,39 @@ class DayLogControllerTest extends RestDocsTest {
                 );
     }
 
+    @DisplayName("제목이 null일 경우 예외가 발생한다.")
+    @Test
+    void updateDayLogTitle_TitleNull() throws Exception {
+        // given
+        final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest(null);
+
+        doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("제목을 입력해주세요."));
+    }
+
+    @DisplayName("제목이 50자를 초과할 경우 예외가 발생한다.")
+    @Test
+    void updateDayLogTitle_TitleSizeInvalid() throws Exception {
+        // given
+        final String invalidSizeTitle = "1" + "1234567890".repeat(5);
+        final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest(invalidSizeTitle);
+
+        doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("날짜별 제목은 50자를 초과할 수 없습니다."));
+    }
+
     @DisplayName("데이로그의 아이템들 순서를 변경할 수 있다.")
     @Test
     void updateOrdinalOfItems() throws Exception {
@@ -154,5 +188,53 @@ class DayLogControllerTest extends RestDocsTest {
                                 )
                         )
                 );
+    }
+
+    @DisplayName("아이템에 null이 입력되면 예외가 발생한다.")
+    @Test
+    void updateOrdinalOfItems_ItemsNull() throws Exception {
+        //given
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(null);
+
+        doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("아이템 아이디들을 입력해주세요."));
+    }
+
+    @DisplayName("아이템에 빈 리스트가 입력되면 예외가 발생한다.")
+    @Test
+    void updateOrdinalOfItems_ItemsEmpty() throws Exception {
+        //given
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of());
+
+        doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("아이템 아이디들을 입력해주세요."));
+    }
+
+    @DisplayName("중복된 아이템이 입력되면 예외가 발생한다.")
+    @Test
+    void updateOrdinalOfItems_ItemsNotUnique() throws Exception {
+        //given
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L, 2L, 1L, 1L));
+
+        doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("중복되지 않는 아이템 아이디들을 입력해주세요."));
     }
 }

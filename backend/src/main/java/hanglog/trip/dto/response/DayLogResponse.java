@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class DayLogGetResponse {
+public class DayLogResponse {
 
     private final Long id;
     private final String title;
@@ -16,12 +16,12 @@ public class DayLogGetResponse {
     private final LocalDate date;
     private final List<ItemResponse> items;
 
-    public static DayLogGetResponse of(final DayLog dayLog) {
+    public static DayLogResponse of(final DayLog dayLog) {
         final List<ItemResponse> itemResponses = dayLog.getItems().stream()
                 .map(ItemResponse::of)
                 .toList();
 
-        return new DayLogGetResponse(
+        return new DayLogResponse(
                 dayLog.getId(),
                 dayLog.getTitle(),
                 dayLog.getOrdinal(),
