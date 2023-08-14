@@ -22,7 +22,7 @@ import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.presentation.AuthController;
 import hanglog.auth.service.AuthService;
-import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(AuthController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class AuthControllerTest extends RestDocsTest {
+class AuthControllerTest extends ControllerTest {
 
     private final static String GOOGLE_PROVIDER = "google";
     private final static String REFRESH_TOKEN = "refreshToken";

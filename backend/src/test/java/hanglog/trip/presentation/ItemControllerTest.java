@@ -18,11 +18,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.ItemService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,7 +37,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 @WebMvcTest(ItemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-public class ItemControllerTest extends RestDocsTest {
+public class ItemControllerTest extends ControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -12,9 +12,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import hanglog.global.ControllerTest;
 import hanglog.image.dto.ImagesResponse;
 import hanglog.image.service.ImageService;
-import hanglog.trip.restdocs.RestDocsTest;
 import java.io.FileInputStream;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 @WebMvcTest(ImageController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class ImageControllerTest extends RestDocsTest {
+class ImageControllerTest extends ControllerTest {
 
     @MockBean
     private ImageService imageService;

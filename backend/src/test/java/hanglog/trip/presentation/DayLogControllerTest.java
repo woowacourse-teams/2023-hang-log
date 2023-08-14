@@ -17,10 +17,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.DayLogService;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 @WebMvcTest(DayLogController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-class DayLogControllerTest extends RestDocsTest {
+class DayLogControllerTest extends ControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
