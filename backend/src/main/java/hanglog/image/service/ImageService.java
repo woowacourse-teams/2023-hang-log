@@ -20,7 +20,7 @@ public class ImageService {
     private static final int MAX_IMAGE_LIST_SIZE = 5;
     private static final int EMPTY_LIST_SIZE = 0;
 
-    @Value("${image.base-path}")
+    @Value("${image.base-url}")
     private String imageBasePath;
 
     public ImagesResponse save(final List<MultipartFile> images) {
