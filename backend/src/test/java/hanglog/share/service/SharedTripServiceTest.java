@@ -1,5 +1,8 @@
 package hanglog.share.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.share.fixture.ShareFixture.BEIJING;
 import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
 import static hanglog.share.fixture.ShareFixture.SHARED_TRIP;
@@ -77,7 +80,7 @@ class SharedTripServiceTest {
         assertThatThrownBy(() -> sharedTripService.getTripDetail("xxxxx"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
-                .isEqualTo(7002);
+                .isEqualTo(INVALID_SHARE_CODE.getCode());
     }
 
     @DisplayName("존재하지 않는 코드로 조회시 실패한다.")
@@ -91,7 +94,7 @@ class SharedTripServiceTest {
         assertThatThrownBy(() -> sharedTripService.getTripDetail("sharedCode"))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
-                .isEqualTo(7001);
+                .isEqualTo(NOT_FOUND_SHARED_CODE.getCode());
     }
 
     @DisplayName("여행의 공유 허용상태로 변경한다.")
@@ -141,6 +144,6 @@ class SharedTripServiceTest {
         assertThatThrownBy(() -> sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
-                .isEqualTo(1001);
+                .isEqualTo(NOT_FOUND_TRIP_ID.getCode());
     }
 }
