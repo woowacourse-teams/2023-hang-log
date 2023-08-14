@@ -156,8 +156,8 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void logout() throws Exception {
         // given
-        given(authArgumentResolver.supportsParameter(any())).willReturn(true);
-        given(authArgumentResolver.resolveArgument(any(), any(), any(), any())).willReturn(1L);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(authService).removeMemberRefreshToken(anyLong());
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);

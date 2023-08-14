@@ -3,6 +3,7 @@ package hanglog.global;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
 import hanglog.global.jwt.AuthArgumentResolver;
+import hanglog.global.jwt.JwtProvider;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,8 +28,11 @@ public abstract class ControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     protected AuthArgumentResolver authArgumentResolver;
+
+    @MockBean
+    protected JwtProvider jwtProvider;
 
     @BeforeEach
     void setUp(
