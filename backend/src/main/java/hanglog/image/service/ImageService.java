@@ -31,7 +31,7 @@ public class ImageService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${image.s3.folder}")
+    @Value("${cloud.aws.s3.folder}")
     private String folder;
 
     public ImagesResponse save(final List<MultipartFile> images) {
