@@ -4,7 +4,6 @@ import static hanglog.global.IntegrationFixture.EDINBURGH;
 import static hanglog.global.IntegrationFixture.END_DATE;
 import static hanglog.global.IntegrationFixture.LAHGON_TRIP;
 import static hanglog.global.IntegrationFixture.LONDON;
-import static hanglog.global.IntegrationFixture.PARIS;
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -16,7 +15,6 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -48,12 +46,9 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.header("Location")).isNotBlank();
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .ignoringFields("id", "cities", "dayLogs")
+                            .ignoringFields("id", "dayLogs")
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
-                    softly.assertThat(tripDetailResponse.getCities())
-                            .usingRecursiveComparison()
-                            .ignoringFieldsOfTypes(BigDecimal.class)
-                            .isEqualTo(List.of(LONDON, EDINBURGH));
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
                 }
         );
@@ -77,12 +72,9 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .ignoringFields("id", "cities", "dayLogs")
+                            .ignoringFields("id", "dayLogs")
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(expected);
-                    softly.assertThat(tripDetailResponse.getCities())
-                            .usingRecursiveComparison()
-                            .ignoringFieldsOfTypes(BigDecimal.class)
-                            .isEqualTo(expected.getCities());
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
                 }
         );
@@ -114,12 +106,9 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .comparingOnlyFields("title", "startDate", "endDate", "description")
+                            .comparingOnlyFields("title", "startDate", "endDate", "description", "cities")
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(tripUpdateRequest);
-                    softly.assertThat(tripDetailResponse.getCities())
-                            .usingRecursiveComparison()
-                            .ignoringFieldsOfTypes(BigDecimal.class)
-                            .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(3);
                 }
         );
@@ -151,12 +140,9 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .comparingOnlyFields("title", "startDate", "endDate", "description")
+                            .comparingOnlyFields("title", "startDate", "endDate", "description", "cities")
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(tripUpdateRequest);
-                    softly.assertThat(tripDetailResponse.getCities())
-                            .usingRecursiveComparison()
-                            .ignoringFieldsOfTypes(BigDecimal.class)
-                            .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(6);
                 }
         );
