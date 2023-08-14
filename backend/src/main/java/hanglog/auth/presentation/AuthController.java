@@ -7,6 +7,7 @@ import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.service.AuthService;
+import hanglog.global.jwt.Auth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +49,8 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(
-            @CookieValue("refresh-token") final String refreshToken,
-            @RequestBody final AccessTokenRequest request
-    ) {
-        authService.removeMemberRefreshToken(refreshToken, request.getAccessToken());
+    public ResponseEntity<Void> logout(@Auth Long memberId) {
+        authService.removeMemberRefreshToken(memberId);
         return ResponseEntity.noContent().build();
     }
 }
