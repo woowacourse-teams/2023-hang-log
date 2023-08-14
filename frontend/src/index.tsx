@@ -10,6 +10,8 @@ import { RecoilRoot } from 'recoil';
 
 import { HangLogProvider } from 'hang-log-design-system';
 
+import HttpsRedirect from '@components/utils/HttpsRedirect';
+
 import AppRouter from '@router/AppRouter';
 
 import { GlobalStyle } from '@styles/index';
@@ -32,15 +34,17 @@ const main = async () => {
 
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <HangLogProvider>
-            <Global styles={GlobalStyle} />
-            <AppRouter />
-          </HangLogProvider>
-        </RecoilRoot>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <HttpsRedirect>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <HangLogProvider>
+              <Global styles={GlobalStyle} />
+              <AppRouter />
+            </HangLogProvider>
+          </RecoilRoot>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </HttpsRedirect>
     </StrictMode>
   );
 };
