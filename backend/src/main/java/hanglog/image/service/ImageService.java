@@ -28,7 +28,7 @@ public class ImageService {
 
     private final AmazonS3 s3Client;
 
-    @Value("${image.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Value("${image.s3.folder}")
