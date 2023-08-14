@@ -244,3 +244,21 @@ include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/auth-controller-test/logout/http-response.adoc[]
+
+=== 마이 페이지 조회 (GET /mypage)
+
+==== 요청
+include::{snippets}/member-controller-test/get-my-info/http-request.adoc[]
+include::{snippets}/member-controller-test/get-my-info/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/member-controller-test/get-my-info/http-response.adoc[]
+
+=== 마이 페이지 수정 (PUT /mypage)
+
+==== 요청
+include::{snippets}/member-controller-test/update-my-info/http-request.adoc[]
+include::{snippets}/member-controller-test/update-my-info/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/member-controller-test/update-my-info/http-response.adoc[]
