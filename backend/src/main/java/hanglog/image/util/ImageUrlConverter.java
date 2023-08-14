@@ -15,7 +15,7 @@ public class ImageUrlConverter {
     private static final int VALID_PARSED_URL_SIZE = 2;
     private static final int EMPTY_STRING_INDEX = 0;
 
-    private static String imageBaseUrl;
+    private static String imageBaseUrl = "https://hanglog.com/img/";
 
     @Value("${image.base-url}")
     public void setImageBaseUrl(final String value) {
