@@ -179,6 +179,9 @@ public class Item extends BaseEntity {
     }
 
     private void validateExpenseRange(final Expense expense) {
+        if (expense == null) {
+            return;
+        }
         final Amount amount = expense.getAmount();
         if (amount.compareTo(MIN_AMOUNT_VALUE) < 0) {
             throw new InvalidDomainException(INVALID_EXPENSE_UNDER_MIN);

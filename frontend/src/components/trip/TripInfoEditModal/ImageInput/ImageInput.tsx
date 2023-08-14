@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { ImageUploadInput } from 'hang-log-design-system';
 
-import { useImageUpload } from '@hooks/common/useImageUpload';
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 
 interface ImageInputProps {
   initialImage: string | null;
@@ -21,7 +21,7 @@ const ImageInput = ({ initialImage, updateCoverImage }: ImageInputProps) => {
     uploadedImageUrls: uploadedImageUrl,
     handleImageUpload,
     handleImageRemoval,
-  } = useImageUpload({
+  } = useMultipleImageUpload({
     initialImageUrls: initialImage === null ? [] : [initialImage],
     onSuccess: handleImageUrlsChange,
   });
