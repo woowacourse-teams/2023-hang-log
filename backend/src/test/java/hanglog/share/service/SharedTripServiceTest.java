@@ -105,7 +105,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.of(SHARED_TRIP));
 
         // when
-        final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
+        final SharedTripCodeResponse actual = sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest);
 
         //then
         assertThat(actual).usingRecursiveComparison()
@@ -123,7 +123,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.empty());
 
         // when
-        final SharedTripCodeResponse actual = sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest);
+        final SharedTripCodeResponse actual = sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest);
 
         //then
         assertThat(actual.getSharedCode()).isNotNull();
@@ -138,7 +138,7 @@ class SharedTripServiceTest {
                 .willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> sharedTripService.updateSharedStatus(1L, sharedTripStatusRequest))
+        assertThatThrownBy(() -> sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);

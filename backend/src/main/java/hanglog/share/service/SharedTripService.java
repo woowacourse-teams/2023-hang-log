@@ -51,7 +51,7 @@ public class SharedTripService {
                 .toList();
     }
 
-    public SharedTripCodeResponse updateSharedStatus(
+    public SharedTripCodeResponse updateSharedTripStatus(
             final Long tripId,
             final SharedTripStatusRequest sharedTripStatusRequest
     ) {

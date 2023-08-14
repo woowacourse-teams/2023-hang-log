@@ -31,7 +31,7 @@ public class SharedTripController {
             @PathVariable final Long tripId,
             @RequestBody @Valid final SharedTripStatusRequest sharedTripStatusRequest
     ) {
-        final SharedTripCodeResponse sharedTripCodeResponse = sharedTripService.updateSharedStatus(
+        final SharedTripCodeResponse sharedTripCodeResponse = sharedTripService.updateSharedTripStatus(
                 tripId,
                 sharedTripStatusRequest
         );

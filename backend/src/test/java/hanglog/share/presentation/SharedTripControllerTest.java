@@ -146,7 +146,7 @@ class SharedTripControllerTest extends RestDocsTest {
         // given
         final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(true);
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("sharedCode");
-        when(sharedTripService.updateSharedStatus(anyLong(), any(SharedTripStatusRequest.class)))
+        when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
 
         // when & then
@@ -177,7 +177,7 @@ class SharedTripControllerTest extends RestDocsTest {
         // given
         final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(null);
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
-        when(sharedTripService.updateSharedStatus(anyLong(), any(SharedTripStatusRequest.class)))
+        when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
 
         // when & then
