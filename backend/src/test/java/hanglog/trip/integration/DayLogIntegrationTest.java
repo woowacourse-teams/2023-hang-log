@@ -1,24 +1,26 @@
 package hanglog.trip.integration;
 
-import static hanglog.IntegrationFixture.EDINBURGH;
-import static hanglog.IntegrationFixture.END_DATE;
-import static hanglog.IntegrationFixture.LONDON;
-import static hanglog.IntegrationFixture.START_DATE;
+import static hanglog.global.IntegrationFixture.EDINBURGH;
+import static hanglog.global.IntegrationFixture.END_DATE;
+import static hanglog.global.IntegrationFixture.LONDON;
+import static hanglog.global.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import hanglog.IntegrationTest;
+import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
+import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
+import hanglog.trip.dto.response.ItemResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,10 +39,12 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 Arrays.asList(LONDON.getId(), EDINBURGH.getId())
         );
 
-        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(
+                tripCreateRequest
+        );
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
-        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.여행_조회_요청(tripId);
+        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(tripId);
         final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
         dayLogId = tripDetailResponse.getDayLogs().get(0).getId();
     }
@@ -50,15 +54,15 @@ public class DayLogIntegrationTest extends IntegrationTest {
     void getDayLog() {
         // given
         final DayLogResponse expected = new DayLogResponse(
-                1L,
+                dayLogId,
                 "",
                 1,
-                LocalDate.of(2023, 8, 1),
+                START_DATE,
                 new ArrayList<>()
         );
 
         // when
-        final ExtractableResponse<Response> response = 데이로그_조회_요청(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestGetDayLog(tripId, dayLogId);
         final DayLogResponse result = response.as(DayLogResponse.class);
 
         // then
@@ -66,7 +70,6 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                     softly.assertThat(result).usingRecursiveComparison()
-                            .ignoringFields("id")
                             .isEqualTo(expected);
                 }
         );
@@ -80,8 +83,8 @@ public class DayLogIntegrationTest extends IntegrationTest {
         final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest(updatedTitle);
 
         // when
-        final ExtractableResponse<Response> response = 데이로그_제목_수정_요청(request);
-        final ExtractableResponse<Response> dayLogGetResponse = 데이로그_조회_요청(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestUpdateDayLogTitle(tripId, dayLogId, request);
+        final ExtractableResponse<Response> dayLogGetResponse = requestGetDayLog(tripId, dayLogId);
         final DayLogResponse dayLogResponse = dayLogGetResponse.as(DayLogResponse.class);
 
         // then
@@ -93,32 +96,62 @@ public class DayLogIntegrationTest extends IntegrationTest {
         );
     }
 
-    /*
+    private Long createMockItem(final Long tripId, final Long dayLogId) {
+        final ItemRequest itemRequest = new ItemRequest(
+                false,
+                "title",
+                null,
+                null,
+                dayLogId,
+                List.of(),
+                null,
+                null
+        );
+
+        final ExtractableResponse<Response> itemCreateResponse = ItemIntegrationTest.requestCreateItem(
+                tripId,
+                itemRequest
+        );
+        return Long.parseLong(parseUri(itemCreateResponse.header("Location")));
+    }
+
     @DisplayName("데이로그 아이템 순서를 업데이트한다")
     @Test
     void updateOrdinalOfItems() {
         // given
-        // TODO: Item n개 요청 후 ID 받아서 request에 넣기
-
-        ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest = new ItemsOrdinalUpdateRequest(List.of(2L, 3L, 1L));
+        final Long itemId1 = createMockItem(tripId, dayLogId);
+        final Long itemId2 = createMockItem(tripId, dayLogId);
+        final Long itemId3 = createMockItem(tripId, dayLogId);
+        final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest = new ItemsOrdinalUpdateRequest(
+                List.of(itemId2, itemId3, itemId1)
+        );
 
         // when
-        final ExtractableResponse<Response> response = 데이로그_아이템_순서_수정_요청(itemsOrdinalUpdateRequest);
-        final ExtractableResponse<Response> dayLogGetResponse = 데이로그_조회_요청(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestUpdateOrdinalOfItems(
+                tripId,
+                dayLogId,
+                itemsOrdinalUpdateRequest
+        );
+        final ExtractableResponse<Response> dayLogGetResponse = requestGetDayLog(tripId, dayLogId);
         final DayLogResponse dayLogResponse = dayLogGetResponse.as(DayLogResponse.class);
+        final List<ItemResponse> itemResponses = dayLogResponse.getItems();
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    // TODO: 아이템 순서 맞는지 검증
-                    softly.assertThat(dayLogResponse.getItems()).isEmpty();
+                    softly.assertThat(itemResponses.get(0).getOrdinal()).isEqualTo(1);
+                    softly.assertThat(itemResponses.get(0).getId()).isEqualTo(itemId2);
+                    softly.assertThat(itemResponses.get(1).getOrdinal()).isEqualTo(2);
+                    softly.assertThat(itemResponses.get(1).getId()).isEqualTo(itemId3);
+                    softly.assertThat(itemResponses.get(2).getOrdinal()).isEqualTo(3);
+                    softly.assertThat(itemResponses.get(2).getId()).isEqualTo(itemId1);
                 }
         );
     }
-    */
 
-    private ExtractableResponse<Response> 데이로그_조회_요청(final Long tripId, final Long dayLogId) {
+
+    private ExtractableResponse<Response> requestGetDayLog(final Long tripId, final Long dayLogId) {
         return RestAssured
                 .given().log().all()
                 .when().get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
@@ -126,7 +159,11 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 데이로그_제목_수정_요청(final DayLogUpdateTitleRequest request) {
+    private ExtractableResponse<Response> requestUpdateDayLogTitle(
+            final Long tripId,
+            final Long dayLogId,
+            final DayLogUpdateTitleRequest request
+    ) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
@@ -136,7 +173,11 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 데이로그_아이템_순서_수정_요청(final ItemsOrdinalUpdateRequest request) {
+    private ExtractableResponse<Response> requestUpdateOrdinalOfItems(
+            final Long tripId,
+            final Long dayLogId,
+            final ItemsOrdinalUpdateRequest request
+    ) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)

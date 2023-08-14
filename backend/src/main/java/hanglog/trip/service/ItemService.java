@@ -8,6 +8,7 @@ import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
@@ -163,7 +164,7 @@ public class ItemService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
         return new Expense(
                 expenseRequest.getCurrency(),
-                expenseRequest.getAmount(),
+                new Amount(expenseRequest.getAmount()),
                 expenseCategory
         );
     }

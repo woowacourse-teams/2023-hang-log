@@ -63,7 +63,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
@@ -100,7 +100,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
@@ -129,7 +129,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
         final ItemRequest itemRequest = new ItemRequest(
                 true,
                 "에펠탑",
@@ -152,7 +152,7 @@ class ItemServiceTest {
     @Test
     void update_PlaceNotChange() {
         // given
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",
@@ -191,7 +191,7 @@ class ItemServiceTest {
                 new BigDecimal("39.123456"),
                 List.of("culture")
         );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", 10000.0, 200L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 200L);
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
                 "에펠탑",

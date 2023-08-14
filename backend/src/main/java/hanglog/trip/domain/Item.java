@@ -1,5 +1,7 @@
 package hanglog.trip.domain;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_OVER_MAX;
+import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_UNDER_MIN;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.CascadeType.MERGE;
@@ -10,9 +12,11 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.global.BaseEntity;
 import hanglog.global.exception.BadRequestException;
+import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
 import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
@@ -26,6 +30,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.DecimalMax;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -41,6 +46,8 @@ import org.hibernate.annotations.Where;
 public class Item extends BaseEntity {
 
     private static final double RATING_DECIMAL_UNIT = 0.5;
+    private static final BigDecimal MAX_AMOUNT_VALUE = BigDecimal.valueOf(100_000_000);
+    private static final BigDecimal MIN_AMOUNT_VALUE = BigDecimal.ZERO;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -91,6 +98,7 @@ public class Item extends BaseEntity {
     ) {
         super(statusType);
         validateRatingFormat(rating);
+        validateExpenseRange(expense);
         this.id = id;
         this.itemType = itemType;
         this.title = title;
@@ -167,6 +175,19 @@ public class Item extends BaseEntity {
     private void validateRatingFormat(final Double rating) {
         if (rating != null && isInvalidRatingFormat(rating)) {
             throw new BadRequestException(INVALID_RATING);
+        }
+    }
+
+    private void validateExpenseRange(final Expense expense) {
+        if (expense == null) {
+            return;
+        }
+        final Amount amount = expense.getAmount();
+        if (amount.compareTo(MIN_AMOUNT_VALUE) < 0) {
+            throw new InvalidDomainException(INVALID_EXPENSE_UNDER_MIN);
+        }
+        if (amount.compareTo(MAX_AMOUNT_VALUE) > 0) {
+            throw new InvalidDomainException(INVALID_EXPENSE_OVER_MAX);
         }
     }
 

@@ -3,6 +3,7 @@ package hanglog.expense.dto.response;
 
 import hanglog.city.dto.response.CityResponse;
 import hanglog.currency.domain.Currency;
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.trip.domain.Trip;
@@ -21,14 +22,14 @@ public class TripExpenseResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final List<CityResponse> cities;
-    private final int totalAmount;
+    private final Amount totalAmount;
     private final List<CategoryExpenseResponse> categories;
     private final ExchangeRateResponse exchangeRate;
     private final List<DayLogExpenseResponse> dayLogs;
 
     public static TripExpenseResponse of(
             final Trip trip,
-            final int totalAmount,
+            final Amount totalAmount,
             final List<TripCity> tripCities,
             final List<CategoryExpense> categoryExpenses,
             final Currency currency,

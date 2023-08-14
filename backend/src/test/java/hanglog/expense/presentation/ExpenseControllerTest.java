@@ -1,6 +1,7 @@
 package hanglog.expense.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
+import static hanglog.expense.fixture.AmountFixture.AMOUNT_20000;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
@@ -44,11 +45,11 @@ class ExpenseControllerTest extends RestDocsTest {
         // given
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
-                20000,
+                AMOUNT_20000,
                 List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
-                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), 20000, 20000)),
+                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), AMOUNT_20000, AMOUNT_20000)),
                 DEFAULT_CURRENCY,
-                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, 20000))
+                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
         );
 
         // when & then

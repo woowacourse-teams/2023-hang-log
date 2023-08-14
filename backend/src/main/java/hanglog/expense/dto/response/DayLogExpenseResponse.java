@@ -1,5 +1,6 @@
 package hanglog.expense.dto.response;
 
+import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.DayLogExpense;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +14,7 @@ public class DayLogExpenseResponse {
     private final Long id;
     private final Integer ordinal;
     private final LocalDate date;
-    private final int totalAmount;
+    private final Amount totalAmount;
     private final List<ItemDetailResponse> items;
 
     public static DayLogExpenseResponse of(final DayLogExpense dayLogExpense) {

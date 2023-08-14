@@ -12,7 +12,6 @@ import {
 import { useLogOutMutation } from '@hooks/api/useLogOutMutation';
 import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
 
-import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
 
 const LoggedInMenu = () => {
@@ -35,7 +34,7 @@ const LoggedInMenu = () => {
   };
 
   const handleLogOut = () => {
-    logOutMutation.mutate({ accessToken: localStorage.getItem(ACCESS_TOKEN_KEY) ?? '' });
+    logOutMutation.mutate();
     closeMenu();
   };
 
