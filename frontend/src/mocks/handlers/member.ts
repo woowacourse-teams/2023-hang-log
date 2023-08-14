@@ -15,7 +15,7 @@ export const memberHandlers = [
     );
   }),
 
-  rest.post(END_POINTS.LOGOUT, (_, res, ctx) => {
+  rest.delete(END_POINTS.LOGOUT, (_, res, ctx) => {
     return res(ctx.status(204));
   }),
 

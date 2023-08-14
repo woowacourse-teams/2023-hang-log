@@ -8,7 +8,7 @@ import { useToast } from '@hooks/common/useToast';
 
 import { isLoggedInState } from '@store/auth';
 
-import { postLogout } from '@api/member/postLogOut';
+import { deleteLogout } from '@api/member/deleteLogOut';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
@@ -21,7 +21,7 @@ export const useLogOutMutation = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
   const logOutMutation = useMutation({
-    mutationFn: postLogout,
+    mutationFn: deleteLogout,
     onSuccess: () => {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       queryClient.clear();
