@@ -57,14 +57,6 @@ public class ImageFile {
                 .collect(Collectors.joining());
     }
 
-    public void transferTo(final Path path) {
-        try {
-            this.file.transferTo(path);
-        } catch (final IOException e) {
-            throw new ImageException(INVALID_IMAGE_PATH);
-        }
-    }
-
     public String getContentType() {
         return this.file.getContentType();
     }
