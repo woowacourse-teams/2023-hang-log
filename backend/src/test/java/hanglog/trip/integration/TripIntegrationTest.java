@@ -36,10 +36,10 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void createTrip() {
         // when
-        final ExtractableResponse<Response> response = 여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> response = requestCreateTrip(tripCreateRequest);
         final Long tripId = Long.parseLong(parseUri(response.header("Location")));
 
-        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -63,12 +63,12 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void getTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = 여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
         final TripDetailResponse expected = TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH));
 
         // when
-        final ExtractableResponse<Response> response = 여행_조회_요청(tripId);
+        final ExtractableResponse<Response> response = requestGetTrip(tripId);
         final TripDetailResponse tripDetailResponse = response.as(TripDetailResponse.class);
 
         // then
@@ -92,7 +92,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_DecreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = 여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -105,8 +105,8 @@ public class TripIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse<Response> response = 여행_수정_요청(tripId, tripUpdateRequest);
-        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
+        final ExtractableResponse<Response> response = requestUpdateTrip(tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -129,7 +129,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_IncreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = 여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -142,8 +142,8 @@ public class TripIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse<Response> response = 여행_수정_요청(tripId, tripUpdateRequest);
-        final TripDetailResponse tripDetailResponse = 여행_조회_요청(tripId).as(TripDetailResponse.class);
+        final ExtractableResponse<Response> response = requestUpdateTrip(tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -166,22 +166,22 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void deleteTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = 여행_생성_요청(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         // when
-        final ExtractableResponse<Response> response = 여행_삭제_요청(tripId);
+        final ExtractableResponse<Response> response = requestDeleteTrip(tripId);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(여행_조회_요청(tripId).statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(requestGetTrip(tripId).statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
                 }
         );
     }
 
-    protected static ExtractableResponse<Response> 여행_생성_요청(final TripCreateRequest tripCreateRequest) {
+    protected static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
@@ -191,7 +191,7 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    protected static ExtractableResponse<Response> 여행_조회_요청(final Long tripId) {
+    protected static ExtractableResponse<Response> requestGetTrip(final Long tripId) {
         return RestAssured
                 .given().log().all()
                 .when().get("/trips/{tripId}", tripId)
@@ -199,7 +199,7 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 여행_수정_요청(final Long tripId, final TripUpdateRequest tripUpdateRequest) {
+    private ExtractableResponse<Response> requestUpdateTrip(final Long tripId, final TripUpdateRequest tripUpdateRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
@@ -209,7 +209,7 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 여행_삭제_요청(final Long tripId) {
+    private ExtractableResponse<Response> requestDeleteTrip(final Long tripId) {
         return RestAssured
                 .given().log().all()
                 .when().delete("/trips/{tripId}", tripId)
