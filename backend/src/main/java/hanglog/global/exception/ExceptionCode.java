@@ -43,6 +43,7 @@ public enum ExceptionCode {
     INVALID_IMAGE_URL(5005, "요청한 이미지 URL의 형식이 잘못되었습니다."),
     INVALID_IMAGE_PATH(5101, "이미지를 저장할 경로가 올바르지 않습니다."),
     FAIL_IMAGE_NAME_HASH(5102, "이미지 이름을 해싱하는 데 실패했습니다."),
+    INVALID_IMAGE(5103, "올바르지 않은 이미지 파일입니다."),
 
     NOT_ASSOCIATE_DAYLOG_WITH_TRIP(6001, "요청한 DayLog와 Trip은 연관관계가 아닙니다."),
 
