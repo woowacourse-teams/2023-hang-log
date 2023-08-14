@@ -8,7 +8,6 @@ import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
@@ -16,15 +15,18 @@ import hanglog.image.dto.ImagesResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
     private static final int MAX_IMAGE_LIST_SIZE = 5;
     private static final int EMPTY_LIST_SIZE = 0;
-    private static final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
+
+    private final AmazonS3 s3Client;
 
     @Value("${image.s3.bucket}")
     private String bucket;
