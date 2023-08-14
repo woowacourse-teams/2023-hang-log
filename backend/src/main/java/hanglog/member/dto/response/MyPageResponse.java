@@ -1,4 +1,4 @@
-package hanglog.member.dto;
+package hanglog.member.dto.response;
 
 import hanglog.member.domain.Member;
 import lombok.Getter;

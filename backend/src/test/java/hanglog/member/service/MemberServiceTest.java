@@ -3,10 +3,12 @@ package hanglog.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.member.dto.MyPageResponse;
+import hanglog.member.dto.request.MyPageRequest;
+import hanglog.member.dto.response.MyPageResponse;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,13 +28,11 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    @DisplayName("")
+    @DisplayName("멤버의 닉네임과 프로필 사진을 조회할 수 있다.")
     @Test
     void getMyPageInfo() {
         // given
         final Member member = new Member(1L, "jjongwa", "dino", "goodDino'sImageUrl");
-        given(memberRepository.save(any()))
-                .willReturn(member);
         given(memberRepository.findById(member.getId()))
                 .willReturn(Optional.of(member));
 
@@ -41,6 +41,31 @@ class MemberServiceTest {
 
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(MyPageResponse.from(member));
+    }
+
+    @DisplayName("멤버의 닉네임과 프로필 사진을 수정할 수 있다.")
+    @Test
+    void updateMyPageInfo() {
+        // given
+        final MyPageRequest myPageRequest = new MyPageRequest("badDino", "changedImageUrl");
+        final Member member = new Member(1L, "jjongwa", "goodDino", "goodDino'sImageUrl");
+        final Member updatedMember = new Member(
+                1L,
+                "jjongwa",
+                myPageRequest.getNickname(),
+                myPageRequest.getImageUrl()
+        );
+        given(memberRepository.findById(any()))
+                .willReturn(Optional.of(member));
+        given(memberRepository.save(any()))
+                .willReturn(updatedMember);
+
+        // when
+        memberService.updateMyPageInfo(member.getId(), myPageRequest);
+
+        // then
+        verify(memberRepository).findById(any());
+        verify(memberRepository).save(any());
     }
 
 }
