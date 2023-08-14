@@ -31,7 +31,7 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    protected static ExtractableResponse<Response> requestGetTrips(final Long tripId) {
+    protected static ExtractableResponse<Response> requestGetTrip(final Long tripId) {
         return RestAssured
                 .given().log().all()
                 .when().get("/trips/{tripId}", tripId)

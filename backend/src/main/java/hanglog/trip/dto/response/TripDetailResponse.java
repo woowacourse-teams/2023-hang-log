@@ -24,7 +24,7 @@ public class TripDetailResponse {
     private final List<DayLogResponse> dayLogs;
 
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
-        final List<DayLogResponse> dayLogRespons = trip.getDayLogs().stream()
+        final List<DayLogResponse> dayLogResponses = trip.getDayLogs().stream()
                 .map(DayLogResponse::of)
                 .toList();
 
@@ -40,7 +40,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                dayLogRespons
+                dayLogResponses
         );
     }
 }

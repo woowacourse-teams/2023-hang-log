@@ -44,7 +44,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
         );
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
-        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrips(tripId);
+        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(tripId);
         final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
         dayLogId = tripDetailResponse.getDayLogs().get(0).getId();
     }
