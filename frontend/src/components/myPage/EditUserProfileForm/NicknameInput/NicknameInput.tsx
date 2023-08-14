@@ -1,4 +1,4 @@
-import { type ChangeEvent, useCallback } from 'react';
+import { type ChangeEvent, memo, useCallback } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
@@ -41,4 +41,4 @@ const NicknameInput = ({ value, isError, updateInputValue, disableError }: Nickn
   );
 };
 
-export default NicknameInput;
+export default memo(NicknameInput);

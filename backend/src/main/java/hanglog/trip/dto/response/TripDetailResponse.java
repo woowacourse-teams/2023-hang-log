@@ -21,11 +21,11 @@ public class TripDetailResponse {
     private final LocalDate endDate;
     private final String description;
     private final String imageUrl;
-    private final List<DayLogGetResponse> dayLogs;
+    private final List<DayLogResponse> dayLogs;
 
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
-        final List<DayLogGetResponse> dayLogGetResponses = trip.getDayLogs().stream()
-                .map(DayLogGetResponse::of)
+        final List<DayLogResponse> dayLogResponses = trip.getDayLogs().stream()
+                .map(DayLogResponse::of)
                 .toList();
 
         final List<CityWithPositionResponse> cityWithPositionResponses = cities.stream()
@@ -40,7 +40,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                dayLogGetResponses
+                dayLogResponses
         );
     }
 }

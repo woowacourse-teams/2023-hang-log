@@ -3,7 +3,7 @@ package hanglog.trip.presentation;
 
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.response.DayLogGetResponse;
+import hanglog.trip.dto.response.DayLogResponse;
 import hanglog.trip.service.DayLogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ public class DayLogController {
     private final DayLogService dayLogService;
 
     @GetMapping
-    public ResponseEntity<DayLogGetResponse> getDayLog(
+    public ResponseEntity<DayLogResponse> getDayLog(
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId) {
-        final DayLogGetResponse response = dayLogService.getById(dayLogId);
+        final DayLogResponse response = dayLogService.getById(dayLogId);
         return ResponseEntity.ok(response);
     }
 

@@ -24,27 +24,30 @@ export const useEditUserProfileForm = (initialData: UserData) => {
     });
   }, []);
 
-  const isFormError = () => {
+  const isFormError = useCallback(() => {
     if (isEmptyString(userInfo.nickname)) {
       return true;
     }
 
     return false;
-  };
+  }, [userInfo.nickname]);
 
   const disableNicknameError = useCallback(() => {
     setIsNicknameError(false);
   }, []);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    if (isFormError()) {
-      setIsNicknameError(true);
-    }
+      if (isFormError()) {
+        setIsNicknameError(true);
+      }
 
-    userInfoMutation.mutate(userInfo);
-  };
+      userInfoMutation.mutate(userInfo);
+    },
+    [isFormError, userInfo, userInfoMutation]
+  );
 
   return { userInfo, isNicknameError, updateInputValue, disableNicknameError, handleSubmit };
 };

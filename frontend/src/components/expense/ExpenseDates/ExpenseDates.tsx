@@ -6,7 +6,6 @@ import ExpenseList from '@components/expense/ExpenseList/ExpenseList';
 import { useExpense } from '@hooks/expense/useExpense';
 
 import { formatDate, formatMonthDate, formatNumberToMoney } from '@utils/formatter';
-import { sortByOrdinal } from '@utils/sort';
 
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
@@ -16,12 +15,11 @@ interface ExpenseDatesProps {
 
 const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {
   const { expenseData, dates } = useExpense(tripId);
-  const sortedExpenseDayLog = expenseData.dayLogs.sort(sortByOrdinal);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    sortedExpenseDayLog[0].id
+    expenseData.dayLogs[0].id
   );
-  const selectedDayLog = sortedExpenseDayLog.find((log) => log.id === selectedDayLogId)!;
+  const selectedDayLog = expenseData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
   return (
     <>
