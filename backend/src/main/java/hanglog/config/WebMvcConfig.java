@@ -2,18 +2,16 @@ package hanglog.config;
 
 import hanglog.global.jwt.AuthArgumentResolver;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@AllArgsConstructor
 @Configuration
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private AuthArgumentResolver authArgumentResolver;
+    private final AuthArgumentResolver authArgumentResolver;
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {

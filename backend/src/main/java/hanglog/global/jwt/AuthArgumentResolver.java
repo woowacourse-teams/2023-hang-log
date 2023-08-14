@@ -7,8 +7,7 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.global.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -16,12 +15,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {

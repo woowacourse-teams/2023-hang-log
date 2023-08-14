@@ -2,7 +2,11 @@ package hanglog.member.presentation;
 
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -152,6 +156,10 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void logout() throws Exception {
         // given
+        given(authArgumentResolver.supportsParameter(any())).willReturn(true);
+        given(authArgumentResolver.resolveArgument(any(), any(), any(), any())).willReturn(1L);
+        doNothing().when(authService).removeMemberRefreshToken(anyLong());
+
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
         final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
@@ -174,6 +182,6 @@ class AuthControllerTest extends ControllerTest {
                 ));
 
         // then
-        verify(authService).removeMemberRefreshToken(anyString(), anyString());
+        verify(authService).removeMemberRefreshToken(anyLong());
     }
 }

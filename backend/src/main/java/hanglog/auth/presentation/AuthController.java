@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(@Auth Long memberId) {
+    public ResponseEntity<Void> logout(@Auth final Long memberId) {
         authService.removeMemberRefreshToken(memberId);
         return ResponseEntity.noContent().build();
     }
