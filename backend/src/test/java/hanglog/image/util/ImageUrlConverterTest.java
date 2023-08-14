@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+
 class ImageUrlConverterTest {
 
     @DisplayName("URL로 이미지의 이름을 파싱한다.")
