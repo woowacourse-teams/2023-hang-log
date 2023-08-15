@@ -256,7 +256,10 @@ include::{snippets}/auth-controller-test/logout/http-response.adoc[]
 
 ==== 요청
 include::{snippets}/member-controller-test/get-my-info/http-request.adoc[]
-include::{snippets}/member-controller-test/get-my-info/request-fields.adoc[]
+요청 헤더
+include::{snippets}/member-controller-test/get-my-info/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/member-controller-test/get-my-info/request-cookies.adoc[]
 
 ==== 응답
 include::{snippets}/member-controller-test/get-my-info/http-response.adoc[]
@@ -265,6 +268,10 @@ include::{snippets}/member-controller-test/get-my-info/http-response.adoc[]
 
 ==== 요청
 include::{snippets}/member-controller-test/update-my-info/http-request.adoc[]
+요청 헤더
+include::{snippets}/member-controller-test/update-my-info/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/member-controller-test/update-my-info/request-cookies.adoc[]
 include::{snippets}/member-controller-test/update-my-info/request-fields.adoc[]
 
 ==== 응답

@@ -8,6 +8,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -32,6 +36,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(MemberController.class)
@@ -67,6 +72,7 @@ class MemberControllerTest extends ControllerTest {
                 .thenReturn(myPageResponse);
 
         final ResultActions resultActions = mockMvc.perform(get("/mypage")
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
@@ -75,11 +81,14 @@ class MemberControllerTest extends ControllerTest {
         // when
         resultActions.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        requestFields(
-                                fieldWithPath("accessToken")
-                                        .type(STRING)
+                        requestHeaders(
+                                headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
+                        ),
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
                         ),
                         responseFields(
                                 fieldWithPath("nickname")
@@ -108,6 +117,7 @@ class MemberControllerTest extends ControllerTest {
         doNothing().when(memberService).updateMyPageInfo(anyLong(), any());
 
         final ResultActions resultActions = mockMvc.perform(put("/mypage")
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .content(objectMapper.writeValueAsString(request))
@@ -117,6 +127,15 @@ class MemberControllerTest extends ControllerTest {
         // when
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
+                        ),
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
                         requestFields(
                                 fieldWithPath("nickname")
                                         .type(STRING)
