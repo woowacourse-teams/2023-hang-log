@@ -1,6 +1,6 @@
 package hanglog.auth.presentation;
 
-import static org.springframework.http.HttpHeaders.COOKIE;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import hanglog.auth.Auth;
@@ -42,7 +42,7 @@ public class AuthController {
                 .httpOnly(true)
                 .path("/")
                 .build();
-        response.addHeader(COOKIE, cookie.toString());
+        response.addHeader(SET_COOKIE, cookie.toString());
         return ResponseEntity.status(CREATED).body(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
 
