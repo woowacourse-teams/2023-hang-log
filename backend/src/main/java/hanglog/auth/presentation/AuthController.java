@@ -1,5 +1,6 @@
 package hanglog.auth.presentation;
 
+import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import hanglog.auth.Auth;
@@ -7,9 +8,9 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.service.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final int COOKIE_AGE_SECONDS = 604800;
+
     private final AuthService authService;
 
     @PostMapping("/login/{provider}")
@@ -32,10 +35,14 @@ public class AuthController {
             final HttpServletResponse response
     ) {
         final MemberTokens memberTokens = authService.login(provider, loginRequest.getCode());
-        final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        response.addCookie(cookie);
+        final ResponseCookie cookie = ResponseCookie.from("refresh-token", memberTokens.getRefreshToken())
+                .maxAge(COOKIE_AGE_SECONDS)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .build();
+        response.addHeader(COOKIE, cookie.toString());
         return ResponseEntity.status(CREATED).body(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
 
