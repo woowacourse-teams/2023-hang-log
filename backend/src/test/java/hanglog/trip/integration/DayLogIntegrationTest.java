@@ -1,9 +1,7 @@
 package hanglog.trip.integration;
 
-import static hanglog.global.IntegrationFixture.EDINBURGH;
-import static hanglog.global.IntegrationFixture.END_DATE;
-import static hanglog.global.IntegrationFixture.LONDON;
 import static hanglog.global.IntegrationFixture.START_DATE;
+import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -11,7 +9,6 @@ import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
-import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
 import hanglog.trip.dto.response.ItemResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -19,7 +16,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,15 +29,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        final TripCreateRequest tripCreateRequest = new TripCreateRequest(
-                START_DATE,
-                END_DATE,
-                Arrays.asList(LONDON.getId(), EDINBURGH.getId())
-        );
-
-        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(
-                tripCreateRequest
-        );
+        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(TRIP_CREATE_REQUEST);
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(tripId);
