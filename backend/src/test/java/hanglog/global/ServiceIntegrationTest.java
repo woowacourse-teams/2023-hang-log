@@ -10,5 +10,5 @@ import org.springframework.test.context.jdbc.Sql;
         "classpath:data/cities.sql",
         "classpath:data/categories.sql"
 })
-public abstract class ServiceJpaTest {
+public abstract class ServiceIntegrationTest {
 }

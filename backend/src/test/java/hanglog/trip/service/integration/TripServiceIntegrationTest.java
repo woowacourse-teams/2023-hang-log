@@ -1,4 +1,4 @@
-package hanglog.trip.service;
+package hanglog.trip.service.integration;
 
 import static hanglog.global.IntegrationFixture.EDINBURGH;
 import static hanglog.global.IntegrationFixture.END_DATE;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import hanglog.global.ServiceJpaTest;
+import hanglog.global.ServiceIntegrationTest;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
@@ -23,6 +23,7 @@ import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 @Import(TripService.class)
-public class TripServiceJpaTest extends ServiceJpaTest {
+public class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private TripRepository tripRepository;
