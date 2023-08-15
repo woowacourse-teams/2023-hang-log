@@ -47,8 +47,8 @@ class MemberServiceTest {
     @Test
     void updateMyPageInfo() {
         // given
-        final MyPageRequest myPageRequest = new MyPageRequest("badDino", "changedImageUrl");
-        final Member member = new Member(1L, "jjongwa", "goodDino", "goodDino'sImageUrl");
+        final MyPageRequest myPageRequest = new MyPageRequest("badDino", "https://hanglog.com/img/imageName.png");
+        final Member member = new Member(1L, "jjongwa", "goodDino", "https://hanglog.com/img/imageName.png");
         final Member updatedMember = new Member(
                 1L,
                 "jjongwa",

@@ -31,6 +31,9 @@ import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -108,7 +111,7 @@ class MemberControllerTest extends ControllerTest {
         // given
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final MyPageRequest request = new MyPageRequest("badDino", "changedUrl");
+        final MyPageRequest request = new MyPageRequest("badDino", "https://hanglog.com/img/imageName2.png");
 
         doNothing().when(memberService).updateMyPageInfo(anyLong(), any());
 
