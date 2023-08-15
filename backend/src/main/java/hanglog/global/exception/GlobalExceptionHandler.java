@@ -34,14 +34,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(INVALID_REQUEST.getCode(), errMessage));
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionResponse> handleBadRequestException(final BadRequestException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(e.getCode(), e.getMessage()));
-    }
-
     @ExceptionHandler(SizeLimitExceededException.class)
     public ResponseEntity<ExceptionResponse> handleSizeLimitExceededException(final SizeLimitExceededException e) {
         log.warn(e.getMessage(), e);
@@ -61,16 +53,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(e.getCode(), e.getMessage()));
     }
 
-    @ExceptionHandler(InvalidJwtException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidJwtException(final InvalidJwtException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(e.getCode(), e.getMessage()));
-    }
-
-    @ExceptionHandler(ExpiredPeriodJwtException.class)
-    public ResponseEntity<ExceptionResponse> handleExpiredPeriodJwtException(final ExpiredPeriodJwtException e) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleBadRequestException(final BadRequestException e) {
         log.warn(e.getMessage(), e);
 
         return ResponseEntity.badRequest()
