@@ -1,5 +1,6 @@
 package hanglog.auth.presentation;
 
+import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import hanglog.auth.Auth;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final int COOKIE_AGE_SECONDS = 604800;
+
     private final AuthService authService;
 
     @PostMapping("/login/{provider}")
@@ -33,12 +36,13 @@ public class AuthController {
     ) {
         final MemberTokens memberTokens = authService.login(provider, loginRequest.getCode());
         final ResponseCookie cookie = ResponseCookie.from("refresh-token", memberTokens.getRefreshToken())
+                .maxAge(COOKIE_AGE_SECONDS)
                 .sameSite("None")
                 .secure(true)
                 .httpOnly(true)
                 .path("/")
                 .build();
-        response.addHeader("refresh-token", cookie.toString());
+        response.addHeader(COOKIE, cookie.toString());
         return ResponseEntity.status(CREATED).body(new AccessTokenResponse(memberTokens.getAccessToken()));
     }
 
