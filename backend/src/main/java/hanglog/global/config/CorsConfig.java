@@ -1,4 +1,4 @@
-package hanglog.config;
+package hanglog.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -14,5 +14,6 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .exposedHeaders(HttpHeaders.LOCATION);
+        WebMvcConfigurer.super.addCorsMappings(registry);
     }
 }

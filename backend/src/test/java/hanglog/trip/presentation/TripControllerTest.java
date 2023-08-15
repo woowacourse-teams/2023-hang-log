@@ -28,12 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -52,7 +52,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class TripControllerTest extends RestDocsTest {
+class TripControllerTest extends ControllerTest {
 
     private static final List<City> CITIES = List.of(PARIS, LONDON);
 

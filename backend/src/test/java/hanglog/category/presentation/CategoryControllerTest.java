@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.category.service.CategoryService;
-import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.global.ControllerTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @WebMvcTest(CategoryController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class CategoryControllerTest extends RestDocsTest {
+class CategoryControllerTest extends ControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;

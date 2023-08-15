@@ -20,11 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 @WebMvcTest(SharedTripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class SharedTripControllerTest extends RestDocsTest {
+class SharedTripControllerTest extends ControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
