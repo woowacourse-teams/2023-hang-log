@@ -11,8 +11,10 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.dto.request.TripCreateRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public class IntegrationFixture {
@@ -87,6 +89,11 @@ public class IntegrationFixture {
     public static final LocalDate START_DATE = LocalDate.of(2023, 8, 1);
     public static final LocalDate END_DATE = LocalDate.of(2023, 8, 3);
     public static final Trip LAHGON_TRIP = Trip.of("런던 여행", START_DATE, END_DATE);
+    public static final TripCreateRequest TRIP_CREATE_REQUEST = new TripCreateRequest(
+            START_DATE,
+            END_DATE,
+            Arrays.asList(LONDON.getId(), EDINBURGH.getId())
+    );
 
     /* DayLog */
     private static final DayLog DAY_LOG_1 = new DayLog(

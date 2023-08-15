@@ -1,10 +1,9 @@
 package hanglog.trip.integration;
 
 import static hanglog.global.IntegrationFixture.EDINBURGH;
-import static hanglog.global.IntegrationFixture.END_DATE;
 import static hanglog.global.IntegrationFixture.LAHGON_TRIP;
 import static hanglog.global.IntegrationFixture.LONDON;
-import static hanglog.global.IntegrationFixture.START_DATE;
+import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -16,7 +15,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,17 +22,11 @@ import org.springframework.http.HttpStatus;
 
 public class TripIntegrationTest extends IntegrationTest {
 
-    final TripCreateRequest tripCreateRequest = new TripCreateRequest(
-            START_DATE,
-            END_DATE,
-            Arrays.asList(LONDON.getId(), EDINBURGH.getId())
-    );
-
     @DisplayName("Trip을 생성한다.")
     @Test
     void createTrip() {
         // when
-        final ExtractableResponse<Response> response = requestCreateTrip(tripCreateRequest);
+        final ExtractableResponse<Response> response = requestCreateTrip(TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(response.header("Location")));
 
         final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
@@ -58,7 +50,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void getTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
         final TripDetailResponse expected = TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH));
 
@@ -84,7 +76,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_DecreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -123,7 +115,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_IncreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -162,7 +154,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void deleteTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(tripCreateRequest);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         // when
@@ -177,11 +169,11 @@ public class TripIntegrationTest extends IntegrationTest {
         );
     }
 
-    public static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
+    public static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest TRIP_CREATE_REQUEST) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
-                .body(tripCreateRequest)
+                .body(TRIP_CREATE_REQUEST)
                 .when().post("/trips")
                 .then().log().all()
                 .extract();

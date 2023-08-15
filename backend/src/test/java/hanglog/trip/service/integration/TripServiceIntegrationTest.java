@@ -7,6 +7,7 @@ import static hanglog.global.IntegrationFixture.LONDON;
 import static hanglog.global.IntegrationFixture.PARIS;
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.IntegrationFixture.TOKYO;
+import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,12 +49,6 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Autowired
     private TripService tripService;
 
-    final TripCreateRequest tripCreateRequest = new TripCreateRequest(
-            START_DATE,
-            END_DATE,
-            Arrays.asList(LONDON.getId(), EDINBURGH.getId())
-    );
-
     @BeforeEach
     void setUp() {
         tripRepository.deleteAll();
@@ -63,7 +58,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void save() {
         // when
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         // then
         assertThat(tripId).isNotNull();
@@ -89,8 +84,8 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void getAllTrips() {
         // given
-        final Long tripId1 = tripService.save(tripCreateRequest);
-        final Long tripId2 = tripService.save(tripCreateRequest);
+        final Long tripId1 = tripService.save(TRIP_CREATE_REQUEST);
+        final Long tripId2 = tripService.save(TRIP_CREATE_REQUEST);
 
         // when
         final List<TripResponse> tripResponses = tripService.getAllTrips();
@@ -109,7 +104,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void getTripDetail() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         // when
         final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
@@ -143,7 +138,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void update() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         final String updatedTitle = "수정된 여행 제목";
         final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
@@ -175,7 +170,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void update_IncreaseDayLogs() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         final String updatedTitle = "수정된 여행 제목";
         final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
@@ -216,7 +211,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void update_DecreaseDayLogs() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         final String updatedTitle = "수정된 여행 제목";
         final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
@@ -279,7 +274,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void update_InvalidCityId() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
         final List<Long> invalidCityIds = List.of(4L);
 
         final String updatedTitle = "수정된 여행 제목";
@@ -303,7 +298,7 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void delete() {
         // given
-        final Long tripId = tripService.save(tripCreateRequest);
+        final Long tripId = tripService.save(TRIP_CREATE_REQUEST);
 
         // when & then
         assertDoesNotThrow(() -> tripService.delete(tripId));
