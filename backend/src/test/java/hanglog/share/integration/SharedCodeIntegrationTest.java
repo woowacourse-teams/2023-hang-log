@@ -2,6 +2,7 @@ package hanglog.share.integration;
 
 import static hanglog.global.IntegrationFixture.END_DATE;
 import static hanglog.global.IntegrationFixture.START_DATE;
+import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -31,9 +32,9 @@ class SharedCodeIntegrationTest extends IntegrationTest {
                 .header("location").replace("/trips/",""));
     }
 
-    private ExtractableResponse<Response>  requestUpdateSharedTripStatus(){
+    private ExtractableResponse<Response>  requestUpdateSharedTripStatus(final boolean status){
         return RestAssured.given()
-                .body(new SharedTripStatusRequest(true))
+                .body(new SharedTripStatusRequest(status))
                 .contentType(JSON)
                 .when().patch("/trips/{tripId}/share",tripId)
                 .then().log().all()
@@ -44,7 +45,7 @@ class SharedCodeIntegrationTest extends IntegrationTest {
     @Test
     void updateSharedStatus(){
         // when
-        ExtractableResponse<Response> response = requestUpdateSharedTripStatus();
+        ExtractableResponse<Response> response = requestUpdateSharedTripStatus(true);
 
         // then
         Optional<String> sharedCode = Optional.ofNullable(response.body().jsonPath().get("sharedCode"));
@@ -60,7 +61,7 @@ class SharedCodeIntegrationTest extends IntegrationTest {
     @Test
     void getSharedTrip(){
         // given
-        final String sharedCode = requestUpdateSharedTripStatus().body().jsonPath().get("sharedCode");
+        final String sharedCode = requestUpdateSharedTripStatus(true).body().jsonPath().get("sharedCode");
 
         // when
         final ExtractableResponse<Response> response = RestAssured.given()
@@ -70,5 +71,28 @@ class SharedCodeIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @DisplayName("비공유된 여행은 조회할 수 없다")
+    @Test
+    void getSharedTrip_UnsharedFail(){
+        // given
+        final String sharedCode = requestUpdateSharedTripStatus(true).body().jsonPath().get("sharedCode");
+        requestUpdateSharedTripStatus(false);
+
+        // when
+        final ExtractableResponse<Response> response = RestAssured.given()
+                .when().get("/shared-trips/{sharedCode}",sharedCode)
+                .then().log().all()
+                .extract();
+        final Integer errorCode = Integer.parseInt(response.body().jsonPath().get("code").toString());
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertSoftly(
+                softly ->{
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(errorCode).isEqualTo(INVALID_SHARE_CODE.getCode());
+                }
+        );
     }
 }
