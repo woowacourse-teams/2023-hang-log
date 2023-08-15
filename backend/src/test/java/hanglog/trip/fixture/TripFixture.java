@@ -20,6 +20,7 @@ public final class TripFixture {
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",
+            null,
             new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA))
     );
 
@@ -30,6 +31,7 @@ public final class TripFixture {
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",
+            null,
             List.of(EXPENSE_LONDON_DAYLOG, EXPENSE_JAPAN_DAYLOG)
     );
 }

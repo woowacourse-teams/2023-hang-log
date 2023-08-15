@@ -1,4 +1,4 @@
-package hanglog.config;
+package hanglog.global.config;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;

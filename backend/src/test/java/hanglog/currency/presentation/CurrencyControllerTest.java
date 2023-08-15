@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import hanglog.currency.service.CurrencyService;
+import hanglog.global.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(CurrencyController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-class CurrencyControllerTest {
+class CurrencyControllerTest extends ControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

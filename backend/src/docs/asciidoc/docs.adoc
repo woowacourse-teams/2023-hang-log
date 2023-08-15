@@ -224,12 +224,16 @@ include::{snippets}/auth-controller-test/login/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/auth-controller-test/login/http-response.adoc[]
+응답 쿠키
+include::{snippets}/auth-controller-test/login/response-cookies.adoc[]
 include::{snippets}/auth-controller-test/login/response-fields.adoc[]
 
 === 토큰 재발급 (POST /token)
 
 ==== 요청
 include::{snippets}/auth-controller-test/extend-login/http-request.adoc[]
+요청 쿠키
+include::{snippets}/auth-controller-test/extend-login/request-cookies.adoc[]
 include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
 
 ==== 응답
@@ -240,7 +244,57 @@ include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
 
 ==== 요청
 include::{snippets}/auth-controller-test/logout/http-request.adoc[]
-include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
+요청 헤더
+include::{snippets}/auth-controller-test/logout/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/auth-controller-test/logout/request-cookies.adoc[]
 
 ==== 응답
 include::{snippets}/auth-controller-test/logout/http-response.adoc[]
+
+=== 마이 페이지 조회 (GET /mypage)
+
+==== 요청
+include::{snippets}/member-controller-test/get-my-info/http-request.adoc[]
+요청 헤더
+include::{snippets}/member-controller-test/get-my-info/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/member-controller-test/get-my-info/request-cookies.adoc[]
+
+==== 응답
+include::{snippets}/member-controller-test/get-my-info/http-response.adoc[]
+
+=== 마이 페이지 수정 (PUT /mypage)
+
+==== 요청
+include::{snippets}/member-controller-test/update-my-info/http-request.adoc[]
+요청 헤더
+include::{snippets}/member-controller-test/update-my-info/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/member-controller-test/update-my-info/request-cookies.adoc[]
+include::{snippets}/member-controller-test/update-my-info/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/member-controller-test/update-my-info/http-response.adoc[]
+
+== 공유 API
+
+=== 공유된 여행 조회 (GET /shared-trips/:shareCode)
+
+==== 요청
+include::{snippets}/shared-trip-controller-test/get-shared-trip/http-request.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+
+=== 공유 상태 수정 (PATCH /trips/:tripId/share)
+
+==== 요청
+include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]

@@ -28,12 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -52,7 +52,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class TripControllerTest extends RestDocsTest {
+class TripControllerTest extends ControllerTest {
 
     private static final List<City> CITIES = List.of(PARIS, LONDON);
 
@@ -259,6 +259,11 @@ class TripControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
                                         .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("sharedCode")
+                                        .type(JsonFieldType.STRING)
+                                        .description("공유 코드")
+                                        .attributes(field("constraint", "문자열 비공유시 null"))
+                                        .optional(),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")

@@ -2,16 +2,17 @@ package hanglog.auth.service;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
 
-import hanglog.global.exception.AuthException;
+import hanglog.auth.domain.BearerAuthorizationExtractor;
+import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.JwtProvider;
+import hanglog.auth.domain.RefreshToken;
 import hanglog.auth.domain.oauthprovider.OauthProvider;
 import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
-import hanglog.member.domain.Member;
-import hanglog.auth.domain.RefreshToken;
-import hanglog.member.domain.repository.MemberRepository;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
+import hanglog.global.exception.AuthException;
+import hanglog.member.domain.Member;
+import hanglog.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class AuthService {
     private final OauthProviders oauthProviders;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
+    private final BearerAuthorizationExtractor bearerExtractor;
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
@@ -45,7 +47,8 @@ public class AuthService {
                 .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
     }
 
-    public String renewalAccessToken(final String refreshToken, final String accessToken) {
+    public String renewalAccessToken(final String refreshToken, final String authorizationHeader) {
+        final String accessToken = bearerExtractor.extractAccessToken(authorizationHeader);
         if (jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken)) {
             final Long memberId = refreshTokenRepository.findMemberIdByToken(refreshToken);
             return jwtProvider.regenerateAccessToken(memberId.toString());
@@ -53,9 +56,7 @@ public class AuthService {
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
 
-    public void removeMemberRefreshToken(final String refreshToken, final String accessToken) {
-        jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
-        final Long memberId = Long.valueOf(jwtProvider.getSubject(accessToken));
+    public void removeMemberRefreshToken(final Long memberId) {
         refreshTokenRepository.deleteByMemberId(memberId);
     }
 }

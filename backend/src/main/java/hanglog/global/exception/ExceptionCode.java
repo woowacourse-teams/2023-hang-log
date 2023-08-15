@@ -47,6 +47,10 @@ public enum ExceptionCode {
 
     NOT_ASSOCIATE_DAYLOG_WITH_TRIP(6001, "요청한 DayLog와 Trip은 연관관계가 아닙니다."),
 
+    NOT_FOUND_SHARED_CODE(7001, "요청한 URL에 해당하는 공유된 여행이 존재하지 않습니다."),
+    INVALID_SHARE_CODE(7002, "공유가 허용되지 않은 코드입니다."),
+    FAIL_SHARE_CODE_HASH(7101, "공유 코드를 해싱하는 데 실패했습니다."),
+
     INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
     NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),
     FAIL_TO_CONVERT_URL_PARAMETER(9003, "Url Parameter 변환 중 오류가 발생했습니다."),
@@ -55,6 +59,7 @@ public enum ExceptionCode {
     EXPIRED_PERIOD_REFRESH_TOKEN(9103, "기한이 만료된 RefreshToken입니다."),
     EXPIRED_PERIOD_ACCESS_TOKEN(9104, "기한이 만료된 AccessToken입니다."),
     FAIL_TO_VALIDATE_TOKEN(9105, "토큰 유효성 검사 중 오류가 발생했습니다."),
+    NULL_REFRESH_TOKEN(9106, "refresh-token에 해당하는 쿠키 정보가 없습니다."),
 
     INTERNAL_SEVER_ERROR(9999, "서버 에러가 발생하였습니다. 관리자에게 문의해 주세요.");
 
