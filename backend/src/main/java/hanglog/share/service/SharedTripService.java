@@ -40,7 +40,7 @@ public class SharedTripService {
             final Long tripId,
             final SharedTripStatusRequest sharedTripStatusRequest
     ) {
-        final Trip trip = tripRepository.findTripByIdWithFetch(tripId)
+        final Trip trip = tripRepository.findTripById(tripId)
                 .orElse(findTripWithNoFetch(tripId));
 
         final SharedTrip sharedTrip = Optional.ofNullable(trip.getSharedTrip())
