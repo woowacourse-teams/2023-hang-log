@@ -167,6 +167,88 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
                 .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
     }
 
+    @DisplayName("Trip 일정을 늘린다.")
+    @Test
+    void update_IncreaseDayLogs() {
+        // given
+        final Long tripId = tripService.save(tripCreateRequest);
+
+        final String updatedTitle = "수정된 여행 제목";
+        final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
+        final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
+                updatedTitle,
+                null,
+                LocalDate.of(2023, 8, 1),
+                LocalDate.of(2023, 8, 5),
+                updatedDescription,
+                List.of(1L, 2L, 3L)
+        );
+
+        // when
+        tripService.update(tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(tripDetailResponse)
+                            .extracting("title", "description")
+                            .containsExactly(updatedTitle, updatedDescription);
+                    softly.assertThat(tripDetailResponse.getCities())
+                            .usingRecursiveComparison()
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
+                            .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .size()
+                            .isEqualTo(6);
+                    assertThat(tripDetailResponse.getDayLogs())
+                            .extracting("ordinal")
+                            .contains(1, 2, 3, 4, 5, 6);
+                }
+        );
+    }
+
+    @DisplayName("Trip 일정을 줄인다.")
+    @Test
+    void update_DecreaseDayLogs() {
+        // given
+        final Long tripId = tripService.save(tripCreateRequest);
+
+        final String updatedTitle = "수정된 여행 제목";
+        final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
+        final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
+                updatedTitle,
+                null,
+                LocalDate.of(2023, 8, 1),
+                LocalDate.of(2023, 8, 2),
+                updatedDescription,
+                List.of(1L, 2L, 3L)
+        );
+
+        // when
+        tripService.update(tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(tripDetailResponse)
+                            .extracting("title", "description")
+                            .containsExactly(updatedTitle, updatedDescription);
+                    softly.assertThat(tripDetailResponse.getCities())
+                            .usingRecursiveComparison()
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
+                            .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .size()
+                            .isEqualTo(3);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .extracting("ordinal")
+                            .contains(1, 2, 3);
+                }
+        );
+    }
+
     @DisplayName("Trip 수정 시 유효하지 않은 tripId일 경우, NOT_FOUND_TRIP_ID 예외가 발생한다.")
     @Test
     void update_InvalidTripId() {
