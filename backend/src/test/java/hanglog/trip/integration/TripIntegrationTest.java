@@ -46,7 +46,7 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.header("Location")).isNotBlank();
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .ignoringFields("id", "dayLogs")
+                            .ignoringFields("id", "dayLogs", "sharedCode")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
@@ -72,7 +72,7 @@ public class TripIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                     softly.assertThat(tripDetailResponse)
                             .usingRecursiveComparison()
-                            .ignoringFields("id", "dayLogs")
+                            .ignoringFields("id", "dayLogs", "sharedCode")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(expected);
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
@@ -167,7 +167,7 @@ public class TripIntegrationTest extends IntegrationTest {
         );
     }
 
-    protected static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
+    public static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
