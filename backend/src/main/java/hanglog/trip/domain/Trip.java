@@ -9,12 +9,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
+import hanglog.share.domain.SharedTrip;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,6 +58,9 @@ public class Trip extends BaseEntity {
     @OrderBy(value = "ordinal ASC")
     private List<DayLog> dayLogs = new ArrayList<>();
 
+    @OneToOne(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
+    private SharedTrip sharedTrip;
+
     public Trip(
             final Long id,
             final String title,
@@ -63,6 +68,7 @@ public class Trip extends BaseEntity {
             final LocalDate startDate,
             final LocalDate endDate,
             final String description,
+            final SharedTrip sharedTrip,
             final List<DayLog> dayLogs
     ) {
         super(USABLE);
@@ -72,6 +78,7 @@ public class Trip extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+        this.sharedTrip = sharedTrip;
         this.dayLogs = dayLogs;
     }
 
@@ -83,6 +90,7 @@ public class Trip extends BaseEntity {
                 startDate,
                 endDate,
                 "",
+                null,
                 new ArrayList<>()
         );
     }

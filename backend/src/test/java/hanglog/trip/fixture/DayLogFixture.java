@@ -19,6 +19,7 @@ public final class DayLogFixture {
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",
+            null,
             new ArrayList<>()
     );
 
