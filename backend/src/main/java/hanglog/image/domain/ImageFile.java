@@ -7,6 +7,7 @@ import static org.springframework.util.StringUtils.getFilenameExtension;
 
 import hanglog.global.exception.ImageException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -24,7 +25,6 @@ public class ImageFile {
 
     private final MultipartFile file;
     private final String hashedName;
-
 
     public ImageFile(final MultipartFile file) {
         validateNullImage(file);
@@ -57,11 +57,15 @@ public class ImageFile {
                 .collect(Collectors.joining());
     }
 
-    public void transferTo(final Path path) {
-        try {
-            this.file.transferTo(path);
-        } catch (final IOException e) {
-            throw new ImageException(INVALID_IMAGE_PATH);
-        }
+    public String getContentType() {
+        return this.file.getContentType();
+    }
+
+    public long getSize() {
+        return this.file.getSize();
+    }
+
+    public InputStream getInputStream() throws IOException {
+        return this.file.getInputStream();
     }
 }
