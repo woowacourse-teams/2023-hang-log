@@ -3,6 +3,7 @@ package hanglog.auth;
 import static hanglog.global.exception.ExceptionCode.NULL_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.global.exception.AuthException;
@@ -20,7 +21,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String REFRESH_TOKEN = "refresh-token";
+
     private final JwtProvider jwtProvider;
+
+    private final BearerAuthorizationExtractor extractor;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
@@ -37,12 +42,12 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     ) throws Exception {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         final String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> "refresh-token".equals(cookie.getName()))
+                .filter(cookie -> REFRESH_TOKEN.equals(cookie.getName()))
                 .findFirst()
                 .orElseThrow(() -> new AuthException(NULL_REFRESH_TOKEN))
                 .getValue();
 
-        final String accessToken = webRequest.getHeader(AUTHORIZATION);
+        final String accessToken = extractor.extractAccessToken(webRequest.getHeader(AUTHORIZATION));
 
         jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
         return Long.valueOf(jwtProvider.getSubject(accessToken));
