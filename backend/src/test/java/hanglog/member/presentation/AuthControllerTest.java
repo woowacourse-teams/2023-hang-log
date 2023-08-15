@@ -9,6 +9,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -35,6 +40,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -84,6 +90,10 @@ class AuthControllerTest extends ControllerTest {
                                         .description("인가 코드")
                                         .attributes(field("constraint", "문자열"))
                         ),
+                        responseCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
                         responseFields(
                                 fieldWithPath("accessToken")
                                         .type(JsonFieldType.STRING)
@@ -126,6 +136,10 @@ class AuthControllerTest extends ControllerTest {
 
         final MvcResult mvcResult = resultActions.andExpect(status().isCreated())
                 .andDo(restDocs.document(
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
                         requestFields(
                                 fieldWithPath("accessToken")
                                         .type(JsonFieldType.STRING)
@@ -166,6 +180,7 @@ class AuthControllerTest extends ControllerTest {
 
         // when
         final ResultActions resultActions = mockMvc.perform(delete("/logout")
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
@@ -173,11 +188,14 @@ class AuthControllerTest extends ControllerTest {
 
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
-                        requestFields(
-                                fieldWithPath("accessToken")
-                                        .type(JsonFieldType.STRING)
+                        requestHeaders(
+                                headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
+                        ),
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
                         )
                 ));
 

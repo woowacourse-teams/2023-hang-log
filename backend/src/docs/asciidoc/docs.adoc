@@ -224,12 +224,16 @@ include::{snippets}/auth-controller-test/login/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/auth-controller-test/login/http-response.adoc[]
+응답 쿠키
+include::{snippets}/auth-controller-test/login/response-cookies.adoc[]
 include::{snippets}/auth-controller-test/login/response-fields.adoc[]
 
 === 토큰 재발급 (POST /token)
 
 ==== 요청
 include::{snippets}/auth-controller-test/extend-login/http-request.adoc[]
+요청 쿠키
+include::{snippets}/auth-controller-test/extend-login/request-cookies.adoc[]
 include::{snippets}/auth-controller-test/extend-login/request-fields.adoc[]
 
 ==== 응답
@@ -240,7 +244,10 @@ include::{snippets}/auth-controller-test/extend-login/response-fields.adoc[]
 
 ==== 요청
 include::{snippets}/auth-controller-test/logout/http-request.adoc[]
-include::{snippets}/auth-controller-test/logout/request-fields.adoc[]
+요청 헤더
+include::{snippets}/auth-controller-test/logout/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/auth-controller-test/logout/request-cookies.adoc[]
 
 ==== 응답
 include::{snippets}/auth-controller-test/logout/http-response.adoc[]
