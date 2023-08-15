@@ -25,6 +25,7 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
+import hanglog.member.presentation.MemberController;
 import hanglog.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +65,7 @@ class MemberControllerTest extends ControllerTest {
         // given
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final MyPageResponse myPageResponse = new MyPageResponse("dino",
-                "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fko%2F8%2F82%2F%25EA%25B5%25BF_%25EB%258B%25A4%25EC%259D%25B4%25EB%2585%25B8_%25ED%258F%25AC%25EC%258A%25A4%25ED%2584%25B0.jpg&tbnid=eNK_UCrZszVfbM&vet=12ahUKEwiZsfuTyNyAAxVdgFYBHfXUAqQQMygAegQIARB0..i&imgrefurl=https%3A%2F%2Fko.wikipedia.org%2Fwiki%2F%25EA%25B5%25BF_%25EB%258B%25A4%25EC%259D%25B4%25EB%2585%25B8&docid=mlCD7i_0JTYSfM&w=349&h=500&q=%EA%B5%BF%EB%8B%A4%EC%9D%B4%EB%85%B8&ved=2ahUKEwiZsfuTyNyAAxVdgFYBHfXUAqQQMygAegQIARB0");
+        final MyPageResponse myPageResponse = new MyPageResponse("dino", "https://hanglog.com/img/imageName.png");
         when(memberService.getMyPageInfo(anyLong()))
                 .thenReturn(myPageResponse);
 

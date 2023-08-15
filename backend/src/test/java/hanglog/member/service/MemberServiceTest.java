@@ -32,7 +32,7 @@ class MemberServiceTest {
     @Test
     void getMyPageInfo() {
         // given
-        final Member member = new Member(1L, "jjongwa", "dino", "goodDino'sImageUrl");
+        final Member member = new Member(1L, "jjongwa", "dino", "https://hanglog.com/img/imageName.png");
         given(memberRepository.findById(member.getId()))
                 .willReturn(Optional.of(member));
 

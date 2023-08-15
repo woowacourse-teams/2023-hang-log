@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import hanglog.global.jwt.JwtProvider;
+import hanglog.auth.domain.JwtProvider;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;

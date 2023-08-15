@@ -1,4 +1,4 @@
-package hanglog.global.jwt;
+package hanglog.auth;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

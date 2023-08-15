@@ -9,7 +9,7 @@ import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.global.exception.AuthException;
-import hanglog.global.jwt.JwtProvider;
+import hanglog.auth.domain.JwtProvider;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package hanglog.global;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
-import hanglog.global.jwt.AuthArgumentResolver;
-import hanglog.global.jwt.JwtProvider;
+import hanglog.auth.AuthArgumentResolver;
+import hanglog.auth.domain.JwtProvider;
 import hanglog.trip.restdocs.RestDocsConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

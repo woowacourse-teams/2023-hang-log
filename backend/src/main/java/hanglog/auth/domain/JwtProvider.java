@@ -1,4 +1,4 @@
-package hanglog.global.jwt;
+package hanglog.auth.domain;
 
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKEN;
@@ -7,7 +7,6 @@ import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;
-import hanglog.auth.domain.MemberTokens;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;

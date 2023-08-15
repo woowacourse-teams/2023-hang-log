@@ -1,7 +1,8 @@
 package hanglog.member.service;
 
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
+
 import hanglog.global.exception.BadRequestException;
-import hanglog.global.exception.ExceptionCode;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.member.dto.request.MyPageRequest;
@@ -20,13 +21,13 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MyPageResponse getMyPageInfo(final Long memberId) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER_ID));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
         return MyPageResponse.from(member);
     }
 
     public void updateMyPageInfo(final Long memberId, final MyPageRequest myPageRequest) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER_ID));
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
         final Member updateMember = new Member(
                 memberId,
                 member.getSocialLoginId(),

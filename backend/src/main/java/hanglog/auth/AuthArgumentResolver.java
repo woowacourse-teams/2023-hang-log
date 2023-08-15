@@ -1,8 +1,9 @@
-package hanglog.global.jwt;
+package hanglog.auth;
 
 import static hanglog.global.exception.ExceptionCode.NULL_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.global.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;

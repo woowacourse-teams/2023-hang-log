@@ -7,7 +7,7 @@ import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.service.AuthService;
-import hanglog.global.jwt.Auth;
+import hanglog.auth.Auth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

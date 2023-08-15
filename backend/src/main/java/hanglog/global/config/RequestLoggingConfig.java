@@ -1,6 +1,6 @@
-package hanglog.config;
+package hanglog.global.config;
 
-import hanglog.filter.RequestLoggingFilter;
+import hanglog.global.filter.RequestLoggingFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,6 +1,6 @@
-package hanglog.member.controller;
+package hanglog.member.presentation;
 
-import hanglog.global.jwt.Auth;
+import hanglog.auth.Auth;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
 import hanglog.member.service.MemberService;
