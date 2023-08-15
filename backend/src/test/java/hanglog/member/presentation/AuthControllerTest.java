@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.presentation.AuthController;
@@ -122,7 +121,6 @@ class AuthControllerTest extends ControllerTest {
         // given
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
                 .thenReturn(RENEW_ACCESS_TOKEN);
@@ -130,7 +128,7 @@ class AuthControllerTest extends ControllerTest {
         // when
         final ResultActions resultActions = mockMvc.perform(post("/token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .cookie(cookie)
         );
 
@@ -140,9 +138,8 @@ class AuthControllerTest extends ControllerTest {
                                 cookieWithName("refresh-token")
                                         .description("갱신 토큰")
                         ),
-                        requestFields(
-                                fieldWithPath("accessToken")
-                                        .type(JsonFieldType.STRING)
+                        requestHeaders(
+                                headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
                         ),
@@ -185,14 +182,14 @@ class AuthControllerTest extends ControllerTest {
 
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
                         requestHeaders(
                                 headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
-                        ),
-                        requestCookies(
-                                cookieWithName("refresh-token")
-                                        .description("갱신 토큰")
                         )
                 ));
 

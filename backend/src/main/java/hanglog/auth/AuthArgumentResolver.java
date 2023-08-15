@@ -48,7 +48,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
                 .getValue();
 
         final String accessToken = extractor.extractAccessToken(webRequest.getHeader(AUTHORIZATION));
-
         jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
         return Long.valueOf(jwtProvider.getSubject(accessToken));
     }

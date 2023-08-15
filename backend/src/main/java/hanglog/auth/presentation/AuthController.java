@@ -2,12 +2,11 @@ package hanglog.auth.presentation;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import hanglog.auth.Auth;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.service.AuthService;
-import hanglog.auth.Auth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,9 +42,9 @@ public class AuthController {
     @PostMapping("/token")
     public ResponseEntity<AccessTokenResponse> extendLogin(
             @CookieValue("refresh-token") final String refreshToken,
-            @RequestBody final AccessTokenRequest request
+            @RequestHeader("Authorization") final String authorizationHeader
     ) {
-        final String renewalRefreshToken = authService.renewalAccessToken(refreshToken, request.getAccessToken());
+        final String renewalRefreshToken = authService.renewalAccessToken(refreshToken, authorizationHeader);
         return ResponseEntity.status(CREATED).body(new AccessTokenResponse(renewalRefreshToken));
     }
 
