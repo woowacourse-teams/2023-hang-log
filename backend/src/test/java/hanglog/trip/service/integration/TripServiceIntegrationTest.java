@@ -158,13 +158,17 @@ public class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
         // when & then
         assertDoesNotThrow(() -> tripService.update(tripId, tripUpdateRequest));
-        assertThat(tripService.getTripDetail(tripId))
-                .extracting("title", "description")
-                .containsExactly(updatedTitle, updatedDescription);
-        assertThat(tripService.getTripDetail(tripId).getCities())
-                .usingRecursiveComparison()
-                .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
-                .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(tripService.getTripDetail(tripId))
+                            .extracting("title", "description")
+                            .containsExactly(updatedTitle, updatedDescription);
+                    softly.assertThat(tripService.getTripDetail(tripId).getCities())
+                            .usingRecursiveComparison()
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
+                            .isEqualTo(List.of(LONDON, EDINBURGH, PARIS));
+                }
+        );
     }
 
     @DisplayName("Trip 일정을 늘린다.")
