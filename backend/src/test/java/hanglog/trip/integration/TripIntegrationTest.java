@@ -109,7 +109,12 @@ public class TripIntegrationTest extends IntegrationTest {
                             .comparingOnlyFields("title", "startDate", "endDate", "description", "cities")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(tripUpdateRequest);
-                    softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(3);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .size()
+                            .isEqualTo(3);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .extracting("ordinal")
+                            .containsExactly(1, 2, 3);
                 }
         );
     }
@@ -143,7 +148,12 @@ public class TripIntegrationTest extends IntegrationTest {
                             .comparingOnlyFields("title", "startDate", "endDate", "description", "cities")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
                             .isEqualTo(tripUpdateRequest);
-                    softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(6);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .size()
+                            .isEqualTo(6);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .extracting("ordinal")
+                            .containsExactly(1, 2, 3, 4, 5, 6);
                 }
         );
     }
