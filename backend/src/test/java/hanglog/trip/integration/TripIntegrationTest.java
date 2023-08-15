@@ -21,7 +21,7 @@ public class TripIntegrationTest extends IntegrationTest {
             Arrays.asList(LONDON.getId(), EDINBURGH.getId())
     );
 
-    protected static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
+    public static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
