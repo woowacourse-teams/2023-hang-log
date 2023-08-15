@@ -276,3 +276,25 @@ include::{snippets}/member-controller-test/update-my-info/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/member-controller-test/update-my-info/http-response.adoc[]
+
+== 공유 API
+
+=== 공유된 여행 조회 (GET /shared-trips/:shareCode)
+
+==== 요청
+include::{snippets}/shared-trip-controller-test/get-shared-trip/http-request.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+
+=== 공유 상태 수정 (PATCH /trips/:tripId/share)
+
+==== 요청
+include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
