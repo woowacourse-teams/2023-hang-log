@@ -11,6 +11,7 @@ import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,14 +40,19 @@ public class SharedTripService {
             final Long tripId,
             final SharedTripStatusRequest sharedTripStatusRequest
     ) {
-        final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        final Trip trip = tripRepository.findTripByIdWithFetch(tripId)
+                .orElse(findTripWithNoFetch(tripId));
 
-        final SharedTrip sharedTrip = sharedTripRepository.findByTripId(tripId)
+        final SharedTrip sharedTrip = Optional.ofNullable(trip.getSharedTrip())
                 .orElseGet(() -> SharedTrip.createdBy(trip));
 
         sharedTrip.updateSharedStatus(sharedTripStatusRequest.getSharedStatus());
         sharedTripRepository.save(sharedTrip);
         return SharedTripCodeResponse.of(sharedTrip);
+    }
+
+    private Trip findTripWithNoFetch(final Long tripId){
+        return tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
     }
 }
