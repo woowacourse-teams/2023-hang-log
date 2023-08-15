@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.global.ControllerTest;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
@@ -46,7 +45,6 @@ class MemberControllerTest extends ControllerTest {
 
     private final static String REFRESH_TOKEN = "refreshToken";
     private final static String ACCESS_TOKEN = "accessToken";
-    final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -73,8 +71,6 @@ class MemberControllerTest extends ControllerTest {
 
         final ResultActions resultActions = mockMvc.perform(get("/mypage")
                 .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
         );
 
@@ -119,7 +115,6 @@ class MemberControllerTest extends ControllerTest {
         final ResultActions resultActions = mockMvc.perform(put("/mypage")
                 .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .content(objectMapper.writeValueAsString(request))
                 .cookie(cookie)
         );
@@ -147,6 +142,7 @@ class MemberControllerTest extends ControllerTest {
                                         .attributes(field("constraint", "문자열"))
                         )
                 ));
+
         // then
         verify(memberService).updateMyPageInfo(anyLong(), any());
     }

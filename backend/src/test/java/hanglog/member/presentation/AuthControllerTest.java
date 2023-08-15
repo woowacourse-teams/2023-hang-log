@@ -176,13 +176,10 @@ class AuthControllerTest extends ControllerTest {
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         // when
         final ResultActions resultActions = mockMvc.perform(delete("/logout")
                 .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
                 .cookie(cookie)
         );
 
