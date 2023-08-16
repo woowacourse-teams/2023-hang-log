@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
@@ -31,15 +32,11 @@ import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(MemberController.class)
@@ -73,7 +70,7 @@ class MemberControllerTest extends ControllerTest {
                 .thenReturn(myPageResponse);
 
         final ResultActions resultActions = mockMvc.perform(get("/mypage")
-                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
+                .header(AUTHORIZATION, ACCESS_TOKEN)
                 .cookie(cookie)
         );
 
@@ -116,7 +113,7 @@ class MemberControllerTest extends ControllerTest {
         doNothing().when(memberService).updateMyPageInfo(anyLong(), any());
 
         final ResultActions resultActions = mockMvc.perform(put("/mypage")
-                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
+                .header(AUTHORIZATION, ACCESS_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
                 .cookie(cookie)

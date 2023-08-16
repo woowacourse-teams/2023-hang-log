@@ -37,8 +37,6 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
   const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
 
-    setIsSharable(isChecked);
-
     tripShareStatusMutation.mutate(
       {
         tripId,
@@ -46,6 +44,8 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
       },
       {
         onSuccess: (sharedCode: string | null) => {
+          setIsSharable(isChecked);
+
           if (!sharedCode || !!sharedUrl) return;
 
           setShareUrl(BASE_URL + PATH.SHARE(sharedCode));

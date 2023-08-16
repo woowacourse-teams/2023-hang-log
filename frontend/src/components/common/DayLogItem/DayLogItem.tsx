@@ -13,18 +13,21 @@ import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 interface DayLogItemProps extends DayLogData {
   tripId: number;
   isEditable?: boolean;
+  isShared?: boolean;
   openAddModal?: () => void;
 }
 
 const DayLogItem = ({
   tripId,
   isEditable = true,
+  isShared = false,
   openAddModal,
   ...information
 }: DayLogItemProps) => {
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
     DAY_LOG_ITEM_FILTERS.ALL
   );
+
   const selectedTripItemList =
     selectedFilter === DAY_LOG_ITEM_FILTERS.SPOT
       ? information.items.filter((item) => item.itemType === true)
@@ -68,7 +71,12 @@ const DayLogItem = ({
           isEditable={isEditable}
         />
       ) : (
-        <TripItemList.Empty tripId={tripId} isEditable={isEditable} openAddModal={openAddModal} />
+        <TripItemList.Empty
+          tripId={tripId}
+          isEditable={isEditable}
+          isShared={isShared}
+          openAddModal={openAddModal}
+        />
       )}
     </Box>
   );

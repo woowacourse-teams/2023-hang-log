@@ -1,6 +1,7 @@
 package hanglog.auth.service;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
+import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
@@ -47,11 +48,12 @@ public class AuthService {
                 .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
     }
 
-    public String renewalAccessToken(final String refreshToken, final String authorizationHeader) {
+    public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
         final String accessToken = bearerExtractor.extractAccessToken(authorizationHeader);
-        if (jwtProvider.isValidRefreshAndInvalidAccess(refreshToken, accessToken)) {
-            final Long memberId = refreshTokenRepository.findMemberIdByToken(refreshToken);
-            return jwtProvider.regenerateAccessToken(memberId.toString());
+        if (jwtProvider.isValidRefreshAndInvalidAccess(refreshTokenRequest, accessToken)) {
+            final RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest)
+                    .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
+            return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
         }
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }

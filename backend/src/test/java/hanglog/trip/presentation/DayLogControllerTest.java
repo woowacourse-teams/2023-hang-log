@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -17,14 +18,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
 import hanglog.trip.service.DayLogService;
+import hanglog.trip.service.TripService;
+import jakarta.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +37,63 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 
 @WebMvcTest(DayLogController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class DayLogControllerTest extends ControllerTest {
 
+    private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
+    private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
     private DayLogService dayLogService;
+
+    @MockBean
+    private TripService tripService;
+
+    @BeforeEach
+    void setUp() {
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+    }
+
+    private ResultActions performGetRequest(final int tripId, final int dayLogId) throws Exception {
+        return mockMvc.perform(
+                get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON));
+    }
+
+    private ResultActions performPatchUpdateTitleRequest(
+            final int tripId,
+            final int dayLogId,
+            final DayLogUpdateTitleRequest updateRequest)
+            throws Exception {
+        return mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)));
+    }
+
+    private ResultActions performPatchUpdateItemOrdinalRequest(
+            final int tripId,
+            final int dayLogId,
+            final ItemsOrdinalUpdateRequest updateRequest)
+            throws Exception {
+        return mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", tripId, dayLogId)
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)));
+    }
 
     @DisplayName("날짜별 여행을 조회할 수 있다.")
     @Test
@@ -58,9 +109,11 @@ class DayLogControllerTest extends ControllerTest {
         given(dayLogService.getById(1L))
                 .willReturn(response);
 
-        // when & then
-        mockMvc.perform(get("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L))
-                .andExpect(status().isOk())
+        // when
+        final ResultActions resultActions = performGetRequest(1, 1);
+
+        // then
+        resultActions.andExpect(status().isOk())
                 .andDo(
                         restDocs.document(
                                 pathParameters(
@@ -103,11 +156,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent())
+        // when
+        final ResultActions resultActions = performPatchUpdateTitleRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
                                 pathParameters(
@@ -134,11 +187,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+        // when
+        final ResultActions resultActions = performPatchUpdateTitleRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("제목을 입력해주세요."));
     }
 
@@ -151,11 +204,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateTitle(anyLong(), any(DayLogUpdateTitleRequest.class));
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+        // when
+        final ResultActions resultActions = performPatchUpdateTitleRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("날짜별 제목은 50자를 초과할 수 없습니다."));
     }
 
@@ -167,11 +220,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent())
+        // when
+        final ResultActions resultActions = performPatchUpdateItemOrdinalRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
                                 pathParameters(
@@ -198,11 +251,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+        // when
+        final ResultActions resultActions = performPatchUpdateItemOrdinalRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("아이템 아이디들을 입력해주세요."));
     }
 
@@ -214,11 +267,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+        // when
+        final ResultActions resultActions = performPatchUpdateItemOrdinalRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("아이템 아이디들을 입력해주세요."));
     }
 
@@ -230,11 +283,11 @@ class DayLogControllerTest extends ControllerTest {
 
         doNothing().when(dayLogService).updateOrdinalOfItems(any(), any());
 
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", 1L, 1L)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+        // when
+        final ResultActions resultActions = performPatchUpdateItemOrdinalRequest(1, 1, request);
+
+        // then
+        resultActions.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("중복되지 않는 아이템 아이디들을 입력해주세요."));
     }
 }

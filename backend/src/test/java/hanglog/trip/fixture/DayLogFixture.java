@@ -1,5 +1,6 @@
 package hanglog.trip.fixture;
 
+import static hanglog.global.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
 import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
@@ -14,6 +15,7 @@ public final class DayLogFixture {
 
     private static final Trip TRIP = new Trip(
             1L,
+            MEMBER,
             "런던 여행",
             "default-image.png",
             LocalDate.of(2023, 7, 1),

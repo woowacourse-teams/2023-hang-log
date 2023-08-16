@@ -12,6 +12,7 @@ import LogInPage from '@pages/LogInPage/LogInPage';
 import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
+import SharedPage from '@pages/SharedPage/SharedPage';
 import SignUpPage from '@pages/SignUpPage/SignUpPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
@@ -92,6 +93,14 @@ const AppRouter = () => {
           element: (
             <Suspense fallback={<div>LOADING</div>}>
               <MyPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.SHARE(':code'),
+          element: (
+            <Suspense fallback={<TripPageSkeleton />}>
+              <SharedPage />
             </Suspense>
           ),
         },
