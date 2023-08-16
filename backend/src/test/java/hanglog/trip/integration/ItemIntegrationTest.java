@@ -7,16 +7,14 @@ import static hanglog.global.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import hanglog.category.dto.CategoryResponse;
-import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.global.IntegrationTest;
-import hanglog.image.util.ImageUrlConverter;
-import hanglog.trip.domain.Item;
-import hanglog.trip.domain.Place;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
@@ -176,12 +174,92 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("Item을 수정한다.")
+    @Test
+    void updateItem() {
+        // when
+        final ItemRequest itemRequest = getNonSpotItemRequest();
+        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, itemRequest);
+        final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
+
+        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
+                true,
+                "updated item",
+                4.5,
+                "updated memo",
+                dayLogId,
+                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                false,
+                getPlaceRequest(),
+                getExpenseRequest()
+        );
+
+        final ExtractableResponse<Response> response = requestUpdateItem(tripId, itemId, itemUpdateRequest);
+        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+
+        final CategoryResponse expectedCategoryResponse = new CategoryResponse(
+                200L,
+                "문화"
+        );
+
+        final PlaceResponse expectedPlaceResponse = new PlaceResponse(
+                1L,
+                itemUpdateRequest.getPlace().getName(),
+                itemUpdateRequest.getPlace().getLatitude().setScale(13),
+                itemUpdateRequest.getPlace().getLongitude().setScale(13),
+                expectedCategoryResponse
+        );
+
+        final ItemExpenseResponse expectedItemExpenseResponse = new ItemExpenseResponse(
+                1L,
+                "EUR",
+                BigDecimal.valueOf(10.5).setScale(3),
+                expectedCategoryResponse
+        );
+
+        final ItemResponse expectedItemResponse = new ItemResponse(
+                itemId,
+                itemUpdateRequest.getItemType(),
+                itemUpdateRequest.getTitle(),
+                1,
+                itemUpdateRequest.getRating(),
+                itemUpdateRequest.getMemo(),
+                itemUpdateRequest.getImageUrls(),
+                expectedPlaceResponse,
+                expectedItemExpenseResponse
+        );
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
+                    softly.assertThat(itemResponses.get(0))
+                            .usingRecursiveComparison()
+                            .isEqualTo(expectedItemResponse);
+                }
+        );
+    }
+
     protected static ExtractableResponse<Response> requestCreateItem(final Long tripId, final ItemRequest itemRequest) {
         return RestAssured
                 .given().log().all()
                 .contentType(JSON)
                 .body(itemRequest)
                 .when().post("/trips/{tripId}/items", tripId)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> requestUpdateItem(
+            final Long tripId,
+            final Long itemId,
+            final ItemUpdateRequest itemUpdateRequest
+    ) {
+        return RestAssured
+                .given().log().all()
+                .contentType(JSON)
+                .body(itemUpdateRequest)
+                .when().put("/trips/{tripId}/items/{itemId}", tripId, itemId)
                 .then().log().all()
                 .extract();
     }
@@ -197,39 +275,47 @@ public class ItemIntegrationTest extends IntegrationTest {
         return dayLogResponse.getItems();
     }
 
-    private ItemRequest createItemRequest(final Item item) {
-        final List<String> imageUrls = item.getImages().stream()
-                .map(image -> ImageUrlConverter.convertNameToUrl(image.getName()))
-                .toList();
 
+    private ItemRequest getNonSpotItemRequest() {
         return new ItemRequest(
-                item.getItemType().isSpot(),
-                item.getTitle(),
-                item.getRating(),
-                item.getMemo(),
-                item.getDayLog().getId(),
-                imageUrls,
-                getPlaceRequest(item.getPlace()),
-                getExpenseRequest(item.getExpense())
+                false,
+                "non spot",
+                null,
+                null,
+                dayLogId,
+                Collections.emptyList(),
+                null,
+                null
         );
     }
 
-    private static ExpenseRequest getExpenseRequest(Expense expense) {
-        final ExpenseRequest expenseRequest = new ExpenseRequest(
-                expense.getCurrency(),
-                expense.getAmount().getValue(),
-                expense.getCategory().getId()
+    private PlaceRequest getPlaceRequest() {
+        return new PlaceRequest(
+                "place name",
+                BigDecimal.valueOf(1.1),
+                BigDecimal.valueOf(2.2),
+                List.of("temp1", "culture", "temp2")
         );
-        return expenseRequest;
     }
 
-    private static PlaceRequest getPlaceRequest(Place place) {
-        final PlaceRequest placeRequest = new PlaceRequest(
-                place.getName(),
-                place.getLatitude(),
-                place.getLongitude(),
-                List.of(place.getCategory().getEngName())
+    private ExpenseRequest getExpenseRequest() {
+        return new ExpenseRequest(
+                "EUR",
+                BigDecimal.valueOf(10.5),
+                200L
         );
-        return placeRequest;
+    }
+
+    private ItemRequest getSpotItemRequest() {
+        return new ItemRequest(
+                true,
+                "spot",
+                5.0,
+                "memo",
+                dayLogId,
+                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                getPlaceRequest(),
+                getExpenseRequest()
+        );
     }
 }
