@@ -5,8 +5,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE
 
 import hanglog.auth.domain.OauthAccessToken;
 import hanglog.auth.domain.oauthuserinfo.GoogleUserInfo;
-import hanglog.global.exception.AuthException;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
+import hanglog.global.exception.AuthException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -74,7 +74,7 @@ public class GoogleOauthProvider implements OauthProvider {
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
-        params.add("grant_type", code);
+        params.add("grant_type", "authorization_code");
         final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params);
 
         final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
