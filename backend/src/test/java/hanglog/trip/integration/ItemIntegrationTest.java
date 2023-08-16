@@ -31,6 +31,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 public class ItemIntegrationTest extends IntegrationTest {
 
@@ -240,6 +241,25 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("Item을 삭제한다.")
+    @Test
+    void deleteItem() {
+        // given
+        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, getNonSpotItemRequest());
+        final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
+
+        // when
+        final ExtractableResponse<Response> response = requestDeleteItem(tripId, itemId);
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                    softly.assertThat(requestGetItems(tripId, dayLogId)).hasSize(0);
+                }
+        );
+    }
+
     protected static ExtractableResponse<Response> requestCreateItem(final Long tripId, final ItemRequest itemRequest) {
         return RestAssured
                 .given().log().all()
@@ -275,6 +295,13 @@ public class ItemIntegrationTest extends IntegrationTest {
         return dayLogResponse.getItems();
     }
 
+    private ExtractableResponse<Response> requestDeleteItem(final Long tripId, final Long itemId) {
+        return RestAssured
+                .given().log().all()
+                .when().delete("/trips/{tripId}/items/{itemId}", tripId, itemId)
+                .then().log().all()
+                .extract();
+    }
 
     private ItemRequest getNonSpotItemRequest() {
         return new ItemRequest(
