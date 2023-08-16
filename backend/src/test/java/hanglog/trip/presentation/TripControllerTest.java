@@ -7,6 +7,8 @@ import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -35,9 +38,11 @@ import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.service.TripService;
+import jakarta.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +50,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -55,12 +61,20 @@ import org.springframework.test.web.servlet.ResultActions;
 class TripControllerTest extends ControllerTest {
 
     private static final List<City> CITIES = List.of(PARIS, LONDON);
+    private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
+    private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
     private TripService tripService;
+
+    @BeforeEach
+    void setUp() {
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+    }
 
     private void makeTrip() throws Exception {
         final TripCreateRequest tripCreateRequest = new TripCreateRequest(
@@ -69,7 +83,7 @@ class TripControllerTest extends ControllerTest {
                 List.of(1L, 2L)
         );
 
-        when(tripService.save(any(TripCreateRequest.class)))
+        when(tripService.save(anyLong(), any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
         performPostRequest(tripCreateRequest);
@@ -77,29 +91,39 @@ class TripControllerTest extends ControllerTest {
 
     private ResultActions performGetRequest(final int tripId) throws Exception {
         return mockMvc.perform(get("/trips/{tripId}", tripId)
+                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }
 
     private ResultActions performGetRequest() throws Exception {
         return mockMvc.perform(get("/trips")
+                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }
 
 
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
         return mockMvc.perform(post("/trips")
+                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(tripCreateRequest)));
     }
 
     private ResultActions performPutRequest(final TripUpdateRequest updateRequest) throws Exception {
         return mockMvc.perform(put("/trips/{tripId}", 1)
+                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
     }
 
     private ResultActions performDeleteRequest() throws Exception {
         return mockMvc.perform(delete("/trips/{tripId}", 1)
+                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }
 
@@ -113,7 +137,7 @@ class TripControllerTest extends ControllerTest {
                 List.of(1L, 2L)
         );
 
-        when(tripService.save(any(TripCreateRequest.class)))
+        when(tripService.save(anyLong(), any(TripCreateRequest.class)))
                 .thenReturn(1L);
 
         // when
@@ -219,6 +243,7 @@ class TripControllerTest extends ControllerTest {
     void getTrip() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
         when(tripService.getTripDetail(1L))
                 .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
 
@@ -324,7 +349,8 @@ class TripControllerTest extends ControllerTest {
     void getTrips() throws Exception {
         // given
         makeTrip();
-        when(tripService.getAllTrips())
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+        when(tripService.getAllTrips(anyLong()))
                 .thenReturn(List.of(TripResponse.of(LONDON_TRIP, CITIES)));
 
         // when
@@ -388,6 +414,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
@@ -446,6 +473,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_TitleNull() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
@@ -470,6 +498,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_TitleOverMax() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
@@ -495,6 +524,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_DescriptionOverMax() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
@@ -519,6 +549,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_StartDateNull() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
@@ -542,6 +573,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_EndDateNull() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
@@ -565,6 +597,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_CityIdsNull() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
@@ -588,6 +621,7 @@ class TripControllerTest extends ControllerTest {
     void updateTrip_CityIdsEmpty() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
@@ -611,6 +645,7 @@ class TripControllerTest extends ControllerTest {
     void deleteTrip() throws Exception {
         // given
         makeTrip();
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         // when
         final ResultActions resultActions = performDeleteRequest();

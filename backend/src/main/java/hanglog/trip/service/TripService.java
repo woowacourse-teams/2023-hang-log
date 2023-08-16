@@ -1,9 +1,12 @@
 package hanglog.trip.service;
 
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.global.exception.BadRequestException;
+import hanglog.member.domain.Member;
+import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
@@ -32,14 +35,25 @@ public class TripService {
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
+    private final MemberRepository memberRepository;
 
-    public Long save(final TripCreateRequest tripCreateRequest) {
+    public void validateTripByMember(final Long memberId, final Long tripId) {
+        if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
+            // TODO: custom exception 만들기
+            throw new BadRequestException(NOT_FOUND_MEMBER_ID);
+        }
+    }
+
+    public Long save(final Long memberId, final TripCreateRequest tripCreateRequest) {
+        final Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
         final List<City> cites = tripCreateRequest.getCityIds().stream()
                 .map(cityId -> cityRepository.findById(cityId)
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
         final Trip newTrip = Trip.of(
+                member,
                 generateInitialTitle(cites),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
@@ -68,8 +82,8 @@ public class TripService {
         savedTrip.getDayLogs().addAll(dayLogs);
     }
 
-    public List<TripResponse> getAllTrips() {
-        final List<Trip> trips = tripRepository.findAll();
+    public List<TripResponse> getAllTrips(final Long memberId) {
+        final List<Trip> trips = tripRepository.findAllByMemberId(memberId);
         return trips.stream()
                 .map(this::getTripResponse)
                 .toList();
