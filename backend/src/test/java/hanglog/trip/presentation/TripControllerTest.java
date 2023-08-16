@@ -103,7 +103,6 @@ class TripControllerTest extends ControllerTest {
                 .contentType(APPLICATION_JSON));
     }
 
-
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
         return mockMvc.perform(post("/trips")
                 .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
@@ -201,7 +200,8 @@ class TripControllerTest extends ControllerTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 종료 날짜를 입력해주세요."));
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
@@ -218,7 +218,8 @@ class TripControllerTest extends ControllerTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
@@ -235,7 +236,8 @@ class TripControllerTest extends ControllerTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("TripId로 단일 여행을 조회한다.")
@@ -429,6 +431,8 @@ class TripControllerTest extends ControllerTest {
         final ResultActions resultActions = performPutRequest(updateRequest);
 
         // then
+        verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
+
         resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
@@ -464,11 +468,9 @@ class TripControllerTest extends ControllerTest {
                                 )
                         )
                 );
-
-        verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
     }
 
-    @DisplayName("타이틀을 입력하지 않으면 예외가 발생한다.")
+    @DisplayName("제목을 입력하지 않으면 예외가 발생한다.")
     @Test
     void updateTrip_TitleNull() throws Exception {
         // given
@@ -493,7 +495,7 @@ class TripControllerTest extends ControllerTest {
     }
 
 
-    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @DisplayName("제목의 길이가 50자를 초과하면 예외가 발생한다.")
     @Test
     void updateTrip_TitleOverMax() throws Exception {
         // given
@@ -519,7 +521,7 @@ class TripControllerTest extends ControllerTest {
     }
 
 
-    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @DisplayName("요약의 길이가 200자를 초과하면 예외가 발생한다.")
     @Test
     void updateTrip_DescriptionOverMax() throws Exception {
         // given
@@ -651,6 +653,8 @@ class TripControllerTest extends ControllerTest {
         final ResultActions resultActions = performDeleteRequest();
 
         // then
+        verify(tripService).delete(anyLong());
+
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
                         pathParameters(
@@ -658,6 +662,5 @@ class TripControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         )
                 ));
-        verify(tripService).delete(anyLong());
     }
 }

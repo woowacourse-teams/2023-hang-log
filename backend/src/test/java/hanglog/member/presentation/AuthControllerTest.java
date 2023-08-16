@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
-import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -21,7 +20,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,10 +87,6 @@ class AuthControllerTest extends ControllerTest {
                                         .description("인가 코드")
                                         .attributes(field("constraint", "문자열"))
                         ),
-                        responseCookies(
-                                cookieWithName("refresh-token")
-                                        .description("갱신 토큰")
-                        ),
                         responseFields(
                                 fieldWithPath("accessToken")
                                         .type(JsonFieldType.STRING)
@@ -100,8 +94,6 @@ class AuthControllerTest extends ControllerTest {
                                         .attributes(field("constraint", "문자열(jwt)"))
                         )
                 ))
-                .andExpect(cookie().exists("refresh-token"))
-                .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
 
         final AccessTokenResponse expected = new AccessTokenResponse(memberTokens.getAccessToken());
