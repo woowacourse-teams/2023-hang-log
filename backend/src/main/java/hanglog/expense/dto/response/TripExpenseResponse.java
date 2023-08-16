@@ -8,6 +8,7 @@ import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class TripExpenseResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final List<CityResponse> cities;
-    private final Amount totalAmount;
+    private final BigDecimal totalAmount;
     private final List<CategoryExpenseResponse> categories;
     private final ExchangeRateResponse exchangeRate;
     private final List<DayLogExpenseResponse> dayLogs;
@@ -53,7 +54,7 @@ public class TripExpenseResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 cityExpenseResponses,
-                totalAmount,
+                totalAmount.getValue(),
                 categoryExpenseResponses,
                 ExchangeRateResponse.of(currency),
                 dayLogExpenseResponses
