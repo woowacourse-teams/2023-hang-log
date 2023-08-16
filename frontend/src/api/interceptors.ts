@@ -48,8 +48,12 @@ export const handleTokenError = async (error: AxiosError<ErrorResponseData>) => 
     status === HTTP_STATUS_CODE.BAD_REQUEST &&
     (data.code === ERROR_CODE.INVALID_ACCESS_TOKEN ||
       data.code === ERROR_CODE.INVALID_REFRESH_TOKEN ||
-      data.code === ERROR_CODE.EXPIRED_REFRESH_TOKEN)
+      data.code === ERROR_CODE.EXPIRED_REFRESH_TOKEN ||
+      data.code === ERROR_CODE.INVALID_TOKEN_VALIDATE ||
+      data.code === ERROR_CODE.NULL_REFRESH_TOKEN)
   ) {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+
     throw new HTTPError(status, data.message, data.code);
   }
 
