@@ -1,4 +1,4 @@
-package hanglog.member.presentation;
+package hanglog.auth.presentation;
 
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
-import hanglog.auth.presentation.AuthController;
 import hanglog.auth.service.AuthService;
 import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;

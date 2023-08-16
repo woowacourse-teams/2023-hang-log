@@ -61,4 +61,8 @@ public class AuthService {
     public void removeMemberRefreshToken(final Long memberId) {
         refreshTokenRepository.deleteByMemberId(memberId);
     }
+
+    public void deleteAccount(final Long memberId) {
+
+    }
 }

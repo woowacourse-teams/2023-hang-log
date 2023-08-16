@@ -1,4 +1,4 @@
-package hanglog.member.provider.fixture;
+package hanglog.auth.domain;
 
 public class MemberFixture {
 
