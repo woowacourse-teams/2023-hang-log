@@ -29,7 +29,8 @@ public class DayLogController {
     public ResponseEntity<DayLogResponse> getDayLog(
             @Auth final Long memberId,
             @PathVariable final Long tripId,
-            @PathVariable final Long dayLogId) {
+            @PathVariable final Long dayLogId
+    ) {
         tripService.validateTripByMember(memberId, tripId);
         final DayLogResponse response = dayLogService.getById(dayLogId);
         return ResponseEntity.ok(response);
@@ -40,7 +41,8 @@ public class DayLogController {
             @Auth final Long memberId,
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId,
-            @RequestBody @Valid final DayLogUpdateTitleRequest request) {
+            @RequestBody @Valid final DayLogUpdateTitleRequest request
+    ) {
         tripService.validateTripByMember(memberId, tripId);
         dayLogService.updateTitle(dayLogId, request);
         return ResponseEntity.noContent().build();
@@ -51,7 +53,8 @@ public class DayLogController {
             @Auth final Long memberId,
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId,
-            @RequestBody @Valid final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest) {
+            @RequestBody @Valid final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest
+    ) {
         tripService.validateTripByMember(memberId, tripId);
         dayLogService.updateOrdinalOfItems(dayLogId, itemsOrdinalUpdateRequest);
         return ResponseEntity.noContent().build();
