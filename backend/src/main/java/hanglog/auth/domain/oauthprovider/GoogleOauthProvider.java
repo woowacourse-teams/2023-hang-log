@@ -5,8 +5,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE
 
 import hanglog.auth.domain.OauthAccessToken;
 import hanglog.auth.domain.oauthuserinfo.GoogleUserInfo;
-import hanglog.global.exception.AuthException;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
+import hanglog.global.exception.AuthException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

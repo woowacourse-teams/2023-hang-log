@@ -2,9 +2,17 @@ package hanglog.member.presentation;
 
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -12,17 +20,15 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenRequest;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
 import hanglog.auth.presentation.AuthController;
 import hanglog.auth.service.AuthService;
-import hanglog.trip.restdocs.RestDocsTest;
+import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +37,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,7 +46,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(AuthController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class AuthControllerTest extends RestDocsTest {
+class AuthControllerTest extends ControllerTest {
 
     private final static String GOOGLE_PROVIDER = "google";
     private final static String REFRESH_TOKEN = "refreshToken";
@@ -87,8 +94,6 @@ class AuthControllerTest extends RestDocsTest {
                                         .attributes(field("constraint", "문자열(jwt)"))
                         )
                 ))
-                .andExpect(cookie().exists("refresh-token"))
-                .andExpect(cookie().value("refresh-token", memberTokens.getRefreshToken()))
                 .andReturn();
 
         final AccessTokenResponse expected = new AccessTokenResponse(memberTokens.getAccessToken());
@@ -108,7 +113,6 @@ class AuthControllerTest extends RestDocsTest {
         // given
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
                 .thenReturn(RENEW_ACCESS_TOKEN);
@@ -116,15 +120,18 @@ class AuthControllerTest extends RestDocsTest {
         // when
         final ResultActions resultActions = mockMvc.perform(post("/token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .cookie(cookie)
         );
 
         final MvcResult mvcResult = resultActions.andExpect(status().isCreated())
                 .andDo(restDocs.document(
-                        requestFields(
-                                fieldWithPath("accessToken")
-                                        .type(JsonFieldType.STRING)
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
+                        requestHeaders(
+                                headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
                         ),
@@ -152,28 +159,33 @@ class AuthControllerTest extends RestDocsTest {
     @Test
     void logout() throws Exception {
         // given
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(authService).removeMemberRefreshToken(anyLong());
+
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
-        final AccessTokenRequest accessTokenRequest = new AccessTokenRequest(ACCESS_TOKEN);
 
         // when
         final ResultActions resultActions = mockMvc.perform(delete("/logout")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accessTokenRequest))
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .cookie(cookie)
         );
 
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
-                        requestFields(
-                                fieldWithPath("accessToken")
-                                        .type(JsonFieldType.STRING)
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
+                        requestHeaders(
+                                headerWithName("Authorization")
                                         .description("access token")
                                         .attributes(field("constraint", "문자열(jwt)"))
                         )
                 ));
 
         // then
-        verify(authService).removeMemberRefreshToken(anyString(), anyString());
+        verify(authService).removeMemberRefreshToken(anyLong());
     }
 }

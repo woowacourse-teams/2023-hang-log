@@ -22,8 +22,8 @@ import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
+import hanglog.global.ControllerTest;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.restdocs.RestDocsTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 @WebMvcTest(ExpenseController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-class ExpenseControllerTest extends RestDocsTest {
+class ExpenseControllerTest extends ControllerTest {
 
     @MockBean
     private ExpenseService expenseService;

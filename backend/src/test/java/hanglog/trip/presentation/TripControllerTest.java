@@ -28,12 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
-import hanglog.trip.restdocs.RestDocsTest;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -52,7 +52,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(TripController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class TripControllerTest extends RestDocsTest {
+class TripControllerTest extends ControllerTest {
 
     private static final List<City> CITIES = List.of(PARIS, LONDON);
 
@@ -75,16 +75,15 @@ class TripControllerTest extends RestDocsTest {
         performPostRequest(tripCreateRequest);
     }
 
-    private ResultActions performGetRequest(final int tripId) throws Exception {
-        return mockMvc.perform(get("/trips/{tripId}", tripId)
-                .contentType(APPLICATION_JSON));
-    }
-
     private ResultActions performGetRequest() throws Exception {
         return mockMvc.perform(get("/trips")
                 .contentType(APPLICATION_JSON));
     }
 
+    private ResultActions performGetRequest(final int tripId) throws Exception {
+        return mockMvc.perform(get("/trips/{tripId}", tripId)
+                .contentType(APPLICATION_JSON));
+    }
 
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
         return mockMvc.perform(post("/trips")
@@ -177,7 +176,8 @@ class TripControllerTest extends RestDocsTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행 종료 날짜를 입력해주세요."));
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
@@ -194,7 +194,8 @@ class TripControllerTest extends RestDocsTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("입력받은 도시 리스트의 길이가 0이면 예외가 발생한다.")
@@ -211,7 +212,8 @@ class TripControllerTest extends RestDocsTest {
         final ResultActions resultActions = performPostRequest(badRequest);
 
         // then
-        resultActions.andExpect(status().isBadRequest());
+        resultActions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
     @DisplayName("TripId로 단일 여행을 조회한다.")
@@ -257,6 +259,11 @@ class TripControllerTest extends RestDocsTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
                                         .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("sharedCode")
+                                        .type(JsonFieldType.STRING)
+                                        .description("공유 코드")
+                                        .attributes(field("constraint", "문자열 비공유시 null"))
+                                        .optional(),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -397,6 +404,8 @@ class TripControllerTest extends RestDocsTest {
         final ResultActions resultActions = performPutRequest(updateRequest);
 
         // then
+        verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
+
         resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
@@ -432,11 +441,9 @@ class TripControllerTest extends RestDocsTest {
                                 )
                         )
                 );
-
-        verify(tripService).update(anyLong(), any(TripUpdateRequest.class));
     }
 
-    @DisplayName("타이틀을 입력하지 않으면 예외가 발생한다.")
+    @DisplayName("제목을 입력하지 않으면 예외가 발생한다.")
     @Test
     void updateTrip_TitleNull() throws Exception {
         // given
@@ -460,7 +467,7 @@ class TripControllerTest extends RestDocsTest {
     }
 
 
-    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @DisplayName("제목의 길이가 50자를 초과하면 예외가 발생한다.")
     @Test
     void updateTrip_TitleOverMax() throws Exception {
         // given
@@ -485,7 +492,7 @@ class TripControllerTest extends RestDocsTest {
     }
 
 
-    @DisplayName("타이틀을 길이가 50자를 초과하면 예외가 발생한다.")
+    @DisplayName("요약의 길이가 200자를 초과하면 예외가 발생한다.")
     @Test
     void updateTrip_DescriptionOverMax() throws Exception {
         // given
@@ -611,6 +618,8 @@ class TripControllerTest extends RestDocsTest {
         final ResultActions resultActions = performDeleteRequest();
 
         // then
+        verify(tripService).delete(anyLong());
+
         resultActions.andExpect(status().isNoContent())
                 .andDo(restDocs.document(
                         pathParameters(
@@ -618,6 +627,5 @@ class TripControllerTest extends RestDocsTest {
                                         .description("여행 ID")
                         )
                 ));
-        verify(tripService).delete(anyLong());
     }
 }
