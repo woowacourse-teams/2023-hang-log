@@ -11,8 +11,8 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     boolean existsByMemberIdAndId(final Long memberId, final Long id);
 
-    @Query("SELECT trip FROM Trip trip LEFT JOIN FETCH trip.sharedTrip")
-    Optional<Trip> findTripById(final Long id);
+    @Query("SELECT trip FROM Trip trip LEFT JOIN FETCH trip.sharedTrip WHERE trip.id = :tripId")
+    Optional<Trip> findTripById(@Param("tripId") final Long id);
 
     @Query("SELECT trip FROM Trip trip LEFT JOIN FETCH trip.sharedTrip WHERE trip.member.id = :memberId")
     List<Trip> findAllByMemberId(@Param("memberId") final Long memberId);
