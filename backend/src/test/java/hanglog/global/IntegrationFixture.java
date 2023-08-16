@@ -6,6 +6,7 @@ import hanglog.category.domain.Category;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.image.domain.Image;
+import hanglog.member.domain.Member;
 import hanglog.trip.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -16,6 +17,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class IntegrationFixture {
+
+    /* Member */
+    public static final Member MEMBER = new Member(
+            1L,
+            "socialLoginId",
+            "name",
+            "https://hanglog.com/img/imageName.png"
+    );
 
     /* Category */
     public static final Category FOOD_CATEGORY = new Category(100L, "food", "음식");
@@ -83,7 +92,7 @@ public class IntegrationFixture {
     /* Trip */
     public static final LocalDate START_DATE = LocalDate.of(2023, 8, 1);
     public static final LocalDate END_DATE = LocalDate.of(2023, 8, 3);
-    public static final Trip LAHGON_TRIP = Trip.of("런던 여행", START_DATE, END_DATE);
+    public static final Trip LAHGON_TRIP = Trip.of(MEMBER, "런던 여행", START_DATE, END_DATE);
 
     /* DayLog */
     private static final DayLog DAY_LOG_1 = new DayLog(
