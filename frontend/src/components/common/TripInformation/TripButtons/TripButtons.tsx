@@ -20,10 +20,9 @@ import MoreIcon from '@assets/svg/more-icon.svg';
 interface TripButtonsProps {
   tripId: number;
   sharedCode: TripData['sharedCode'];
-  isShared?: boolean;
 }
 
-export const TripButtons = ({ tripId, sharedCode, isShared = false }: TripButtonsProps) => {
+export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
@@ -44,14 +43,6 @@ export const TripButtons = ({ tripId, sharedCode, isShared = false }: TripButton
       }
     );
   };
-
-  if (isShared) {
-    return (
-      <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
-        가계부
-      </Button>
-    );
-  }
 
   return (
     <>
