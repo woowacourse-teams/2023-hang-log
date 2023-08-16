@@ -74,7 +74,7 @@ public class GoogleOauthProvider implements OauthProvider {
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
-        params.add("grant_type", "authorization_code");
+        params.add("grant_type", "grant_type");
         final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params);
 
         final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
