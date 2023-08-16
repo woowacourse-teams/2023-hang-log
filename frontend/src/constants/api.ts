@@ -24,6 +24,7 @@ export const END_POINTS = {
   LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
+  SHARED_PAGE: (code: string) => `/shared-trips/${code}`,
 } as const;
 
 export const NETWORK = {

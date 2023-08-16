@@ -48,4 +48,8 @@ export const tripsHandlers = [
 
     return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json({ sharedCode }));
   }),
+
+  rest.get(`${END_POINTS.SHARED_PAGE(':code')}`, async (req, res, ctx) => {
+    return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
+  }),
 ];
