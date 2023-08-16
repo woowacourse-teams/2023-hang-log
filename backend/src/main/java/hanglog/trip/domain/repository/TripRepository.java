@@ -16,4 +16,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     @Query("SELECT trip FROM Trip trip LEFT JOIN FETCH trip.sharedTrip WHERE trip.member.id = :memberId")
     List<Trip> findAllByMemberId(@Param("memberId") final Long memberId);
+
+    void deleteAllByMemberId(final Long memberId);
 }
