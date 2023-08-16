@@ -1,5 +1,6 @@
 package hanglog.trip.service;
 
+import static hanglog.global.IntegrationFixture.MEMBER;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
@@ -8,10 +9,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.global.exception.BadRequestException;
+import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
@@ -51,6 +54,22 @@ class TripServiceTest {
     @Mock
     private TripCityRepository tripCityRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
+    @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
+    @Test
+    void validateTripByMember() {
+        // given
+        given(tripRepository.existsByMemberIdAndId(1L, 1L)).willReturn(true);
+
+        // when
+        tripService.validateTripByMember(1L, 1L);
+
+        // then
+        verify(tripRepository).existsByMemberIdAndId(anyLong(), anyLong());
+    }
+
     @DisplayName("여행을 생성한 후 tripId를 반환한다.")
     @Test
     void save() {
@@ -67,9 +86,11 @@ class TripServiceTest {
                 .willReturn(Optional.of(PARIS));
         given(tripRepository.save(any(Trip.class)))
                 .willReturn(LONDON_TRIP);
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(MEMBER));
 
         // when
-        final Long actualId = tripService.save(tripCreateRequest);
+        final Long actualId = tripService.save(MEMBER.getId(), tripCreateRequest);
 
         // then
         assertThat(actualId).isEqualTo(1L);
@@ -90,9 +111,11 @@ class TripServiceTest {
                 .willReturn(Optional.of(LONDON));
         given(cityRepository.findById(3L))
                 .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(MEMBER));
 
         // when & then
-        assertThatThrownBy(() -> tripService.save(tripCreateRequest))
+        assertThatThrownBy(() -> tripService.save(MEMBER.getId(), tripCreateRequest))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);
@@ -166,6 +189,7 @@ class TripServiceTest {
 
         TripUpdateRequest updateRequest;
         Trip trip = Trip.of(
+                MEMBER,
                 "파리 여행",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 3)
@@ -179,6 +203,7 @@ class TripServiceTest {
         void setUp() {
             trip = new Trip(
                     2L,
+                    MEMBER,
                     "파리 여행",
                     "https://hanglog.com/img/default-image.png",
                     LocalDate.of(2023, 7, 1),
@@ -201,6 +226,7 @@ class TripServiceTest {
 
             final Trip updatedTrip = new Trip(
                     trip.getId(),
+                    MEMBER,
                     updateRequest.getImageUrl(),
                     updateRequest.getTitle(),
                     updateRequest.getStartDate(),
@@ -246,6 +272,7 @@ class TripServiceTest {
             given(tripRepository.findById(trip.getId()))
                     .willReturn(Optional.of(new Trip(
                                             trip.getId(),
+                                            MEMBER,
                                             trip.getTitle(),
                                             trip.getImageName(),
                                             updateRequest.getStartDate(),
@@ -282,6 +309,7 @@ class TripServiceTest {
             given(tripRepository.findById(trip.getId()))
                     .willReturn(Optional.of(new Trip(
                                             trip.getId(),
+                                            MEMBER,
                                             trip.getTitle(),
                                             trip.getImageName(),
                                             updateRequest.getStartDate(),

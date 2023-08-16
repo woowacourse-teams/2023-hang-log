@@ -5,16 +5,20 @@ import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
+import hanglog.member.domain.Member;
 import hanglog.share.domain.SharedTrip;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
@@ -38,6 +42,10 @@ public class Trip extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(length = 50, nullable = false)
     private String title;
@@ -63,6 +71,7 @@ public class Trip extends BaseEntity {
 
     public Trip(
             final Long id,
+            final Member member,
             final String title,
             final String imageName,
             final LocalDate startDate,
@@ -73,6 +82,7 @@ public class Trip extends BaseEntity {
     ) {
         super(USABLE);
         this.id = id;
+        this.member = member;
         this.title = title;
         this.imageName = imageName;
         this.startDate = startDate;
@@ -82,9 +92,10 @@ public class Trip extends BaseEntity {
         this.dayLogs = dayLogs;
     }
 
-    public static Trip of(final String title, final LocalDate startDate, final LocalDate endDate) {
+    public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
         return new Trip(
                 null,
+                member,
                 title,
                 DEFAULT_IMAGE_NAME,
                 startDate,

@@ -2,8 +2,10 @@ package hanglog.trip.integration;
 
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
+import static hanglog.trip.integration.ItemIntegrationTest.requestCreateItem;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
@@ -29,10 +31,11 @@ public class DayLogIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(memberTokens,
+                TRIP_CREATE_REQUEST);
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
-        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(tripId);
+        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(memberTokens, tripId);
         final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
         dayLogId = tripDetailResponse.getDayLogs().get(0).getId();
     }
@@ -96,7 +99,8 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 null
         );
 
-        final ExtractableResponse<Response> itemCreateResponse = ItemIntegrationTest.requestCreateItem(
+        final ExtractableResponse<Response> itemCreateResponse = requestCreateItem(
+                memberTokens,
                 tripId,
                 itemRequest
         );
@@ -142,6 +146,9 @@ public class DayLogIntegrationTest extends IntegrationTest {
     private ExtractableResponse<Response> requestGetDayLog(final Long tripId, final Long dayLogId) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
                 .then().log().all()
                 .extract();
@@ -154,6 +161,9 @@ public class DayLogIntegrationTest extends IntegrationTest {
     ) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(request)
                 .when().patch("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
@@ -168,6 +178,9 @@ public class DayLogIntegrationTest extends IntegrationTest {
     ) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(request)
                 .when().patch("/trips/{tripId}/daylogs/{dayLogId}/order", tripId, dayLogId)

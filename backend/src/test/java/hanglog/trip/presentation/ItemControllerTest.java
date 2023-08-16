@@ -2,9 +2,12 @@ package hanglog.trip.presentation;
 
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -18,32 +21,75 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.service.ItemService;
+import hanglog.trip.service.TripService;
+import jakarta.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ItemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 public class ItemControllerTest extends ControllerTest {
+
+    private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
+    private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
+
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
     private ItemService itemService;
+
+    @MockBean
+    private TripService tripService;
+
+    @BeforeEach
+    void setUp() {
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+    }
+
+    private ResultActions performPostRequest(final int tripId, final ItemRequest request)
+            throws Exception {
+        return mockMvc.perform(post("/trips/{tripId}/items", tripId)
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+    }
+
+    private ResultActions performPutRequest(final int tripId, final int itemId, final ItemUpdateRequest request)
+            throws Exception {
+        return mockMvc.perform(put("/trips/{tripId}/items/{itemId}", tripId, itemId)
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+    }
+
+    private ResultActions performDeleteRequest(final int tripId, final int itemId) throws Exception {
+        return mockMvc.perform(delete("/trips/{tripId}/items/{itemId}", tripId, itemId)
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .cookie(COOKIE)
+                .contentType(APPLICATION_JSON));
+    }
 
     @DisplayName("여행 아이템을 생성할 수 있다.")
     @Test
@@ -70,11 +116,11 @@ public class ItemControllerTest extends ControllerTest {
         given(itemService.save(any(), any()))
                 .willReturn(1L);
 
+        // when
+        final ResultActions resultActions = performPostRequest(1, itemRequest);
+
         // when & then
-        mockMvc.perform(post("/trips/{tripId}/items", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemRequest)))
-                .andExpect(status().isCreated())
+        resultActions.andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, "/trips/1/items/1"))
                 .andDo(
                         restDocs.document(
@@ -154,7 +200,7 @@ public class ItemControllerTest extends ControllerTest {
                 List.of("culture")
         );
 
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EURO", new BigDecimal(10000), 1L);
+        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
 
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
                 true,
@@ -170,11 +216,11 @@ public class ItemControllerTest extends ControllerTest {
 
         doNothing().when(itemService).update(any(), any(), any());
 
+        // when
+        final ResultActions resultActions = performPutRequest(1, 1, itemUpdateRequest);
+
         // when & then
-        mockMvc.perform(put("/trips/{tripId}/items/{itemId}", 1L, 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemUpdateRequest)))
-                .andExpect(status().isNoContent())
+        resultActions.andExpect(status().isNoContent())
                 .andDo(
                         restDocs.document(
                                 pathParameters(
@@ -251,15 +297,17 @@ public class ItemControllerTest extends ControllerTest {
         // given
         doNothing().when(itemService).delete(any());
 
+        // when
+        final ResultActions resultActions = performDeleteRequest(1, 1);
+
         // when & then
-        mockMvc.perform(delete("/trips/{tripId}/items/{itemId}", 1L, 1L))
-                .andExpect(status().isNoContent()).andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("tripId")
-                                        .description("여행 ID"),
-                                parameterWithName("itemId")
-                                        .description("아이템 ID")
-                        )
-                ));
+        resultActions.andExpect(status().isNoContent()).andDo(restDocs.document(
+                pathParameters(
+                        parameterWithName("tripId")
+                                .description("여행 ID"),
+                        parameterWithName("itemId")
+                                .description("아이템 ID")
+                )
+        ));
     }
 }

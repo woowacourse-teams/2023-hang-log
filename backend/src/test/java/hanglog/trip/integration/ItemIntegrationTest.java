@@ -6,10 +6,12 @@ import static hanglog.global.IntegrationFixture.LONDON;
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static io.restassured.http.ContentType.JSON;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+import hanglog.auth.domain.MemberTokens;
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
@@ -46,7 +48,6 @@ public class ItemIntegrationTest extends IntegrationTest {
     private Long tripId;
     private Long dayLogId;
 
-
     @BeforeEach
     void setUp() {
         final TripCreateRequest tripCreateRequest = new TripCreateRequest(
@@ -56,11 +57,12 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
 
         final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(
+                memberTokens,
                 tripCreateRequest
         );
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
-        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(tripId);
+        final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(memberTokens, tripId);
         final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
         dayLogId = tripDetailResponse.getDayLogs().get(0).getId();
     }
@@ -71,9 +73,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         // when
         final ItemRequest itemRequest = getNonSpotItemRequest();
 
-        final ExtractableResponse<Response> response = requestCreateItem(tripId, itemRequest);
+        final ExtractableResponse<Response> response = requestCreateItem(memberTokens, tripId, itemRequest);
         final Long itemId = Long.parseLong(parseUri(response.header("Location")));
-        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+        final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = new ItemResponse(
                 itemId,
@@ -106,9 +108,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         // when
         final ItemRequest itemRequest = getSpotItemRequest();
 
-        final ExtractableResponse<Response> response = requestCreateItem(tripId, itemRequest);
+        final ExtractableResponse<Response> response = requestCreateItem(memberTokens, tripId, itemRequest);
         final Long itemId = Long.parseLong(parseUri(response.header("Location")));
-        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+        final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final CategoryResponse expectedCategoryResponse = new CategoryResponse(
                 200L,
@@ -160,7 +162,7 @@ public class ItemIntegrationTest extends IntegrationTest {
     void updateItem_NonSpotToSpot() {
         // when
         final ItemRequest itemRequest = getSpotItemRequest();
-        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, itemRequest);
+        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
         final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
 
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
@@ -175,8 +177,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 null
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(tripId, itemId, itemUpdateRequest);
-        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
 
@@ -197,7 +199,7 @@ public class ItemIntegrationTest extends IntegrationTest {
     void updateItem_changePlace() {
         // when
         final ItemRequest itemRequest = getSpotItemRequest();
-        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, itemRequest);
+        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
         final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
 
         final PlaceRequest updatedPlaceRequest = new PlaceRequest(
@@ -219,8 +221,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 getExpenseRequest()
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(tripId, itemId, itemUpdateRequest);
-        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
 
@@ -241,7 +243,7 @@ public class ItemIntegrationTest extends IntegrationTest {
     void updateItem_SpotToNonSpot() {
         // when
         final ItemRequest itemRequest = getNonSpotItemRequest();
-        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, itemRequest);
+        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
         final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
 
         final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
@@ -256,8 +258,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 getExpenseRequest()
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(tripId, itemId, itemUpdateRequest);
-        final List<ItemResponse> itemResponses = requestGetItems(tripId, dayLogId);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
 
@@ -277,24 +279,31 @@ public class ItemIntegrationTest extends IntegrationTest {
     @Test
     void deleteItem() {
         // given
-        final ExtractableResponse<Response> createResponse = requestCreateItem(tripId, getNonSpotItemRequest());
+        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, getNonSpotItemRequest());
         final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
 
         // when
-        final ExtractableResponse<Response> response = requestDeleteItem(tripId, itemId);
+        final ExtractableResponse<Response> response = requestDeleteItem(memberTokens, tripId, itemId);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(requestGetItems(tripId, dayLogId)).hasSize(0);
+                    softly.assertThat(requestGetItems(memberTokens, tripId, dayLogId)).hasSize(0);
                 }
         );
     }
 
-    protected static ExtractableResponse<Response> requestCreateItem(final Long tripId, final ItemRequest itemRequest) {
+    protected static ExtractableResponse<Response> requestCreateItem(
+            final MemberTokens memberTokens,
+            final Long tripId,
+            final ItemRequest itemRequest
+        ) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(itemRequest)
                 .when().post("/trips/{tripId}/items", tripId)
@@ -303,12 +312,16 @@ public class ItemIntegrationTest extends IntegrationTest {
     }
 
     private ExtractableResponse<Response> requestUpdateItem(
+            final MemberTokens memberTokens,
             final Long tripId,
             final Long itemId,
             final ItemUpdateRequest itemUpdateRequest
     ) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(itemUpdateRequest)
                 .when().put("/trips/{tripId}/items/{itemId}", tripId, itemId)
@@ -316,9 +329,16 @@ public class ItemIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private List<ItemResponse> requestGetItems(final Long tripId, final Long dayLogId) {
+    private List<ItemResponse> requestGetItems(
+            final MemberTokens memberTokens,
+            final Long tripId,
+            final Long dayLogId
+    ) {
         final DayLogResponse dayLogResponse = RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
                 .then().log().all()
                 .extract()
@@ -327,9 +347,16 @@ public class ItemIntegrationTest extends IntegrationTest {
         return dayLogResponse.getItems();
     }
 
-    private ExtractableResponse<Response> requestDeleteItem(final Long tripId, final Long itemId) {
+    private ExtractableResponse<Response> requestDeleteItem(
+            final MemberTokens memberTokens,
+            final Long tripId,
+            final Long itemId
+    ) {
         return RestAssured
                 .given().log().all()
+                .header(AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().delete("/trips/{tripId}/items/{itemId}", tripId, itemId)
                 .then().log().all()
                 .extract();

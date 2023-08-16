@@ -3,6 +3,7 @@ package hanglog.expense.fixture;
 import static hanglog.expense.fixture.ExpenseFixture.EUR_100_SHOPPING_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.KRW_100_FOOD_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.USD_100_ACCOMMODATION_EXPENSE;
+import static hanglog.global.IntegrationFixture.MEMBER;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -17,6 +18,7 @@ public class TripExpenseFixture {
 
     public static final Trip TRIP_FOR_EXPENSE = new Trip(
             1L,
+            MEMBER,
             "비용 테스트를 위한 여행",
             "default-image.png",
             LocalDate.of(2023, 7, 1),

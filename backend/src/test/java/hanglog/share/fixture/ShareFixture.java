@@ -1,5 +1,6 @@
 package hanglog.share.fixture;
 
+import static hanglog.global.IntegrationFixture.MEMBER;
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
@@ -17,6 +18,7 @@ public class ShareFixture {
 
     public static final Trip TRIP = new Trip(
             1L,
+            MEMBER,
             "test",
             "default-image.png",
             LocalDate.of(2023, 7, 1),
