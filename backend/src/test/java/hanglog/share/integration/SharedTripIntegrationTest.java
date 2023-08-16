@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
-class SharedCodeIntegrationTest extends IntegrationTest {
+class SharedTripIntegrationTest extends IntegrationTest {
 
     private Long tripId;
 
