@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -70,13 +71,17 @@ public class GoogleOauthProvider implements OauthProvider {
 
     private String requestAccessToken(final String code) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBasicAuth(clientId, clientSecret);
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
         params.add("code", code);
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
         params.add("grant_type", "authorization_code");
-        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params);
 
+        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, httpHeaders);
         final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
                 tokenUri,
                 HttpMethod.POST,
