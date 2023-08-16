@@ -13,6 +13,7 @@ interface DayLogListProps {
   tripId: number;
   selectedDayLog: DayLogData;
   isEditable?: boolean;
+  isShared?: boolean;
   onTabChange: (selectedId: string | number) => void;
   openAddModal?: () => void;
 }
@@ -21,6 +22,7 @@ const DayLogList = ({
   tripId,
   selectedDayLog,
   isEditable = true,
+  isShared = false,
   onTabChange,
   openAddModal,
 }: DayLogListProps) => {
@@ -62,6 +64,7 @@ const DayLogList = ({
       <DayLogItem
         tripId={tripId}
         isEditable={isEditable}
+        isShared={isShared}
         openAddModal={openAddModal}
         {...selectedDayLog}
       />

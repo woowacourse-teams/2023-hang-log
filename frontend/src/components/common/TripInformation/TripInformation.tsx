@@ -27,9 +27,14 @@ import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png
 
 interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
   isEditable?: boolean;
+  isShared?: boolean;
 }
 
-const TripInformation = ({ isEditable = true, ...information }: TripInformationProps) => {
+const TripInformation = ({
+  isEditable = true,
+  isShared = false,
+  ...information
+}: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
@@ -63,7 +68,11 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
           {isEditable ? (
             <TripEditButtons tripId={information.id} openEditModal={openEditModal} />
           ) : (
-            <TripButtons tripId={information.id} sharedCode={information.sharedCode} />
+            <TripButtons
+              tripId={information.id}
+              sharedCode={information.sharedCode}
+              isShared={isShared}
+            />
           )}
         </Box>
       </header>

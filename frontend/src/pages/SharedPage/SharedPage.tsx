@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { Flex, useSelect } from 'hang-log-design-system';
 
@@ -14,12 +14,10 @@ import TripMap from '@components/common/TripMap/TripMap';
 
 import { useSharedQuery } from '@hooks/api/useSharedTripQuery';
 
-import { isLoggedInState } from '@store/auth';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const SharedPage = () => {
   const { code } = useParams();
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
   if (!code) throw new Error('존재하지 않는 공유코드입니다.');
 
@@ -44,18 +42,15 @@ const SharedPage = () => {
     [selectedDayLog.items]
   );
 
-  useEffect(() => {
-    setIsLoggedIn(false);
-  }, [setIsLoggedIn]);
-
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation isEditable={false} {...tripData} />
+        <TripInformation isEditable={false} isShared {...tripData} />
         <DayLogList
           tripId={Number(code)}
           selectedDayLog={selectedDayLog}
           isEditable={false}
+          isShared
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>
