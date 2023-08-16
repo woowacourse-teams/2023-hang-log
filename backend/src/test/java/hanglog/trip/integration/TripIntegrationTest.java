@@ -7,6 +7,7 @@ import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 public class TripIntegrationTest extends IntegrationTest {
@@ -26,10 +28,10 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void createTrip() {
         // when
-        final ExtractableResponse<Response> response = requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> response = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(response.header("Location")));
 
-        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(memberTokens, tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -50,12 +52,12 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void getTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
         final TripDetailResponse expected = TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH));
 
         // when
-        final ExtractableResponse<Response> response = requestGetTrip(tripId);
+        final ExtractableResponse<Response> response = requestGetTrip(memberTokens, tripId);
         final TripDetailResponse tripDetailResponse = response.as(TripDetailResponse.class);
 
         // then
@@ -76,7 +78,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_DecreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -89,8 +91,8 @@ public class TripIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse<Response> response = requestUpdateTrip(tripId, tripUpdateRequest);
-        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
+        final ExtractableResponse<Response> response = requestUpdateTrip(memberTokens, tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(memberTokens, tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -115,7 +117,7 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void updateTrip_IncreasePeriod() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
@@ -128,8 +130,8 @@ public class TripIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse<Response> response = requestUpdateTrip(tripId, tripUpdateRequest);
-        final TripDetailResponse tripDetailResponse = requestGetTrip(tripId).as(TripDetailResponse.class);
+        final ExtractableResponse<Response> response = requestUpdateTrip(memberTokens, tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(memberTokens, tripId).as(TripDetailResponse.class);
 
         // then
         assertSoftly(
@@ -154,24 +156,32 @@ public class TripIntegrationTest extends IntegrationTest {
     @Test
     void deleteTrip() {
         // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(TRIP_CREATE_REQUEST);
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         // when
-        final ExtractableResponse<Response> response = requestDeleteTrip(tripId);
+        final ExtractableResponse<Response> response = requestDeleteTrip(memberTokens, tripId);
 
         // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(requestGetTrip(tripId).statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(requestGetTrip(memberTokens, tripId).statusCode())
+                            .isEqualTo(HttpStatus.BAD_REQUEST.value());
                 }
         );
     }
 
-    public static ExtractableResponse<Response> requestCreateTrip(final TripCreateRequest TRIP_CREATE_REQUEST) {
+    public static ExtractableResponse<Response> requestCreateTrip(final MemberTokens memberTokens,
+                                                                  final TripCreateRequest TRIP_CREATE_REQUEST) {
+        System.out.println("memberTokens.getAccessToken = " + memberTokens.getAccessToken());
+        System.out.println("memberTokens.getRefreshToken = " + memberTokens.getRefreshToken());
+
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(TRIP_CREATE_REQUEST)
                 .when().post("/trips")
@@ -179,17 +189,27 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    protected static ExtractableResponse<Response> requestGetTrip(final Long tripId) {
+    protected static ExtractableResponse<Response> requestGetTrip(final MemberTokens memberTokens, final Long tripId) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}", tripId)
                 .then().log().all()
                 .extract();
     }
 
-    private ExtractableResponse<Response> requestUpdateTrip(final Long tripId, final TripUpdateRequest tripUpdateRequest) {
+    private ExtractableResponse<Response> requestUpdateTrip(
+            final MemberTokens memberTokens,
+            final Long tripId,
+            final TripUpdateRequest tripUpdateRequest
+    ) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
                 .body(tripUpdateRequest)
                 .when().put("/trips/{tripId}", tripId)
@@ -197,9 +217,12 @@ public class TripIntegrationTest extends IntegrationTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> requestDeleteTrip(final Long tripId) {
+    private ExtractableResponse<Response> requestDeleteTrip(final MemberTokens memberTokens, final Long tripId) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().delete("/trips/{tripId}", tripId)
                 .then().log().all()
                 .extract();
