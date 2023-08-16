@@ -60,4 +60,10 @@ public class AuthController {
         authService.removeMemberRefreshToken(memberId);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/account")
+    public ResponseEntity<Void> deleteAccount(@Auth final Long memberId) {
+        authService.deleteAccount(memberId);
+        return ResponseEntity.noContent().build();
+    }
 }
