@@ -8,7 +8,10 @@ import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -20,12 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.service.TripService;
+import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +45,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class SharedTripControllerTest extends ControllerTest {
+
+    private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
+    private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -154,9 +162,14 @@ class SharedTripControllerTest extends ControllerTest {
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("sharedCode");
         when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         // when & then
         mockMvc.perform(patch("/trips/{tripId}/share", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sharedStatusRequest)))
                 .andExpect(status().isOk())
@@ -185,9 +198,14 @@ class SharedTripControllerTest extends ControllerTest {
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
         when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
         // when & then
         mockMvc.perform(patch("/trips/{tripId}/share", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sharedStatusRequest)))
                 .andExpect(status().isBadRequest())

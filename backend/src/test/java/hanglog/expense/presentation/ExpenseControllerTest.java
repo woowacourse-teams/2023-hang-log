@@ -9,7 +9,12 @@ import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -18,12 +23,15 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import hanglog.auth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.service.TripService;
+import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,18 +39,37 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ExpenseController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class ExpenseControllerTest extends ControllerTest {
 
+    private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
+    private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
+
     @MockBean
     private ExpenseService expenseService;
+
+    @MockBean
+    private TripService tripService;
+
+    private ResultActions performGetRequest(final int tripId) throws Exception {
+        return mockMvc.perform(
+                get("/trips/{tripId}/expense", tripId)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON));
+    }
 
     @DisplayName("모든 경비를 가져온다.")
     @Test
     void getExpenses() throws Exception {
         // given
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
                 AMOUNT_20000,
@@ -55,8 +82,11 @@ class ExpenseControllerTest extends ControllerTest {
         // when & then
         when(expenseService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
 
-        mockMvc.perform(get("/trips/{tripId}/expense", 1).contentType(APPLICATION_JSON))
-                .andDo(
+        // when
+        final ResultActions resultActions = performGetRequest(1);
+
+        // then
+        resultActions.andDo(
                         restDocs.document(
                                 pathParameters(
                                         parameterWithName("tripId")
