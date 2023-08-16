@@ -1,8 +1,8 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_TRIP_WITH_MEMBER;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
-import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_TRIP;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.global.exception.AuthException;
@@ -41,7 +41,7 @@ public class TripService {
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
-            throw new AuthException(NOT_FOUND_MEMBER_TRIP);
+            throw new AuthException(INVALID_TRIP_WITH_MEMBER);
         }
     }
 
