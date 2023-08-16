@@ -2,6 +2,7 @@ package hanglog.trip.integration;
 
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
+import static hanglog.trip.integration.ItemIntegrationTest.requestCreateItem;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -98,7 +99,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
                 null
         );
 
-        final ExtractableResponse<Response> itemCreateResponse = ItemIntegrationTest.requestCreateItem(
+        final ExtractableResponse<Response> itemCreateResponse = requestCreateItem(
                 memberTokens,
                 tripId,
                 itemRequest

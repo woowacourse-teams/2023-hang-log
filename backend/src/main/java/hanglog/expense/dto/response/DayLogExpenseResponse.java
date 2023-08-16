@@ -1,7 +1,7 @@
 package hanglog.expense.dto.response;
 
-import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.DayLogExpense;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class DayLogExpenseResponse {
     private final Long id;
     private final Integer ordinal;
     private final LocalDate date;
-    private final Amount totalAmount;
+    private final BigDecimal totalAmount;
     private final List<ItemDetailResponse> items;
 
     public static DayLogExpenseResponse of(final DayLogExpense dayLogExpense) {
@@ -27,7 +27,7 @@ public class DayLogExpenseResponse {
                 dayLogExpense.getDayLog().getId(),
                 dayLogExpense.getDayLog().getOrdinal(),
                 dayLogExpense.getDayLog().calculateDate(),
-                dayLogExpense.getAmount(),
+                dayLogExpense.getAmount().getValue(),
                 itemResponses
         );
     }
