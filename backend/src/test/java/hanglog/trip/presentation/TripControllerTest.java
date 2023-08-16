@@ -11,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -50,7 +51,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -91,21 +91,21 @@ class TripControllerTest extends ControllerTest {
 
     private ResultActions performGetRequest(final int tripId) throws Exception {
         return mockMvc.perform(get("/trips/{tripId}", tripId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }
 
     private ResultActions performGetRequest() throws Exception {
         return mockMvc.perform(get("/trips")
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }
 
     private ResultActions performPostRequest(final TripCreateRequest tripCreateRequest) throws Exception {
         return mockMvc.perform(post("/trips")
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(tripCreateRequest)));
@@ -113,7 +113,7 @@ class TripControllerTest extends ControllerTest {
 
     private ResultActions performPutRequest(final TripUpdateRequest updateRequest) throws Exception {
         return mockMvc.perform(put("/trips/{tripId}", 1)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
@@ -121,7 +121,7 @@ class TripControllerTest extends ControllerTest {
 
     private ResultActions performDeleteRequest() throws Exception {
         return mockMvc.perform(delete("/trips/{tripId}", 1)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }

@@ -4,6 +4,7 @@ import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
@@ -20,7 +21,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 public class DayLogIntegrationTest extends IntegrationTest {
@@ -145,7 +145,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
     private ExtractableResponse<Response> requestGetDayLog(final Long tripId, final Long dayLogId) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
@@ -160,7 +160,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
     ) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
@@ -177,7 +177,7 @@ public class DayLogIntegrationTest extends IntegrationTest {
     ) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
