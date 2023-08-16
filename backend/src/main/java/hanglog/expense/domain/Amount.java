@@ -31,7 +31,7 @@ public class Amount extends Number {
 
     public <T extends Number> Amount multiply(final T multiplicandValue) {
         final BigDecimal multiplicand = new BigDecimal(multiplicandValue.toString());
-        return new Amount(value.add(multiplicand));
+        return new Amount(value.multiply(multiplicand));
     }
 
     public <T extends Number> Amount divide(final T divisorValue) {
