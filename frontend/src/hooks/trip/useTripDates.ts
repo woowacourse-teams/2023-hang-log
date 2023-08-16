@@ -6,7 +6,7 @@ export const useTripDates = (tripId: number) => {
   const queryClient = useQueryClient();
 
   const tripData = queryClient.getQueryData<TripData>(['trip', tripId])!;
-
+  console.log(tripId, tripData);
   const dates = tripData.dayLogs.map((data) => ({
     id: data.id,
     date: data.date,

@@ -1,4 +1,5 @@
 import App from '@/App';
+import SharedPage from '@/pages/SharedPage/SharedPage';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -92,6 +93,14 @@ const AppRouter = () => {
           element: (
             <Suspense fallback={<div>LOADING</div>}>
               <MyPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.SHARE(':code'),
+          element: (
+            <Suspense fallback={<TripPageSkeleton />}>
+              <SharedPage />
             </Suspense>
           ),
         },
