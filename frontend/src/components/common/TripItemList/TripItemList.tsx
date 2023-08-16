@@ -85,12 +85,22 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
 interface EmptyTripItemListProps {
   tripId: number;
   isEditable?: boolean;
+  isLoggedIn: boolean;
   openAddModal?: () => void;
 }
 
-TripItemList.Empty = ({ tripId, openAddModal, isEditable = true }: EmptyTripItemListProps) => {
+TripItemList.Empty = ({
+  tripId,
+  openAddModal,
+  isEditable = true,
+  isLoggedIn,
+}: EmptyTripItemListProps) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
+
+  if (!isLoggedIn) {
+    return <Heading size="xSmall">추가된 일정 기록이 없습니다!</Heading>;
+  }
 
   return (
     <>

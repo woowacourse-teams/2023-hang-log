@@ -21,7 +21,9 @@ const SharedPage = () => {
   const { code } = useParams();
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
 
-  const { tripData } = useSharedQuery(code!);
+  if (!code) throw new Error('존재하지 않는 공유코드입니다.');
+
+  const { tripData } = useSharedQuery(code);
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 

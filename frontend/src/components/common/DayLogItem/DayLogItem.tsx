@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
 
+import { useRecoilValue } from 'recoil';
+
 import { Box, Flex, Heading, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
 
 import { containerStyling, headerStyling } from '@components/common/DayLogItem/DayLogItem.style';
 import TitleInput from '@components/common/DayLogItem/TitleInput/TitleInput';
 import TripItemList from '@components/common/TripItemList/TripItemList';
+
+import { isLoggedInState } from '@store/auth';
 
 import type { DayLogData } from '@type/dayLog';
 
@@ -25,6 +29,8 @@ const DayLogItem = ({
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
     DAY_LOG_ITEM_FILTERS.ALL
   );
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
   const selectedTripItemList =
     selectedFilter === DAY_LOG_ITEM_FILTERS.SPOT
       ? information.items.filter((item) => item.itemType === true)
@@ -68,7 +74,12 @@ const DayLogItem = ({
           isEditable={isEditable}
         />
       ) : (
-        <TripItemList.Empty tripId={tripId} isEditable={isEditable} openAddModal={openAddModal} />
+        <TripItemList.Empty
+          tripId={tripId}
+          isEditable={isEditable}
+          isLoggedIn={isLoggedIn}
+          openAddModal={openAddModal}
+        />
       )}
     </Box>
   );

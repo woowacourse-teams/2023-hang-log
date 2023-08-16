@@ -1,5 +1,3 @@
-import { isLoggedInState } from '@/store/auth';
-
 import { memo } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -33,7 +31,6 @@ interface TripInformationProps extends Omit<TripData, 'dayLogs'> {
 
 const TripInformation = ({ isEditable = true, ...information }: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
-  const isLoggedIn = useRecoilValue(isLoggedInState);
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
@@ -66,9 +63,7 @@ const TripInformation = ({ isEditable = true, ...information }: TripInformationP
           {isEditable ? (
             <TripEditButtons tripId={information.id} openEditModal={openEditModal} />
           ) : (
-            isLoggedIn && (
-              <TripButtons tripId={information.id} sharedCode={information.sharedCode} />
-            )
+            <TripButtons tripId={information.id} sharedCode={information.sharedCode} />
           )}
         </Box>
       </header>

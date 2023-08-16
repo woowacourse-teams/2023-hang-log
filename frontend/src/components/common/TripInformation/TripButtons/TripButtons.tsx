@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useRecoilValue } from 'recoil';
+
 import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 
 import {
@@ -10,6 +12,8 @@ import {
 import TripShareButton from '@components/common/TripInformation/TripShareButton/TripShareButton';
 
 import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
+
+import { isLoggedInState } from '@store/auth';
 
 import type { TripData } from '@type/trip';
 
@@ -26,6 +30,7 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
   const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
+  const isLoggedIn = useRecoilValue(isLoggedInState);
 
   const goToEditPage = () => {
     navigate(PATH.EDIT_TRIP(tripId));
@@ -43,6 +48,14 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
       }
     );
   };
+
+  if (!isLoggedIn) {
+    return (
+      <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
+        가계부
+      </Button>
+    );
+  }
 
   return (
     <>

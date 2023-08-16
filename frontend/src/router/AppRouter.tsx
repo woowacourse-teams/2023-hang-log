@@ -1,5 +1,4 @@
 import App from '@/App';
-import SharedPage from '@/pages/SharedPage/SharedPage';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -13,6 +12,7 @@ import LogInPage from '@pages/LogInPage/LogInPage';
 import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
+import SharedPage from '@pages/SharedPage/SharedPage';
 import SignUpPage from '@pages/SignUpPage/SignUpPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
