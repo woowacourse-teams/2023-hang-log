@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -38,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -69,7 +69,7 @@ public class ItemControllerTest extends ControllerTest {
     private ResultActions performPostRequest(final int tripId, final ItemRequest request)
             throws Exception {
         return mockMvc.perform(post("/trips/{tripId}/items", tripId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
@@ -78,7 +78,7 @@ public class ItemControllerTest extends ControllerTest {
     private ResultActions performPutRequest(final int tripId, final int itemId, final ItemUpdateRequest request)
             throws Exception {
         return mockMvc.perform(put("/trips/{tripId}/items/{itemId}", tripId, itemId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
@@ -86,7 +86,7 @@ public class ItemControllerTest extends ControllerTest {
 
     private ResultActions performDeleteRequest(final int tripId, final int itemId) throws Exception {
         return mockMvc.perform(delete("/trips/{tripId}/items/{itemId}", tripId, itemId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
     }

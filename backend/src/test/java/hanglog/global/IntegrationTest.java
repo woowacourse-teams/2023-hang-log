@@ -26,6 +26,7 @@ public abstract class IntegrationTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
     @Autowired
     private JwtProvider jwtProvider;
 

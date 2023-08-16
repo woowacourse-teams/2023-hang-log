@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -35,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -66,7 +66,7 @@ class DayLogControllerTest extends ControllerTest {
     private ResultActions performGetRequest(final int tripId, final int dayLogId) throws Exception {
         return mockMvc.perform(
                 get("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
-                        .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                         .cookie(COOKIE)
                         .contentType(APPLICATION_JSON));
     }
@@ -77,7 +77,7 @@ class DayLogControllerTest extends ControllerTest {
             final DayLogUpdateTitleRequest updateRequest)
             throws Exception {
         return mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}", tripId, dayLogId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));
@@ -89,7 +89,7 @@ class DayLogControllerTest extends ControllerTest {
             final ItemsOrdinalUpdateRequest updateRequest)
             throws Exception {
         return mockMvc.perform(patch("/trips/{tripId}/daylogs/{dayLogId}/order", tripId, dayLogId)
-                .header(HttpHeaders.AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)));

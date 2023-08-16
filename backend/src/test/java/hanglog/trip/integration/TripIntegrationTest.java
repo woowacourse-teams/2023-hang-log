@@ -6,6 +6,7 @@ import static hanglog.global.IntegrationFixture.LONDON;
 import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import hanglog.auth.domain.MemberTokens;
 import hanglog.global.IntegrationTest;
@@ -19,7 +20,6 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 public class TripIntegrationTest extends IntegrationTest {
@@ -179,7 +179,7 @@ public class TripIntegrationTest extends IntegrationTest {
 
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
@@ -192,7 +192,7 @@ public class TripIntegrationTest extends IntegrationTest {
     protected static ExtractableResponse<Response> requestGetTrip(final MemberTokens memberTokens, final Long tripId) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}", tripId)
@@ -207,7 +207,7 @@ public class TripIntegrationTest extends IntegrationTest {
     ) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
@@ -220,7 +220,7 @@ public class TripIntegrationTest extends IntegrationTest {
     private ExtractableResponse<Response> requestDeleteTrip(final MemberTokens memberTokens, final Long tripId) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION,
+                .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().delete("/trips/{tripId}", tripId)
