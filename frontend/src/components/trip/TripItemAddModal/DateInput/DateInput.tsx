@@ -25,10 +25,14 @@ const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: Date
   useEffect(() => {
     const indexOfDayLogId = dates.findIndex((date) => date.id === dayLogId);
 
-    if (indexOfDayLogId === dates.length - 1 || indexOfDayLogId === -1) {
+    if (currentCategory && (indexOfDayLogId === dates.length - 1 || indexOfDayLogId === -1)) {
       updateInputValue('dayLogId', dates[0].id);
     }
-  }, [dates, dayLogId, updateInputValue]);
+
+    if (!currentCategory) {
+      updateInputValue('dayLogId', dayLogId);
+    }
+  }, [currentCategory, dates, dayLogId, updateInputValue]);
 
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
