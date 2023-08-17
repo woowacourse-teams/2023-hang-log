@@ -127,7 +127,7 @@ public class ItemIntegrationTest extends IntegrationTest {
 
         final ItemExpenseResponse expectedItemExpenseResponse = new ItemExpenseResponse(
                 1L,
-                "eur",
+                "EUR",
                 BigDecimal.valueOf(10.5).setScale(3),
                 expectedCategoryResponse
         );
@@ -438,7 +438,7 @@ public class ItemIntegrationTest extends IntegrationTest {
 
         return new ItemExpenseResponse(
                 1L,
-                currency,
+                currency.toUpperCase(),
                 expenseRequest.getAmount().setScale(3),
                 categoryResponse
         );
