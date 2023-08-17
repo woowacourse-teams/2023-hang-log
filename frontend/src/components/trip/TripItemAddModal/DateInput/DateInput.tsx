@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import type { ChangeEvent } from 'react';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 import { Select } from 'hang-log-design-system';
 
@@ -21,6 +21,14 @@ interface DateInputProps {
 
 const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: DateInputProps) => {
   const { dates } = useTripDates(tripId);
+
+  useEffect(() => {
+    const indexOfDayLogId = dates.findIndex((date) => date.id === dayLogId);
+
+    if (indexOfDayLogId === dates.length - 1 || indexOfDayLogId === -1) {
+      updateInputValue('dayLogId', dates[0].id);
+    }
+  }, [dates, dayLogId, updateInputValue]);
 
   const handleDateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateInputValue('dayLogId', Number(event.target.value));
