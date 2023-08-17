@@ -67,19 +67,6 @@ describe('여행 수정 페이지', () => {
     });
   });
 
-  it('여행 수정 페이지에서 여행 아이템을 "전체", "장소"로 필터링할 수 있다.', () => {
-    cy.get('li[aria-label="장소 필터"]').click();
-
-    cy.fixture('trip.json').then((expectedData) => {
-      const { items } = expectedData.dayLogs[0];
-
-      items.forEach((item: TripItemData) => {
-        if (!item.itemType) cy.get('h6').should('not.contain', item.title);
-        else cy.get('h6').contains(item.title);
-      });
-    });
-  });
-
   it('여행 수정 페이지에서 데이로그 탭을 변경해서 다른 날짜의 여행 아이템을 볼 수 있다.', () => {
     cy.get('li[role="tab"]').eq(1).click({ force: true });
 

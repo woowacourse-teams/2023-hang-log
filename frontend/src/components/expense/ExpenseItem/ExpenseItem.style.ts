@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
-  width: '100%',
+  width: '80%',
 
   '& p': {
     color: Theme.color.gray600,
