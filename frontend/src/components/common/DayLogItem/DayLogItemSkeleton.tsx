@@ -14,7 +14,6 @@ const DayLogItemSkeleton = () => {
     <Box css={containerStyling}>
       <Flex css={headerStyling} styles={{ justify: 'space-between' }}>
         <Skeleton width={isMobile ? '180px' : '250px'} height="38px" />
-        <Skeleton width="100px" height="38px" />
       </Flex>
       <TripItemListSkeleton />
     </Box>
