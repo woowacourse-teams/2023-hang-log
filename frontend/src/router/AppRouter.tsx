@@ -62,11 +62,7 @@ const AppRouter = () => {
         },
         {
           path: PATH.CREATE_TRIP,
-          element: (
-            <Suspense>
-              <TripCreatePage />
-            </Suspense>
-          ),
+          element: <TripCreatePage />,
         },
         {
           path: PATH.EXPENSE(':tripId'),
