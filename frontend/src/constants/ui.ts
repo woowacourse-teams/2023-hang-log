@@ -10,17 +10,17 @@ export const EXPENSE_CATEGORY_INFORMATION_SKELETON_LENGTH = 6;
 
 export const EXPENSE_LIST_SKELETON_LENGTH = 5;
 
-export const TRIP_TITLE_MAX_LENGTH = 15;
+export const TRIP_TITLE_MAX_LENGTH = 14;
 
-export const TRIP_DESCRIPTION_MAX_LENGTH = 125;
+export const TRIP_DESCRIPTION_MAX_LENGTH = 124;
 
-export const DAYLOG_TITLE_MAX_LENGTH = 25;
+export const DAYLOG_TITLE_MAX_LENGTH = 24;
 
 export const TRIP_ITEM_TITLE_MAX_LENGTH = 20;
 
-export const TRIP_ITEM_MEMO_MAX_LENGTH = 255;
+export const TRIP_ITEM_MEMO_MAX_LENGTH = 254;
 
-export const NICKNAME_MAX_LENGTH = 15;
+export const NICKNAME_MAX_LENGTH = 14;
 
 export const MOBILE_MEDIA_QUERY_SIZE = '(max-width: 600px)';
 
