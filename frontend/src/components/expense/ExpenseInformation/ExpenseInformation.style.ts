@@ -40,3 +40,9 @@ export const badgeWrapperStyling = css({
     width: 'calc(100vw - 220px)',
   },
 });
+
+export const buttonWrapperStyling = css({
+  position: 'absolute',
+  top: Theme.spacer.spacing4,
+  right: Theme.spacer.spacing4,
+});
