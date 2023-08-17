@@ -22,3 +22,5 @@
 ![‎README 인프라 구조 ‎008](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/eb0d792c-9699-4010-95b4-a29e5ab76687)
 
 ![‎README 인프라 구조 ‎007](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/e9e38e63-ad72-45cc-80f8-883ae68aa29e)
+
+![‎README 인프라 구조 ‎001](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/1e73f647-7774-450e-863c-7dbc906f5e4d)
