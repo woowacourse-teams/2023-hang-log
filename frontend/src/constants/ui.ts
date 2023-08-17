@@ -16,7 +16,7 @@ export const TRIP_DESCRIPTION_MAX_LENGTH = 125;
 
 export const DAYLOG_TITLE_MAX_LENGTH = 25;
 
-export const TRIP_ITEM_TITLE_MAX_LENGTH = 50;
+export const TRIP_ITEM_TITLE_MAX_LENGTH = 20;
 
 export const TRIP_ITEM_MEMO_MAX_LENGTH = 255;
 
