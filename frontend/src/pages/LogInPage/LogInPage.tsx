@@ -1,3 +1,7 @@
+import { Navigate } from 'react-router-dom';
+
+import { useRecoilValue } from 'recoil';
+
 import { Flex, Heading, Theme } from 'hang-log-design-system';
 
 import {
@@ -10,10 +14,18 @@ import {
 import GoogleButton from '@components/common/GoogleButton/GoogleButton';
 import KakaoButton from '@components/common/KakaoButton/KakaoButton';
 
+import { isLoggedInState } from '@store/auth';
+
+import { PATH } from '@constants/path';
+
 import AuthImage from '@assets/svg/auth-image.svg';
 import LogoVertical from '@assets/svg/logo-vertical.svg';
 
 const LogInPage = () => {
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
+  if (isLoggedIn) return <Navigate to={PATH.ROOT} />;
+
   return (
     <Flex
       styles={{ direction: 'column', justify: 'center', align: 'center' }}
