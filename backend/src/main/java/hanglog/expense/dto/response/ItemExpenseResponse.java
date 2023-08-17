@@ -18,7 +18,7 @@ public class ItemExpenseResponse {
     public static ItemExpenseResponse of(final Expense expense) {
         return new ItemExpenseResponse(
                 expense.getId(),
-                expense.getCurrency(),
+                expense.getCurrency().toUpperCase(),
                 expense.getAmount().getValue(),
                 CategoryResponse.of(expense.getCategory())
         );
