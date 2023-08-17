@@ -24,8 +24,8 @@ export const buttonStyling = css({
   marginTop: Theme.spacer.spacing3,
 });
 
-export const linkStyling = css({
-  marginTop: Theme.spacer.spacing3,
+export const deleteButtonStyling = css({
+  marginTop: Theme.spacer.spacing1,
 
   color: Theme.color.gray600,
 
