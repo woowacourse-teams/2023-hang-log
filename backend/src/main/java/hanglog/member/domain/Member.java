@@ -13,12 +13,16 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SQLDelete(sql = "UPDATE member SET status = 'DELETED' WHERE id = ?")
+@Where(clause = "status = 'ACTIVE'")
 public class Member {
 
     @Id

@@ -1,4 +1,4 @@
-package hanglog.member.domain.auth;
+package hanglog.auth.domain;
 
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKEN;
@@ -8,8 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import hanglog.auth.domain.JwtProvider;
-import hanglog.auth.domain.MemberTokens;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;

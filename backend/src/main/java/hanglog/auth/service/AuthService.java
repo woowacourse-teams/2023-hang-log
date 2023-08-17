@@ -14,6 +14,7 @@ import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.trip.domain.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final OauthProviders oauthProviders;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final TripRepository tripRepository;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
 
@@ -60,5 +62,11 @@ public class AuthService {
 
     public void removeMemberRefreshToken(final Long memberId) {
         refreshTokenRepository.deleteByMemberId(memberId);
+    }
+
+    public void deleteAccount(final Long memberId) {
+        refreshTokenRepository.deleteByMemberId(memberId);
+        tripRepository.deleteAllByMemberId(memberId);
+        memberRepository.deleteById(memberId);
     }
 }

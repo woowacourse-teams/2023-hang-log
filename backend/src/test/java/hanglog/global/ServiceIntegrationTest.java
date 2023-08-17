@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 public abstract class ServiceIntegrationTest {
 
     @Autowired
-    MemberRepository memberRepository;
+    protected MemberRepository memberRepository;
 
     public Member member;
 

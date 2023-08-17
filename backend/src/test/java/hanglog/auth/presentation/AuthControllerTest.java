@@ -1,4 +1,4 @@
-package hanglog.member.presentation;
+package hanglog.auth.presentation;
 
 import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
-import hanglog.auth.presentation.AuthController;
 import hanglog.auth.service.AuthService;
 import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;
@@ -187,5 +186,40 @@ class AuthControllerTest extends ControllerTest {
 
         // then
         verify(authService).removeMemberRefreshToken(anyLong());
+    }
+
+
+    @DisplayName("회원을 탈퇴 할 수 있다.")
+    @Test
+    void deleteAccount() throws Exception {
+        // given
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(authService).deleteAccount(anyLong());
+
+        final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
+        final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(delete("/account")
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
+                .cookie(cookie)
+        );
+
+        resultActions.andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                        requestCookies(
+                                cookieWithName("refresh-token")
+                                        .description("갱신 토큰")
+                        ),
+                        requestHeaders(
+                                headerWithName("Authorization")
+                                        .description("access token")
+                                        .attributes(field("constraint", "문자열(jwt)"))
+                        )
+                ));
+
+        // then
+        verify(authService).deleteAccount(anyLong());
     }
 }
