@@ -19,7 +19,7 @@ export const expense: ExpenseData = {
       name: '파리',
     },
   ],
-  totalAmount: 210000,
+  totalAmount: 210000.01,
   categories: [
     {
       category: {
