@@ -15,6 +15,7 @@ import {
   memoStyling,
   starRatingStyling,
   subInformationStyling,
+  titleStyling,
 } from '@components/common/TripItem/TripItem.style';
 
 import { useDraggedItem } from '@hooks/common/useDraggedItem';
@@ -88,7 +89,9 @@ const TripItem = ({
           />
         )}
         <Box tag="section" css={informationContainerStyling}>
-          <Heading size="xSmall">{information.title}</Heading>
+          <Heading size="xSmall" css={titleStyling}>
+            {information.title}
+          </Heading>
           {information.place && (
             <Text css={subInformationStyling} size="small">
               {information.place.category.name}
