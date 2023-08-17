@@ -47,8 +47,14 @@ export const starRatingStyling = css({
   marginTop: Theme.spacer.spacing2,
 });
 
+export const titleStyling = css({
+  wordBreak: 'break-all',
+});
+
 export const memoStyling = css({
   marginTop: Theme.spacer.spacing3,
+
+  wordBreak: 'break-all',
 });
 
 export const expenseStyling = css({

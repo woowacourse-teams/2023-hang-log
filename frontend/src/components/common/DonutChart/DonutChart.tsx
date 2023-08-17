@@ -56,7 +56,7 @@ const DonutChart = ({ segments, size, strokeWidth }: DonutChartProps) => {
                   fontSize="16px"
                   fill={Theme.color.gray800}
                 >
-                  {segment.percentage}%
+                  {segment.percentage.toFixed(1)}%
                 </text>
               )}
             </g>
