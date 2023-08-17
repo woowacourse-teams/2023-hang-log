@@ -1,6 +1,6 @@
 {
   "name": "hang-log",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "장소 기반 여행 기록 서비스, \"행록\"",
   "repository": "https://github.com/woowacourse-teams/2023-hang-log",
   "contributors": [
