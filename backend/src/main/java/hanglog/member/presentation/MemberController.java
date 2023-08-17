@@ -1,4 +1,4 @@
-package hanglog.auth.presentation;
+package hanglog.member.presentation;
 
 import hanglog.auth.Auth;
 import hanglog.member.dto.request.MyPageRequest;

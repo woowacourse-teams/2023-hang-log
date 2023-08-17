@@ -24,3 +24,13 @@ export const formStyling = css({
     },
   },
 });
+
+export const skeletonStyling = css({
+  width: '100%',
+  height: '70px',
+  marginTop: Theme.spacer.spacing5,
+
+  '@media screen and (max-width: 600px)': {
+    marginTop: Theme.spacer.spacing4,
+  },
+});

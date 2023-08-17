@@ -24,6 +24,7 @@ export const END_POINTS = {
   LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
+  ACCOUNT: '/account',
   SHARED_PAGE: (code: string) => `/shared-trips/${code}`,
 } as const;
 
@@ -50,6 +51,7 @@ export const ERROR_CODE = {
   EXPIRED_ACCESS_TOKEN: 9104,
   INVALID_TOKEN_VALIDATE: 9105,
   NULL_REFRESH_TOKEN: 9106,
+  UNEXCEPTED_TOKEN_ERROR: 9999,
 } as const;
 
 export const HTTP_ERROR_MESSAGE = {

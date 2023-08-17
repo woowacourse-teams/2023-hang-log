@@ -59,7 +59,14 @@ export const shareUrlWrapperStyling = css({
 export const shareUrlStyling = css({
   padding: `${Theme.spacer.spacing1} ${Theme.spacer.spacing2}`,
 
-  overflow: 'hidden',
+  overflowX: 'scroll',
+  whiteSpace: 'nowrap',
+  '-ms-overflow-style': 'none',
+  scrollbarWidth: 'none',
+
+  '::-webkit-scrollbar': {
+    display: 'none',
+  },
 
   color: Theme.color.black,
 });

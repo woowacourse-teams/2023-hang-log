@@ -65,7 +65,7 @@ const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {
               총 금액 :{' '}
               <span>
                 {CURRENCY_ICON[DEFAULT_CURRENCY]}
-                {formatNumberToMoney(selectedDayLog.totalAmount)}
+                {formatNumberToMoney(Number(selectedDayLog.totalAmount.toFixed(0)))}
               </span>
             </Heading>
             <Text size="small">
