@@ -1,0 +1,27 @@
+export const CITY_TAG_MAX_LENGTH = 15;
+
+export const TRIP_ITEM_LIST_SKELETON_LENGTH = 3;
+
+export const STAR_RATING_LENGTH = 5;
+
+export const TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT = 5;
+
+export const EXPENSE_CATEGORY_INFORMATION_SKELETON_LENGTH = 6;
+
+export const EXPENSE_LIST_SKELETON_LENGTH = 5;
+
+export const TRIP_TITLE_MAX_LENGTH = 14;
+
+export const TRIP_DESCRIPTION_MAX_LENGTH = 124;
+
+export const DAYLOG_TITLE_MAX_LENGTH = 24;
+
+export const TRIP_ITEM_TITLE_MAX_LENGTH = 20;
+
+export const TRIP_ITEM_MEMO_MAX_LENGTH = 254;
+
+export const NICKNAME_MAX_LENGTH = 14;
+
+export const MOBILE_MEDIA_QUERY_SIZE = '(max-width: 600px)';
+
+export const AMOUNT_MAX_LIMIT = 100_000_000;
