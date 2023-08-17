@@ -20,6 +20,7 @@ export const boxStyling = css({
 export const modalStyling = css({
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing5})`,
+    height: `calc(100vh - ${Theme.spacer.spacing9})`,
   },
 });
 
