@@ -56,7 +56,7 @@ const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
         총 경비 :{' '}
         <span>
           {CURRENCY_ICON[DEFAULT_CURRENCY]}
-          {formatNumberToMoney(expenseData.totalAmount)}
+          {formatNumberToMoney(Number(expenseData.totalAmount.toFixed(0)))}
         </span>
       </Heading>
       <Box

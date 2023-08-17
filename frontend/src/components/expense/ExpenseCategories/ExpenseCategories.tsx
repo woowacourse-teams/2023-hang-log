@@ -46,7 +46,7 @@ const ExpenseCategories = ({ tripId }: ExpenseCategoriesProps) => {
               총 금액 :{' '}
               <span>
                 {CURRENCY_ICON[DEFAULT_CURRENCY]}
-                {formatNumberToMoney(selectedCategory.totalAmount)}
+                {formatNumberToMoney(Number(selectedCategory.totalAmount.toFixed(0)))}
               </span>
             </Heading>
             <Text size="small">
