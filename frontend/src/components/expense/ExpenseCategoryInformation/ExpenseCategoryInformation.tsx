@@ -30,7 +30,7 @@ const ExpenseCategoryInformation = ({ tripId }: ExpenseCategoryInformationProps)
           </Flex>
           <Text>
             {CURRENCY_ICON[DEFAULT_CURRENCY]}
-            {formatNumberToMoney(Number(amount.toFixed(1)))}
+            {formatNumberToMoney(Number(amount.toFixed(0)))}
           </Text>
         </li>
       ))}
