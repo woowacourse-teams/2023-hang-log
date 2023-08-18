@@ -42,6 +42,8 @@ export const useEditUserProfileForm = (initialData: UserData) => {
 
       if (isFormError()) {
         setIsNicknameError(true);
+
+        return;
       }
 
       userInfoMutation.mutate(userInfo);
