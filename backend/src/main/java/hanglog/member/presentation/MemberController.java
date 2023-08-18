@@ -4,6 +4,7 @@ import hanglog.auth.Auth;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
 import hanglog.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class MemberController {
     @PutMapping
     public ResponseEntity<Void> updateMyInfo(
             @Auth final Long memberId,
-            @RequestBody final MyPageRequest myPageRequest
+            @RequestBody @Valid final MyPageRequest myPageRequest
     ) {
         memberService.updateMyPageInfo(memberId, myPageRequest);
         return ResponseEntity.noContent().build();
