@@ -1,0 +1,31 @@
+{
+  "endOfLine": "auto",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "semi": true,
+  "importOrder": [
+    "^react(.*)",
+    "^@tanstack/(.*)$",
+    "^recoil(.*)",
+    "^axios(.*)",
+    "^msw(.*)",
+    "^hang-log-design-system(.*)",
+    "^@pages/(.*)$",
+    "^@components/(.*)$",
+    "^@hooks/(.*)$",
+    "^@store/(.*)$",
+    "^@api/(.*)$",
+    "^@utils/(.*)$",
+    "^@router/(.*)$",
+    "^@type/(.*)$",
+    "^@constants/(.*)$",
+    "^@assets/(.*)$",
+    "^@styles/(.*)$",
+    "^@stories/(.*)$",
+    "^@mocks/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
