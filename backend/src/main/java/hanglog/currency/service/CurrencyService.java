@@ -43,7 +43,6 @@ public class CurrencyService {
     private static final String CURRENCY_API_URI = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
     private static final String NUMBER_SEPARATOR = ",";
     private static final String DATE_SEPARATOR = "-";
-    private static final LocalDate YESTERDAY = LocalDate.now().minusDays(1);
 
     private final RestTemplate restTemplate;
     private final CurrencyRepository currencyRepository;
@@ -61,7 +60,8 @@ public class CurrencyService {
     @Scheduled(cron = "0 0 0 * * *")
     public void saveYesterdayCurrency() {
         try {
-            saveDailyCurrency(YESTERDAY);
+            final LocalDate yesterday = LocalDate.now().minusDays(1);
+            saveDailyCurrency(yesterday);
         } catch (final InvalidCurrencyDateException ignored) {
         }
     }
