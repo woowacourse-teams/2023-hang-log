@@ -56,6 +56,7 @@ public class ExpenseService {
 
         final List<CategoryExpense> categoryExpenses = categoryAmounts.entrySet().stream()
                 .map(entry -> new CategoryExpense(entry.getKey(), entry.getValue(), totalAmount))
+                .sorted((o1,o2)->o2.getAmount().compareTo(o1.getAmount()))
                 .toList();
 
         final List<DayLogExpense> dayLogExpenses = dayLogAmounts.entrySet().stream()
