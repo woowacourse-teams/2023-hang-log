@@ -7,7 +7,7 @@ import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.image.domain.Image;
 import hanglog.member.domain.Member;
-import hanglog.trip.domain.City;
+import hanglog.city.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;

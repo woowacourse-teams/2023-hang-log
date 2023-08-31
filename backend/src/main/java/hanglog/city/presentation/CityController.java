@@ -1,7 +1,7 @@
-package hanglog.trip.presentation;
+package hanglog.city.presentation;
 
 import hanglog.city.dto.response.CityResponse;
-import hanglog.trip.service.CityService;
+import hanglog.city.service.CityService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
