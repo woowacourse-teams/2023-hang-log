@@ -4,12 +4,10 @@ import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.dto.response.CityWithPositionResponse;
-import hanglog.share.domain.SharedTrip;
 import hanglog.city.domain.City;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,9 +34,6 @@ public class TripDetailResponse {
                 .map(CityWithPositionResponse::of)
                 .toList();
 
-        final Optional<SharedTrip> sharedTrip = Optional.ofNullable(trip.getSharedTrip());
-        final String sharedCode = sharedTrip.map(SharedTrip::getSharedCode).orElse(null);
-
         return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
@@ -47,7 +42,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                sharedCode,
+                trip.getSharedCode(),
                 dayLogResponses
         );
     }
