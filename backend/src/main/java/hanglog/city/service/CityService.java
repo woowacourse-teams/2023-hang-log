@@ -1,8 +1,8 @@
-package hanglog.trip.service;
+package hanglog.city.service;
 
 import hanglog.city.dto.response.CityResponse;
-import hanglog.trip.domain.City;
-import hanglog.trip.domain.repository.CityRepository;
+import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

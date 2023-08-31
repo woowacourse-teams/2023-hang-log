@@ -4,7 +4,7 @@ import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.dto.response.CityResponse;
-import hanglog.trip.domain.City;
+import hanglog.city.domain.City;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;

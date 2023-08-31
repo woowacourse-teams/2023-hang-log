@@ -5,8 +5,9 @@ import static hanglog.trip.fixture.CityFixture.PARIS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
+import hanglog.city.service.CityService;
 import hanglog.city.dto.response.CityResponse;
-import hanglog.trip.domain.repository.CityRepository;
+import hanglog.city.domain.repository.CityRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

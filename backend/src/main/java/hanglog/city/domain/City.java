@@ -1,4 +1,4 @@
-package hanglog.trip.domain;
+package hanglog.city.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;

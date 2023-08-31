@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.ServiceIntegrationTest;
 import hanglog.global.exception.BadRequestException;
-import hanglog.trip.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 @Import(TripService.class)
-public class TripServiceIntegrationTest extends ServiceIntegrationTest {
+class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private TripRepository tripRepository;

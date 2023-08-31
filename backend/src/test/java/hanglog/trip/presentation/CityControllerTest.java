@@ -10,9 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.city.presentation.CityController;
 import hanglog.city.dto.response.CityResponse;
 import hanglog.global.ControllerTest;
-import hanglog.trip.service.CityService;
+import hanglog.city.service.CityService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
