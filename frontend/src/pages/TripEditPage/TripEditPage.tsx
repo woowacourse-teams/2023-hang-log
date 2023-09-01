@@ -17,8 +17,7 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
-import { useExpenseCategoryQuery } from '@hooks/api/useExpenseCategoryQuery';
-import { useTripQuery } from '@hooks/api/useTripQuery';
+import { useTripEditPageQueries } from '@hooks/api/useTripEditPageQueries';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
@@ -29,8 +28,7 @@ const TripEditPage = () => {
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { tripData } = useTripQuery(Number(tripId));
-  useExpenseCategoryQuery();
+  const { tripData } = useTripEditPageQueries(Number(tripId));
 
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
