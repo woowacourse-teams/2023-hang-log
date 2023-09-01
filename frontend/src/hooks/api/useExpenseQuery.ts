@@ -6,18 +6,8 @@ import { getExpense } from '@api/expense/getExpense';
 
 import type { ExpenseData } from '@type/expense';
 
-import { NETWORK } from '@constants/api';
-
 export const useExpenseQuery = (tripId: number) => {
-  const { data } = useQuery<ExpenseData, AxiosError>(
-    ['expense', tripId],
-    () => getExpense(tripId),
-    {
-      retry: NETWORK.RETRY_COUNT,
-      suspense: true,
-      useErrorBoundary: true,
-    }
-  );
+  const { data } = useQuery<ExpenseData, AxiosError>(['expense', tripId], () => getExpense(tripId));
 
   return { expenseData: data! };
 };
