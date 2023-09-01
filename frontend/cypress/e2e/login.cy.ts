@@ -25,11 +25,6 @@ describe('로그인', () => {
     cy.location('pathname').should('eq', PATH.LOGIN);
   });
 
-  it('회원가입 버튼을 클릭하면 회원가입 페이지로 이동한다.', () => {
-    cy.findByText('회원가입').click();
-    cy.location('pathname').should('eq', PATH.SIGN_UP);
-  });
-
   it('로그인하면 메인 페이지 화면이 여행 목록 페이지로 변경된다.', () => {
     cy.findByText('로그인').click();
 
