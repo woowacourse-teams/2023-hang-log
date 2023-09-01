@@ -48,6 +48,7 @@ export const starRatingStyling = css({
 });
 
 export const titleStyling = css({
+  fontWeight: '600',
   wordBreak: 'break-all',
 });
 

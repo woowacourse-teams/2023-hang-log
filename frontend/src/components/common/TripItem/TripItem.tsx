@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+import { Box, ImageCarousel, Text } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
@@ -89,9 +89,9 @@ const TripItem = ({
           />
         )}
         <Box tag="section" css={informationContainerStyling}>
-          <Heading size="xSmall" css={titleStyling}>
+          <Text size="large" css={titleStyling}>
             {information.title}
-          </Heading>
+          </Text>
           {information.place && (
             <Text css={subInformationStyling} size="small">
               {information.place.category.name}
