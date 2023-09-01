@@ -45,7 +45,7 @@ const SharedPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation isEditable={false} isShared {...tripData} />
+        <TripInformation tripId={Number(code)} isEditable={false} isShared />
         <DayLogList
           tripId={Number(code)}
           selectedDayLog={selectedDayLog}

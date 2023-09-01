@@ -13,7 +13,6 @@ import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
 import SharedPage from '@pages/SharedPage/SharedPage';
-import SignUpPage from '@pages/SignUpPage/SignUpPage';
 import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
 import TripEditPage from '@pages/TripEditPage/TripEditPage';
 import TripPage from '@pages/TripPage/TripPage';
@@ -75,10 +74,6 @@ const AppRouter = () => {
         {
           path: PATH.REDIRECT,
           element: <RedirectPage />,
-        },
-        {
-          path: PATH.SIGN_UP,
-          element: <SignUpPage />,
         },
         {
           path: PATH.LOGIN,

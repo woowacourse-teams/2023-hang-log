@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import type { TripData } from '@type/trip';
 
-export const useTripDates = (tripId: number) => {
+export const useTrip = (tripId: number) => {
   const queryClient = useQueryClient();
 
   const tripData = queryClient.getQueryData<TripData>(['trip', tripId])!;
@@ -12,5 +12,5 @@ export const useTripDates = (tripId: number) => {
     date: data.date,
   }));
 
-  return { dates };
+  return { tripData, dates };
 };

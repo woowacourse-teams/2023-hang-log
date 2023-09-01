@@ -51,7 +51,7 @@ const TripEditPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation {...tripData} />
+        <TripInformation tripId={Number(tripId)} />
         <DayLogList
           tripId={Number(tripId)}
           selectedDayLog={selectedDayLog}
