@@ -18,7 +18,7 @@ const TripEditButtons = ({ tripId, openEditModal }: TripEditButtonsProps) => {
         여행 정보 수정
       </Button>
       <Button variant="primary" size="small" onClick={() => navigate(`/trip/${tripId}`)}>
-        저장
+        완료
       </Button>
     </>
   );
