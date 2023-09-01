@@ -62,10 +62,14 @@ const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
       <Box
         css={{
           position: 'relative',
-          width: '300px',
+          width: EXPENSE_CATEGORY_CHART_SIZE,
         }}
       >
-        <DonutChart segments={chartData} size={300} strokeWidth={60} />
+        <DonutChart
+          segments={categoryChartData}
+          size={EXPENSE_CATEGORY_CHART_SIZE}
+          strokeWidth={EXPENSE_CATEGORY_CHART_STROKE_WIDTH}
+        />
       </Box>
       <ExpenseCategoryInformation tripId={tripId} />
     </section>

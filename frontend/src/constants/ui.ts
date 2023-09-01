@@ -25,3 +25,7 @@ export const NICKNAME_MAX_LENGTH = 14;
 export const MOBILE_MEDIA_QUERY_SIZE = '(max-width: 600px)';
 
 export const AMOUNT_MAX_LIMIT = 100_000_000;
+
+export const EXPENSE_CATEGORY_CHART_SIZE = 300;
+
+export const EXPENSE_CATEGORY_CHART_STROKE_WIDTH = 60;
