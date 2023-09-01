@@ -122,10 +122,13 @@ public class Trip extends BaseEntity {
         return convertUrlToName(imageUrl);
     }
 
-    public String getSharedCode(){
+    public Optional<String> getSharedCode(){
         if(Optional.ofNullable(sharedTrip).isEmpty()){
-            return null;
+            return Optional.empty();
         }
-        return sharedTrip.getSharedCode();
+        if(sharedTrip.isUnShared()){
+            return Optional.empty();
+        }
+        return Optional.of(sharedTrip.getSharedCode());
     }
 }

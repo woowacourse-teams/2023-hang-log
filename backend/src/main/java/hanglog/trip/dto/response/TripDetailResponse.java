@@ -34,6 +34,8 @@ public class TripDetailResponse {
                 .map(CityWithPositionResponse::of)
                 .toList();
 
+        String sharedCode = trip.getSharedCode().orElse(null);
+
         return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
@@ -42,7 +44,7 @@ public class TripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                trip.getSharedCode(),
+                sharedCode,
                 dayLogResponses
         );
     }

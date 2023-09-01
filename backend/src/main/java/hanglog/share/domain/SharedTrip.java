@@ -82,11 +82,4 @@ public class SharedTrip extends BaseEntity {
     public boolean isUnShared() {
         return sharedStatus == UNSHARED;
     }
-
-    public String getSharedCode(){
-        if(isUnShared()){
-            return null;
-        }
-        return sharedCode;
-    }
 }
