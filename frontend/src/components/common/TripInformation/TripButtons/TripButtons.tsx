@@ -23,9 +23,10 @@ import EditIcon from '@assets/svg/edit-icon.svg';
 interface TripButtonsProps {
   tripId: number;
   sharedCode: TripData['sharedCode'];
+  isShared: boolean;
 }
 
-export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
+export const TripButtons = ({ tripId, sharedCode, isShared }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
 
@@ -57,23 +58,27 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
       <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
         가계부
       </Button>
-      <TripShareButton tripId={tripId} sharedCode={sharedCode} />
-      <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
-      <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={openDeleteModal} />
-      <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
-        <Box css={modalContentStyling}>
-          <Heading size="xSmall">여행 아이템을 삭제하겠어요?</Heading>
-          <Text>여행 아이템을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
-          <Flex css={modalButtonContainerStyling}>
-            <Button variant="default" onClick={closeDeleteModal}>
-              취소
-            </Button>
-            <Button variant="danger" onClick={handleDeleteButtonClick}>
-              삭제
-            </Button>
-          </Flex>
-        </Box>
-      </Modal>
+      {!isShared && (
+        <>
+          <TripShareButton tripId={tripId} sharedCode={sharedCode} />
+          <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
+          <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={openDeleteModal} />
+          <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
+            <Box css={modalContentStyling}>
+              <Heading size="xSmall">여행 아이템을 삭제하겠어요?</Heading>
+              <Text>여행 아이템을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
+              <Flex css={modalButtonContainerStyling}>
+                <Button variant="default" onClick={closeDeleteModal}>
+                  취소
+                </Button>
+                <Button variant="danger" onClick={handleDeleteButtonClick}>
+                  삭제
+                </Button>
+              </Flex>
+            </Box>
+          </Modal>
+        </>
+      )}
     </>
   );
 };
