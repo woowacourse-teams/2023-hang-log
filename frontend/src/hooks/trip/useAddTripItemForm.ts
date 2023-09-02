@@ -61,7 +61,7 @@ export const useAddTripItemForm = ({
   );
 
   const isFormError = () => {
-    if (isEmptyString(tripItemInformation.title)) {
+    if (isEmptyString(tripItemInformation.title.trim())) {
       return true;
     }
 
