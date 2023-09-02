@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
+import { Button } from 'hang-log-design-system';
 
 import {
-  moreButtonStyling,
-  moreMenuListStyling,
-  moreMenuStyling,
+  binIconStyling,
+  editIconStyling,
+  svgButtonStyling,
 } from '@components/common/TripInformation/TripButtons/TripButtons.style';
 import TripShareButton from '@components/common/TripInformation/TripShareButton/TripShareButton';
 
@@ -15,7 +15,8 @@ import type { TripData } from '@type/trip';
 
 import { PATH } from '@constants/path';
 
-import MoreIcon from '@assets/svg/more-icon.svg';
+import BinIcon from '@assets/svg/bin-icon.svg';
+import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface TripButtonsProps {
   tripId: number;
@@ -25,7 +26,6 @@ interface TripButtonsProps {
 export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
-  const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
 
   const goToEditPage = () => {
     navigate(PATH.EDIT_TRIP(tripId));
@@ -50,17 +50,8 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
         가계부
       </Button>
       <TripShareButton tripId={tripId} sharedCode={sharedCode} />
-      <Menu css={moreMenuStyling} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
-          <MoreIcon />
-        </button>
-        {isMenuOpen && (
-          <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={goToEditPage}>수정</MenuItem>
-            <MenuItem onClick={handleDeleteButtonClick}>삭제</MenuItem>
-          </MenuList>
-        )}
-      </Menu>
+      <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
+      <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={handleDeleteButtonClick} />
     </>
   );
 };

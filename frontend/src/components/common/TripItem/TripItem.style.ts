@@ -53,6 +53,7 @@ export const titleStyling = css({
 });
 
 export const memoStyling = css({
+  width: '95%',
   marginTop: Theme.spacer.spacing3,
 
   wordBreak: 'break-all',

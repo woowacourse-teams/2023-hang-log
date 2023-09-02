@@ -14,10 +14,10 @@ export const moreButtonStyling = css({
     width: '20px',
     height: '20px',
 
-    '& path': {
-      stroke: Theme.color.white,
-      strokeWidth: 1.5,
-    },
+    // '& path': {
+    //   stroke: Theme.color.white,
+    //   strokeWidth: 1.5,
+    // },
   },
 });
 
@@ -36,5 +36,25 @@ export const moreMenuListStyling = css({
     padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
 
     color: Theme.color.gray800,
+  },
+});
+
+export const svgButtonStyling = css({
+  width: '20px',
+  height: '20px',
+  marginLeft: '12px',
+
+  cursor: 'pointer',
+});
+
+export const binIconStyling = css({
+  '& path': {
+    stroke: Theme.color.white,
+  },
+});
+
+export const editIconStyling = css({
+  '& path': {
+    fill: Theme.color.white,
   },
 });
