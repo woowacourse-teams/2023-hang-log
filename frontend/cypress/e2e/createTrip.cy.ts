@@ -43,12 +43,14 @@ describe('여행 생성 페이지', () => {
   it('방문 기간을 클릭해 달력을 열어 방문기간을 입력할 수 있다.', () => {
     cy.get('#date').click();
 
-    cy.get('span[aria-label="2023년 07월 1일"]').click();
-    cy.get('span[aria-label="2023년 07월 12일"]').click();
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 1일"]`).click();
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 12일"]`).click();
 
     cy.get('#date').click();
 
-    cy.get('#date').should('have.value', '2023.07.01 - 2023.07.12');
+    cy.get('#date').should('have.value', `2023.${currentMonth}.01 - 2023.${currentMonth}.12`);
   });
 
   it('도시와 기간이 채워졌을 때만 기록하기 버튼을 누를 수 있다.', () => {
@@ -61,8 +63,10 @@ describe('여행 생성 페이지', () => {
 
     cy.get('#date').click();
 
-    cy.get('span[aria-label="2023년 07월 1일"]').click();
-    cy.get('span[aria-label="2023년 07월 12일"]').click();
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 1일"]`).click();
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 12일"]`).click();
 
     cy.get('#date').click();
 
@@ -80,8 +84,10 @@ describe('여행 생성 페이지', () => {
 
     cy.get('#date').click();
 
-    cy.get('span[aria-label="2023년 07월 1일"]').click();
-    cy.get('span[aria-label="2023년 07월 12일"]').click();
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
+
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 1일"]`).click();
+    cy.get(`span[aria-label="2023년 ${currentMonth}월 12일"]`).click();
 
     cy.get('#date').click();
 
