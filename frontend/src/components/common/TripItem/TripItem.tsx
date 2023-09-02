@@ -82,9 +82,9 @@ const TripItem = ({
             width={isMobile ? imageWidth : 250}
             height={isMobile ? imageHeight : 167}
             isDraggable={false}
-            showNavigationOnHover
-            showArrows
-            showDots
+            showNavigationOnHover={!isMobile}
+            showArrows={information.imageUrls.length > 1}
+            showDots={information.imageUrls.length > 1}
             images={information.imageUrls}
           />
         )}
