@@ -8,10 +8,12 @@ import { useRecoilValue } from 'recoil';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
+import TripMobilePage from '@pages/TripPage/TripMobilePage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
 import { isLoggedInState } from '@store/auth';
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import * as Lazy from '@router/lazy';
 
@@ -19,6 +21,7 @@ import { PATH } from '@constants/path';
 
 const AppRouter = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
+  const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const router = createBrowserRouter([
     {
@@ -40,7 +43,7 @@ const AppRouter = () => {
           path: PATH.TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              <Lazy.TripPage />
+              {isMobile ? <TripMobilePage /> : <Lazy.TripPage />}
             </Suspense>
           ),
         },
