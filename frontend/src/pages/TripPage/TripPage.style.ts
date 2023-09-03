@@ -33,8 +33,6 @@ export const mapMobileContainerStyling = css({
 
   width: '100vw',
   height: 'calc(100vh - 65px)',
-
-  marginTop: Theme.spacer.spacing2,
 });
 
 export const skeletonContainerStyling = css({
@@ -52,4 +50,19 @@ export const buttonContainerStyling = css({
   justifyContent: 'center',
 });
 
-export const mobileSwitchButtonStyling = css({});
+export const contentStyling = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: Theme.spacer.spacing4,
+
+  width: '100%',
+  padding: `${Theme.spacer.spacing4} 50px`,
+
+  '@media screen and (max-width: 600px)': {
+    padding: Theme.spacer.spacing4,
+  },
+
+  '& > ul': {
+    width: '100%',
+  },
+});
