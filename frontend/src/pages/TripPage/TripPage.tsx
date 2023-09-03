@@ -1,11 +1,17 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRecoilValue } from 'recoil';
 
-import { Flex, useSelect } from 'hang-log-design-system';
+import { Button, Flex, useSelect } from 'hang-log-design-system';
 
-import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
+import {
+  buttonContainerStyling,
+  containerStyling,
+  mapContainerStyling,
+  mapMobileContainerStyling,
+  mobileSwitchButtonStyling,
+} from '@pages/TripPage/TripPage.style';
 
 import DayLogList from '@components/common/DayLogList/DayLogList';
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
@@ -17,6 +23,7 @@ import { useTripQuery } from '@hooks/api/useTripQuery';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const TripPage = () => {
+  const [isDaylog, setIsDaylog] = useState(true);
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
@@ -42,6 +49,44 @@ const TripPage = () => {
     [selectedDayLog.items]
   );
 
+  if (isMobile) {
+    return (
+      <Flex styles={{ direction: 'column' }}>
+        <section css={containerStyling}>
+          <TripInformation isEditable={false} {...tripData} />
+          {isDaylog && (
+            <DayLogList
+              tripId={Number(tripId)}
+              selectedDayLog={selectedDayLog}
+              isEditable={false}
+              onTabChange={handleDayLogIdSelectClick}
+            />
+          )}
+        </section>
+        {!isDaylog && (
+          <section css={mapMobileContainerStyling}>
+            <GoogleMapWrapper>
+              <TripMap
+                places={places}
+                centerLat={tripData.cities[0].latitude}
+                centerLng={tripData.cities[0].longitude}
+              />
+            </GoogleMapWrapper>
+          </section>
+        )}
+        <div css={buttonContainerStyling}>
+          <Button
+            variant="primary"
+            onClick={() => setIsDaylog((prev) => !prev)}
+            css={mobileSwitchButtonStyling}
+          >
+            {isDaylog ? '지도 보기' : '데이로그 보기'}
+          </Button>
+        </div>
+      </Flex>
+    );
+  }
+
   return (
     <Flex>
       <section css={containerStyling}>
@@ -53,17 +98,15 @@ const TripPage = () => {
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>
-      {!isMobile && (
-        <section css={mapContainerStyling}>
-          <GoogleMapWrapper>
-            <TripMap
-              places={places}
-              centerLat={tripData.cities[0].latitude}
-              centerLng={tripData.cities[0].longitude}
-            />
-          </GoogleMapWrapper>
-        </section>
-      )}
+      <section css={mapContainerStyling}>
+        <GoogleMapWrapper>
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
+        </GoogleMapWrapper>
+      </section>
     </Flex>
   );
 };

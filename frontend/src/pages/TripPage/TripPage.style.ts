@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 
+import { Theme } from 'hang-log-design-system';
+
 export const containerStyling = css({
   position: 'relative',
 
@@ -13,6 +15,7 @@ export const containerStyling = css({
 
   '@media screen and (max-width: 600px)': {
     width: '100vw',
+    paddingBottom: '0',
   },
 });
 
@@ -23,10 +26,15 @@ export const mapContainerStyling = css({
 
   width: '50vw',
   height: 'calc(100vh - 81px)',
+});
 
-  '@media screen and (max-width: 600px)': {
-    height: 'calc(100vh - 65px)',
-  },
+export const mapMobileContainerStyling = css({
+  position: 'sticky',
+
+  width: '100vw',
+  height: 'calc(100vh - 65px)',
+
+  marginTop: Theme.spacer.spacing2,
 });
 
 export const skeletonContainerStyling = css({
@@ -34,3 +42,14 @@ export const skeletonContainerStyling = css({
     borderRadius: 0,
   },
 });
+
+export const buttonContainerStyling = css({
+  position: 'fixed',
+  bottom: '30px',
+  display: 'flex',
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+export const mobileSwitchButtonStyling = css({});
