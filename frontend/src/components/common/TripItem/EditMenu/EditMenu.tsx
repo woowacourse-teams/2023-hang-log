@@ -1,9 +1,11 @@
-import { Flex, useOverlay } from 'hang-log-design-system';
+import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import {
   binIconStyling,
   editIconStyling,
   getEditMenuStyling,
+  modalButtonContainerStyling,
+  modalContentStyling,
 } from '@components/common/TripItem/EditMenu/EditMenu.style';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
@@ -25,6 +27,11 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
   const deleteTripItemMutation = useDeleteTripItemMutation();
 
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
+  const {
+    isOpen: isDeleteModalOpen,
+    close: closeDeleteModal,
+    open: openDeleteModal,
+  } = useOverlay();
 
   const handleTripItemDelete = () => {
     deleteTripItemMutation.mutate({ tripId, itemId: information.id });
@@ -37,12 +44,7 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
         css={getEditMenuStyling(hasImage, imageHeight)}
       >
         <EditIcon css={editIconStyling} role="button" aria-label="수정" onClick={openEditModal} />
-        <BinIcon
-          css={binIconStyling}
-          role="button"
-          aria-label="삭제"
-          onClick={handleTripItemDelete}
-        />
+        <BinIcon css={binIconStyling} role="button" aria-label="삭제" onClick={openDeleteModal} />
       </Flex>
       {isEditModalOpen && (
         <TripItemAddModal
@@ -69,6 +71,20 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
           }}
         />
       )}
+      <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
+        <Box css={modalContentStyling}>
+          <Heading size="xSmall">여행 기록을 삭제하겠어요?</Heading>
+          <Text>여행 기록을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
+          <Flex css={modalButtonContainerStyling}>
+            <Button variant="default" onClick={closeDeleteModal}>
+              취소
+            </Button>
+            <Button variant="danger" onClick={handleTripItemDelete}>
+              삭제
+            </Button>
+          </Flex>
+        </Box>
+      </Modal>
     </>
   );
 };
