@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Box, Heading, ImageCarousel, Text } from 'hang-log-design-system';
+import { Box, ImageCarousel, Text } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
@@ -82,16 +82,16 @@ const TripItem = ({
             width={isMobile ? imageWidth : 250}
             height={isMobile ? imageHeight : 167}
             isDraggable={false}
-            showNavigationOnHover
-            showArrows
-            showDots
+            showNavigationOnHover={!isMobile}
+            showArrows={information.imageUrls.length > 1}
+            showDots={information.imageUrls.length > 1}
             images={information.imageUrls}
           />
         )}
         <Box tag="section" css={informationContainerStyling}>
-          <Heading size="xSmall" css={titleStyling}>
+          <Text size="large" css={titleStyling}>
             {information.title}
-          </Heading>
+          </Text>
           {information.place && (
             <Text css={subInformationStyling} size="small">
               {information.place.category.name}

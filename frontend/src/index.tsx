@@ -14,6 +14,8 @@ import HttpsRedirect from '@components/utils/HttpsRedirect';
 
 import AppRouter from '@router/AppRouter';
 
+import { NETWORK } from '@constants/api';
+
 import { GlobalStyle } from '@styles/index';
 
 import { worker } from '@mocks/browser';
@@ -30,7 +32,15 @@ const main = async () => {
 
   const root = createRoot(document.querySelector('#root') as Element);
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: NETWORK.RETRY_COUNT,
+        suspense: true,
+        useErrorBoundary: true,
+      },
+    },
+  });
 
   root.render(
     <StrictMode>

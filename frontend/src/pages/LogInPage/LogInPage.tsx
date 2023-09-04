@@ -9,7 +9,7 @@ import {
   buttonContainerStyling,
   containerStyling,
   headingStyling,
-} from '@pages/SignUpPage/SignUpPage.style';
+} from '@pages/LogInPage/LogInPage.style';
 
 import GoogleButton from '@components/common/GoogleButton/GoogleButton';
 import KakaoButton from '@components/common/KakaoButton/KakaoButton';

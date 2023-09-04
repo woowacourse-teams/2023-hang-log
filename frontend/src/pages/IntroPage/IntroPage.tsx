@@ -35,7 +35,7 @@ const IntroPage = () => {
         여행과 관련된 모든 정보를 <br />
         한곳에서 기록해 보세요.
       </Heading>
-      <Button variant="primary" onClick={() => navigate(PATH.SIGN_UP)}>
+      <Button variant="primary" onClick={() => navigate(PATH.LOGIN)}>
         시작하기
       </Button>
       <img

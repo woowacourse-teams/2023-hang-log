@@ -17,37 +17,13 @@ export const headerStyling = css({
     height: '65px',
     padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing4}`,
   },
-
-  '& > *': {
-    cursor: 'pointer',
-  },
-});
-
-export const imageStyling = css({
-  minWidth: '32px',
-  minHeight: '32px',
-  maxWidth: '32px',
-  maxHeight: '32px',
-  border: 'none',
-  outline: 0,
-  borderRadius: '50%',
-
-  backgroundColor: Theme.color.gray200,
-
-  objectFit: 'cover',
-});
-
-export const menuListStyling = css({
-  transform: 'translateY(36px)',
-
-  '& > li': {
-    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
-  },
 });
 
 export const getItemStyling = (isLoggedIn: boolean) => {
   return css({
     position: 'relative',
     top: !isLoggedIn ? '-2px' : 'undefined',
+
+    cursor: 'pointer',
   });
 };

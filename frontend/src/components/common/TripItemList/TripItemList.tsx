@@ -32,10 +32,13 @@ interface TripItemListProps {
 
 const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripItemListProps) => {
   const dayLogOrderMutation = useDayLogOrderMutation();
-  const { observer } = useScrollFocus();
+
   const listRef = useRef<HTMLOListElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
+
+  const { observer } = useScrollFocus();
   const { scrollToCenter } = useAutoScroll(listRef, itemRef);
+
   const clickedMarkerId = useRecoilValue(clickedMarkerIdState);
 
   useEffect(() => {

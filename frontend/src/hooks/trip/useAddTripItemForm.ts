@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { useAddTripItemMutation } from '@hooks/api/useAddTripItemMutation';
 import { useUpdateTripItemMutation } from '@hooks/api/useUpdateTripItemMutation';
+import { useTrip } from '@hooks/trip/useTrip';
 
 import { isEmptyString } from '@utils/validator';
 
@@ -25,11 +26,15 @@ export const useAddTripItemForm = ({
   onSuccess,
   onError,
 }: UseAddTripItemFormParams) => {
+  const { dates } = useTrip(tripId);
+
+  const dayLogIndex = dates.findIndex((date) => date.id === initialDayLogId)!;
+
   const addTripItemMutation = useAddTripItemMutation();
   const updateTripItemMutation = useUpdateTripItemMutation();
   const [tripItemInformation, setTripItemInformation] = useState<TripItemFormData>(
     initialData ?? {
-      itemType: true,
+      itemType: dayLogIndex !== dates.length - 1,
       dayLogId: initialDayLogId,
       title: '',
       place: null,
@@ -56,7 +61,7 @@ export const useAddTripItemForm = ({
   );
 
   const isFormError = () => {
-    if (isEmptyString(tripItemInformation.title)) {
+    if (isEmptyString(tripItemInformation.title.trim())) {
       return true;
     }
 

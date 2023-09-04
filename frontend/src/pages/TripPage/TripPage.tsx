@@ -45,7 +45,7 @@ const TripPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation isEditable={false} {...tripData} />
+        <TripInformation tripId={Number(tripId)} isEditable={false} />
         <DayLogList
           tripId={Number(tripId)}
           selectedDayLog={selectedDayLog}

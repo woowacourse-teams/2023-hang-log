@@ -14,6 +14,8 @@ export const imageStyling = css({
   backgroundColor: Theme.color.gray200,
 
   objectFit: 'cover',
+
+  cursor: 'pointer',
 });
 
 export const menuListStyling = css({

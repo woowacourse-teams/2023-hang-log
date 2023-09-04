@@ -48,10 +48,12 @@ export const starRatingStyling = css({
 });
 
 export const titleStyling = css({
+  fontWeight: '600',
   wordBreak: 'break-all',
 });
 
 export const memoStyling = css({
+  width: '95%',
   marginTop: Theme.spacer.spacing3,
 
   wordBreak: 'break-all',

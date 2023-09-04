@@ -6,14 +6,8 @@ import { getUserInfo } from '@api/member/getUserInfo';
 
 import type { UserData } from '@type/member';
 
-import { NETWORK } from '@constants/api';
-
 export const useUserInfoQuery = () => {
-  const { data } = useQuery<UserData, AxiosError>(['userInfo'], getUserInfo, {
-    retry: NETWORK.RETRY_COUNT,
-    suspense: true,
-    useErrorBoundary: true,
-  });
+  const { data } = useQuery<UserData, AxiosError>(['userInfo'], getUserInfo);
 
   return { userInfoData: data! };
 };
