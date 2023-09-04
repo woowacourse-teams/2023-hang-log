@@ -39,10 +39,10 @@ describe('여행 수정 페이지', () => {
     });
   });
 
-  it('여행 수정 페이지에서 "여행 정보 수정" 버튼과 "저장" 버튼을 볼 수 있다.', () => {
+  it('여행 수정 페이지에서 "여행 정보 수정" 버튼과 "완료" 버튼을 볼 수 있다.', () => {
     cy.findByText('여행 정보 수정');
 
-    cy.findByText('저장');
+    cy.findByText('완료');
   });
 
   it('여행 수정 페이지에서 선택 된 날짜 길이 만큼 데이로그 탭이 만들어져 있다.', () => {
@@ -62,7 +62,7 @@ describe('여행 수정 페이지', () => {
       cy.findByPlaceholderText('소제목').should('have.value', title);
 
       items.forEach((item: TripItemData) => {
-        cy.get('h6').contains(item.title);
+        cy.get('p').contains(item.title);
       });
     });
   });
@@ -74,7 +74,7 @@ describe('여행 수정 페이지', () => {
       const { items } = expectedData.dayLogs[1];
 
       items.forEach((item: TripItemData) => {
-        cy.get('h6').contains(item.title);
+        cy.get('p').contains(item.title);
       });
     });
   });
@@ -289,7 +289,7 @@ describe('여행 아이템 추가', () => {
 
     cy.findByRole('dialog').should('not.exist');
 
-    cy.get('h6').contains('샹젤리제 거리 -> 에펠탑 지하철').should('exist');
+    cy.get('p').contains('샹젤리제 거리 -> 에펠탑 지하철').should('exist');
   });
 
   it('여행 아이템 추가 모달에서 필수 정보 외에도 입력하고 아이템을 추가한 후에 여행 아이템 목록에서 볼 수 있다.', () => {
@@ -310,7 +310,7 @@ describe('여행 아이템 추가', () => {
 
     cy.findByRole('dialog').should('not.exist');
 
-    cy.get('h6').contains('샹젤리제 거리 -> 에펠탑 지하철').should('exist');
+    cy.get('p').contains('샹젤리제 거리 -> 에펠탑 지하철').should('exist');
 
     cy.findByText('샹젤리제 거리 -> 에펠탑 지하철').parent().find('svg').should('have.length', 6);
     cy.findByText('샹젤리제 거리 -> 에펠탑 지하철')
@@ -339,16 +339,14 @@ describe('여행 아이템 수정', () => {
     cy.wait(4000);
   });
 
-  it('여행 아이템의 더 보기 버튼을 클릭해서 여행 아이템을 수정할 수 있다.', () => {
-    cy.get('button[aria-label="더 보기 메뉴"]').first().click({ force: true });
-    cy.findByText('수정').click();
+  it('여행 아이템의 수정 버튼을 클릭해서 여행 아이템을 수정할 수 있다.', () => {
+    cy.get('svg[aria-label="수정"]').first().click({ force: true });
 
     cy.findByRole('dialog').should('be.visible');
   });
 
   it.skip('여행 아이템 수정 모달을 열면 여행 아이템 정보가 입력되어 있다.', () => {
-    cy.get('button[aria-label="더 보기 메뉴"]').first().click({ force: true });
-    cy.findByText('수정').click();
+    cy.get('svg[aria-label="수정"]').first().click({ force: true });
 
     cy.fixture('trip.json').then((expectedData) => {
       const { items } = expectedData.dayLogs[0];
@@ -365,8 +363,7 @@ describe('여행 아이템 수정', () => {
   });
 
   it.skip('여행 아이템 수정 모달에서 여행 아이템 정보를 수정하면 여행 아이템 목록에서 변경된 정보를 볼 수 있다.', () => {
-    cy.get('button[aria-label="더 보기 메뉴"]').first().click({ force: true });
-    cy.findByText('수정').click();
+    cy.get('svg[aria-label="수정"]').first().click({ force: true });
 
     cy.findByRole('radio', { name: /기타/ }).click();
     cy.get('#title').type(' 택시');
@@ -383,7 +380,7 @@ describe('여행 아이템 수정', () => {
       const { items } = expectedData.dayLogs[0];
       const firstItem: TripItemData = items[0];
 
-      cy.get('h6').contains(`${firstItem.title} 택시`).should('exist');
+      cy.get('p').contains(`${firstItem.title} 택시`).should('exist');
 
       cy.findByText(`${firstItem.title} 택시`)
         .parent()

@@ -13,11 +13,6 @@ export const moreButtonStyling = css({
   '& svg': {
     width: '20px',
     height: '20px',
-
-    // '& path': {
-    //   stroke: Theme.color.white,
-    //   strokeWidth: 1.5,
-    // },
   },
 });
 

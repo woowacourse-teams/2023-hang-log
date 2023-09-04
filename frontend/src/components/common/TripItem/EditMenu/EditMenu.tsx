@@ -36,8 +36,13 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
         styles={{ direction: 'column', gap: '12px' }}
         css={getEditMenuStyling(hasImage, imageHeight)}
       >
-        <EditIcon css={editIconStyling} onClick={openEditModal} />
-        <BinIcon css={binIconStyling} onClick={handleTripItemDelete} />
+        <EditIcon css={editIconStyling} role="button" aria-label="수정" onClick={openEditModal} />
+        <BinIcon
+          css={binIconStyling}
+          role="button"
+          aria-label="삭제"
+          onClick={handleTripItemDelete}
+        />
       </Flex>
       {isEditModalOpen && (
         <TripItemAddModal
