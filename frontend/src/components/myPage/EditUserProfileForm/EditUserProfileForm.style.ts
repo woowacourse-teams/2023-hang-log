@@ -37,3 +37,25 @@ export const deleteButtonStyling = css({
     color: Theme.color.gray700,
   },
 });
+
+export const modalContentStyling = css({
+  width: '350px',
+
+  '& h6': {
+    marginBottom: Theme.spacer.spacing3,
+
+    color: Theme.color.red300,
+  },
+});
+
+export const modalButtonContainerStyling = css({
+  gap: Theme.spacer.spacing1,
+  alignItems: 'stretch',
+
+  width: '100%',
+  marginTop: Theme.spacer.spacing5,
+
+  '& > *': {
+    width: '100%',
+  },
+});
