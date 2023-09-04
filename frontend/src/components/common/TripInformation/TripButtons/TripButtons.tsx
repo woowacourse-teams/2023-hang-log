@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Button, Flex, Heading, Modal, Text, Theme, useOverlay } from 'hang-log-design-system';
+import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import {
   binIconStyling,
@@ -62,10 +62,8 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
       <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={openDeleteModal} />
       <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
         <Box css={modalContentStyling}>
-          <Heading size="xSmall" css={{ color: Theme.color.red300 }}>
-            여행 기록을 삭제하겠어요?
-          </Heading>
-          <Text>여행 기록을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
+          <Heading size="xSmall">여행 아이템을 삭제하겠어요?</Heading>
+          <Text>여행 아이템을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
           <Flex css={modalButtonContainerStyling}>
             <Button variant="default" onClick={closeDeleteModal}>
               취소
