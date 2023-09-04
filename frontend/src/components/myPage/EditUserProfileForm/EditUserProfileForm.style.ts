@@ -25,11 +25,15 @@ export const buttonStyling = css({
 });
 
 export const deleteButtonStyling = css({
-  marginTop: Theme.spacer.spacing1,
+  marginTop: Theme.spacer.spacing3,
+  padding: 0,
 
   color: Theme.color.gray600,
+  fontWeight: 'normal',
 
   '&:hover': {
-    color: Theme.color.gray800,
+    backgroundColor: 'transparent !important',
+
+    color: Theme.color.gray700,
   },
 });

@@ -48,6 +48,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
         type="button"
         css={[buttonStyling, deleteButtonStyling]}
         variant="text"
+        size="small"
         onClick={handleAccountDelete}
       >
         탈퇴하기
