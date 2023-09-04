@@ -2,7 +2,6 @@ import { useRecoilValue } from 'recoil';
 
 import { Box, Heading } from 'hang-log-design-system';
 
-import type { Segment } from '@components/common/DonutChart/DonutChart';
 import DonutChart from '@components/common/DonutChart/DonutChart';
 import ExpenseCategoryInformation from '@components/expense/ExpenseCategoryInformation/ExpenseCategoryInformation';
 import ExpenseInformation from '@components/expense/ExpenseInformation/ExpenseInformation';
@@ -17,8 +16,8 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
-import { EXPENSE_CHART_COLORS } from '@constants/expense';
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
+import { EXPENSE_CATEGORY_CHART_SIZE, EXPENSE_CATEGORY_CHART_STROKE_WIDTH } from '@constants/ui';
 
 interface TotalExpenseSectionProps {
   tripId: number;
@@ -27,31 +26,11 @@ interface TotalExpenseSectionProps {
 const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { expenseData } = useExpense(tripId);
-
-  const chartData = expenseData.categories.reduce<Segment[]>((acc, curr) => {
-    if (curr.percentage !== 0) {
-      const data = {
-        id: curr.category.id,
-        percentage: curr.percentage,
-        color: EXPENSE_CHART_COLORS[curr.category.name],
-      };
-
-      acc.push(data);
-    }
-
-    return acc;
-  }, []);
+  const { expenseData, categoryChartData } = useExpense(tripId);
 
   return (
     <section css={containerStyling}>
-      <ExpenseInformation
-        tripId={expenseData.id}
-        title={expenseData.title}
-        startDate={expenseData.startDate}
-        endDate={expenseData.endDate}
-        cities={expenseData.cities}
-      />
+      <ExpenseInformation tripId={expenseData.id} />
       <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>
@@ -62,10 +41,14 @@ const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
       <Box
         css={{
           position: 'relative',
-          width: '300px',
+          width: EXPENSE_CATEGORY_CHART_SIZE,
         }}
       >
-        <DonutChart segments={chartData} size={300} strokeWidth={60} />
+        <DonutChart
+          segments={categoryChartData}
+          size={EXPENSE_CATEGORY_CHART_SIZE}
+          strokeWidth={EXPENSE_CATEGORY_CHART_STROKE_WIDTH}
+        />
       </Box>
       <ExpenseCategoryInformation tripId={tripId} />
     </section>

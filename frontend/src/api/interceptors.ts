@@ -51,7 +51,7 @@ export const handleTokenError = async (error: AxiosError<ErrorResponseData>) => 
       data.code === ERROR_CODE.EXPIRED_REFRESH_TOKEN ||
       data.code === ERROR_CODE.INVALID_TOKEN_VALIDATE ||
       data.code === ERROR_CODE.NULL_REFRESH_TOKEN ||
-      data.code === ERROR_CODE.UNEXCEPTED_TOKEN_ERROR)
+      data.code === ERROR_CODE.UNEXPECTED_TOKEN_ERROR)
   ) {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
 

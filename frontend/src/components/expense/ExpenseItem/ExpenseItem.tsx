@@ -13,7 +13,7 @@ type ExpenseItemProps = ExpenseItemData;
 const ExpenseItem = ({ ...information }: ExpenseItemProps) => {
   return (
     <Flex tag="li" styles={{ justify: 'space-between', align: 'center' }} css={containerStyling}>
-      <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing1 }} css={{ width: '100%' }}>
+      <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing1 }} css={{ maxWidth: '100%' }}>
         <Heading size="xSmall" css={{ wordBreak: 'break-all' }}>
           {information.title}
         </Heading>
