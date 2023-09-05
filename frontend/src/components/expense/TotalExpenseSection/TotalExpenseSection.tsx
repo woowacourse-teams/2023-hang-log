@@ -21,16 +21,17 @@ import { EXPENSE_CATEGORY_CHART_SIZE, EXPENSE_CATEGORY_CHART_STROKE_WIDTH } from
 
 interface TotalExpenseSectionProps {
   tripId: number;
+  isShared: boolean;
 }
 
-const TotalExpenseSection = ({ tripId }: TotalExpenseSectionProps) => {
+const TotalExpenseSection = ({ tripId, isShared }: TotalExpenseSectionProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { expenseData, categoryChartData } = useExpense(tripId);
 
   return (
     <section css={containerStyling}>
-      <ExpenseInformation tripId={expenseData.id} />
+      <ExpenseInformation tripId={expenseData.id} isShared={isShared} />
       <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>

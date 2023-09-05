@@ -102,7 +102,7 @@ const AppRouter = () => {
           path: PATH.SHARE_EXPENSE(':tripId'),
           element: (
             <Suspense fallback={<ExpensePageSkeleton />}>
-              <ExpensePage />
+              <ExpensePage isShared />
             </Suspense>
           ),
         },

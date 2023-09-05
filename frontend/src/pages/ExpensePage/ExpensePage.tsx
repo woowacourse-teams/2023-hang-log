@@ -13,7 +13,11 @@ import { useExpenseQuery } from '@hooks/api/useExpenseQuery';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
-const ExpensePage = () => {
+interface ExpensePageProps {
+  isShared?: boolean;
+}
+
+const ExpensePage = ({ isShared = false }: ExpensePageProps) => {
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
@@ -24,7 +28,7 @@ const ExpensePage = () => {
 
   return (
     <Flex css={containerStyling}>
-      <TotalExpenseSection tripId={expenseData.id} />
+      <TotalExpenseSection tripId={expenseData.id} isShared={isShared} />
       {isMobile && <Divider css={dividerStyling} />}
       <ExpenseListSection tripId={expenseData.id} />
     </Flex>
