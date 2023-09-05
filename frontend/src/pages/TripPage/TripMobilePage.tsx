@@ -5,6 +5,7 @@ import { Button, Flex, Tab, Tabs, useSelect } from 'hang-log-design-system';
 
 import {
   buttonContainerStyling,
+  buttonStyling,
   containerStyling,
   contentStyling,
   mapMobileContainerStyling,
@@ -86,7 +87,11 @@ const TripMobilePage = () => {
         </section>
       )}
       <div css={buttonContainerStyling}>
-        <Button variant="primary" onClick={() => setIsDaylogShown((prev) => !prev)}>
+        <Button
+          variant="primary"
+          onClick={() => setIsDaylogShown((prev) => !prev)}
+          css={buttonStyling}
+        >
           {isDaylogShown ? '지도 보기' : '데이로그 보기'}
         </Button>
       </div>

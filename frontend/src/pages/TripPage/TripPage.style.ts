@@ -66,3 +66,8 @@ export const contentStyling = css({
     width: '100%',
   },
 });
+
+export const buttonStyling = css({
+  borderRadius: '40px',
+  boxShadow: Theme.boxShadow.shadow8,
+});
