@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -15,6 +16,7 @@ const plugins = [
   }),
   new webpack.HotModuleReplacementPlugin(),
   new Dotenv(),
+  new BundleAnalyzerPlugin(),
 ];
 
 if (!prod) {
@@ -57,10 +59,12 @@ module.exports = {
       },
     ],
   },
+
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.js',
+    filename: 'bundle.[chunkhash].js',
     publicPath: '/',
+    clean: true,
   },
 
   devServer: {
@@ -90,4 +94,10 @@ module.exports = {
     },
   },
   plugins,
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
