@@ -41,7 +41,12 @@ export const TripButtons = ({ tripId, sharedCode, isShared }: TripButtonsProps) 
   };
 
   const goToExpensePage = () => {
-    navigate(PATH.EXPENSE(tripId));
+    if (!isShared) {
+      navigate(PATH.EXPENSE(tripId));
+      return;
+    }
+
+    navigate(PATH.SHARE_EXPENSE(tripId));
   };
 
   const handleDeleteButtonClick = () => {
