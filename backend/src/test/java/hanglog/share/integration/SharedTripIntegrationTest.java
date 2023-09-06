@@ -155,8 +155,7 @@ class SharedTripIntegrationTest extends IntegrationTest {
     private static ExtractableResponse<Response> requestGetTrip(final MemberTokens memberTokens, final Long tripId) {
         return RestAssured
                 .given().log().all()
-                .header(AUTHORIZATION,
-                        "Bearer " + memberTokens.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().get("/trips/{tripId}", tripId)
                 .then().log().all()
@@ -166,8 +165,7 @@ class SharedTripIntegrationTest extends IntegrationTest {
     private void requestDeleteTrip(final MemberTokens memberTokens, final Long tripId) {
         RestAssured
                 .given().log().all()
-                .header(AUTHORIZATION,
-                        "Bearer " + memberTokens.getAccessToken())
+                .header(AUTHORIZATION, "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .when().delete("/trips/{tripId}", tripId)
                 .then().log().all()

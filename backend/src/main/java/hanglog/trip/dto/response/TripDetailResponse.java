@@ -34,7 +34,7 @@ public class TripDetailResponse {
                 .map(CityWithPositionResponse::of)
                 .toList();
 
-        String sharedCode = trip.getSharedCode().orElse(null);
+        final String sharedCode = trip.getSharedCode().orElse(null);
 
         return new TripDetailResponse(
                 trip.getId(),
