@@ -36,6 +36,10 @@ export const deleteButtonStyling = css({
 
     color: Theme.color.gray700,
   },
+
+  '&:focus': {
+    boxShadow: 'none',
+  },
 });
 
 export const modalContentStyling = css({
