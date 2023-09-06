@@ -57,7 +57,7 @@ module.exports = {
         use: ['url-loader'],
       },
       {
-        test: /\.png$/i,
+        test: /\.(png|jpg)$/i,
         issuer: /\.[jt]sx?$/,
         use: ['url-loader'],
       },

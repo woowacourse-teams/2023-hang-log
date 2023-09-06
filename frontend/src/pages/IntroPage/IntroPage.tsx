@@ -15,8 +15,8 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { PATH } from '@constants/path';
 
-import SampleTripImage from '@assets/png/sample-trip-image.png';
-import SampleTripImageMobile from '@assets/png/sample-trip-image_mobile.png';
+import SampleTripImage from '@assets/jpg/sample-trip-image.jpg';
+import SampleTripImageMobile from '@assets/jpg/sample-trip-image_mobile.jpg';
 
 const IntroPage = () => {
   const navigate = useNavigate();
