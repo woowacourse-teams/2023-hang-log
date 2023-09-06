@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -17,10 +19,12 @@ const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new Dotenv(),
   new BundleAnalyzerPlugin(),
+  new CompressionPlugin(),
 ];
 
 if (!prod) {
   const CopyPlugin = require('copy-webpack-plugin');
+
   plugins.push(
     new CopyPlugin({
       patterns: [{ from: 'public/mockServiceWorker.js', to: '' }],
@@ -62,7 +66,7 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.[chunkhash].js',
+    filename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
     clean: true,
   },
