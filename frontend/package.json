@@ -29,7 +29,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint src",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "analyze": "webpack-bundle-analyzer ./dist/bundle-report.json --default-sizes gzip"
   },
   "keywords": [],
   "author": "",

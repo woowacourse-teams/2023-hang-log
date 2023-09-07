@@ -18,7 +18,13 @@ const plugins = [
   }),
   new webpack.HotModuleReplacementPlugin(),
   new Dotenv(),
-  new BundleAnalyzerPlugin(),
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: 'bundle-report.json',
+  }),
+
   new CompressionPlugin(),
 ];
 
@@ -97,6 +103,7 @@ module.exports = {
       '@utils': path.resolve(__dirname, './src/utils'),
     },
   },
+
   plugins,
 
   optimization: {
