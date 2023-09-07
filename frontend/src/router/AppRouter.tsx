@@ -5,22 +5,15 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { useRecoilValue } from 'recoil';
 
-import ExpensePage from '@pages/ExpensePage/ExpensePage';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
-import IntroPage from '@pages/IntroPage/IntroPage';
-import LogInPage from '@pages/LogInPage/LogInPage';
-import MyPage from '@pages/MyPage/MyPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
-import SharedPage from '@pages/SharedPage/SharedPage';
-import TripCreatePage from '@pages/TripCreatePage/TripCreatePage';
-import TripEditPage from '@pages/TripEditPage/TripEditPage';
-import TripPage from '@pages/TripPage/TripPage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
-import TripsPage from '@pages/TripsPage/TripsPage';
 import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
 import { isLoggedInState } from '@store/auth';
+
+import * as Lazy from '@router/lazy';
 
 import { PATH } from '@constants/path';
 
@@ -37,17 +30,17 @@ const AppRouter = () => {
           path: '',
           element: isLoggedIn ? (
             <Suspense fallback={<TripsPageSkeleton />}>
-              <TripsPage />
+              <Lazy.TripsPage />
             </Suspense>
           ) : (
-            <IntroPage />
+            <Lazy.IntroPage />
           ),
         },
         {
           path: PATH.TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              <TripPage />
+              <Lazy.TripPage />
             </Suspense>
           ),
         },
@@ -55,19 +48,23 @@ const AppRouter = () => {
           path: PATH.EDIT_TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              <TripEditPage />
+              <Lazy.TripEditPage />
             </Suspense>
           ),
         },
         {
           path: PATH.CREATE_TRIP,
-          element: <TripCreatePage />,
+          element: (
+            <Suspense>
+              <Lazy.TripCreatePage />
+            </Suspense>
+          ),
         },
         {
           path: PATH.EXPENSE(':tripId'),
           element: (
             <Suspense fallback={<ExpensePageSkeleton />}>
-              <ExpensePage />
+              <Lazy.ExpensePage />
             </Suspense>
           ),
         },
@@ -77,13 +74,17 @@ const AppRouter = () => {
         },
         {
           path: PATH.LOGIN,
-          element: <LogInPage />,
+          element: (
+            <Suspense>
+              <Lazy.LogInPage />
+            </Suspense>
+          ),
         },
         {
           path: PATH.MY_PAGE,
           element: (
             <Suspense fallback={<div>LOADING</div>}>
-              <MyPage />
+              <Lazy.MyPage />
             </Suspense>
           ),
         },
@@ -91,7 +92,7 @@ const AppRouter = () => {
           path: PATH.SHARE(':code'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              <SharedPage />
+              <Lazy.SharedPage />
             </Suspense>
           ),
         },
