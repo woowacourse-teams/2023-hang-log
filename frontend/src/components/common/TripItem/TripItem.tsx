@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Box, ImageCarousel, Text } from 'hang-log-design-system';
+import { Box, Heading, ImageCarousel, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
@@ -52,6 +52,7 @@ const TripItem = ({
 }: TripListItemProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
   const viewportWidth = useRecoilValue(viewportWidthState);
+  const { isOpen: isImageModalOpen, open: openImageModal, close: closeImageModal } = useOverlay();
 
   const imageWidth = useMemo(() => viewportWidth - 48, [viewportWidth]);
   const imageHeight = useMemo(() => (imageWidth / 4.5) * 3, [imageWidth]);
@@ -66,61 +67,85 @@ const TripItem = ({
   }, [observer]);
 
   return (
-    <li
-      ref={itemRef}
-      css={getContainerStyling({ isEditable, isDragging })}
-      data-id={information.id}
-      draggable={isEditable}
-      onDragStart={onDragStart}
-      onDrag={isEditable ? handleDrag : undefined}
-      onDragEnter={onDragEnter}
-      onDragEnd={isEditable ? handleDragEnd : undefined}
-    >
-      <div ref={scrollRef} css={contentContainerStyling}>
-        {information.imageUrls.length > 0 && (
-          <ImageCarousel
-            width={isMobile ? imageWidth : 250}
-            height={isMobile ? imageHeight : 167}
-            isDraggable={false}
-            showNavigationOnHover={!isMobile}
-            showArrows={information.imageUrls.length > 1}
-            showDots={information.imageUrls.length > 1}
-            images={information.imageUrls}
+    <>
+      <li
+        ref={itemRef}
+        css={getContainerStyling({ isEditable, isDragging })}
+        data-id={information.id}
+        draggable={isEditable}
+        onDragStart={onDragStart}
+        onDrag={isEditable ? handleDrag : undefined}
+        onDragEnter={onDragEnter}
+        onDragEnd={isEditable ? handleDragEnd : undefined}
+      >
+        <div ref={scrollRef} css={contentContainerStyling}>
+          {information.imageUrls.length > 0 && (
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+            <div
+              onClick={openImageModal}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  openImageModal();
+                }
+              }}
+            >
+              <ImageCarousel
+                width={isMobile ? imageWidth : 250}
+                height={isMobile ? imageHeight : 167}
+                isDraggable={false}
+                showNavigationOnHover={!isMobile}
+                showArrows={information.imageUrls.length > 1}
+                showDots={information.imageUrls.length > 1}
+                images={information.imageUrls}
+              />
+            </div>
+          )}
+          <Box tag="section" css={informationContainerStyling}>
+            <Text size="large" css={titleStyling}>
+              {information.title}
+            </Text>
+            {information.place && (
+              <Text css={subInformationStyling} size="small">
+                {information.place.category.name}
+              </Text>
+            )}
+            {information.rating && <StarRating css={starRatingStyling} rate={information.rating} />}
+            {information.memo && (
+              <Text css={memoStyling} size="small">
+                {information.memo}
+              </Text>
+            )}
+            {information.expense && (
+              <Text css={expenseStyling} size="small">
+                {information.expense.category.name} · {CURRENCY_ICON[information.expense.currency]}
+                {formatNumberToMoney(information.expense.amount)}
+              </Text>
+            )}
+          </Box>
+        </div>
+        {isEditable ? (
+          <EditMenu
+            tripId={tripId}
+            dayLogId={dayLogId}
+            hasImage={information.imageUrls.length > 0}
+            imageHeight={imageHeight}
+            {...information}
           />
-        )}
-        <Box tag="section" css={informationContainerStyling}>
-          <Text size="large" css={titleStyling}>
-            {information.title}
-          </Text>
-          {information.place && (
-            <Text css={subInformationStyling} size="small">
-              {information.place.category.name}
-            </Text>
-          )}
-          {information.rating && <StarRating css={starRatingStyling} rate={information.rating} />}
-          {information.memo && (
-            <Text css={memoStyling} size="small">
-              {information.memo}
-            </Text>
-          )}
-          {information.expense && (
-            <Text css={expenseStyling} size="small">
-              {information.expense.category.name} · {CURRENCY_ICON[information.expense.currency]}
-              {formatNumberToMoney(information.expense.amount)}
-            </Text>
-          )}
-        </Box>
-      </div>
-      {isEditable ? (
-        <EditMenu
-          tripId={tripId}
-          dayLogId={dayLogId}
-          hasImage={information.imageUrls.length > 0}
-          imageHeight={imageHeight}
-          {...information}
+        ) : null}
+      </li>
+      <Modal isOpen={isImageModalOpen} closeModal={closeImageModal}>
+        <Heading size="small">{information.title}</Heading>
+        <ImageCarousel
+          width={isMobile ? imageWidth : 500}
+          height={isMobile ? imageHeight : 334}
+          isDraggable={false}
+          showNavigationOnHover={!isMobile}
+          showArrows={information.imageUrls.length > 1}
+          showDots={information.imageUrls.length > 1}
+          images={information.imageUrls}
         />
-      ) : null}
-    </li>
+      </Modal>
+    </>
   );
 };
 
