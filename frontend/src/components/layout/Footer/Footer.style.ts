@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const containerStyling = css({
+  position: 'sticky',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

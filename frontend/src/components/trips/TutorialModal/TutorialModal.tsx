@@ -7,7 +7,7 @@ import {
   // Flex,
   // Modal,
   // SVGCarousel,
-  SVGCarouselModal,
+  SVGCarousel,
   useOverlay,
 } from 'hang-log-design-system';
 
@@ -32,7 +32,7 @@ const TutorialModal = () => {
   }, [openTutorial]);
 
   return (
-    <SVGCarouselModal
+    <SVGCarousel
       modalWidth={isMobile ? window.innerWidth - 32 - 48 : 385}
       modalHeight={isMobile ? window.innerWidth : 412}
       isOpen={isTutorialOpen}

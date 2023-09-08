@@ -9,6 +9,7 @@ const meta = {
   component: ExpenseInformation,
   args: {
     tripId: 1,
+    isShared: false,
   },
   decorators: [
     (Story) => {
