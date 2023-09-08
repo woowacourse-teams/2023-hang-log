@@ -17,7 +17,7 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
-import { useTripDates } from '@hooks/trip/useTripDates';
+import { useTrip } from '@hooks/trip/useTrip';
 
 import { formatMonthDate } from '@utils/formatter';
 
@@ -31,7 +31,7 @@ const TripMobilePage = () => {
     tripData.dayLogs[0].id
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const { dates } = useTripDates(Number(tripId));
+  const { dates } = useTrip(Number(tripId));
 
   const places = useMemo(
     () =>
@@ -48,7 +48,7 @@ const TripMobilePage = () => {
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation isEditable={false} {...tripData} />
+        <TripInformation tripId={Number(tripId)} isEditable={false} />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {

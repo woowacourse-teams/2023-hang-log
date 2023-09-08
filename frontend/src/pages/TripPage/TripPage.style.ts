@@ -59,7 +59,7 @@ export const contentStyling = css({
   padding: `${Theme.spacer.spacing4} 50px`,
 
   '@media screen and (max-width: 600px)': {
-    padding: Theme.spacer.spacing4,
+    padding: `${Theme.spacer.spacing3} ${Theme.spacer.spacing4} 0 ${Theme.spacer.spacing4}`,
   },
 
   '& > ul': {

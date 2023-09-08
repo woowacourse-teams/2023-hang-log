@@ -8,7 +8,6 @@ import { useRecoilValue } from 'recoil';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
-import TripMobilePage from '@pages/TripPage/TripMobilePage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
@@ -43,7 +42,7 @@ const AppRouter = () => {
           path: PATH.TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              {isMobile ? <TripMobilePage /> : <Lazy.TripPage />}
+              {isMobile ? <Lazy.TripMobilePage /> : <Lazy.TripPage />}
             </Suspense>
           ),
         },
