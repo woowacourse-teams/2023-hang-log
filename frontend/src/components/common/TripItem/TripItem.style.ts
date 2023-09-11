@@ -57,6 +57,7 @@ export const memoStyling = css({
   marginTop: Theme.spacer.spacing3,
 
   wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
 });
 
 export const expenseStyling = css({
