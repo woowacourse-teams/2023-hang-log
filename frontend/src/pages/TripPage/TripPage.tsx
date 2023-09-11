@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRecoilValue } from 'recoil';
-
 import { Flex, useSelect } from 'hang-log-design-system';
 
 import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
@@ -14,14 +12,10 @@ import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
 
-import { mediaQueryMobileState } from '@store/mediaQuery';
-
 const TripPage = () => {
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
-
-  const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { tripData } = useTripQuery(Number(tripId));
 
@@ -53,17 +47,15 @@ const TripPage = () => {
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>
-      {!isMobile && (
-        <section css={mapContainerStyling}>
-          <GoogleMapWrapper>
-            <TripMap
-              places={places}
-              centerLat={tripData.cities[0].latitude}
-              centerLng={tripData.cities[0].longitude}
-            />
-          </GoogleMapWrapper>
-        </section>
-      )}
+      <section css={mapContainerStyling}>
+        <GoogleMapWrapper>
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
+        </GoogleMapWrapper>
+      </section>
     </Flex>
   );
 };

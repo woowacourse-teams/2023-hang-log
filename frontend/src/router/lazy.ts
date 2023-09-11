@@ -30,6 +30,10 @@ export const TripPage = lazy(
   () => import(/* webpackChunkName: "TripPage" */ '@pages/TripPage/TripPage')
 );
 
+export const TripMobilePage = lazy(
+  () => import(/* webpackChunkName: "TripPage" */ '@pages/TripPage/TripMobilePage')
+);
+
 export const TripsPage = lazy(
   () => import(/* webpackChunkName: "TripsPage" */ '@pages/TripsPage/TripsPage')
 );

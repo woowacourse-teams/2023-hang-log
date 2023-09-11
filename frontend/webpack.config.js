@@ -5,6 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CompressionPlugin = require('compression-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -29,8 +30,6 @@ const plugins = [
 ];
 
 if (!prod) {
-  const CopyPlugin = require('copy-webpack-plugin');
-
   plugins.push(
     new CopyPlugin({
       patterns: [{ from: 'public/mockServiceWorker.js', to: '' }],
@@ -42,9 +41,7 @@ module.exports = {
   mode: prod ? 'production' : 'development',
   devtool: prod ? 'hidden-source-map' : 'eval',
   entry: './src/index.tsx',
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  },
+
   module: {
     rules: [
       {
