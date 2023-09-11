@@ -6,10 +6,11 @@ import type { StarRatingData, TripItemFormData } from '@type/tripItem';
 
 interface StarRatingInputProps {
   rating: StarRatingData | null;
+  isMobile: boolean;
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const StarRatingInput = ({ rating, updateInputValue }: StarRatingInputProps) => {
+const StarRatingInput = ({ rating, isMobile, updateInputValue }: StarRatingInputProps) => {
   const handleRatingChange = (rate: StarRatingData) => {
     const newRate = rate || null;
     updateInputValue('rating', newRate);
@@ -22,6 +23,7 @@ const StarRatingInput = ({ rating, updateInputValue }: StarRatingInputProps) => 
 
   return (
     <StarRating
+      isMobile={isMobile}
       label="별점"
       size={32}
       gap={8}
