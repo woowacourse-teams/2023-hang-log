@@ -25,6 +25,7 @@ import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -119,5 +120,15 @@ public class Trip extends BaseEntity {
             return DEFAULT_IMAGE_NAME;
         }
         return convertUrlToName(imageUrl);
+    }
+
+    public Optional<String> getSharedCode(){
+        if(Optional.ofNullable(sharedTrip).isEmpty()){
+            return Optional.empty();
+        }
+        if(sharedTrip.isUnShared()){
+            return Optional.empty();
+        }
+        return Optional.of(sharedTrip.getSharedCode());
     }
 }

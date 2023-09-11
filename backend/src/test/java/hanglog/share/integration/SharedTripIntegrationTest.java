@@ -3,10 +3,13 @@ package hanglog.share.integration;
 import static hanglog.global.IntegrationFixture.END_DATE;
 import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import hanglog.auth.domain.MemberTokens;
 import hanglog.global.IntegrationTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -77,6 +80,54 @@ class SharedTripIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    @DisplayName("처음 생성된 여행은 비공유 상태이다")
+    @Test
+    void updateSharedStatus_InitialTripStatus(){
+        // when
+        final ExtractableResponse<Response> response = requestGetTrip(memberTokens,tripId);
+
+        // then
+        assertThat(response.body().jsonPath().getString("sharedTrip")).isNull();
+    }
+
+    @DisplayName("비공유 여행에서는 공유 코드를 볼 수 없다")
+    @Test
+    void updateSharedStatus_UnSharedTrip(){
+        // given
+        requestUpdateSharedTripStatus(true);
+        requestUpdateSharedTripStatus(false);
+
+        // when
+        final ExtractableResponse<Response> response = requestGetTrip(memberTokens,tripId);
+
+        // then
+        assertThat(response.body().jsonPath().getString("sharedTrip")).isNull();
+    }
+
+    @DisplayName("삭제된 여행은 공유 할 수 없다")
+    @Test
+    void getSharedTrip_deleteTripFail(){
+        // given
+        final String sharedCode = requestUpdateSharedTripStatus(true).body().jsonPath().get("sharedCode");
+        requestDeleteTrip(memberTokens,tripId);
+
+        // when
+        final ExtractableResponse<Response> response = RestAssured.given()
+                .when().get("/shared-trips/{sharedCode}", sharedCode)
+                .then().log().all()
+                .extract();
+        final Integer errorCode = Integer.parseInt(response.body().jsonPath().get("code").toString());
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(errorCode).isEqualTo(NOT_FOUND_SHARED_CODE.getCode());
+                }
+        );
+    }
+
     @DisplayName("비공유된 여행은 조회할 수 없다")
     @Test
     void getSharedTrip_UnsharedFail() {
@@ -90,6 +141,7 @@ class SharedTripIntegrationTest extends IntegrationTest {
                 .then().log().all()
                 .extract();
         final Integer errorCode = Integer.parseInt(response.body().jsonPath().get("code").toString());
+
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertSoftly(
@@ -98,5 +150,25 @@ class SharedTripIntegrationTest extends IntegrationTest {
                     softly.assertThat(errorCode).isEqualTo(INVALID_SHARE_CODE.getCode());
                 }
         );
+    }
+
+    private static ExtractableResponse<Response> requestGetTrip(final MemberTokens memberTokens, final Long tripId) {
+        return RestAssured
+                .given().log().all()
+                .header(AUTHORIZATION, "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
+                .when().get("/trips/{tripId}", tripId)
+                .then().log().all()
+                .extract();
+    }
+
+    private void requestDeleteTrip(final MemberTokens memberTokens, final Long tripId) {
+        RestAssured
+                .given().log().all()
+                .header(AUTHORIZATION, "Bearer " + memberTokens.getAccessToken())
+                .cookies("refresh-token", memberTokens.getRefreshToken())
+                .when().delete("/trips/{tripId}", tripId)
+                .then().log().all()
+                .extract();
     }
 }
