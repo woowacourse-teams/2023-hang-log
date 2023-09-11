@@ -53,7 +53,10 @@ const TripItem = ({
   ...information
 }: TripListItemProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
-  const { mobileImageSize } = useResizeImage({});
+  const { mobileImageSize, modalImageSize } = useResizeImage({
+    width: TRIP_ITEM_IMAGE_WIDTH,
+    height: TRIP_ITEM_IMAGE_HEIGHT,
+  });
 
   const { isOpen: isImageModalOpen, open: openImageModal, close: closeImageModal } = useOverlay();
 
@@ -136,8 +139,8 @@ const TripItem = ({
       <Modal isOpen={isImageModalOpen} closeModal={closeImageModal}>
         <Heading size="small">{information.title}</Heading>
         <ImageCarousel
-          width={TRIP_ITEM_IMAGE_WIDTH * 2}
-          height={TRIP_ITEM_IMAGE_HEIGHT * 2}
+          width={modalImageSize.width}
+          height={modalImageSize.height}
           isDraggable={false}
           showNavigationOnHover={!isMobile}
           showArrows={information.imageUrls.length > 1}

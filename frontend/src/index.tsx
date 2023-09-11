@@ -3,7 +3,7 @@ import { Global } from '@emotion/react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { RecoilRoot } from 'recoil';
@@ -12,9 +12,9 @@ import { HangLogProvider } from 'hang-log-design-system';
 
 import HttpsRedirect from '@components/utils/HttpsRedirect';
 
-import AppRouter from '@router/AppRouter';
+import { queryClient } from '@hooks/api/queryClient';
 
-import { NETWORK } from '@constants/api';
+import AppRouter from '@router/AppRouter';
 
 import { GlobalStyle } from '@styles/index';
 
@@ -31,16 +31,6 @@ const main = async () => {
   }
 
   const root = createRoot(document.querySelector('#root') as Element);
-
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: NETWORK.RETRY_COUNT,
-        suspense: true,
-        useErrorBoundary: true,
-      },
-    },
-  });
 
   root.render(
     <StrictMode>
