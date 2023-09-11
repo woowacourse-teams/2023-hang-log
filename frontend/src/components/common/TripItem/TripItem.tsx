@@ -1,5 +1,5 @@
 import type { ForwardedRef } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
@@ -19,14 +19,16 @@ import {
 } from '@components/common/TripItem/TripItem.style';
 
 import { useDraggedItem } from '@hooks/common/useDraggedItem';
+import useResizeImage from '@hooks/trip/useResizeImage';
 
-import { mediaQueryMobileState, viewportWidthState } from '@store/mediaQuery';
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
 import type { TripItemData } from '@type/tripItem';
 
 import { CURRENCY_ICON } from '@constants/trip';
+import { TRIP_ITEM_IMAGE_HEIGHT, TRIP_ITEM_IMAGE_WIDTH } from '@constants/ui';
 
 interface TripListItemProps extends TripItemData {
   tripId: number;
@@ -51,11 +53,9 @@ const TripItem = ({
   ...information
 }: TripListItemProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
-  const viewportWidth = useRecoilValue(viewportWidthState);
-  const { isOpen: isImageModalOpen, open: openImageModal, close: closeImageModal } = useOverlay();
+  const { mobileImageSize } = useResizeImage({});
 
-  const imageWidth = useMemo(() => viewportWidth - 48, [viewportWidth]);
-  const imageHeight = useMemo(() => (imageWidth / 4.5) * 3, [imageWidth]);
+  const { isOpen: isImageModalOpen, open: openImageModal, close: closeImageModal } = useOverlay();
 
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
   const itemRef = useRef<HTMLLIElement>(null);
@@ -82,7 +82,7 @@ const TripItem = ({
           {information.imageUrls.length > 0 && (
             // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
-              onClick={openImageModal}
+              onClick={isMobile ? undefined : openImageModal}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   openImageModal();
@@ -90,8 +90,8 @@ const TripItem = ({
               }}
             >
               <ImageCarousel
-                width={isMobile ? imageWidth : 250}
-                height={isMobile ? imageHeight : 167}
+                width={isMobile ? mobileImageSize.width : TRIP_ITEM_IMAGE_WIDTH}
+                height={isMobile ? mobileImageSize.height : TRIP_ITEM_IMAGE_HEIGHT}
                 isDraggable={false}
                 showNavigationOnHover={!isMobile}
                 showArrows={information.imageUrls.length > 1}
@@ -128,7 +128,7 @@ const TripItem = ({
             tripId={tripId}
             dayLogId={dayLogId}
             hasImage={information.imageUrls.length > 0}
-            imageHeight={imageHeight}
+            imageHeight={mobileImageSize.height}
             {...information}
           />
         ) : null}
@@ -136,8 +136,8 @@ const TripItem = ({
       <Modal isOpen={isImageModalOpen} closeModal={closeImageModal}>
         <Heading size="small">{information.title}</Heading>
         <ImageCarousel
-          width={isMobile ? imageWidth : 500}
-          height={isMobile ? imageHeight : 334}
+          width={TRIP_ITEM_IMAGE_WIDTH * 2}
+          height={TRIP_ITEM_IMAGE_HEIGHT * 2}
           isDraggable={false}
           showNavigationOnHover={!isMobile}
           showArrows={information.imageUrls.length > 1}
