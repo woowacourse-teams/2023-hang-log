@@ -2,14 +2,25 @@ import { Status, Wrapper } from '@googlemaps/react-wrapper';
 
 import type { PropsWithChildren } from 'react';
 
-import { Spinner } from 'hang-log-design-system';
+import { Flex, Spinner } from 'hang-log-design-system';
 
 type GoogleMapWrapperProps = PropsWithChildren;
 
 const render = (status: Status) => {
   if (status === Status.FAILURE) throw new Error('오류가 발생했습니다.');
 
-  return <Spinner />;
+  return (
+    <Flex
+      styles={{
+        width: '100%',
+        height: '100%',
+        justify: 'center',
+        align: 'center',
+      }}
+    >
+      <Spinner />
+    </Flex>
+  );
 };
 
 const GoogleMapWrapper = ({ children }: GoogleMapWrapperProps) => {

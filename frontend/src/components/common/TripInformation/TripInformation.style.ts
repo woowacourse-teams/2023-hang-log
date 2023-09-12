@@ -51,6 +51,8 @@ export const titleStyling = css({
 
 export const descriptionStyling = css({
   marginTop: Theme.spacer.spacing3,
+
+  whiteSpace: 'pre-wrap',
 });
 
 export const buttonContainerStyling = css({
