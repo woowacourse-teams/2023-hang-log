@@ -19,6 +19,12 @@ const plugins = [
   }),
   new webpack.HotModuleReplacementPlugin(),
   new Dotenv(),
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: 'bundle-report.json',
+  }),
 
   new CompressionPlugin(),
 ];

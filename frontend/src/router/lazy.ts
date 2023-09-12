@@ -14,8 +14,8 @@ export const LogInPage = lazy(
 
 export const MyPage = lazy(() => import(/* webpackChunkName: "MyPage" */ '@pages/MyPage/MyPage'));
 
-export const SharedPage = lazy(
-  () => import(/* webpackChunkName: "SharedPage" */ '@pages/SharedPage/SharedPage')
+export const SharedTripPage = lazy(
+  () => import(/* webpackChunkName: "SharedPage" */ '@/pages/SharedPage/SharedTripPage')
 );
 
 export const TripCreatePage = lazy(
