@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { SVGCarousel, useOverlay } from 'hang-log-design-system';
+import { SVGCarouselModal, useOverlay } from 'hang-log-design-system';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
@@ -20,7 +20,7 @@ const TutorialModal = () => {
   }, [openTutorial]);
 
   return (
-    <SVGCarousel
+    <SVGCarouselModal
       modalWidth={isMobile ? window.innerWidth - 32 - 48 : 385}
       modalHeight={isMobile ? window.innerWidth : 412}
       isOpen={isTutorialOpen}

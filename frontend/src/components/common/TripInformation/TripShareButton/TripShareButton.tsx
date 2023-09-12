@@ -30,7 +30,9 @@ interface TripShareButtonProps {
 const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
   const tripShareStatusMutation = useTripShareStatusMutation();
   const [isSharable, setIsSharable] = useState(!!sharedCode);
-  const [sharedUrl, setShareUrl] = useState(sharedCode ? BASE_URL + PATH.SHARE(sharedCode) : null);
+  const [sharedUrl, setShareUrl] = useState(
+    sharedCode ? BASE_URL + PATH.SHARE_TRIP(sharedCode) : null
+  );
   const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
   const { handleCopyButtonClick } = useTripShare(sharedUrl);
 
@@ -48,7 +50,7 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
 
           if (!sharedCode || !!sharedUrl) return;
 
-          setShareUrl(BASE_URL + PATH.SHARE(sharedCode));
+          setShareUrl(BASE_URL + PATH.SHARE_TRIP(sharedCode));
         },
       }
     );

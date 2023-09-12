@@ -37,7 +37,7 @@ const ExpenseInformation = ({ tripId, isShared }: ExpenseInformationProps) => {
       return;
     }
 
-    navigate(PATH.SHARE(tripId));
+    navigate(PATH.SHARE_TRIP(tripId));
   };
 
   return (
