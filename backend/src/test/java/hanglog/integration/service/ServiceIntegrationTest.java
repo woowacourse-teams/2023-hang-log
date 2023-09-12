@@ -1,4 +1,4 @@
-package hanglog.global;
+package hanglog.integration.service;
 
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;

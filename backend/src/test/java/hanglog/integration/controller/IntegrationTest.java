@@ -1,4 +1,4 @@
-package hanglog.global;
+package hanglog.integration.controller;
 
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;

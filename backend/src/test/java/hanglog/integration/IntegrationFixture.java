@@ -1,13 +1,13 @@
-package hanglog.global;
+package hanglog.integration;
 
 import static hanglog.trip.domain.type.ItemType.SPOT;
 
 import hanglog.category.domain.Category;
+import hanglog.city.domain.City;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.image.domain.Image;
 import hanglog.member.domain.Member;
-import hanglog.city.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;

@@ -1,15 +1,14 @@
-package hanglog.trip.integration;
+package hanglog.integration.controller;
 
-import static hanglog.global.IntegrationFixture.EDINBURGH;
-import static hanglog.global.IntegrationFixture.LAHGON_TRIP;
-import static hanglog.global.IntegrationFixture.LONDON;
-import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
+import static hanglog.integration.IntegrationFixture.EDINBURGH;
+import static hanglog.integration.IntegrationFixture.LAHGON_TRIP;
+import static hanglog.integration.IntegrationFixture.LONDON;
+import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import hanglog.auth.domain.MemberTokens;
-import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;

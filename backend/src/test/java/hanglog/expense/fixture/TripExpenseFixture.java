@@ -3,7 +3,7 @@ package hanglog.expense.fixture;
 import static hanglog.expense.fixture.ExpenseFixture.EUR_100_SHOPPING_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.KRW_100_FOOD_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.USD_100_ACCOMMODATION_EXPENSE;
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;

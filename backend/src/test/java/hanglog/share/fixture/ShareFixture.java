@@ -1,11 +1,11 @@
 package hanglog.share.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
-import hanglog.share.domain.SharedTrip;
 import hanglog.city.domain.City;
+import hanglog.share.domain.SharedTrip;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import java.math.BigDecimal;
