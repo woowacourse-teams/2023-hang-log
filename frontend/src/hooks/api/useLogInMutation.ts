@@ -12,7 +12,6 @@ import { axiosInstance } from '@api/axiosInstance';
 import { postLogIn } from '@api/member/postLogIn';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
-import { PATH } from '@constants/path';
 
 export const useLogInMutation = () => {
   const navigate = useNavigate();
