@@ -16,7 +16,7 @@ import { useSharedQuery } from '@hooks/api/useSharedTripQuery';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
-const SharedPage = () => {
+const SharedTripPage = () => {
   const { code } = useParams();
 
   if (!code) throw new Error('존재하지 않는 공유코드입니다.');
@@ -69,4 +69,4 @@ const SharedPage = () => {
   );
 };
 
-export default SharedPage;
+export default SharedTripPage;
