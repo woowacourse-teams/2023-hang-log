@@ -5,15 +5,15 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
+import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.city.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
-import hanglog.city.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -169,6 +169,7 @@ public class TripService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         tripRepository.delete(trip);
+        tripCityRepository.deleteAllByTripId(tripId);
     }
 
     private String generateInitialTitle(final List<City> cites) {
