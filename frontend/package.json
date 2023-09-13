@@ -22,12 +22,11 @@
   ],
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack --mode development",
-    "dev": "cross-env NODE_ENV=development webpack serve --mode development --open --hot",
-    "prod": "cross-env NODE_ENV=production webpack serve --mode production --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "serve:dev": "cross-env NODE_ENV=development webpack serve --mode development --open --hot --config config/webpack.dev.js",
+    "serve:prod": "cross-env NODE_ENV=production webpack serve --mode production --open --hot --config config/webpack.prod.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.prod.js",
+    "build:sb": "storybook build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "lint": "eslint src",
     "cypress": "cypress open",
     "analyze": "webpack-bundle-analyzer ./dist/bundle-report.json --default-sizes gzip"
@@ -97,7 +96,8 @@
     "webpack": "^5.88.1",
     "webpack-bundle-analyzer": "^4.9.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
   },
   "msw": {
     "workerDirectory": "public"
