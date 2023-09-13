@@ -27,3 +27,10 @@ export const getItemStyling = (isLoggedIn: boolean) => {
     cursor: 'pointer',
   });
 };
+
+export const getTapNavigateButtonStyling = (isLoggedIn: boolean) => {
+  return css({
+    display: isLoggedIn ? 'block' : 'none',
+    cursor: 'pointer',
+  });
+};
