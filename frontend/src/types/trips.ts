@@ -20,3 +20,13 @@ export interface NewTripData {
   endDate: string | null;
   cityIds: number[];
 }
+
+export interface RecommendedTripsData {
+  title: string;
+  trips: TripsData[];
+  startDate: string;
+  endDate: string;
+  description: string;
+  likeCount: number;
+  isLike: boolean;
+}

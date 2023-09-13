@@ -1,3 +1,5 @@
+import { trips } from '@/mocks/data/myTrips';
+
 import { rest } from 'msw';
 
 import type { TripFormData } from '@type/trip';
@@ -6,9 +8,8 @@ import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
 import { communityTrip } from '@mocks/data/communityTrip';
 import { trip } from '@mocks/data/trip';
-import { trips } from '@mocks/data/trips';
 
-export const tripsHandlers = [
+export const myTripsHandlers = [
   rest.get(`${END_POINTS.TRIPS}`, (_, res, ctx) => {
     return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trips));
   }),
