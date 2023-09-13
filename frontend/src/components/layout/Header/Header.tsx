@@ -41,11 +41,13 @@ const Header = () => {
             css={getTapNavigateButtonStyling(isLoggedIn)}
             tabIndex={1}
             aria-label="커뮤니티 페이지 이동 버튼"
+            onClick={() => navigate(PATH.ROOT)}
           />
           <TextMyTrip
             css={getTapNavigateButtonStyling(isLoggedIn)}
             tabIndex={2}
             aria-label="내 여행 페이지 이동 버튼"
+            onClick={() => navigate(PATH.MY_TRIPS)}
           />
         </Flex>
         {isLoggedIn ? (
