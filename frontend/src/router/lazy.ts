@@ -4,8 +4,8 @@ export const ExpensePage = lazy(
   () => import(/* webpackChunkName: "ExpensePage" */ '@pages/ExpensePage/ExpensePage')
 );
 
-export const IntroPage = lazy(
-  () => import(/* webpackChunkName: "IntroPage" */ '@pages/IntroPage/IntroPage')
+export const CommunityPage = lazy(
+  () => import(/* webpackChunkName: "IntroPage" */ '@/pages/CommunityPage/CommunityPage')
 );
 
 export const LogInPage = lazy(
@@ -35,7 +35,7 @@ export const TripMobilePage = lazy(
 );
 
 export const TripsPage = lazy(
-  () => import(/* webpackChunkName: "TripsPage" */ '@pages/TripsPage/TripsPage')
+  () => import(/* webpackChunkName: "TripsPage" */ '@/pages/MyTripsPage/MyTripsPage')
 );
 
 export const CommunityTripPage = lazy(

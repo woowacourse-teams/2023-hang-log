@@ -1,4 +1,5 @@
 import App from '@/App';
+import TripsPageSkeleton from '@/pages/MyTripsPage/MyTripsPageSkeleton';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -9,7 +10,6 @@ import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
-import TripsPageSkeleton from '@pages/TripsPage/TripsPageSkeleton';
 
 import { isLoggedInState } from '@store/auth';
 import { mediaQueryMobileState } from '@store/mediaQuery';
@@ -32,10 +32,18 @@ const AppRouter = () => {
           path: '',
           element: isLoggedIn ? (
             <Suspense fallback={<TripsPageSkeleton />}>
-              <Lazy.TripsPage />
+              <Lazy.CommunityPage />
             </Suspense>
           ) : (
-            <Lazy.IntroPage />
+            <Lazy.CommunityPage />
+          ),
+        },
+        {
+          path: PATH.MY_TRIPS,
+          element: (
+            <Suspense fallback={<TripsPageSkeleton />}>
+              <Lazy.TripsPage />
+            </Suspense>
           ),
         },
         {

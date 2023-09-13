@@ -15,6 +15,7 @@ export const END_POINTS = {
   DAY_LOG_ORDER: (tripId: string, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
   CREATE_TRIP_ITEM: (tripId: string) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: string, itemId: number) => `/trips/${tripId}/items/${itemId}`,
+  RECOMMENDED_TRIPS: '/community/recommends',
   CITY: '/cities',
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,

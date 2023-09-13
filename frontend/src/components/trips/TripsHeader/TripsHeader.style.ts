@@ -18,6 +18,8 @@ export const imageStyling = css({
 export const headingStyling = css({
   marginLeft: '50px',
 
+  fontWeight: 400,
+
   '@media screen and (max-width: 600px)': {
     marginLeft: Theme.spacer.spacing4,
     padding: '36px 0',

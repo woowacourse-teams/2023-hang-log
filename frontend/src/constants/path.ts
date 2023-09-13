@@ -1,5 +1,6 @@
 export const PATH = {
   ROOT: '/',
+  MY_TRIPS: '/my-trips',
   CREATE_TRIP: '/trip-new',
   EDIT_TRIP: (tripId: string) => `/trip/${tripId}/edit`,
   TRIP: (tripId: string) => `/trip/${tripId}`,
