@@ -1,13 +1,13 @@
-package hanglog.trip.integration;
+package hanglog.integration.controller;
 
-import static hanglog.global.IntegrationFixture.EDINBURGH;
-import static hanglog.global.IntegrationFixture.END_DATE;
-import static hanglog.global.IntegrationFixture.LONDON;
-import static hanglog.global.IntegrationFixture.START_DATE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
+import static hanglog.integration.IntegrationFixture.EDINBURGH;
+import static hanglog.integration.IntegrationFixture.END_DATE;
+import static hanglog.integration.IntegrationFixture.LONDON;
+import static hanglog.integration.IntegrationFixture.START_DATE;
 import static io.restassured.http.ContentType.JSON;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
@@ -17,7 +17,6 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
-import hanglog.global.IntegrationTest;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -177,7 +176,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 null
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId,
+                itemUpdateRequest);
         final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
@@ -221,7 +221,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 getExpenseRequest()
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId,
+                itemUpdateRequest);
         final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
@@ -258,7 +259,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 getExpenseRequest()
         );
 
-        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId, itemUpdateRequest);
+        final ExtractableResponse<Response> response = requestUpdateItem(memberTokens, tripId, itemId,
+                itemUpdateRequest);
         final List<ItemResponse> itemResponses = requestGetItems(memberTokens, tripId, dayLogId);
 
         final ItemResponse expectedItemResponse = createMockIdResponseBy(1, itemUpdateRequest);
@@ -279,7 +281,8 @@ public class ItemIntegrationTest extends IntegrationTest {
     @Test
     void deleteItem() {
         // given
-        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, getNonSpotItemRequest());
+        final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId,
+                getNonSpotItemRequest());
         final Long itemId = Long.parseLong(parseUri(createResponse.header("Location")));
 
         // when
@@ -298,7 +301,7 @@ public class ItemIntegrationTest extends IntegrationTest {
             final MemberTokens memberTokens,
             final Long tripId,
             final ItemRequest itemRequest
-        ) {
+    ) {
         return RestAssured
                 .given().log().all()
                 .header(AUTHORIZATION,

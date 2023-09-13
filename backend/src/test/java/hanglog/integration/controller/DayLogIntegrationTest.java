@@ -1,13 +1,12 @@
-package hanglog.trip.integration;
+package hanglog.integration.controller;
 
-import static hanglog.global.IntegrationFixture.START_DATE;
-import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
-import static hanglog.trip.integration.ItemIntegrationTest.requestCreateItem;
+import static hanglog.integration.IntegrationFixture.START_DATE;
+import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
+import static hanglog.integration.controller.ItemIntegrationTest.requestCreateItem;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import hanglog.global.IntegrationTest;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;

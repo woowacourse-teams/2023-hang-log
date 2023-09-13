@@ -1,6 +1,6 @@
 package hanglog.trip.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_1;

@@ -1,4 +1,4 @@
-package hanglog.auth.service;
+package hanglog.integration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -7,7 +7,7 @@ import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
-import hanglog.global.ServiceIntegrationTest;
+import hanglog.auth.service.AuthService;
 import hanglog.trip.domain.repository.TripRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

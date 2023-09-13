@@ -1,6 +1,6 @@
 package hanglog.auth.presentation;
 
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

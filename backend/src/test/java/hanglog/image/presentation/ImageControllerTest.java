@@ -1,6 +1,6 @@
 package hanglog.image.presentation;
 
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.POST;

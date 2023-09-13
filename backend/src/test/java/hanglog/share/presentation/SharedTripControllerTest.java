@@ -1,10 +1,10 @@
 package hanglog.share.presentation;
 
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.share.fixture.ShareFixture.BEIJING;
 import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
 import static hanglog.share.fixture.ShareFixture.TOKYO;
 import static hanglog.share.fixture.ShareFixture.TRIP;
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;

@@ -1,22 +1,21 @@
-package hanglog.trip.service.integration;
+package hanglog.integration.service;
 
-import static hanglog.global.IntegrationFixture.EDINBURGH;
-import static hanglog.global.IntegrationFixture.END_DATE;
-import static hanglog.global.IntegrationFixture.LAHGON_TRIP;
-import static hanglog.global.IntegrationFixture.LONDON;
-import static hanglog.global.IntegrationFixture.PARIS;
-import static hanglog.global.IntegrationFixture.START_DATE;
-import static hanglog.global.IntegrationFixture.TOKYO;
-import static hanglog.global.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.integration.IntegrationFixture.EDINBURGH;
+import static hanglog.integration.IntegrationFixture.END_DATE;
+import static hanglog.integration.IntegrationFixture.LAHGON_TRIP;
+import static hanglog.integration.IntegrationFixture.LONDON;
+import static hanglog.integration.IntegrationFixture.PARIS;
+import static hanglog.integration.IntegrationFixture.START_DATE;
+import static hanglog.integration.IntegrationFixture.TOKYO;
+import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import hanglog.city.domain.repository.CityRepository;
-import hanglog.global.ServiceIntegrationTest;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;

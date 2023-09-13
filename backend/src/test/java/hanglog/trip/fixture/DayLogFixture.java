@@ -1,6 +1,6 @@
 package hanglog.trip.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
 import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
