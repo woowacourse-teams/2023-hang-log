@@ -9,7 +9,6 @@ import {
 
 import CommunityHeader from '@components/community/CommunityHeader/CommunityHeader';
 import CommunityTripItemListSkeleton from '@components/trips/CommunityTripItemList/CommunityTripItemListSkeleton';
-import RecommendedTripsItemListSkeleton from '@components/trips/RecommendedTripsItemList/RecommendedTripsItemListSkeleton';
 import TripsHeaderSkeleton from '@components/trips/TripsHeader/TripsHeaderSkeleton';
 
 const CommunityPageSkeleton = () => {
@@ -21,9 +20,9 @@ const CommunityPageSkeleton = () => {
       <Box css={subTitleStyling(57, 32)}>
         <Skeleton width="200px" height="24px" />
       </Box>
-      <RecommendedTripsItemListSkeleton />
+      <CommunityTripItemListSkeleton length={5} />
       <Text css={subTitleStyling(57, 32)}>더 많은 여행들을 확인해보세요</Text>
-      <CommunityTripItemListSkeleton />
+      <CommunityTripItemListSkeleton length={10} />
       <div css={pagenationSkeletonStyling}>
         <Skeleton />
       </div>

@@ -1,3 +1,5 @@
+import CommunityTripItemList from '@/components/trips/CommunityTripItemList/CommunityTripItemList';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import { Text } from 'hang-log-design-system';
@@ -6,7 +8,6 @@ import { subTitleStyling } from '@pages/CommunityPage/CommunityPage.style';
 
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import CommunityHeader from '@components/community/CommunityHeader/CommunityHeader';
-import RecommendedTripsItemList from '@components/trips/RecommendedTripsItemList/RecommendedTripsItemList';
 
 import { useCommunityTripsQuery } from '@hooks/api/useCommunityTripsQuery';
 import { useRecommendedTripsQuery } from '@hooks/api/useRecommendedTripsQuery';
@@ -63,9 +64,9 @@ const CommunityPage = () => {
     <>
       <CommunityHeader />
       <Text css={subTitleStyling(32, 32)}>{recommendedTripsData.title}</Text>
-      <RecommendedTripsItemList trips={recommendedTripsData.trips} />
+      <CommunityTripItemList trips={recommendedTripsData.trips} />
       <Text css={subTitleStyling(57, 32)}>더 많은 여행들을 확인해보세요</Text>
-      <RecommendedTripsItemList trips={communityTripsData.trips} />
+      <CommunityTripItemList trips={communityTripsData.trips} />
       <PageNavigation
         pages={pageIndexDatas}
         selected={page}

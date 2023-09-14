@@ -9,26 +9,24 @@ import {
   headingStyling,
   textStyling,
 } from '@components/trips/CommunityTripItemList/CommunityTripItemList.style';
-import TripsItem from '@components/trips/TripsItem/TripsItem';
+import CommunityTripsItem from '@components/trips/CommunityTripsItem/CommunityTripsItem';
 import TutorialModal from '@components/trips/TutorialModal/TutorialModal';
 
 import { formatDate } from '@utils/formatter';
 
-import type { TripsData } from '@type/trips';
+import type { RecommendedTripsData } from '@type/trips';
 
 import { PATH } from '@constants/path';
 
-interface TripsItemListProps {
-  trips: TripsData[];
-}
+const CommunityTripItemList = (data: Omit<RecommendedTripsData, 'title'>) => {
+  const { trips } = data;
 
-const CommunityTripItemList = ({ trips }: TripsItemListProps) => {
   return (
     <section css={containerStyling}>
       <Box tag="ol" css={gridBoxStyling}>
         {trips.map((trip, index) => {
           return (
-            <TripsItem
+            <CommunityTripsItem
               key={trip.id}
               id={trip.id}
               coverImage={trip.imageUrl}
@@ -36,7 +34,9 @@ const CommunityTripItemList = ({ trips }: TripsItemListProps) => {
               itemName={trip.title}
               duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
               description={trip.description}
+              nickName={trip.authorNickname}
               index={index}
+              isLikeChecked={trip.isLike}
             />
           );
         })}
