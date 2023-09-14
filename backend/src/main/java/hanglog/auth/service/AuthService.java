@@ -1,9 +1,5 @@
 package hanglog.auth.service;
 
-import static hanglog.global.exception.ExceptionCode.FAIL_TO_GENERATE_RANDOM_NICKNAME;
-import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
-import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
-
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
@@ -13,7 +9,6 @@ import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.global.exception.AuthException;
-import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -21,12 +16,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
+import static hanglog.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AuthService {
+
+    private static final int MAX_TRY_COUNT = 5;
+    private static final int FOUR_DIGIT_RANGE = 10000;
 
     private final MemberRepository memberRepository;
     private final OauthProviders oauthProviders;
@@ -34,8 +32,6 @@ public class AuthService {
     private final TripRepository tripRepository;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
-
-    private final Random random = new Random();
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
@@ -58,23 +54,19 @@ public class AuthService {
 
     private Member createMember(final String socialLoginId, final String nickname, final String imageUrl) {
         int tryCount = 0;
-        while (tryCount < 5) {
-            final String nicknameWithRandomNumber = nickname + generateRandomNumbers();
+        while (tryCount < MAX_TRY_COUNT) {
+            final String nicknameWithRandomNumber = nickname + generateRandomFourDigitCode();
             if (!memberRepository.existsByNickname(nicknameWithRandomNumber)) {
                 return memberRepository.save(new Member(socialLoginId, nicknameWithRandomNumber, imageUrl));
             }
             tryCount += 1;
         }
-        throw new BadRequestException(FAIL_TO_GENERATE_RANDOM_NICKNAME);
+        throw new AuthException(FAIL_TO_GENERATE_RANDOM_NICKNAME);
     }
 
-    private String generateRandomNumbers() {
-        final StringBuilder randomNumbers = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            final int randomNumber = random.nextInt(10);
-            randomNumbers.append(randomNumber);
-        }
-        return randomNumbers.toString();
+    public String generateRandomFourDigitCode() {
+        final int randomNumber = (int) (Math.random() * FOUR_DIGIT_RANGE);
+        return String.format("%04d", randomNumber);
     }
 
     public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
