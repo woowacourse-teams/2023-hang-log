@@ -1,6 +1,7 @@
 package hanglog.member.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
@@ -22,12 +23,14 @@ public class MemberController {
     public final MemberService memberService;
 
     @GetMapping
+    @MemberOnly
     public ResponseEntity<MyPageResponse> getMyInfo(@Auth final Accessor accessor) {
         final MyPageResponse myPageResponse = memberService.getMyPageInfo(accessor.getMemberId());
         return ResponseEntity.ok().body(myPageResponse);
     }
 
     @PutMapping
+    @MemberOnly
     public ResponseEntity<Void> updateMyInfo(
             @Auth final Accessor accessor,
             @RequestBody @Valid final MyPageRequest myPageRequest

@@ -1,6 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -29,6 +30,7 @@ public class TripController {
     private final TripService tripService;
 
     @PostMapping
+    @MemberOnly
     public ResponseEntity<Void> createTrip(
             @Auth final Accessor accessor,
             @RequestBody @Valid final TripCreateRequest tripCreateRequest
@@ -38,12 +40,14 @@ public class TripController {
     }
 
     @GetMapping
+    @MemberOnly
     public ResponseEntity<List<TripResponse>> getTrips(@Auth final Accessor accessor) {
         final List<TripResponse> tripResponses = tripService.getAllTrips(accessor.getMemberId());
         return ResponseEntity.ok().body(tripResponses);
     }
 
     @GetMapping("/{tripId}")
+    @MemberOnly
     public ResponseEntity<TripDetailResponse> getTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
@@ -51,6 +55,7 @@ public class TripController {
     }
 
     @PutMapping("/{tripId}")
+    @MemberOnly
     public ResponseEntity<Void> updateTrip(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
@@ -62,6 +67,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{tripId}")
+    @MemberOnly
     public ResponseEntity<Void> deleteTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.delete(tripId);

@@ -2,6 +2,7 @@ package hanglog.trip.presentation;
 
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
@@ -27,6 +28,7 @@ public class DayLogController {
     private final TripService tripService;
 
     @GetMapping
+    @MemberOnly
     public ResponseEntity<DayLogResponse> getDayLog(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
@@ -38,6 +40,7 @@ public class DayLogController {
     }
 
     @PatchMapping
+    @MemberOnly
     public ResponseEntity<Void> updateDayLogTitle(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
@@ -50,6 +53,7 @@ public class DayLogController {
     }
 
     @PatchMapping("/order")
+    @MemberOnly
     public ResponseEntity<Void> updateOrdinalOfItems(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,

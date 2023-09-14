@@ -1,6 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
@@ -27,6 +28,7 @@ public class ItemController {
     private final TripService tripService;
 
     @PostMapping
+    @MemberOnly
     public ResponseEntity<Void> createItem(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
@@ -38,6 +40,7 @@ public class ItemController {
     }
 
     @PutMapping("/{itemId}")
+    @MemberOnly
     public ResponseEntity<Void> updateItem(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
@@ -50,6 +53,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
+    @MemberOnly
     public ResponseEntity<Void> deleteItem(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
