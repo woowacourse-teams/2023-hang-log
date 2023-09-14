@@ -66,3 +66,20 @@ export const subTitleStyling = (topPadding: number = 0, bottomPadding: number = 
     fontWeight: 600,
   });
 };
+
+export const subTitleSkeletonStyling = (topMargin: number = 0, bottomMargin: number = 0) => {
+  return css({
+    marginTop: `${topMargin}px`,
+    marginLeft: '50px',
+    marginBottom: `${bottomMargin}px`,
+  });
+};
+
+export const pagenationSkeletonStyling = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: 0,
+  width: '100%',
+  height: Theme.spacer.spacing6,
+});

@@ -8,7 +8,7 @@ import {
   gridBoxStyling,
   headingStyling,
   textStyling,
-} from '@components/trips/RecommendedTripsItemList/RecommendedTripsItemList.style';
+} from '@components/trips/CommunityTripItemList/CommunityTripItemList.style';
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import TutorialModal from '@components/trips/TutorialModal/TutorialModal';
 
@@ -22,7 +22,7 @@ interface TripsItemListProps {
   trips: TripsData[];
 }
 
-const RecommendedTripsItemList = ({ trips }: TripsItemListProps) => {
+const CommunityTripItemList = ({ trips }: TripsItemListProps) => {
   return (
     <section css={containerStyling}>
       <Box tag="ol" css={gridBoxStyling}>
@@ -45,7 +45,7 @@ const RecommendedTripsItemList = ({ trips }: TripsItemListProps) => {
   );
 };
 
-RecommendedTripsItemList.Empty = () => {
+CommunityTripItemList.Empty = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
@@ -61,4 +61,4 @@ RecommendedTripsItemList.Empty = () => {
   );
 };
 
-export default RecommendedTripsItemList;
+export default CommunityTripItemList;

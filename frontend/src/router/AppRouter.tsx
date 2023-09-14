@@ -1,5 +1,5 @@
 import App from '@/App';
-import TripsPageSkeleton from '@/pages/MyTripsPage/MyTripsPageSkeleton';
+import CommunityPageSkeleton from '@/pages/CommunityPage/CommunityPageSkeleton';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
+import TripsPageSkeleton from '@pages/MyTripsPage/MyTripsPageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
@@ -31,7 +32,7 @@ const AppRouter = () => {
         {
           path: '',
           element: isLoggedIn ? (
-            <Suspense fallback={<TripsPageSkeleton />}>
+            <Suspense fallback={<CommunityPageSkeleton />}>
               <Lazy.CommunityPage />
             </Suspense>
           ) : (

@@ -1,8 +1,3 @@
-import CommunityHeader from '@/components/community/CommunityHeader/CommunityHeader';
-import RecommendedTripsItemList from '@/components/trips/RecommendedTripsItemList/RecommendedTripsItemList';
-import { useCommunityTripsQuery } from '@/hooks/api/useCommunityTripsQuery';
-import { useRecommendedTripsQuery } from '@/hooks/api/useRecommendedTripsQuery';
-
 import { useCallback, useEffect, useState } from 'react';
 
 import { Text } from 'hang-log-design-system';
@@ -10,6 +5,11 @@ import { Text } from 'hang-log-design-system';
 import { subTitleStyling } from '@pages/CommunityPage/CommunityPage.style';
 
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
+import CommunityHeader from '@components/community/CommunityHeader/CommunityHeader';
+import RecommendedTripsItemList from '@components/trips/RecommendedTripsItemList/RecommendedTripsItemList';
+
+import { useCommunityTripsQuery } from '@hooks/api/useCommunityTripsQuery';
+import { useRecommendedTripsQuery } from '@hooks/api/useRecommendedTripsQuery';
 
 import { TRIP_INDEX_UNIT_LENGTH } from '@constants/ui';
 
