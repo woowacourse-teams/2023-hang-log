@@ -8,7 +8,7 @@ import {
   boxStyling,
   clickableLikeStyling,
   communityItemInfoStyling,
-  durationTextStyling,
+  durationAndDescriptionStyling,
   imageStyling,
   likeCountBoxStyling,
   nameStyling,
@@ -93,8 +93,10 @@ const CommunityTripsItem = ({
         <Text size="large" css={nameStyling}>
           {itemName}
         </Text>
-        <Text size="medium">{duration}</Text>
-        <Text size="small" css={durationTextStyling}>
+        <Text size="medium" css={durationAndDescriptionStyling}>
+          {duration}
+        </Text>
+        <Text size="small" css={durationAndDescriptionStyling}>
           {description}
         </Text>
         <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between' }}>

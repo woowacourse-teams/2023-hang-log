@@ -47,6 +47,7 @@ const CommunityPage = () => {
 
       setPageIndexDatas(refreshedIndexDatas);
     }
+
     if (validateMiddleList) {
       const halfLength = Math.floor(TRIP_INDEX_UNIT_LENGTH / 2);
       const startPage = Math.max(page - halfLength, 1);

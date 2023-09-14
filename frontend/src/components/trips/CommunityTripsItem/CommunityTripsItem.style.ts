@@ -67,8 +67,12 @@ export const badgeBoxStyling = css({
   },
 });
 
-export const durationStyling = css({
+export const durationAndDescriptionStyling = css({
   marginBottom: Theme.spacer.spacing1,
+
+  '@media screen and (max-width: 600px)': {
+    width: 'calc(100vw - 48px)',
+  },
 });
 
 export const durationTextStyling = css({
@@ -78,6 +82,8 @@ export const durationTextStyling = css({
 
   marginTop: '4px',
   width: '100%',
+
+  color: Theme.color.gray700,
 
   textOverflow: 'ellipsis',
   overflow: 'hidden',
@@ -92,6 +98,10 @@ export const clickableLikeStyling = css({
   position: 'absolute',
 
   transform: 'translateX(calc((100vw - 356px) / 5)) translateY(12px)',
+
+  '@media screen and (max-width: 600px)': {
+    transform: 'translateX(calc(100vw - 80px)) translateY(12px)',
+  },
 });
 
 export const communityItemInfoStyling = css({
