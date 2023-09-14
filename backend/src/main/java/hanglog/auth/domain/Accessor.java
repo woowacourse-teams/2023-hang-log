@@ -1,5 +1,7 @@
 package hanglog.auth.domain;
 
+import static hanglog.auth.domain.Authority.MEMBER;
+
 import lombok.Getter;
 
 @Getter
@@ -18,6 +20,10 @@ public class Accessor {
     }
 
     public static Accessor member(final Long memberId) {
-        return new Accessor(memberId, Authority.MEMBER);
+        return new Accessor(memberId, MEMBER);
+    }
+
+    public boolean isMember() {
+        return MEMBER.equals(authority);
     }
 }
