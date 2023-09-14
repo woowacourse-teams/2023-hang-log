@@ -13,19 +13,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 @Import({
         AuthService.class,
         OauthProviders.class,
         JwtProvider.class,
-        BearerAuthorizationExtractor.class
+        BearerAuthorizationExtractor.class,
+        RedisTemplate.class,
+        ValueOperations.class
 })
 class AuthServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private OauthProviders oauthProviders;
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
     @Autowired
     private TripRepository tripRepository;
     @Autowired
@@ -34,6 +36,11 @@ class AuthServiceIntegrationTest extends ServiceIntegrationTest {
     private BearerAuthorizationExtractor bearerExtractor;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private ValueOperations<String, Long> valueOperations;
+    private RefreshTokenRepository refreshTokenRepository = new RefreshTokenRepository(redisTemplate);
 
     @DisplayName("멤버를 삭제한다.")
     @Test
