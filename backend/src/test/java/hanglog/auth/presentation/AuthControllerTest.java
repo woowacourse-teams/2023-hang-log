@@ -158,6 +158,7 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void logout() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(authService).removeMemberRefreshToken(anyLong());
@@ -193,6 +194,7 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void deleteAccount() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(authService).deleteAccount(anyLong());

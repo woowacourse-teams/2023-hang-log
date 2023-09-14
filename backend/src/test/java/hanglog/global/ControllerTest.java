@@ -5,6 +5,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import hanglog.auth.AuthArgumentResolver;
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
+import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.global.restdocs.RestDocsConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +37,11 @@ public abstract class ControllerTest {
     protected JwtProvider jwtProvider;
 
     @MockBean
+    protected RefreshTokenRepository refreshTokenRepository;
+    
+    @MockBean
     BearerAuthorizationExtractor bearerExtractor;
+
 
     @BeforeEach
     void setUp(

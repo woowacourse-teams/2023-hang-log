@@ -1,6 +1,7 @@
 package hanglog.expense.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.domain.Accessor;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.trip.service.TripService;
@@ -20,8 +21,9 @@ public class ExpenseController {
     private final TripService tripService;
 
     @GetMapping
-    public ResponseEntity<TripExpenseResponse> getExpenses(@Auth final Long memberId, @PathVariable final Long tripId) {
-        tripService.validateTripByMember(memberId, tripId);
+    public ResponseEntity<TripExpenseResponse> getExpenses(@Auth final Accessor accessor,
+                                                           @PathVariable final Long tripId) {
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
         return ResponseEntity.ok().body(tripExpenseResponse);
     }

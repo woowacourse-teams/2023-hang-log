@@ -1,6 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -29,40 +30,40 @@ public class TripController {
 
     @PostMapping
     public ResponseEntity<Void> createTrip(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @RequestBody @Valid final TripCreateRequest tripCreateRequest
     ) {
-        final Long tripId = tripService.save(memberId, tripCreateRequest);
+        final Long tripId = tripService.save(accessor.getMemberId(), tripCreateRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId)).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<TripResponse>> getTrips(@Auth final Long memberId) {
-        final List<TripResponse> tripResponses = tripService.getAllTrips(memberId);
+    public ResponseEntity<List<TripResponse>> getTrips(@Auth final Accessor accessor) {
+        final List<TripResponse> tripResponses = tripService.getAllTrips(accessor.getMemberId());
         return ResponseEntity.ok().body(tripResponses);
     }
 
     @GetMapping("/{tripId}")
-    public ResponseEntity<TripDetailResponse> getTrip(@Auth final Long memberId, @PathVariable final Long tripId) {
-        tripService.validateTripByMember(memberId, tripId);
+    public ResponseEntity<TripDetailResponse> getTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
         return ResponseEntity.ok().body(tripDetailResponse);
     }
 
     @PutMapping("/{tripId}")
     public ResponseEntity<Void> updateTrip(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @RequestBody @Valid final TripUpdateRequest updateRequest
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.update(tripId, updateRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{tripId}")
-    public ResponseEntity<Void> deleteTrip(@Auth final Long memberId, @PathVariable final Long tripId) {
-        tripService.validateTripByMember(memberId, tripId);
+    public ResponseEntity<Void> deleteTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.delete(tripId);
         return ResponseEntity.noContent().build();
     }

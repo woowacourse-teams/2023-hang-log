@@ -4,6 +4,7 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import hanglog.auth.Auth;
+import hanglog.auth.domain.Accessor;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.auth.dto.AccessTokenResponse;
 import hanglog.auth.dto.LoginRequest;
@@ -56,14 +57,14 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(@Auth final Long memberId) {
-        authService.removeMemberRefreshToken(memberId);
+    public ResponseEntity<Void> logout(@Auth final Accessor accessor) {
+        authService.removeMemberRefreshToken(accessor.getMemberId());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/account")
-    public ResponseEntity<Void> deleteAccount(@Auth final Long memberId) {
-        authService.deleteAccount(memberId);
+    public ResponseEntity<Void> deleteAccount(@Auth final Accessor accessor) {
+        authService.deleteAccount(accessor.getMemberId());
         return ResponseEntity.noContent().build();
     }
 }

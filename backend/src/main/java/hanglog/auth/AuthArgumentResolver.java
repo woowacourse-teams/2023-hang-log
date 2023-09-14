@@ -1,12 +1,17 @@
 package hanglog.auth;
 
-import static hanglog.global.exception.ExceptionCode.NULL_REFRESH_TOKEN;
+import static hanglog.global.exception.ExceptionCode.INVALID_REQUEST;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import hanglog.auth.domain.Accessor;
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
-import hanglog.global.exception.AuthException;
+import hanglog.auth.domain.repository.RefreshTokenRepository;
+import hanglog.global.exception.BadRequestException;
+import hanglog.global.exception.RefreshTokenException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final BearerAuthorizationExtractor extractor;
 
+    private final RefreshTokenRepository refreshTokenRepository;
+
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.withContainingClass(Long.class)
@@ -34,21 +41,40 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Long resolveArgument(
+    public Accessor resolveArgument(
             final MethodParameter parameter,
             final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest,
             final WebDataBinderFactory binderFactory
-    ) throws Exception {
+    ) {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        final String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> REFRESH_TOKEN.equals(cookie.getName()))
-                .findFirst()
-                .orElseThrow(() -> new AuthException(NULL_REFRESH_TOKEN))
-                .getValue();
+        if (request == null) {
+            throw new BadRequestException(INVALID_REQUEST);
+        }
 
-        final String accessToken = extractor.extractAccessToken(webRequest.getHeader(AUTHORIZATION));
-        jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
-        return Long.valueOf(jwtProvider.getSubject(accessToken));
+        try {
+            final String refreshToken = extractRefreshToken(request.getCookies());
+            final String accessToken = extractor.extractAccessToken(webRequest.getHeader(AUTHORIZATION));
+            jwtProvider.validateTokens(new MemberTokens(refreshToken, accessToken));
+
+            final Long memberId = Long.valueOf(jwtProvider.getSubject(accessToken));
+            return Accessor.member(memberId);
+        } catch (final RefreshTokenException e) {
+            return Accessor.guest();
+        }
+    }
+
+    private String extractRefreshToken(final Cookie... cookies) {
+        return Arrays.stream(cookies)
+                .filter(this::isValidRefreshToken)
+                .findFirst()
+                .orElseThrow(() -> new RefreshTokenException(NOT_FOUND_REFRESH_TOKEN))
+                .getValue();
+    }
+
+    private boolean isValidRefreshToken(final Cookie cookie) {
+        // TODO: refreshToken 만료 기한 검사 필요
+        return REFRESH_TOKEN.equals(cookie.getName()) &&
+                refreshTokenRepository.existsByToken(cookie.getValue());
     }
 }

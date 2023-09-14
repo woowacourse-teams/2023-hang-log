@@ -1,6 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.service.ItemService;
@@ -27,34 +28,34 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Void> createItem(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @RequestBody @Valid final ItemRequest itemRequest
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final Long itemId = itemService.save(tripId, itemRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId + "/items/" + itemId)).build();
     }
 
     @PutMapping("/{itemId}")
     public ResponseEntity<Void> updateItem(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @PathVariable final Long itemId,
             @RequestBody @Valid final ItemUpdateRequest itemUpdateRequest
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         itemService.update(tripId, itemId, itemUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Void> deleteItem(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @PathVariable final Long itemId
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         itemService.delete(itemId);
         return ResponseEntity.noContent().build();
     }

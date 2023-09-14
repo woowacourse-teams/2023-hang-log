@@ -162,6 +162,7 @@ class SharedTripControllerTest extends ControllerTest {
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("sharedCode");
         when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
@@ -198,6 +199,7 @@ class SharedTripControllerTest extends ControllerTest {
         final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
         when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
