@@ -24,8 +24,9 @@ const CommunityPageSkeleton = () => {
       <RecommendedTripsItemListSkeleton />
       <Text css={subTitleStyling(57, 32)}>더 많은 여행들을 확인해보세요</Text>
       <CommunityTripItemListSkeleton />
-
-      <Skeleton css={pagenationSkeletonStyling} />
+      <div css={pagenationSkeletonStyling}>
+        <Skeleton />
+      </div>
     </>
   );
 };

@@ -82,4 +82,8 @@ export const pagenationSkeletonStyling = css({
   margin: 0,
   width: '100%',
   height: Theme.spacer.spacing6,
+
+  '& > div': {
+    width: '300px',
+  },
 });
