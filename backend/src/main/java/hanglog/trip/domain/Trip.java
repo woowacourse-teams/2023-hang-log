@@ -68,7 +68,7 @@ public class Trip extends BaseEntity {
 
     @Column(nullable = false)
     @Enumerated(value = STRING)
-    private PublishedStatusType publishedStatusType;
+    private PublishedStatusType publishedStatus;
 
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
