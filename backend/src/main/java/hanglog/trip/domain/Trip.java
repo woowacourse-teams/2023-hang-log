@@ -86,7 +86,8 @@ public class Trip extends BaseEntity {
             final LocalDate endDate,
             final String description,
             final SharedTrip sharedTrip,
-            final List<DayLog> dayLogs
+            final List<DayLog> dayLogs,
+            final PublishedStatusType publishedStatusType
     ) {
         super(USABLE);
         this.id = id;
@@ -98,6 +99,7 @@ public class Trip extends BaseEntity {
         this.description = description;
         this.sharedTrip = sharedTrip;
         this.dayLogs = dayLogs;
+        this.publishedStatus =publishedStatusType;
     }
 
     public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
@@ -110,7 +112,8 @@ public class Trip extends BaseEntity {
                 endDate,
                 "",
                 null,
-                new ArrayList<>()
+                new ArrayList<>(),
+                PublishedStatusType.UNPUBLISHED
         );
     }
 

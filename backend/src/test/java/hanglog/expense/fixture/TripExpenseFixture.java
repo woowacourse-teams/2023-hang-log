@@ -9,6 +9,7 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.type.ItemType;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,8 @@ public class TripExpenseFixture {
             LocalDate.of(2023, 7, 2),
             "",
             null,
-            new ArrayList<>()
+            new ArrayList<>(),
+            PublishedStatusType.UNPUBLISHED
     );
 
     public static final DayLog DAYLOG_1_FOR_EXPENSE = new DayLog(
