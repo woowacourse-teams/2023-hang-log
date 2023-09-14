@@ -40,7 +40,7 @@ public class AuthService {
                 oauthUserInfo.getImageUrl()
         );
         final MemberTokens memberTokens = jwtProvider.generateLoginToken(member.getId().toString());
-        final RefreshToken savedRefreshToken = new RefreshToken(memberTokens.getRefreshToken(), member.getId());
+        final RefreshToken savedRefreshToken = new RefreshToken(member.getId(), memberTokens.getRefreshToken());
         refreshTokenRepository.save(savedRefreshToken);
         return memberTokens;
     }
@@ -53,7 +53,7 @@ public class AuthService {
     public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
         final String accessToken = bearerExtractor.extractAccessToken(authorizationHeader);
         if (jwtProvider.isValidRefreshAndInvalidAccess(refreshTokenRequest, accessToken)) {
-            final RefreshToken refreshToken = refreshTokenRepository.findById(refreshTokenRequest)
+            final RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest)
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
             return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
         }
@@ -61,11 +61,11 @@ public class AuthService {
     }
 
     public void removeMemberRefreshToken(final Long memberId) {
-        refreshTokenRepository.deleteByMemberId(memberId);
+        refreshTokenRepository.deleteById(memberId);
     }
 
     public void deleteAccount(final Long memberId) {
-        refreshTokenRepository.deleteByMemberId(memberId);
+        refreshTokenRepository.deleteById(memberId);
         tripRepository.deleteAllByMemberId(memberId);
         memberRepository.deleteById(memberId);
     }

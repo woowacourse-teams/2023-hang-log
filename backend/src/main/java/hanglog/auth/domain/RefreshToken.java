@@ -1,19 +1,24 @@
 package hanglog.auth.domain;
 
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-//@RedisHash(value = "refreshToken", timeToLive = 604800)
+@RedisHash(value = "refreshToken", timeToLive = 604800)
 public class RefreshToken {
 
     @Id
+    private Long memberId;
+
+    @Indexed
     private String token;
 
-    private Long memberId;
+    public RefreshToken(final Long memberId, final String token) {
+        this.memberId = memberId;
+        this.token = token;
+    }
 }
