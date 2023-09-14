@@ -23,10 +23,26 @@ export interface NewTripData {
 
 export interface RecommendedTripsData {
   title: string;
-  trips: TripsData[];
-  startDate: string;
-  endDate: string;
-  description: string;
-  likeCount: number;
-  isLike: boolean;
+  trips: (TripsData & {
+    trips: TripsData & {
+      startDate: string;
+      endDate: string;
+      description: string;
+      likeCount: number;
+      isLike: boolean;
+    };
+  })[];
+}
+
+export interface CommunityTripsData {
+  lastPageIndex: number;
+  trips: (TripsData & {
+    trips: TripsData & {
+      startDate: string;
+      endDate: string;
+      description: string;
+      likeCount: number;
+      isLike: boolean;
+    };
+  })[];
 }

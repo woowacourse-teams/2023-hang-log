@@ -16,6 +16,7 @@ export const END_POINTS = {
   CREATE_TRIP_ITEM: (tripId: string) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: string, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   RECOMMENDED_TRIPS: '/community/recommends',
+  COMMUNITY_TRIPS: (page: number, size: number) => `/community/trips?page=${page}&size=${size}`,
   CITY: '/cities',
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,

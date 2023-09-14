@@ -12,6 +12,8 @@ import {
 
 import type { CityData } from '@type/city';
 
+import { PATH } from '@constants/path';
+
 import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
 
 interface TripsItemProps {
@@ -42,7 +44,7 @@ const TripsItem = ({
       css={boxStyling}
       tabIndex={index + 5}
       aria-label={`${index + 1}번째 trip, ${itemName}`}
-      onClick={() => navigate(`trip/${id}`)}
+      onClick={() => navigate(PATH.TRIP(id))}
     >
       <img
         src={coverImage ?? DefaultThumbnail}
