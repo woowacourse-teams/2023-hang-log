@@ -65,6 +65,9 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     private String extractRefreshToken(final Cookie... cookies) {
+        if (cookies == null) {
+            throw new RefreshTokenException(NOT_FOUND_REFRESH_TOKEN);
+        }
         return Arrays.stream(cookies)
                 .filter(this::isValidRefreshToken)
                 .findFirst()
