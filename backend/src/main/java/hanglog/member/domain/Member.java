@@ -59,6 +59,7 @@ public class Member {
         this.imageUrl = imageUrl;
         this.status = ACTIVE;
         this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public Member(final String socialLoginId, final String nickname, final String imageUrl) {
