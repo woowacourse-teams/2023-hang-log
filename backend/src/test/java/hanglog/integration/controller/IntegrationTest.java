@@ -2,6 +2,8 @@ package hanglog.integration.controller;
 
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
+import hanglog.auth.domain.RefreshToken;
+import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import io.restassured.RestAssured;
@@ -28,6 +30,9 @@ public abstract class IntegrationTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     private JwtProvider jwtProvider;
 
     public MemberTokens memberTokens;
@@ -43,6 +48,8 @@ public abstract class IntegrationTest {
         memberRepository.save(member);
         final Long memberId = member.getId();
         memberTokens = jwtProvider.generateLoginToken(memberId.toString());
+        final RefreshToken refreshToken = new RefreshToken(memberTokens.getRefreshToken(), memberId);
+        refreshTokenRepository.save(refreshToken);
     }
 
     @BeforeEach

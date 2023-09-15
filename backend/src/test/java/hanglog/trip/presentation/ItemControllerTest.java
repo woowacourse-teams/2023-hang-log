@@ -44,7 +44,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ItemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-public class ItemControllerTest extends ControllerTest {
+class ItemControllerTest extends ControllerTest {
 
     private static final MemberTokens MEMBER_TOKENS = new MemberTokens("refreshToken", "accessToken");
     private static final Cookie COOKIE = new Cookie("refresh-token", MEMBER_TOKENS.getRefreshToken());
@@ -61,6 +61,7 @@ public class ItemControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());

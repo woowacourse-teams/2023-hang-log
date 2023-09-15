@@ -55,6 +55,7 @@ class MemberControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
     }

@@ -1,6 +1,7 @@
 package hanglog.share.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.domain.Accessor;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
@@ -32,11 +33,11 @@ public class SharedTripController {
 
     @PatchMapping("/trips/{tripId}/share")
     public ResponseEntity<SharedTripCodeResponse> updateSharedStatus(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @RequestBody @Valid final SharedTripStatusRequest sharedTripStatusRequest
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final SharedTripCodeResponse sharedTripCodeResponse = sharedTripService.updateSharedTripStatus(
                 tripId,
                 sharedTripStatusRequest

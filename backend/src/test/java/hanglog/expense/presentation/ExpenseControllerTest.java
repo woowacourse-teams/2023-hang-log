@@ -66,6 +66,7 @@ class ExpenseControllerTest extends ControllerTest {
     @Test
     void getExpenses() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
