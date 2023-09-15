@@ -1,4 +1,4 @@
-import App from '@App';
+import App from '@/App';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
