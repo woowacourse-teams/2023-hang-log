@@ -1,8 +1,5 @@
 package hanglog.auth.service;
 
-import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
-import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
-
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
@@ -19,10 +16,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static hanglog.global.exception.ExceptionCode.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AuthService {
+
+    private static final int MAX_TRY_COUNT = 5;
+    private static final int FOUR_DIGIT_RANGE = 10000;
 
     private final MemberRepository memberRepository;
     private final OauthProviders oauthProviders;
@@ -47,7 +49,24 @@ public class AuthService {
 
     private Member findOrCreateMember(final String socialLoginId, final String nickname, final String imageUrl) {
         return memberRepository.findBySocialLoginId(socialLoginId)
-                .orElseGet(() -> memberRepository.save(new Member(socialLoginId, nickname, imageUrl)));
+                .orElseGet(() -> createMember(socialLoginId, nickname, imageUrl));
+    }
+
+    private Member createMember(final String socialLoginId, final String nickname, final String imageUrl) {
+        int tryCount = 0;
+        while (tryCount < MAX_TRY_COUNT) {
+            final String nicknameWithRandomNumber = nickname + generateRandomFourDigitCode();
+            if (!memberRepository.existsByNickname(nicknameWithRandomNumber)) {
+                return memberRepository.save(new Member(socialLoginId, nicknameWithRandomNumber, imageUrl));
+            }
+            tryCount += 1;
+        }
+        throw new AuthException(FAIL_TO_GENERATE_RANDOM_NICKNAME);
+    }
+
+    public String generateRandomFourDigitCode() {
+        final int randomNumber = (int) (Math.random() * FOUR_DIGIT_RANGE);
+        return String.format("%04d", randomNumber);
     }
 
     public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {

@@ -1,5 +1,6 @@
 package hanglog.member.service;
 
+import static hanglog.global.exception.ExceptionCode.DUPLICATED_MEMBER_NICKNAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 
 import hanglog.global.exception.BadRequestException;
@@ -28,6 +29,7 @@ public class MemberService {
     public void updateMyPageInfo(final Long memberId, final MyPageRequest myPageRequest) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
+        checkDuplicatedNickname(myPageRequest.getNickname());
         final Member updateMember = new Member(
                 memberId,
                 member.getSocialLoginId(),
@@ -35,5 +37,11 @@ public class MemberService {
                 myPageRequest.getImageUrl()
         );
         memberRepository.save(updateMember);
+    }
+
+    private void checkDuplicatedNickname(final String nickname) {
+        if(memberRepository.existsByNickname(nickname)) {
+            throw new BadRequestException(DUPLICATED_MEMBER_NICKNAME);
+        }
     }
 }
