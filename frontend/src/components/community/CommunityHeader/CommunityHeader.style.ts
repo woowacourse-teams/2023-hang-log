@@ -28,4 +28,5 @@ export const headingStyling = css({
 
 export const headingEmphasisStyling = css({
   color: Theme.color.blue500,
+  fontWeight: 'bold',
 });
