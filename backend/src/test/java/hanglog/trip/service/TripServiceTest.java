@@ -287,7 +287,7 @@ class TripServiceTest {
                                                     dayLog2,
                                                     extraDayLog
                                             ),
-                                    PublishedStatusType.UNPUBLISHED
+                                            PublishedStatusType.UNPUBLISHED
                                     )
                             )
                     );
@@ -328,7 +328,7 @@ class TripServiceTest {
                                                     DayLog.generateEmpty(5, trip),
                                                     extraDayLog
                                             ),
-                                    PublishedStatusType.UNPUBLISHED
+                                            PublishedStatusType.UNPUBLISHED
                                     )
                             )
                     );
