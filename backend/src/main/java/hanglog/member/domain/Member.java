@@ -64,4 +64,8 @@ public class Member {
     public Member(final String socialLoginId, final String nickname, final String imageUrl) {
         this(null, socialLoginId, nickname, imageUrl);
     }
+
+    public boolean isNicknameChanged(final String inputNickname) {
+        return !nickname.equals(inputNickname);
+    }
 }
