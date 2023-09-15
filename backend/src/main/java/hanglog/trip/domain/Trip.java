@@ -99,7 +99,7 @@ public class Trip extends BaseEntity {
         this.description = description;
         this.sharedTrip = sharedTrip;
         this.dayLogs = dayLogs;
-        this.publishedStatus =publishedStatusType;
+        this.publishedStatus = publishedStatusType;
     }
 
     public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
@@ -132,11 +132,11 @@ public class Trip extends BaseEntity {
         return convertUrlToName(imageUrl);
     }
 
-    public Optional<String> getSharedCode(){
-        if(Optional.ofNullable(sharedTrip).isEmpty()){
+    public Optional<String> getSharedCode() {
+        if (Optional.ofNullable(sharedTrip).isEmpty()) {
             return Optional.empty();
         }
-        if(sharedTrip.isUnShared()){
+        if (sharedTrip.isUnShared()) {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
