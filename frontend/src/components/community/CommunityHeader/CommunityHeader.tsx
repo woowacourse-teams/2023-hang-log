@@ -1,10 +1,9 @@
 import { Flex, Heading, Theme } from 'hang-log-design-system';
 
+import { headingEmphasisStyling } from '@components/community/CommunityHeader/CommunityHeader.style';
 import { headingStyling, imageStyling } from '@components/trips/TripsHeader/TripsHeader.style';
 
 import CommunityHeaderImage from '@assets/svg/TripsHeader.svg';
-
-import { headingEmphasisStyling } from './CommunityHeader.style';
 
 const CommunityHeader = () => {
   return (

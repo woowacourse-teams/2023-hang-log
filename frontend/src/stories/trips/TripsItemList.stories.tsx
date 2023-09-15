@@ -1,9 +1,10 @@
-import { trips } from '@/mocks/data/myTrips';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 import { sortByStartDate } from '@utils/sort';
+
+import { trips } from '@mocks/data/myTrips';
 
 const meta = {
   title: 'trips/TripsItemList',

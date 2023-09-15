@@ -1,5 +1,3 @@
-import { trips } from '@/mocks/data/myTrips';
-
 import { rest } from 'msw';
 
 import type { TripFormData } from '@type/trip';
@@ -7,6 +5,7 @@ import type { TripFormData } from '@type/trip';
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
 import { communityTrip } from '@mocks/data/communityTrip';
+import { trips } from '@mocks/data/myTrips';
 import { trip } from '@mocks/data/trip';
 
 export const myTripsHandlers = [

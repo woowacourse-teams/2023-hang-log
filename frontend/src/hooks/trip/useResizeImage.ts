@@ -1,8 +1,8 @@
-import { viewportWidthState } from '@/store/mediaQuery';
-
 import { useMemo } from 'react';
 
 import { useRecoilValue } from 'recoil';
+
+import { viewportWidthState } from '@store/mediaQuery';
 
 const useResizeImage = () => {
   const viewportWidth = useRecoilValue(viewportWidthState);

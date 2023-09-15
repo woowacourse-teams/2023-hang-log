@@ -1,8 +1,8 @@
-import { getCommunityTrips } from '@/api/trips/getCommunityTrips';
-
 import { useQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
+
+import { getCommunityTrips } from '@api/trips/getCommunityTrips';
 
 import type { CommunityTripsData } from '@type/trips';
 

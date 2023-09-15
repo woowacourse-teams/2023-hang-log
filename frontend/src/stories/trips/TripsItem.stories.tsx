@@ -1,9 +1,10 @@
-import { trips } from '@/mocks/data/myTrips';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 
 import { formatDate } from '@utils/formatter';
+
+import { trips } from '@mocks/data/myTrips';
 
 const meta = {
   title: 'trips/TripsItem',

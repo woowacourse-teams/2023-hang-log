@@ -1,8 +1,8 @@
-import { addButtonStyling } from '@/pages/MyTripsPage/MyTripsPage.style';
-
 import { useNavigate } from 'react-router-dom';
 
 import { FloatingButton, useSelect } from 'hang-log-design-system';
+
+import { addButtonStyling } from '@pages/MyTripsPage/MyTripsPage.style';
 
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
 import TripsItemList from '@components/trips/TripsItemList/TripsItemList';

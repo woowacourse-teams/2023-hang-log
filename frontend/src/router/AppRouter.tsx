@@ -1,11 +1,11 @@
-import App from '@/App';
-import CommunityPageSkeleton from '@/pages/CommunityPage/CommunityPageSkeleton';
+import App from '@App';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { useRecoilValue } from 'recoil';
 
+import CommunityPageSkeleton from '@pages/CommunityPage/CommunityPageSkeleton';
 import ExpensePageSkeleton from '@pages/ExpensePage/ExpensePageSkeleton';
 import TripsPageSkeleton from '@pages/MyTripsPage/MyTripsPageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
