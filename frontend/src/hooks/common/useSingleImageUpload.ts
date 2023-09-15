@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
+import { useToast } from '@hooks/common/useToast';
 
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 
@@ -18,6 +19,8 @@ export const useSingleImageUpload = ({
 }: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
 
+  const { createToast } = useToast();
+
   const [uploadedImageUrl, setUploadedImageUrl] = useState(initialImageUrl);
 
   const handleImageUpload = useCallback(
@@ -25,6 +28,10 @@ export const useSingleImageUpload = ({
       const originalImageFile = event.target.files?.[0];
 
       if (!originalImageFile) return;
+
+      const prevImageUrl = uploadedImageUrl;
+
+      setUploadedImageUrl(URL.createObjectURL(originalImageFile));
 
       let imageFile: File;
 
@@ -41,8 +48,11 @@ export const useSingleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
-            setUploadedImageUrl(imageUrls[0]);
             onSuccess?.(imageUrls[0]);
+            createToast('이미지 업로드에 성공했습니다', 'success');
+          },
+          onError: () => {
+            setUploadedImageUrl(prevImageUrl);
           },
         }
       );
@@ -50,7 +60,7 @@ export const useSingleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [imageMutation, onSuccess]
+    [createToast, imageMutation, onSuccess, uploadedImageUrl]
   );
 
   const handleImageRemoval = useCallback(() => {
