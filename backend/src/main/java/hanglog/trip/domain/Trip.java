@@ -5,6 +5,7 @@ import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -12,9 +13,11 @@ import static lombok.AccessLevel.PROTECTED;
 import hanglog.global.BaseEntity;
 import hanglog.member.domain.Member;
 import hanglog.share.domain.SharedTrip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -63,6 +66,10 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    @Enumerated(value = STRING)
+    private PublishedStatusType publishedStatus;
+
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
     private List<DayLog> dayLogs = new ArrayList<>();
@@ -79,7 +86,8 @@ public class Trip extends BaseEntity {
             final LocalDate endDate,
             final String description,
             final SharedTrip sharedTrip,
-            final List<DayLog> dayLogs
+            final List<DayLog> dayLogs,
+            final PublishedStatusType publishedStatusType
     ) {
         super(USABLE);
         this.id = id;
@@ -91,6 +99,7 @@ public class Trip extends BaseEntity {
         this.description = description;
         this.sharedTrip = sharedTrip;
         this.dayLogs = dayLogs;
+        this.publishedStatus = publishedStatusType;
     }
 
     public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
@@ -103,7 +112,8 @@ public class Trip extends BaseEntity {
                 endDate,
                 "",
                 null,
-                new ArrayList<>()
+                new ArrayList<>(),
+                PublishedStatusType.UNPUBLISHED
         );
     }
 
@@ -122,11 +132,11 @@ public class Trip extends BaseEntity {
         return convertUrlToName(imageUrl);
     }
 
-    public Optional<String> getSharedCode(){
-        if(Optional.ofNullable(sharedTrip).isEmpty()){
+    public Optional<String> getSharedCode() {
+        if (Optional.ofNullable(sharedTrip).isEmpty()) {
             return Optional.empty();
         }
-        if(sharedTrip.isUnShared()){
+        if (sharedTrip.isUnShared()) {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
