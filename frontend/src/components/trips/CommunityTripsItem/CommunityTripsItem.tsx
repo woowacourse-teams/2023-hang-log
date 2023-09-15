@@ -10,6 +10,7 @@ import {
   communityItemInfoStyling,
   durationAndDescriptionStyling,
   imageStyling,
+  informationStyling,
   likeCountBoxStyling,
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
@@ -59,7 +60,7 @@ const CommunityTripsItem = ({
   return (
     <Flex
       tag="li"
-      styles={{ direction: 'column' }}
+      styles={{ direction: 'column', height: '100%' }}
       css={boxStyling}
       tabIndex={index + 5}
       aria-label={`${index + 1}번째 trip, ${itemName}`}
@@ -79,26 +80,29 @@ const CommunityTripsItem = ({
           }}
         />
       )}
+
       <img
         src={coverImage ?? DefaultThumbnail}
         css={imageStyling}
         alt={`${itemName} 대표 이미지`}
       />
-      <Box onClick={() => navigate(PATH.TRIP(id))}>
-        <Box css={badgeBoxStyling}>
-          {cityTags.map((cityTag) => {
-            return <Badge key={cityTag.id}>{cityTag.name}</Badge>;
-          })}
+      <Box onClick={() => navigate(PATH.TRIP(id))} css={informationStyling}>
+        <Box>
+          <Box css={badgeBoxStyling}>
+            {cityTags.map((cityTag) => {
+              return <Badge key={cityTag.id}>{cityTag.name}</Badge>;
+            })}
+          </Box>
+          <Text size="large" css={nameStyling}>
+            {itemName}
+          </Text>
+          <Text size="medium" css={durationAndDescriptionStyling}>
+            {duration}
+          </Text>
+          <Text size="small" css={durationAndDescriptionStyling}>
+            {description}
+          </Text>
         </Box>
-        <Text size="large" css={nameStyling}>
-          {itemName}
-        </Text>
-        <Text size="medium" css={durationAndDescriptionStyling}>
-          {duration}
-        </Text>
-        <Text size="small" css={durationAndDescriptionStyling}>
-          {description}
-        </Text>
         <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between' }}>
           <Box>{nickName}</Box>
           <Box css={likeCountBoxStyling}>

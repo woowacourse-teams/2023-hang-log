@@ -118,3 +118,10 @@ export const likeCountBoxStyling = css({
   alignItems: 'center',
   gap: Theme.spacer.spacing2,
 });
+
+export const informationStyling = css({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100%',
+});

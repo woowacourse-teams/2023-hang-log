@@ -64,9 +64,9 @@ const CommunityPage = () => {
   return (
     <>
       <CommunityHeader />
-      <Text css={subTitleStyling(32, 32)}>{recommendedTripsData.title}</Text>
+      <Text css={subTitleStyling(32, 8)}>{recommendedTripsData.title}</Text>
       <CommunityTripItemList trips={recommendedTripsData.trips} />
-      <Text css={subTitleStyling(57, 32)}>더 많은 여행들을 확인해보세요</Text>
+      <Text css={subTitleStyling(57, 8)}>더 많은 여행들을 확인해보세요</Text>
       <CommunityTripItemList trips={communityTripsData.trips} />
       <PageNavigation
         pages={pageIndexDatas}
