@@ -15,6 +15,8 @@ import {
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
+import { useLikeMutation } from '@hooks/api/useLikeMutation';
+
 import type { CityData } from '@type/city';
 
 import { PATH } from '@constants/path';
@@ -50,11 +52,20 @@ const CommunityTripsItem = ({
   likeCount = 0,
 }: CommunityTripsItemProps) => {
   const navigate = useNavigate();
+  const likeMutation = useLikeMutation();
 
   const [likeChecked, setLikeChecked] = useState<boolean>(isLikeChecked);
 
-  const handleLikeCheck = (checkType: boolean) => {
-    setLikeChecked(checkType);
+  const handleLikeCheck = (isLike: boolean) => {
+    setLikeChecked(isLike);
+    likeMutation.mutate(
+      { id, isLike },
+      {
+        onError: () => {
+          setLikeChecked(!isLike);
+        },
+      }
+    );
   };
 
   return (

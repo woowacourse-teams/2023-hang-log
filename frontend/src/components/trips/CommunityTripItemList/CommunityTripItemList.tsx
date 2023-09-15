@@ -37,6 +37,7 @@ const CommunityTripItemList = (data: Omit<RecommendedTripsData, 'title'>) => {
               nickName={trip.authorNickname}
               index={index}
               isLikeChecked={trip.isLike}
+              likeCount={trip.likeCount}
             />
           );
         })}
