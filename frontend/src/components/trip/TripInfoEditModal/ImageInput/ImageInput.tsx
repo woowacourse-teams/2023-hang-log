@@ -1,8 +1,8 @@
+import { useSingleImageUpload } from '@/hooks/common/useSingleImageUpload';
+
 import { useCallback } from 'react';
 
 import { ImageUploadInput } from 'hang-log-design-system';
-
-import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 
 interface ImageInputProps {
   initialImage: string | null;
@@ -11,18 +11,14 @@ interface ImageInputProps {
 
 const ImageInput = ({ initialImage, updateCoverImage }: ImageInputProps) => {
   const handleImageUrlsChange = useCallback(
-    (imageUrls: string[]) => {
-      updateCoverImage(imageUrls[0]);
+    (imageUrl: string) => {
+      updateCoverImage(imageUrl);
     },
     [updateCoverImage]
   );
 
-  const {
-    uploadedImageUrls: uploadedImageUrl,
-    handleImageUpload,
-    handleImageRemoval,
-  } = useMultipleImageUpload({
-    initialImageUrls: initialImage === null ? [] : [initialImage],
+  const { uploadedImageUrl, handleImageUpload, handleImageRemoval } = useSingleImageUpload({
+    initialImageUrl: initialImage,
     onSuccess: handleImageUrlsChange,
   });
 
@@ -31,7 +27,7 @@ const ImageInput = ({ initialImage, updateCoverImage }: ImageInputProps) => {
       id="cover-image-upload"
       label="대표 이미지 업로드"
       imageAltText="여행 대표 업로드 이미지"
-      imageUrls={uploadedImageUrl}
+      imageUrls={uploadedImageUrl ? [uploadedImageUrl] : null}
       maxUploadCount={1}
       onChange={handleImageUpload}
       onRemove={handleImageRemoval}
