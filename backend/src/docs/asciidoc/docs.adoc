@@ -330,3 +330,15 @@ include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.
 ==== 응답
 include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
 include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
+
+== 커뮤니티 API
+
+=== 공개 여행 페이지 조회 (GET /community/trips)
+
+==== 요청
+include::{snippets}/community-controller-test/get-trips-by-page/http-request.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
