@@ -8,8 +8,7 @@
         </filter>
         <encoder>
                 <pattern>
-                    "timestamp": "%date{yyyy-MM-dd HH:mm}",
-                    ${CONSOLE_LOG_PATTERN}\n
+                    [%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n
                 </pattern>
             <charset>utf8</charset>
         </encoder>
