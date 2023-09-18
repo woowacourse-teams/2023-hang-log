@@ -15,6 +15,11 @@ export const useLikeMutation = () => {
   const imageMutation = useMutation({
     mutationFn: postLike,
     onError: (error: ErrorResponseData) => {
+      if (error.code === ERROR_CODE.UNAUTHORIZED) {
+        createToast('로그인이 필요합니다.', 'default');
+        return;
+      }
+
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
         handleTokenError();
       }

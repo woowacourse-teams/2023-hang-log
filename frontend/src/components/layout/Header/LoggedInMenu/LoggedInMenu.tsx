@@ -2,6 +2,8 @@
 import type { KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useSetRecoilState } from 'recoil';
+
 import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
 
 import {
@@ -12,10 +14,14 @@ import {
 import { useLogOutMutation } from '@hooks/api/useLogOutMutation';
 import { useUserInfoQuery } from '@hooks/api/useUserInfoQuery';
 
+import { isLoggedInState } from '@store/auth';
+
 import { PATH } from '@constants/path';
 
 const LoggedInMenu = () => {
   const navigate = useNavigate();
+
+  const setLoggedIn = useSetRecoilState(isLoggedInState);
 
   const { userInfoData } = useUserInfoQuery();
   const logOutMutation = useLogOutMutation();
@@ -35,6 +41,7 @@ const LoggedInMenu = () => {
 
   const handleLogOut = () => {
     logOutMutation.mutate();
+    setLoggedIn(false);
     closeMenu();
   };
 

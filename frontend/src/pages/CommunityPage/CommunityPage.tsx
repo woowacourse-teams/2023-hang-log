@@ -1,4 +1,8 @@
+import { isLoggedInState } from '@/store/auth';
+
 import { useCallback, useEffect, useState } from 'react';
+
+import { useRecoilValue } from 'recoil';
 
 import { Text } from 'hang-log-design-system';
 
@@ -19,8 +23,10 @@ const CommunityPage = () => {
     Array.from({ length: TRIP_INDEX_UNIT_LENGTH }, (_, index) => index)
   );
 
-  const { tripsData: recommendedTripsData } = useRecommendedTripsQuery();
-  const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10);
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
+  const { tripsData: recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
+  const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
 
   const handleSetPage = useCallback((page: number) => {
     setPage(page);

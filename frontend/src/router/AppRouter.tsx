@@ -12,7 +12,6 @@ import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import RedirectPage from '@pages/RedirectPage/RedirectPage';
 import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 
-import { isLoggedInState } from '@store/auth';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import * as Lazy from '@router/lazy';
@@ -20,7 +19,6 @@ import * as Lazy from '@router/lazy';
 import { PATH } from '@constants/path';
 
 const AppRouter = () => {
-  const isLoggedIn = useRecoilValue(isLoggedInState);
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const router = createBrowserRouter([
@@ -31,12 +29,10 @@ const AppRouter = () => {
       children: [
         {
           path: '',
-          element: isLoggedIn ? (
+          element: (
             <Suspense fallback={<CommunityPageSkeleton />}>
               <Lazy.CommunityPage />
             </Suspense>
-          ) : (
-            <Lazy.CommunityPage />
           ),
         },
         {

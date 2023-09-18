@@ -6,10 +6,9 @@ import { getRecommendedTrips } from '@api/trips/getRecommendedTrips';
 
 import type { RecommendedTripsData } from '@type/trips';
 
-export const useRecommendedTripsQuery = () => {
-  const { data } = useQuery<RecommendedTripsData, AxiosError>(
-    ['recommendedTrips'],
-    getRecommendedTrips
+export const useRecommendedTripsQuery = (isLoggedIn: boolean) => {
+  const { data } = useQuery<RecommendedTripsData, AxiosError>(['recommendedTrips'], () =>
+    getRecommendedTrips(isLoggedIn)
   );
 
   return { tripsData: data! };

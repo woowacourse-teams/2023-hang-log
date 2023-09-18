@@ -1,5 +1,9 @@
+import { isLoggedInState } from '@/store/auth';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { useRecoilValue } from 'recoil';
 
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
@@ -54,12 +58,14 @@ const CommunityTripsItem = ({
   const navigate = useNavigate();
   const likeMutation = useLikeMutation();
 
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
   const [likeChecked, setLikeChecked] = useState<boolean>(isLikeChecked);
 
   const handleLikeCheck = (isLike: boolean) => {
     setLikeChecked(isLike);
     likeMutation.mutate(
-      { id, isLike },
+      { id, isLike, isLoggedIn },
       {
         onError: () => {
           setLikeChecked(!isLike);

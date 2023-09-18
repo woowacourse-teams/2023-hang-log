@@ -6,9 +6,9 @@ import { getCommunityTrips } from '@api/trips/getCommunityTrips';
 
 import type { CommunityTripsData } from '@type/trips';
 
-export const useCommunityTripsQuery = (page: number, size: number) => {
+export const useCommunityTripsQuery = (page: number, size: number, isLoggedIn: boolean) => {
   const { data } = useQuery<CommunityTripsData, AxiosError>(['communityTrips', page], () =>
-    getCommunityTrips(page, size)
+    getCommunityTrips(page, size, isLoggedIn)
   );
 
   return { tripsData: data! };
