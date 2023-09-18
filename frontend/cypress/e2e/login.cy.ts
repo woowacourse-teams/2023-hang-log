@@ -1,4 +1,4 @@
-import type { TripsData } from '@type/trips';
+import type { RecommendedTripsData, TripsData } from '@type/trips';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
 import { PATH } from '@constants/path';
@@ -14,9 +14,8 @@ describe('로그인', () => {
     cy.wait(400);
   });
 
-  it('웹 사이트 처음 방문 시 서비스 소개 페이지를 볼 수 있다.', () => {
+  it('웹 사이트 처음 방문 시 커뮤니티 페이지를 볼 수 있다.', () => {
     cy.findByText('로그인');
-    cy.findByText('시작하기');
   });
 
   it('로그인 버튼을 클릭하면 로그인 페이지로 이동한다.', () => {
@@ -24,15 +23,18 @@ describe('로그인', () => {
     cy.location('pathname').should('eq', PATH.LOGIN);
   });
 
-  it('로그인하면 메인 페이지 화면이 여행 목록 페이지로 변경된다.', () => {
+  it('로그인하면 커뮤니티 페이지로 변경된다.', () => {
     cy.findByText('로그인').click();
-
-    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
+    cy.findByText('카카오로 계속하기').click();
 
     cy.visit(TEST_URL);
 
-    cy.fixture('trips.json').then((expectedData) => {
-      expectedData.forEach((item: TripsData) => {
+    cy.window().then((window) => window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken));
+
+    cy.fixture('recommendedTrips.json').then((expectedData: RecommendedTripsData) => {
+      cy.findByText(expectedData.title).should('be.visible');
+
+      expectedData.trips.forEach((item: TripsData) => {
         cy.findByText(item.title).should('be.visible');
 
         if (item.description) {
@@ -40,5 +42,6 @@ describe('로그인', () => {
         }
       });
     });
+    cy.findByText('커뮤니티').should('be.visible');
   });
 });
