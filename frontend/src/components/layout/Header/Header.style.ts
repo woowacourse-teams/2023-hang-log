@@ -28,9 +28,14 @@ export const getItemStyling = (isLoggedIn: boolean) => {
   });
 };
 
-export const getTapNavigateButtonStyling = (isLoggedIn: boolean) => {
+export const getTapNavigateButtonStyling = (isLoggedIn: boolean, isSelected: boolean) => {
   return css({
     display: isLoggedIn ? 'block' : 'none',
+
+    color: isSelected ? Theme.color.blue700 : Theme.color.gray600,
+    fontWeight: 700,
+    fontSize: Theme.text.small.fontSize,
+
     cursor: 'pointer',
   });
 };
