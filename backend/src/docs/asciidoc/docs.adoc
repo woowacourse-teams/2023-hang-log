@@ -337,8 +337,7 @@ include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.
 
 ==== 요청
 include::{snippets}/community-controller-test/get-trips-by-page/http-request.adoc[]
-include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
 
 ==== 응답
 include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
-include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/response-fields.adoc[]
