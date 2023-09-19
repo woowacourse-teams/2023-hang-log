@@ -5,7 +5,7 @@ export const BASE_URL = PROD
   : 'http://localhost:3000';
 
 export const AXIOS_BASE_URL = PROD
-  ? `${window.location.protocol}//api.${process.env.PROD_BASE_URL}`
+  ? `${window.location.protocol}//${process.env.AXIOS_PROD_BASE_URL}`
   : '/';
 
 export const END_POINTS = {
