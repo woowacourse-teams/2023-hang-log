@@ -1,12 +1,12 @@
 package hanglog.trip.domain.repository;
 
-import hanglog.trip.domain.Like;
+import hanglog.trip.domain.Likes;
 import hanglog.trip.domain.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LikeRepository extends JpaRepository<Like, Long> {
+public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     boolean existsByMemberIdAndTrip(final Long memberID, final Trip trip);
 
-    Long countLikeByTrip(final Trip trip);
+    Long countLikesByTrip(final Trip trip);
 }

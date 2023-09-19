@@ -4,7 +4,7 @@ import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.LikeRepository;
+import hanglog.trip.domain.repository.LikesRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.response.CommunityTripResponse;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CommunityService {
 
-    private final LikeRepository likeRepository;
+    private final LikesRepository likesRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
 
@@ -32,10 +32,10 @@ public class CommunityService {
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        final Long likeCount = likeRepository.countLikeByTrip(trip);
+        final Long likeCount = likesRepository.countLikesByTrip(trip);
 
         if (accessor.isMember()) {
-            final boolean isLike = likeRepository.existsByMemberIdAndTrip(accessor.getMemberId(), trip);
+            final boolean isLike = likesRepository.existsByMemberIdAndTrip(accessor.getMemberId(), trip);
             return CommunityTripResponse.of(trip, cities, isLike, likeCount);
         }
         return CommunityTripResponse.of(trip, cities, false, likeCount);
