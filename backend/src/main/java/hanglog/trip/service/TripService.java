@@ -8,7 +8,6 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
-import hanglog.global.BaseEntity;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
@@ -177,6 +176,7 @@ public class TripService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         tripRepository.delete(trip);
         tripCityRepository.deleteAllByTripId(tripId);
+        publishedTripRepository.deleteByTripId(tripId);
     }
 
     private String generateInitialTitle(final List<City> cites) {
@@ -209,18 +209,13 @@ public class TripService {
 
     private void unpublishTrip(final Trip trip) {
         trip.changePublishedStatus(false);
-        publishedTripRepository.findByTripId(trip.getId())
-                .ifPresent(BaseEntity::changeStatusToDeleted);
     }
 
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
-        publishedTripRepository.findDeletedByTripId(trip.getId())
-                .ifPresentOrElse(BaseEntity::changeStatusToUsable, () -> createPublishedTrip(trip));
-    }
-
-    private void createPublishedTrip(final Trip trip) {
-        final PublishedTrip publishedTrip = new PublishedTrip(trip);
-        publishedTripRepository.save(publishedTrip);
+        if (!publishedTripRepository.existsByTripId(trip.getId())) {
+            final PublishedTrip publishedTrip = new PublishedTrip(trip);
+            publishedTripRepository.save(publishedTrip);
+        }
     }
 }
