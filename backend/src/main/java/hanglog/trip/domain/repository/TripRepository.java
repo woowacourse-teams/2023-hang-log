@@ -22,9 +22,9 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query("SELECT trip FROM Trip trip "
             + "LEFT JOIN PublishedTrip publishedTrip ON publishedTrip.trip = trip "
             + "WHERE trip.publishedStatus = 'PUBLISHED'")
-    List<Trip> findPublishedTripByPageable(Pageable pageable);
+    List<Trip> findPublishedTripByPageable(final Pageable pageable);
 
-    Long countTripByPublishedStatus(PublishedStatusType publishedStatusType);
+    Long countTripByPublishedStatus(final PublishedStatusType publishedStatusType);
 
     void deleteAllByMemberId(final Long memberId);
 
