@@ -29,7 +29,11 @@ public class MemberService {
     public void updateMyPageInfo(final Long memberId, final MyPageRequest myPageRequest) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
-        checkDuplicatedNickname(myPageRequest.getNickname());
+
+        if (member.isNicknameChanged(myPageRequest.getNickname())) {
+            checkDuplicatedNickname(myPageRequest.getNickname());
+        }
+
         final Member updateMember = new Member(
                 memberId,
                 member.getSocialLoginId(),
