@@ -27,6 +27,7 @@ export const imageStyling = css({
   height: '100%',
   minHeight: `calc(((100vw - 196px) / 24) * 3)`,
   maxHeight: `calc(((100vw - 196px) / 24) * 3)`,
+
   borderRadius: Theme.borderRadius.medium,
 
   backgroundColor: Theme.color.gray200,
@@ -51,8 +52,8 @@ export const badgeBoxStyling = css({
 
   overflowX: 'scroll',
   whiteSpace: 'nowrap',
-  '-ms-overflow-style': 'none',
   scrollbarWidth: 'none',
+  '-ms-overflow-style': 'none',
 
   '& > span': {
     marginRight: Theme.spacer.spacing1,
@@ -77,8 +78,6 @@ export const durationAndDescriptionStyling = css({
 
 export const durationTextStyling = css({
   display: '-webkit-box',
-  '-webkit-line-clamp': '2',
-  '-webkit-box-orient': 'vertical',
 
   marginTop: '4px',
   width: '100%',
@@ -88,6 +87,8 @@ export const durationTextStyling = css({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   wordBreak: 'break-word',
+  '-webkit-line-clamp': '2',
+  '-webkit-box-orient': 'vertical',
 });
 
 export const skeletonDurationTextStyling = css({
@@ -106,7 +107,9 @@ export const clickableLikeStyling = css({
 
 export const communityItemInfoStyling = css({
   paddingTop: '12px',
+
   color: Theme.color.gray700,
+
   fontSize: Theme.text.small.fontSize,
   lineHeight: '20px',
   fontWeight: 400,

@@ -9,17 +9,19 @@ export const containerStyling = css({
 });
 
 export const gridBoxStyling = css({
-  margin: `${Theme.spacer.spacing4} 50px 0px`,
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
   rowGap: Theme.spacer.spacing5,
   columnGap: Theme.spacer.spacing4,
   placeItems: 'center',
 
+  margin: `${Theme.spacer.spacing4} 50px 0px`,
+
   '@media screen and (max-width: 600px)': {
     display: 'grid',
     gridTemplateColumns: 'repeat(1, 1fr)',
     placeItems: 'center',
+
     margin: `${Theme.spacer.spacing4} 24px ${Theme.spacer.spacing7}`,
   },
 });

@@ -4,9 +4,11 @@ import { Theme } from 'hang-log-design-system';
 
 export const ContainerStyling = css({
   padding: `${Theme.spacer.spacing7} 0px ${Theme.spacer.spacing7} 0px`,
+
   '&>first-of-type': {
     paddingRight: Theme.spacer.spacing4,
   },
+
   '&>last-of-type': {
     paddingLeft: Theme.spacer.spacing4,
   },
