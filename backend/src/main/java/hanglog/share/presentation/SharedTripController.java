@@ -2,6 +2,8 @@ package hanglog.share.presentation;
 
 import hanglog.auth.Auth;
 import hanglog.auth.domain.Accessor;
+import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.expense.service.ExpenseService;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
@@ -23,6 +25,7 @@ public class SharedTripController {
 
     private final SharedTripService sharedTripService;
     private final TripService tripService;
+    private final ExpenseService expenseService;
 
     @GetMapping("/shared-trips/{sharedCode}")
     public ResponseEntity<TripDetailResponse> getSharedTrip(@PathVariable final String sharedCode) {
@@ -43,5 +46,12 @@ public class SharedTripController {
                 sharedTripStatusRequest
         );
         return ResponseEntity.ok().body(sharedTripCodeResponse);
+    }
+
+    @GetMapping("/shared-trips/{sharedCode}/expense")
+    public ResponseEntity<TripExpenseResponse> getSharedExpenses(@PathVariable final String sharedCode) {
+        final Long tripId = sharedTripService.getTripId(sharedCode);
+        final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(tripExpenseResponse);
     }
 }
