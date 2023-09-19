@@ -24,7 +24,7 @@ public class CommunityService {
     private final TripCityRepository tripCityRepository;
 
     public List<CommunityTripResponse> getTripsByPage(final Accessor accessor, final Pageable pageable) {
-        final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable);
+        final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
         return trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
