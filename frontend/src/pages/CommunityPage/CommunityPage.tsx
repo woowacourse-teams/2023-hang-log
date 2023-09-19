@@ -48,7 +48,7 @@ const CommunityPage = () => {
       <PageNavigation
         pages={pageIndexDatas}
         selected={page}
-        maxPage={communityTripsData.lastPageIndex}
+        maxPage={communityTripsData.lastPage}
         onChangeNavigate={handleSetPage}
       />
     </>

@@ -27,7 +27,7 @@ export interface RecommendedTripsData {
 }
 
 export interface CommunityTripsData {
-  lastPageIndex: number;
+  lastPage: number;
   trips: CommunityTripData[];
 }
 
