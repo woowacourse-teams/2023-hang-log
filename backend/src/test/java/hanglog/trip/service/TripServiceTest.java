@@ -196,6 +196,7 @@ class TripServiceTest {
     @Test
     void updatePublishedStatus_FirstPublished() {
         // given
+        LONDON_TRIP.changePublishedStatus(false);
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
         given(publishedTripRepository.findDeletedByTripId(LONDON_TRIP.getId()))
@@ -267,6 +268,7 @@ class TripServiceTest {
     @Test
     void updatePublishedStatus_InvalidUnpublished() {
         // given
+        LONDON_TRIP.changePublishedStatus(false);
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(false);
