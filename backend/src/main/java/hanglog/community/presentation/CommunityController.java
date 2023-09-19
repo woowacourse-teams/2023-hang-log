@@ -22,7 +22,7 @@ public class CommunityController {
     private final CommunityService communityService;
 
     @GetMapping("/trips")
-    ResponseEntity<CommunityTripsResponse> getTrips(
+    public ResponseEntity<CommunityTripsResponse> getTrips(
             @Auth final Accessor accessor,
             @PageableDefault(sort = "publishedTrip.id", direction = DESC) final Pageable pageable
     ) {
