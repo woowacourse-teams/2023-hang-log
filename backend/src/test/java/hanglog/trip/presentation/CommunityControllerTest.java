@@ -83,7 +83,7 @@ class CommunityControllerTest extends ControllerTest {
                 );
 
         // when
-        ResultActions resultActions = performGetRequest();
+        final ResultActions resultActions = performGetRequest();
 
         // then
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())

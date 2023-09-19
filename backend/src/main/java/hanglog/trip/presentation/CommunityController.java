@@ -23,8 +23,8 @@ public class CommunityController {
 
     @GetMapping("/trips")
     ResponseEntity<CommunityTripsResponse> getTrips(
-            @Auth Accessor accessor,
-            @PageableDefault(sort = "publishedTrip.id", direction = DESC) Pageable pageable
+            @Auth final Accessor accessor,
+            @PageableDefault(sort = "publishedTrip.id", direction = DESC) final Pageable pageable
     ) {
         final CommunityTripsResponse tripResponses = communityService.getTripsByPage(accessor, pageable);
         return ResponseEntity.ok().body(tripResponses);
