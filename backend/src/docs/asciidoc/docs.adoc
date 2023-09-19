@@ -89,6 +89,15 @@ include::{snippets}/trip-controller-test/delete-trip/path-parameters.adoc[]
 include::{snippets}/trip-controller-test/delete-trip/http-response.adoc[]
 
 
+=== 공개 상태 수정 (PATCH /trips/:tripId/publish)
+
+==== 요청
+include::{snippets}/trip-controller-test/update-published-status/http-request.adoc[]
+include::{snippets}/trip-controller-test/update-published-status/path-parameters.adoc[]
+include::{snippets}/trip-controller-test/update-published-status/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/update-published-status/http-response.adoc[]
 
 
 == DayLog API

@@ -18,6 +18,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -34,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.global.ControllerTest;
+import hanglog.trip.dto.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -663,5 +665,37 @@ class TripControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         )
                 ));
+    }
+
+    @DisplayName("커뮤니티 공개 상태를 변경한다")
+    @Test
+    void updatePublishedStatus() throws Exception {
+        // given
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/publish", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(publishedStatusRequest)))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("publishedStatus")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("공개 상태")
+                                )
+                        )
+                )
+                .andReturn();
     }
 }

@@ -1,5 +1,6 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_PUBLISHED_STATUS_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.CityFixture.LONDON;
@@ -15,13 +16,17 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
+import hanglog.global.type.StatusType;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.PublishedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.dto.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -57,6 +62,9 @@ class TripServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private PublishedTripRepository publishedTripRepository;
 
     @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
     @Test
@@ -182,6 +190,92 @@ class TripServiceTest {
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);
+    }
+
+    @DisplayName("비공개 Trip을 공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_FirstPublished() {
+        // given
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        given(publishedTripRepository.findDeletedByTripId(LONDON_TRIP.getId()))
+                .willReturn(Optional.empty());
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        verify(publishedTripRepository).save(any(PublishedTrip.class));
+    }
+
+    @DisplayName("Deleted인 PublishedTrip이 존재할 때, 비공개 Trip을 공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_PublishedWhenExistDeletedPublishTrip() {
+        // given
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        publishedTrip.changeStatusToDeleted();
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        given(publishedTripRepository.findDeletedByTripId(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(publishedTrip));
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        assertThat(publishedTrip.getStatus()).isEqualTo(StatusType.USABLE);
+    }
+
+    @DisplayName("공개된 Trip을 비공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_Unpublished() {
+        // given
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        LONDON_TRIP.changePublishedStatus(true);
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        given(publishedTripRepository.findByTripId(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(publishedTrip));
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(false);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        assertThat(publishedTrip.getStatus()).isEqualTo(StatusType.DELETED);
+    }
+
+    @DisplayName("이미 공개인 Trip을 공개로 변경하면 예외가 발생한다.")
+    @Test
+    void updatePublishedStatus_InvalidPublished() {
+        // given
+        LONDON_TRIP.changePublishedStatus(true);
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+
+        // when & then
+        assertThatThrownBy(() -> tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(INVALID_PUBLISHED_STATUS_REQUEST.getCode());
+    }
+
+    @DisplayName("이미 비공개인 Trip을 비공개로 변경하면 예외가 발생한다.")
+    @Test
+    void updatePublishedStatus_InvalidUnpublished() {
+        // given
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(false);
+
+        // when & then
+        assertThatThrownBy(() -> tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(INVALID_PUBLISHED_STATUS_REQUEST.getCode());
     }
 
     @Nested
