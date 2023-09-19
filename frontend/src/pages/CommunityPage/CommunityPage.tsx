@@ -1,5 +1,3 @@
-import { isLoggedInState } from '@/store/auth';
-
 import { useCallback, useEffect, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -14,6 +12,8 @@ import CommunityTripItemList from '@components/trips/CommunityTripItemList/Commu
 
 import { useCommunityTripsQuery } from '@hooks/api/useCommunityTripsQuery';
 import { useRecommendedTripsQuery } from '@hooks/api/useRecommendedTripsQuery';
+
+import { isLoggedInState } from '@store/auth';
 
 import { TRIP_INDEX_UNIT_LENGTH } from '@constants/ui';
 

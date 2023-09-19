@@ -1,5 +1,3 @@
-import { isLoggedInState } from '@/store/auth';
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +18,8 @@ import {
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
 import { useLikeMutation } from '@hooks/api/useLikeMutation';
+
+import { isLoggedInState } from '@store/auth';
 
 import type { CityData } from '@type/city';
 
