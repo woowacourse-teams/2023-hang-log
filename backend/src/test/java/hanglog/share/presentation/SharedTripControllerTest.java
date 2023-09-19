@@ -16,6 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -182,6 +183,12 @@ class SharedTripControllerTest extends ControllerTest {
                                 pathParameters(
                                         parameterWithName("tripId")
                                                 .description("여행 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("sharedStatus")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("공유 유무")
+                                                .attributes(field("constraint", "공유시: true, 비공유시: false"))
                                 ),
                                 responseFields(
                                         fieldWithPath("sharedCode")

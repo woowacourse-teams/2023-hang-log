@@ -294,6 +294,7 @@ include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.
 ==== 요청
 include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
 include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
