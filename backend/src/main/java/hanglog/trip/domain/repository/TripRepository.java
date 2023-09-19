@@ -1,6 +1,7 @@
 package hanglog.trip.domain.repository;
 
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
             + "WHERE trip.publishedStatus = 'PUBLISHED'")
     List<Trip> findPublishedTripByPageable(Pageable pageable);
 
-    @Query("SELECT COUNT(trip) FROM Trip trip "
-            + "WHERE trip.publishedStatus='PUBLISHED'")
-    Long countPublishedTrip();
+    Long countTripByPublishedStatus(PublishedStatusType publishedStatusType);
 
     void deleteAllByMemberId(final Long memberId);
 
