@@ -17,11 +17,13 @@ const CommunityPageSkeleton = () => {
       <Suspense fallback={<TripsHeaderSkeleton />}>
         <CommunityHeader />
       </Suspense>
-      <Box css={subTitleStyling(57, 32)}>
+      <Box css={subTitleStyling({ topPadding: 57, bottomPadding: 32 })}>
         <Skeleton width="200px" height="24px" />
       </Box>
       <CommunityTripItemListSkeleton length={5} />
-      <Text css={subTitleStyling(57, 32)}>더 많은 여행들을 확인해보세요</Text>
+      <Text css={subTitleStyling({ topPadding: 57, bottomPadding: 32 })}>
+        더 많은 여행들을 확인해보세요
+      </Text>
       <CommunityTripItemListSkeleton length={10} />
       <div css={pagenationSkeletonStyling}>
         <Skeleton />
