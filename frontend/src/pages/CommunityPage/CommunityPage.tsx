@@ -12,59 +12,27 @@ import CommunityTripItemList from '@components/trips/CommunityTripItemList/Commu
 
 import { useCommunityTripsQuery } from '@hooks/api/useCommunityTripsQuery';
 import { useRecommendedTripsQuery } from '@hooks/api/useRecommendedTripsQuery';
+import { useTripPageIndex } from '@hooks/common/usePageIndex';
 
 import { isLoggedInState } from '@store/auth';
 
-import { TRIP_INDEX_UNIT_LENGTH } from '@constants/ui';
-
 const CommunityPage = () => {
   const [page, setPage] = useState<number>(1);
-  const [pageIndexDatas, setPageIndexDatas] = useState<number[]>(
-    Array.from({ length: TRIP_INDEX_UNIT_LENGTH }, (_, index) => index)
-  );
 
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
   const { tripsData: recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
   const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
 
+  const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(communityTripsData, page);
+
   const handleSetPage = useCallback((page: number) => {
     setPage(page);
   }, []);
 
   useEffect(() => {
-    const centerIndex = Math.floor(TRIP_INDEX_UNIT_LENGTH / 2);
-    const validateFirstList = page > centerIndex;
-    const validateLastList = page >= communityTripsData.lastPageIndex - centerIndex;
-    const validateMiddleList = page < communityTripsData.lastPageIndex - centerIndex;
-
-    if (validateFirstList) {
-      setPageIndexDatas(Array.from({ length: TRIP_INDEX_UNIT_LENGTH }, (_, index) => index));
-    }
-
-    if (validateLastList) {
-      const lastIndex = communityTripsData.lastPageIndex;
-
-      const refreshedIndexDatas = Array.from(
-        { length: TRIP_INDEX_UNIT_LENGTH },
-        (_, index) => lastIndex - index
-      ).reverse();
-
-      setPageIndexDatas(refreshedIndexDatas);
-    }
-
-    if (validateMiddleList) {
-      const halfLength = Math.floor(TRIP_INDEX_UNIT_LENGTH / 2);
-      const startPage = Math.max(page - halfLength, 1);
-
-      const refreshedIndexDatas = Array.from(
-        { length: TRIP_INDEX_UNIT_LENGTH },
-        (_, index) => startPage + index
-      );
-
-      setPageIndexDatas(refreshedIndexDatas);
-    }
-  }, [communityTripsData.lastPageIndex, page]);
+    changeNavigationDatas();
+  }, [changeNavigationDatas, page]);
 
   return (
     <>
