@@ -77,6 +77,7 @@ public class TripController {
     }
 
     @PatchMapping("/{tripId}/publish")
+    @MemberOnly
     public ResponseEntity<Void> updatePublishedStatus(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
