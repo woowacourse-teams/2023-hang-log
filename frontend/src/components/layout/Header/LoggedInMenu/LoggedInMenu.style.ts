@@ -7,6 +7,8 @@ export const imageStyling = css({
   minHeight: '32px',
   maxWidth: '32px',
   maxHeight: '32px',
+  width: '32px',
+  height: '32px',
   border: 'none',
   outline: 0,
   borderRadius: '50%',
