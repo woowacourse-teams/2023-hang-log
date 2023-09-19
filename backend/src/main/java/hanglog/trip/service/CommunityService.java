@@ -7,6 +7,7 @@ import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.LikesRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.response.CommunitySingleTripResponse;
 import hanglog.trip.dto.response.CommunityTripsResponse;
 import java.util.List;
@@ -29,7 +30,8 @@ public class CommunityService {
         final List<CommunitySingleTripResponse> communitySingleTripResponses = trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
-        final Long lastPageIndex = tripRepository.countPublishedTrip() / pageable.getPageSize() + 1;
+        final Long lastPageIndex =
+                tripRepository.countTripByPublishedStatus(PublishedStatusType.PUBLISHED) / pageable.getPageSize() + 1;
         return new CommunityTripsResponse(communitySingleTripResponses, lastPageIndex);
     }
 

@@ -70,7 +70,7 @@ class CommunityControllerTest extends ControllerTest {
                 .contentType(APPLICATION_JSON));
     }
 
-    @DisplayName("로그인 된 상태에서 ")
+    @DisplayName("공개된 전체 여행 목록을 조회한다")
     @Test
     void getTripsByPage() throws Exception {
         // given
@@ -97,6 +97,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("trips[].authorNickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자")
+                                        .attributes(field("constraint", "문자열")),
                                 fieldWithPath("trips[].title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
