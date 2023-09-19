@@ -52,6 +52,7 @@ export const titleStyling = css({
 export const descriptionStyling = css({
   marginTop: Theme.spacer.spacing3,
 
+  wordBreak: 'break-all',
   whiteSpace: 'pre-wrap',
 });
 

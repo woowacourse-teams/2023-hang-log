@@ -21,14 +21,24 @@ import { PATH } from '@constants/path';
 
 interface ExpenseInformationProps {
   tripId: number;
+  isShared: boolean;
 }
 
-const ExpenseInformation = ({ tripId }: ExpenseInformationProps) => {
+const ExpenseInformation = ({ tripId, isShared }: ExpenseInformationProps) => {
   const navigate = useNavigate();
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { expenseData } = useExpense(tripId);
+
+  const goToTripPage = () => {
+    if (!isShared) {
+      navigate(PATH.TRIP(tripId));
+      return;
+    }
+
+    navigate(PATH.SHARE_TRIP(tripId));
+  };
 
   return (
     <header css={sectionStyling}>
@@ -46,7 +56,7 @@ const ExpenseInformation = ({ tripId }: ExpenseInformationProps) => {
         </Text>
       </Box>
       <Box css={buttonWrapperStyling}>
-        <Button variant="primary" size="small" onClick={() => navigate(PATH.TRIP(tripId))}>
+        <Button variant="primary" size="small" onClick={goToTripPage}>
           여행 기록
         </Button>
       </Box>

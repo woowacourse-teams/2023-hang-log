@@ -21,7 +21,11 @@ import { useTrip } from '@hooks/trip/useTrip';
 
 import { formatMonthDate } from '@utils/formatter';
 
-const TripMobilePage = () => {
+interface TripMobilePageProps {
+  isShared?: boolean;
+}
+
+const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
@@ -48,7 +52,7 @@ const TripMobilePage = () => {
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(tripId)} isEditable={false} />
+        <TripInformation tripId={Number(tripId)} isEditable={false} isShared={isShared} />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {
@@ -71,7 +75,12 @@ const TripMobilePage = () => {
             })}
           </Tabs>
           {isDaylogShown && (
-            <DayLogItem tripId={Number(tripId)} isEditable={false} {...selectedDayLog} />
+            <DayLogItem
+              tripId={Number(tripId)}
+              isEditable={false}
+              isShared={isShared}
+              {...selectedDayLog}
+            />
           )}
         </section>
       </section>

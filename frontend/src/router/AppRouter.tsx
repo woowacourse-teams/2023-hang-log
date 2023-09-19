@@ -91,10 +91,18 @@ const AppRouter = () => {
           ),
         },
         {
-          path: PATH.SHARE(':code'),
+          path: PATH.SHARE_TRIP(':code'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              <Lazy.SharedPage />
+              {isMobile ? <Lazy.TripMobilePage isShared /> : <Lazy.SharedTripPage />}
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.SHARE_EXPENSE(':tripId'),
+          element: (
+            <Suspense fallback={<ExpensePageSkeleton />}>
+              <Lazy.ExpensePage isShared />
             </Suspense>
           ),
         },
