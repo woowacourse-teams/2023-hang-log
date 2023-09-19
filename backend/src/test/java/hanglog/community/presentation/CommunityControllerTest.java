@@ -1,4 +1,4 @@
-package hanglog.trip.presentation;
+package hanglog.community.presentation;
 
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.trip.fixture.CityFixture.LONDON;
@@ -16,13 +16,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.community.dto.response.CommunitySingleTripResponse;
 import hanglog.community.dto.response.CommunityTripsResponse;
-import hanglog.community.presentation.CommunityController;
 import hanglog.community.service.CommunityService;
 import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;
@@ -76,12 +74,10 @@ class CommunityControllerTest extends ControllerTest {
     void getTripsByPage() throws Exception {
         // given
         when(communityService.getTripsByPage(any(), any()))
-                .thenReturn(
-                        new CommunityTripsResponse(
-                                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
-                                1L
-                        )
-                );
+                .thenReturn(new CommunityTripsResponse(
+                        List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+                        1L
+                ));
 
         // when
         final ResultActions resultActions = performGetRequest();
@@ -152,16 +148,12 @@ class CommunityControllerTest extends ControllerTest {
 
         final CommunityTripsResponse communityTripsResponses = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
-                new TypeReference<>() {
-                }
+                CommunityTripsResponse.class
         );
 
-        assertThat(communityTripsResponses).usingRecursiveComparison()
-                .isEqualTo(
-                        new CommunityTripsResponse(
-                                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
-                                1L
-                        )
-                );
+        assertThat(communityTripsResponses).usingRecursiveComparison().isEqualTo(new CommunityTripsResponse(
+                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+                1L
+        ));
     }
 }

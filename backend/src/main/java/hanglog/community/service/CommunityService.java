@@ -1,9 +1,10 @@
 package hanglog.community.service;
 
+import static hanglog.community.domain.type.PublishedStatusType.PUBLISHED;
+
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.community.domain.repository.LikesRepository;
-import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.community.dto.response.CommunitySingleTripResponse;
 import hanglog.community.dto.response.CommunityTripsResponse;
 import hanglog.trip.domain.Trip;
@@ -31,7 +32,7 @@ public class CommunityService {
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
         final Long lastPageIndex =
-                tripRepository.countTripByPublishedStatus(PublishedStatusType.PUBLISHED) / pageable.getPageSize() + 1;
+                tripRepository.countTripByPublishedStatus(PUBLISHED) / pageable.getPageSize() + 1;
         return new CommunityTripsResponse(communitySingleTripResponses, lastPageIndex);
     }
 
