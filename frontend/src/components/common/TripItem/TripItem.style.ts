@@ -98,3 +98,38 @@ export const moreMenuListStyling = css({
     padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
   },
 });
+
+export const imageModalStyling = css({
+  padding: 0,
+  backgroundColor: 'black',
+
+  '& > button': {
+    zIndex: Theme.zIndex.overlayPeak,
+
+    '& > svg > path': {
+      stroke: Theme.color.white,
+    },
+  },
+
+  '& > div': {
+    borderRadius: 0,
+  },
+});
+
+export const expandedImageContainer = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minWidth: '800px',
+  minHeight: '500px',
+  width: '800px',
+  height: '500px',
+  backgroundColor: 'black',
+});
+
+export const expandedImage = css({
+  maxWidth: '100%',
+  maxHeight: '100%',
+  objectFit: 'contain',
+  objectPosition: 'center center',
+});

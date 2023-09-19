@@ -3,14 +3,17 @@ import { useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Box, Heading, ImageCarousel, Modal, Text, useOverlay } from 'hang-log-design-system';
+import { Box, Carousel, ImageCarousel, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
 import {
   contentContainerStyling,
+  expandedImage,
+  expandedImageContainer,
   expenseStyling,
   getContainerStyling,
+  imageModalStyling,
   informationContainerStyling,
   memoStyling,
   starRatingStyling,
@@ -53,10 +56,7 @@ const TripItem = ({
   ...information
 }: TripListItemProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
-  const { mobileImageSize, modalImageSize } = useResizeImage({
-    width: TRIP_ITEM_IMAGE_WIDTH,
-    height: TRIP_ITEM_IMAGE_HEIGHT,
-  });
+  const { width, height } = useResizeImage();
 
   const { isOpen: isImageModalOpen, open: openImageModal, close: closeImageModal } = useOverlay();
 
@@ -93,8 +93,8 @@ const TripItem = ({
               }}
             >
               <ImageCarousel
-                width={isMobile ? mobileImageSize.width : TRIP_ITEM_IMAGE_WIDTH}
-                height={isMobile ? mobileImageSize.height : TRIP_ITEM_IMAGE_HEIGHT}
+                width={isMobile ? width : TRIP_ITEM_IMAGE_WIDTH}
+                height={isMobile ? height : TRIP_ITEM_IMAGE_HEIGHT}
                 isDraggable={false}
                 showNavigationOnHover={!isMobile}
                 showArrows={information.imageUrls.length > 1}
@@ -131,23 +131,30 @@ const TripItem = ({
             tripId={tripId}
             dayLogId={dayLogId}
             hasImage={information.imageUrls.length > 0}
-            imageHeight={mobileImageSize.height}
+            imageHeight={height}
             {...information}
           />
         ) : null}
       </li>
-      <Modal isOpen={isImageModalOpen} closeModal={closeImageModal}>
-        <Heading size="small">{information.title}</Heading>
-        <ImageCarousel
-          width={modalImageSize.width}
-          height={modalImageSize.height}
-          isDraggable={false}
-          showNavigationOnHover={!isMobile}
-          showArrows={information.imageUrls.length > 1}
-          showDots={information.imageUrls.length > 1}
-          images={information.imageUrls}
-        />
-      </Modal>
+      {!isMobile && (
+        <Modal isOpen={isImageModalOpen} closeModal={closeImageModal} css={imageModalStyling}>
+          <Carousel
+            width={800}
+            height={500}
+            isDraggable={false}
+            showNavigationOnHover={!isMobile}
+            showArrows={information.imageUrls.length > 1}
+            showDots={information.imageUrls.length > 1}
+            images={information.imageUrls}
+          >
+            {information.imageUrls.map((imageUrl) => (
+              <div css={expandedImageContainer}>
+                <img src={imageUrl} alt="이미지" css={expandedImage} />
+              </div>
+            ))}
+          </Carousel>
+        </Modal>
+      )}
     </>
   );
 };
