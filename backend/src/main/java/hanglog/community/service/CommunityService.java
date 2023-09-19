@@ -1,15 +1,15 @@
-package hanglog.trip.service;
+package hanglog.community.service;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.community.domain.repository.LikesRepository;
+import hanglog.community.domain.type.PublishedStatusType;
+import hanglog.community.dto.response.CommunitySingleTripResponse;
+import hanglog.community.dto.response.CommunityTripsResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.LikesRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.domain.type.PublishedStatusType;
-import hanglog.trip.dto.response.CommunitySingleTripResponse;
-import hanglog.trip.dto.response.CommunityTripsResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

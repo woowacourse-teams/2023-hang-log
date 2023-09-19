@@ -1,4 +1,4 @@
-package hanglog.trip.dto.response;
+package hanglog.community.dto.response;
 
 import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;

@@ -1,6 +1,6 @@
-package hanglog.trip.domain.repository;
+package hanglog.community.domain.repository;
 
-import hanglog.trip.domain.Likes;
+import hanglog.community.domain.Likes;
 import hanglog.trip.domain.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 

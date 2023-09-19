@@ -1,11 +1,11 @@
-package hanglog.trip.presentation;
+package hanglog.community.presentation;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import hanglog.auth.Auth;
 import hanglog.auth.domain.Accessor;
-import hanglog.trip.dto.response.CommunityTripsResponse;
-import hanglog.trip.service.CommunityService;
+import hanglog.community.dto.response.CommunityTripsResponse;
+import hanglog.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

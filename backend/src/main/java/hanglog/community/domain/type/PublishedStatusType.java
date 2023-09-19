@@ -1,4 +1,4 @@
-package hanglog.trip.domain.type;
+package hanglog.community.domain.type;
 
 public enum PublishedStatusType {
 

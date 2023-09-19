@@ -14,17 +14,15 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
-import hanglog.trip.domain.PublishedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
-import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;

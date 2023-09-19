@@ -1,4 +1,4 @@
-package hanglog.trip.dto.response;
+package hanglog.community.dto.response;
 
 import java.util.List;
 import lombok.Getter;
