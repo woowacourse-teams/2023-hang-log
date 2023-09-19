@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.global.ControllerTest;
-import hanglog.trip.dto.response.CommunityTripResponse;
-import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.dto.response.CommunitySingleTripResponse;
+import hanglog.trip.dto.response.CommunityTripsResponse;
 import hanglog.trip.service.CommunityService;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -75,7 +75,12 @@ class CommunityControllerTest extends ControllerTest {
     void getTripsByPage() throws Exception {
         // given
         when(communityService.getTripsByPage(any(), any()))
-                .thenReturn(List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)));
+                .thenReturn(
+                        new CommunityTripsResponse(
+                                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+                                1L
+                        )
+                );
 
         // when
         ResultActions resultActions = performGetRequest();
@@ -84,60 +89,74 @@ class CommunityControllerTest extends ControllerTest {
         final MvcResult mvcResult = resultActions.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
-                                fieldWithPath("[].id")
+                                fieldWithPath("trips")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("여행 목록")
+                                        .attributes(field("constraint", "10개 이하의 여행")),
+                                fieldWithPath("trips[].id")
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].title")
+                                fieldWithPath("trips[].title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
                                         .attributes(field("constraint", "50자 이하의 문자열")),
-                                fieldWithPath("[].startDate")
+                                fieldWithPath("trips[].startDate")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 시작 날짜")
                                         .attributes(field("constraint", "yyyy-MM-dd")),
-                                fieldWithPath("[].endDate")
+                                fieldWithPath("trips[].endDate")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 종료 날짜")
                                         .attributes(field("constraint", "yyyy-MM-dd")),
-                                fieldWithPath("[].description")
+                                fieldWithPath("trips[].description")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("[].likeCount")
+                                fieldWithPath("trips[].likeCount")
                                         .type(JsonFieldType.NUMBER)
                                         .description("좋아요 숫자")
                                         .attributes(field("constraint", "0과 양의 정수")),
-                                fieldWithPath("[].isLike")
+                                fieldWithPath("trips[].isLike")
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 유무")
                                         .attributes(field("constraint", "boolean (true : 좋아요)")),
-                                fieldWithPath("[].imageUrl")
+                                fieldWithPath("trips[].imageUrl")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
                                         .attributes(field("constraint", "이미지 URL")),
-                                fieldWithPath("[].cities")
+                                fieldWithPath("trips[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
                                         .attributes(field("constraint", "1개 이상의 도시 정보")),
-                                fieldWithPath("[].cities[].id")
+                                fieldWithPath("trips[].cities[].id")
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 도시 ID")
                                         .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].cities[].name")
+                                fieldWithPath("trips[].cities[].name")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 도시 이름")
-                                        .attributes(field("constraint", "도시"))
+                                        .attributes(field("constraint", "도시")),
+                                fieldWithPath("lastPageIndex")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("마지막 페이지 인덱스")
+                                        .attributes(field("constraint", "양의 정수"))
                         )
                 ))
                 .andReturn();
-        final List<TripResponse> tripResponses = objectMapper.readValue(
+
+        final CommunityTripsResponse communityTripsResponses = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
                 new TypeReference<>() {
                 }
         );
 
-        assertThat(tripResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)));
+        assertThat(communityTripsResponses).usingRecursiveComparison()
+                .isEqualTo(
+                        new CommunityTripsResponse(
+                                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+                                1L
+                        )
+                );
     }
 }

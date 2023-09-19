@@ -23,6 +23,10 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
             + "WHERE trip.publishedStatus = 'PUBLISHED'")
     List<Trip> findPublishedTripByPageable(Pageable pageable);
 
+    @Query("SELECT COUNT(trip) FROM Trip trip "
+            + "WHERE trip.publishedStatus='PUBLISHED'")
+    Long countPublishedTrip();
+
     void deleteAllByMemberId(final Long memberId);
 
 }
