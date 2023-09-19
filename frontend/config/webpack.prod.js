@@ -2,7 +2,6 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -19,6 +18,5 @@ module.exports = merge(common, {
       generateStatsFile: true,
       statsFilename: 'bundle-report.json',
     }),
-    new CompressionPlugin(),
   ],
 });
