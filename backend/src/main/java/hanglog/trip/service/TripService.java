@@ -1,5 +1,6 @@
 package hanglog.trip.service;
 
+import static hanglog.global.exception.ExceptionCode.INVALID_PUBLISHED_STATUS_REQUEST;
 import static hanglog.global.exception.ExceptionCode.INVALID_TRIP_WITH_MEMBER;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
@@ -7,15 +8,20 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.global.BaseEntity;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.PublishedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.dto.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -38,6 +44,7 @@ public class TripService {
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
+    private final PublishedTripRepository publishedTripRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -174,5 +181,46 @@ public class TripService {
 
     private String generateInitialTitle(final List<City> cites) {
         return cites.get(0).getName() + TITLE_POSTFIX;
+    }
+
+    public void updatePublishedStatus(final Long tripId, final PublishedStatusRequest publishedStatusRequest) {
+        final Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        validatedPublishedStatusRequest(trip.getPublishedStatus(), publishedStatusRequest);
+
+        final boolean updatedPublishedStatus = publishedStatusRequest.getPublishedStatus();
+        if (updatedPublishedStatus) {
+            publishTrip(trip);
+            return;
+        }
+        unpublishTrip(trip);
+    }
+
+    private void validatedPublishedStatusRequest(
+            final PublishedStatusType publishedStatusType,
+            final PublishedStatusRequest publishedStatusRequest
+    ) {
+        final boolean isPublished = publishedStatusRequest.getPublishedStatus();
+        final PublishedStatusType updatedPublishedStatus = PublishedStatusType.mappingType(isPublished);
+        if (publishedStatusType.equals(updatedPublishedStatus)) {
+            throw new BadRequestException(INVALID_PUBLISHED_STATUS_REQUEST);
+        }
+    }
+
+    private void unpublishTrip(final Trip trip) {
+        trip.changePublishedStatus(false);
+        publishedTripRepository.findByTripId(trip.getId())
+                .ifPresent(BaseEntity::changeStatusToDeleted);
+    }
+
+    private void publishTrip(final Trip trip) {
+        trip.changePublishedStatus(true);
+        publishedTripRepository.findDeletedByTripId(trip.getId())
+                .ifPresentOrElse(BaseEntity::changeStatusToUsable, () -> createPublishedTrip(trip));
+    }
+
+    private void createPublishedTrip(final Trip trip) {
+        final PublishedTrip publishedTrip = new PublishedTrip(trip);
+        publishedTripRepository.save(publishedTrip);
     }
 }
