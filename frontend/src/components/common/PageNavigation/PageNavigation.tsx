@@ -19,15 +19,15 @@ interface PageNavigationProps {
 }
 
 const PageNavigation = ({ pages, selected, maxPage, onChangeNavigate }: PageNavigationProps) => {
-  const IncreaseNavigateUnit = selected === maxPage ? selected : selected + 1;
-  const DecreaseNavigateUnit = selected === 1 ? selected : selected - 1;
+  const nextUnit = selected === maxPage ? selected : selected + 1;
+  const previousUnit = selected === 1 ? selected : selected - 1;
 
   return (
     <Flex styles={{ justify: 'center', align: 'center' }} css={ContainerStyling}>
       <Box
         css={LeftButtonStyling}
         onClick={() => {
-          onChangeNavigate(DecreaseNavigateUnit);
+          onChangeNavigate(previousUnit);
         }}
       >
         <LeftButton />
@@ -48,7 +48,7 @@ const PageNavigation = ({ pages, selected, maxPage, onChangeNavigate }: PageNavi
       <Box
         css={RightButtonStyling}
         onClick={() => {
-          onChangeNavigate(IncreaseNavigateUnit);
+          onChangeNavigate(nextUnit);
         }}
       >
         <RightButton />

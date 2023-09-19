@@ -21,7 +21,9 @@ import { useLikeMutation } from '@hooks/api/useLikeMutation';
 
 import { isLoggedInState } from '@store/auth';
 
-import type { CityData } from '@type/city';
+import { formatDate } from '@utils/formatter';
+
+import type { CommunityTripData } from '@type/trips';
 
 import { PATH } from '@constants/path';
 
@@ -31,44 +33,42 @@ import ClickFilledLike from '@assets/svg/click-filled-like.svg';
 import EmptyLike from '@assets/svg/empty-like.svg';
 
 interface CommunityTripsItemProps {
-  id: number;
-  coverImage: string | null;
-  cityTags: CityData[];
-  itemName: string;
-  duration: string;
+  trip: CommunityTripData;
   index: number;
-  description?: string | null;
-  nickName: string;
-  isLikeChecked?: boolean;
-  likeCount?: number;
 }
 
-const CommunityTripsItem = ({
-  id,
-  coverImage,
-  cityTags,
-  itemName,
-  duration,
-  description,
-  index,
-  nickName = '',
-  isLikeChecked = false,
-  likeCount = 0,
-}: CommunityTripsItemProps) => {
+const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
   const navigate = useNavigate();
+
+  const {
+    id,
+    imageUrl,
+    title,
+    cities,
+    startDate,
+    endDate,
+    description,
+    authorNickname,
+    isLike,
+    likeCount,
+  } = trip;
+
+  const coverImage = imageUrl;
+  const duration = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+
   const likeMutation = useLikeMutation();
 
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const [likeChecked, setLikeChecked] = useState<boolean>(isLikeChecked);
+  const [isLikeChecked, setisLikeChecked] = useState<boolean>(isLike);
 
   const handleLikeCheck = (isLike: boolean) => {
-    setLikeChecked(isLike);
+    setisLikeChecked(isLike);
     likeMutation.mutate(
       { id, isLike, isLoggedIn },
       {
         onError: () => {
-          setLikeChecked(!isLike);
+          setisLikeChecked(!isLike);
         },
       }
     );
@@ -80,9 +80,9 @@ const CommunityTripsItem = ({
       styles={{ direction: 'column', height: '100%' }}
       css={boxStyling}
       tabIndex={index + 5}
-      aria-label={`${index + 1}번째 trip, ${itemName}`}
+      aria-label={`${index + 1}번째 trip, ${title}`}
     >
-      {likeChecked ? (
+      {isLikeChecked ? (
         <ClickFilledLike
           css={clickableLikeStyling}
           onClick={() => {
@@ -98,20 +98,16 @@ const CommunityTripsItem = ({
         />
       )}
 
-      <img
-        src={coverImage ?? DefaultThumbnail}
-        css={imageStyling}
-        alt={`${itemName} 대표 이미지`}
-      />
+      <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
       <Box onClick={() => navigate(PATH.TRIP(id))} css={informationStyling}>
         <Box>
           <Box css={badgeBoxStyling}>
-            {cityTags.map((cityTag) => {
-              return <Badge key={cityTag.id}>{cityTag.name}</Badge>;
-            })}
+            {cities.map((cityTag) => (
+              <Badge key={cityTag.id}>{cityTag.name}</Badge>
+            ))}
           </Box>
           <Text size="large" css={nameStyling}>
-            {itemName}
+            {title}
           </Text>
           <Text size="medium" css={durationAndDescriptionStyling}>
             {duration}
@@ -121,7 +117,7 @@ const CommunityTripsItem = ({
           </Text>
         </Box>
         <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between' }}>
-          <Box>{nickName}</Box>
+          <Box>{authorNickname}</Box>
           <Box css={likeCountBoxStyling}>
             <EmptyLike />
             {likeCount}

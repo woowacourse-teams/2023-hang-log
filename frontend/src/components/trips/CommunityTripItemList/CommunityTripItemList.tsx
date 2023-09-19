@@ -12,8 +12,6 @@ import {
 import CommunityTripsItem from '@components/trips/CommunityTripsItem/CommunityTripsItem';
 import TutorialModal from '@components/trips/TutorialModal/TutorialModal';
 
-import { formatDate } from '@utils/formatter';
-
 import type { RecommendedTripsData } from '@type/trips';
 
 import { PATH } from '@constants/path';
@@ -25,21 +23,7 @@ const CommunityTripItemList = (data: Omit<RecommendedTripsData, 'title'>) => {
     <section css={containerStyling}>
       <Box tag="ol" css={gridBoxStyling}>
         {trips.map((trip, index) => {
-          return (
-            <CommunityTripsItem
-              key={trip.id}
-              id={trip.id}
-              coverImage={trip.imageUrl}
-              cityTags={trip.cities}
-              itemName={trip.title}
-              duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
-              description={trip.description}
-              nickName={trip.authorNickname}
-              index={index}
-              isLikeChecked={trip.isLike}
-              likeCount={trip.likeCount}
-            />
-          );
+          return <CommunityTripsItem key={trip.id} trip={trip} index={index} />;
         })}
       </Box>
     </section>

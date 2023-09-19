@@ -23,20 +23,17 @@ export interface NewTripData {
 
 export interface RecommendedTripsData {
   title: string;
-  trips: (TripsData & {
-    authorNickname: string;
-    description: string;
-    likeCount: number;
-    isLike: boolean;
-  })[];
+  trips: CommunityTripData[];
 }
 
 export interface CommunityTripsData {
   lastPageIndex: number;
-  trips: (TripsData & {
-    authorNickname: string;
-    description: string;
-    likeCount: number;
-    isLike: boolean;
-  })[];
+  trips: CommunityTripData[];
 }
+
+export type CommunityTripData = TripsData & {
+  authorNickname: string;
+  description: string;
+  likeCount: number;
+  isLike: boolean;
+};
