@@ -12,11 +12,11 @@ export const useLikeMutation = () => {
   const { createToast } = useToast();
   const { handleTokenError } = useTokenError();
 
-  const imageMutation = useMutation({
+  const likeMutation = useMutation({
     mutationFn: postLike,
     onError: (error: ErrorResponseData) => {
-      if (error.code === ERROR_CODE.UNAUTHORIZED) {
-        createToast('로그인이 필요합니다.', 'default');
+      if (error.code === ERROR_CODE.UNAUTHORIZED && error.message) {
+        createToast(error.message, 'default');
         return;
       }
 
@@ -27,5 +27,5 @@ export const useLikeMutation = () => {
     },
   });
 
-  return imageMutation;
+  return likeMutation;
 };
