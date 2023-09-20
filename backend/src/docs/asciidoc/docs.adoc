@@ -287,7 +287,7 @@ include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.
 
 ==== 응답
 include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
-include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/response-fields.adoc[]
 
 === 공유 상태 수정 (PATCH /trips/:tripId/share)
 
