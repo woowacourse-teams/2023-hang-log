@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService {
     private static final int MAX_IMAGE_LIST_SIZE = 5;
     private static final int EMPTY_LIST_SIZE = 0;
+    private static final String CACHE_CONTROL_VALUE = "max-age=31536000";
 
     private final AmazonS3 s3Client;
 
@@ -63,6 +64,7 @@ public class ImageService {
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(imageFile.getContentType());
         metadata.setContentLength(imageFile.getSize());
+        metadata.setCacheControl(CACHE_CONTROL_VALUE);
 
         try (final InputStream inputStream = imageFile.getInputStream()) {
             s3Client.putObject(bucket, path, inputStream, metadata);
