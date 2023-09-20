@@ -1,6 +1,6 @@
 package hanglog.auth.presentation;
 
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -158,6 +158,7 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void logout() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(authService).removeMemberRefreshToken(anyLong());
@@ -193,6 +194,7 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void deleteAccount() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(authService).deleteAccount(anyLong());

@@ -2,6 +2,8 @@ package hanglog.trip.presentation;
 
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
+import hanglog.auth.domain.Accessor;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
@@ -26,36 +28,39 @@ public class DayLogController {
     private final TripService tripService;
 
     @GetMapping
+    @MemberOnly
     public ResponseEntity<DayLogResponse> getDayLog(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final DayLogResponse response = dayLogService.getById(dayLogId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping
+    @MemberOnly
     public ResponseEntity<Void> updateDayLogTitle(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId,
             @RequestBody @Valid final DayLogUpdateTitleRequest request
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         dayLogService.updateTitle(dayLogId, request);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/order")
+    @MemberOnly
     public ResponseEntity<Void> updateOrdinalOfItems(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @PathVariable final Long dayLogId,
             @RequestBody @Valid final ItemsOrdinalUpdateRequest itemsOrdinalUpdateRequest
     ) {
-        tripService.validateTripByMember(memberId, tripId);
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
         dayLogService.updateOrdinalOfItems(dayLogId, itemsOrdinalUpdateRequest);
         return ResponseEntity.noContent().build();
     }

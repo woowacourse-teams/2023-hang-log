@@ -16,7 +16,7 @@ public class RefreshToken {
     @Id
     private String token;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long memberId;
 
     public RefreshToken(final String token, final Long memberId) {

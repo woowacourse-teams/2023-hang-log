@@ -1,7 +1,7 @@
 package hanglog.category.presentation;
 
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

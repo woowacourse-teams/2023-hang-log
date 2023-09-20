@@ -1,9 +1,9 @@
 package hanglog.trip.presentation;
 
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -32,8 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
+import hanglog.city.domain.City;
 import hanglog.global.ControllerTest;
-import hanglog.trip.domain.City;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -72,6 +72,7 @@ class TripControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
     }

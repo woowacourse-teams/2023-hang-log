@@ -1,6 +1,8 @@
 package hanglog.member.presentation;
 
 import hanglog.auth.Auth;
+import hanglog.auth.MemberOnly;
+import hanglog.auth.domain.Accessor;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
 import hanglog.member.service.MemberService;
@@ -15,23 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("mypage")
+@RequestMapping("/mypage")
 public class MemberController {
 
     public final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<MyPageResponse> getMyInfo(@Auth final Long memberId) {
-        final MyPageResponse myPageResponse = memberService.getMyPageInfo(memberId);
+    @MemberOnly
+    public ResponseEntity<MyPageResponse> getMyInfo(@Auth final Accessor accessor) {
+        final MyPageResponse myPageResponse = memberService.getMyPageInfo(accessor.getMemberId());
         return ResponseEntity.ok().body(myPageResponse);
     }
 
     @PutMapping
+    @MemberOnly
     public ResponseEntity<Void> updateMyInfo(
-            @Auth final Long memberId,
+            @Auth final Accessor accessor,
             @RequestBody @Valid final MyPageRequest myPageRequest
     ) {
-        memberService.updateMyPageInfo(memberId, myPageRequest);
+        memberService.updateMyPageInfo(accessor.getMemberId(), myPageRequest);
         return ResponseEntity.noContent().build();
     }
 }

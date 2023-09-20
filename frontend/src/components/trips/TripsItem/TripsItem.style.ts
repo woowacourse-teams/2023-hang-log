@@ -71,7 +71,7 @@ export const durationStyling = css({
   marginBottom: Theme.spacer.spacing1,
 });
 
-export const durationTextStyling = css({
+export const descriptionStyling = css({
   display: '-webkit-box',
   '-webkit-line-clamp': '2',
   '-webkit-box-orient': 'vertical',
@@ -79,8 +79,8 @@ export const durationTextStyling = css({
   marginTop: '4px',
   width: '100%',
 
-  textOverflow: 'ellipsis',
   overflow: 'hidden',
+  textOverflow: 'ellipsis',
   wordBreak: 'break-word',
 });
 

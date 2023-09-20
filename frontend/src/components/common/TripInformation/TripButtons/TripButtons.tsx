@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
+import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import {
-  moreButtonStyling,
-  moreMenuListStyling,
-  moreMenuStyling,
+  binIconStyling,
+  editIconStyling,
+  modalButtonContainerStyling,
+  modalContentStyling,
+  svgButtonStyling,
 } from '@components/common/TripInformation/TripButtons/TripButtons.style';
 import TripShareButton from '@components/common/TripInformation/TripShareButton/TripShareButton';
 
@@ -15,24 +17,36 @@ import type { TripData } from '@type/trip';
 
 import { PATH } from '@constants/path';
 
-import MoreIcon from '@assets/svg/more-icon.svg';
+import BinIcon from '@assets/svg/bin-icon.svg';
+import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface TripButtonsProps {
   tripId: number;
   sharedCode: TripData['sharedCode'];
+  isShared: boolean;
 }
 
-export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
+export const TripButtons = ({ tripId, sharedCode, isShared }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
-  const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
+
+  const {
+    isOpen: isDeleteModalOpen,
+    close: closeDeleteModal,
+    open: openDeleteModal,
+  } = useOverlay();
 
   const goToEditPage = () => {
     navigate(PATH.EDIT_TRIP(tripId));
   };
 
   const goToExpensePage = () => {
-    navigate(PATH.EXPENSE(tripId));
+    if (!isShared) {
+      navigate(PATH.EXPENSE(tripId));
+      return;
+    }
+
+    navigate(PATH.SHARE_EXPENSE(tripId));
   };
 
   const handleDeleteButtonClick = () => {
@@ -49,18 +63,27 @@ export const TripButtons = ({ tripId, sharedCode }: TripButtonsProps) => {
       <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
         가계부
       </Button>
-      <TripShareButton tripId={tripId} sharedCode={sharedCode} />
-      <Menu css={moreMenuStyling} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
-          <MoreIcon />
-        </button>
-        {isMenuOpen && (
-          <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={goToEditPage}>수정</MenuItem>
-            <MenuItem onClick={handleDeleteButtonClick}>삭제</MenuItem>
-          </MenuList>
-        )}
-      </Menu>
+      {!isShared && (
+        <>
+          <TripShareButton tripId={tripId} sharedCode={sharedCode} />
+          <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
+          <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={openDeleteModal} />
+          <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
+            <Box css={modalContentStyling}>
+              <Heading size="xSmall">여행 아이템을 삭제하겠어요?</Heading>
+              <Text>여행 아이템을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
+              <Flex css={modalButtonContainerStyling}>
+                <Button variant="default" onClick={closeDeleteModal}>
+                  취소
+                </Button>
+                <Button variant="danger" onClick={handleDeleteButtonClick}>
+                  삭제
+                </Button>
+              </Flex>
+            </Box>
+          </Modal>
+        </>
+      )}
     </>
   );
 };

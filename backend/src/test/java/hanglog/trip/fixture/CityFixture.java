@@ -1,6 +1,6 @@
 package hanglog.trip.fixture;
 
-import hanglog.trip.domain.City;
+import hanglog.city.domain.City;
 import java.math.BigDecimal;
 
 public class CityFixture {

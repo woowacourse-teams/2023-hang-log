@@ -3,12 +3,13 @@ package hanglog.expense.fixture;
 import static hanglog.expense.fixture.ExpenseFixture.EUR_100_SHOPPING_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.KRW_100_FOOD_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.USD_100_ACCOMMODATION_EXPENSE;
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.type.ItemType;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,8 @@ public class TripExpenseFixture {
             LocalDate.of(2023, 7, 2),
             "",
             null,
-            new ArrayList<>()
+            new ArrayList<>(),
+            PublishedStatusType.UNPUBLISHED
     );
 
     public static final DayLog DAYLOG_1_FOR_EXPENSE = new DayLog(

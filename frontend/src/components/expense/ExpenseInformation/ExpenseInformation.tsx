@@ -11,45 +11,52 @@ import {
   titleStyling,
 } from '@components/expense/ExpenseInformation/ExpenseInformation.style';
 
+import { useExpense } from '@hooks/expense/useExpense';
+
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
 
-import type { ExpenseData } from '@type/expense';
-
 import { PATH } from '@constants/path';
 
-interface ExpenseInformationProps
-  extends Pick<ExpenseData, 'title' | 'startDate' | 'endDate' | 'cities'> {
+interface ExpenseInformationProps {
   tripId: number;
+  isShared: boolean;
 }
 
-const ExpenseInformation = ({ ...information }: ExpenseInformationProps) => {
+const ExpenseInformation = ({ tripId, isShared }: ExpenseInformationProps) => {
   const navigate = useNavigate();
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
+
+  const { expenseData } = useExpense(tripId);
+
+  const goToTripPage = () => {
+    if (!isShared) {
+      navigate(PATH.TRIP(tripId));
+      return;
+    }
+
+    navigate(PATH.SHARE_TRIP(tripId));
+  };
 
   return (
     <header css={sectionStyling}>
       <Box tag="section">
         <Box css={badgeWrapperStyling}>
-          {information.cities.map(({ id, name }) => (
+          {expenseData.cities.map(({ id, name }) => (
             <Badge key={id}>{name}</Badge>
           ))}
         </Box>
         <Heading css={titleStyling} size={isMobile ? 'medium' : 'large'}>
-          {information.title}
+          {expenseData.title}
         </Heading>
         <Text>
-          {formatDate(information.startDate)} - {formatDate(information.endDate)}
+          {formatDate(expenseData.startDate)} - {formatDate(expenseData.endDate)}
         </Text>
       </Box>
       <Box css={buttonWrapperStyling}>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => navigate(PATH.TRIP(information.tripId))}
-        >
+        <Button variant="primary" size="small" onClick={goToTripPage}>
           여행 기록
         </Button>
       </Box>

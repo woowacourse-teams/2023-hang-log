@@ -2,20 +2,8 @@ import { useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import {
-  // Button,
-  // Flex,
-  // Modal,
-  // SVGCarousel,
-  SVGCarouselModal,
-  useOverlay,
-} from 'hang-log-design-system';
+import { SVGCarouselModal, useOverlay } from 'hang-log-design-system';
 
-// import {
-//   boxStyling,
-//   buttonStyling,
-//   modalStyling,
-// } from '@components/trips/TutorialModal/TutorialModal.style';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import Tutorial1SVG from '@assets/svg/tutorial1.svg';

@@ -11,8 +11,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 
 import { HangLogProvider, Spinner } from 'hang-log-design-system';
 
-import { axiosInstance } from '../src/api/axiosInstance';
-import { ACCESS_TOKEN_KEY } from '../src/constants/api';
+import { ACCESS_TOKEN_KEY, NETWORK } from '../src/constants/api';
 import { handlers } from '../src/mocks/handlers';
 
 initialize();
@@ -48,7 +47,15 @@ const preview: Preview = {
 
 export default preview;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: NETWORK.RETRY_COUNT,
+      suspense: true,
+      useErrorBoundary: true,
+    },
+  },
+});
 
 const localStorageResetDecorator = (Story) => {
   window.localStorage.clear();

@@ -1,12 +1,13 @@
 package hanglog.trip.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.ItemFixture.AIRPLANE_ITEM;
 import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
 
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ public final class DayLogFixture {
             LocalDate.of(2023, 7, 2),
             "",
             null,
-            new ArrayList<>()
+            new ArrayList<>(),
+            PublishedStatusType.UNPUBLISHED
     );
 
     public static final DayLog LONDON_DAYLOG_1 = new DayLog(

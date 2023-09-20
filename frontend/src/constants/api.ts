@@ -5,7 +5,7 @@ export const BASE_URL = PROD
   : 'http://localhost:3000';
 
 export const AXIOS_BASE_URL = PROD
-  ? `${window.location.protocol}//${process.env.PROD_BASE_URL}/api`
+  ? `${window.location.protocol}//${process.env.AXIOS_PROD_BASE_URL}`
   : '/';
 
 export const END_POINTS = {
@@ -25,11 +25,12 @@ export const END_POINTS = {
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
   ACCOUNT: '/account',
-  SHARED_PAGE: (code: string) => `/shared-trips/${code}`,
+  SHARED_TRIP: (code: string | number) => `/shared-trips/${code}`,
+  SHARED_EXPENSE: (tripId: string | number) => `/shared-trips/${tripId}/expense`,
 } as const;
 
 export const NETWORK = {
-  RETRY_COUNT: 3,
+  RETRY_COUNT: 2,
   TIMEOUT: 10000,
 } as const;
 
@@ -40,10 +41,12 @@ export const HTTP_STATUS_CODE = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   NOT_FOUND: 404,
+  CONTENT_TOO_LARGE: 413,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
 export const ERROR_CODE = {
+  LARGE_IMAGE_FILE: 5001,
   TOKEN_ERROR_RANGE: 9000,
   INVALID_REFRESH_TOKEN: 9101,
   INVALID_ACCESS_TOKEN: 9102,
@@ -51,7 +54,7 @@ export const ERROR_CODE = {
   EXPIRED_ACCESS_TOKEN: 9104,
   INVALID_TOKEN_VALIDATE: 9105,
   NULL_REFRESH_TOKEN: 9106,
-  UNEXCEPTED_TOKEN_ERROR: 9999,
+  UNEXPECTED_TOKEN_ERROR: 9999,
 } as const;
 
 export const HTTP_ERROR_MESSAGE = {

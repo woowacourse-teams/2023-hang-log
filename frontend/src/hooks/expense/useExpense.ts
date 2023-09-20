@@ -2,7 +2,11 @@ import { useCallback, useMemo } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import type { Segment } from '@components/common/DonutChart/DonutChart';
+
 import type { ExpenseData, ExpenseItemData } from '@type/expense';
+
+import { EXPENSE_CHART_COLORS } from '@constants/expense';
 
 export const useExpense = (tripId: number) => {
   const queryClient = useQueryClient();
@@ -37,9 +41,27 @@ export const useExpense = (tripId: number) => {
         };
       }),
     };
-  }, [expenseData]);
+  }, [expenseData.categories, expenseData.dayLogs, expenseData.exchangeRate.date]);
+
+  const getCategoryChartData = useCallback(() => {
+    return expenseData.categories.reduce<Segment[]>((acc, curr) => {
+      if (curr.percentage !== 0) {
+        const data = {
+          id: curr.category.id,
+          percentage: curr.percentage,
+          color: EXPENSE_CHART_COLORS[curr.category.name],
+        };
+
+        acc.push(data);
+      }
+
+      return acc;
+    }, []);
+  }, [expenseData.categories]);
 
   const categoryExpenseData = useMemo(() => getItemsByCategory(), [getItemsByCategory]);
 
-  return { expenseData, dates, categoryExpenseData };
+  const categoryChartData = useMemo(() => getCategoryChartData(), [getCategoryChartData]);
+
+  return { expenseData, dates, categoryExpenseData, categoryChartData };
 };

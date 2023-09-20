@@ -11,7 +11,7 @@ export const containerStyling = css({
   padding: `${Theme.spacer.spacing4} 50px`,
 
   '@media screen and (max-width: 600px)': {
-    padding: Theme.spacer.spacing4,
+    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing4}`,
   },
 
   '& > ul': {

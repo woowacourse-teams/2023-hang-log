@@ -25,7 +25,6 @@ const ImageInput = ({ initialImage, updateCoverImage }: ImageInputProps) => {
     initialImageUrls: initialImage === null ? [] : [initialImage],
     onSuccess: handleImageUrlsChange,
   });
-
   return (
     <ImageUploadInput
       id="cover-image-upload"

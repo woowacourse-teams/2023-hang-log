@@ -32,7 +32,7 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String socialLoginId;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     private String nickname;
 
     @Column(nullable = false)
@@ -59,9 +59,14 @@ public class Member {
         this.imageUrl = imageUrl;
         this.status = ACTIVE;
         this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public Member(final String socialLoginId, final String nickname, final String imageUrl) {
         this(null, socialLoginId, nickname, imageUrl);
+    }
+
+    public boolean isNicknameChanged(final String inputNickname) {
+        return !nickname.equals(inputNickname);
     }
 }

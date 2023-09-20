@@ -93,6 +93,7 @@ const TripItemAddModal = ({
               <StarRatingInput
                 rating={tripItemInformation.rating}
                 updateInputValue={updateInputValue}
+                isMobile={isMobile}
               />
               <ExpenseInput
                 initialExpenseValue={tripItemInformation.expense}

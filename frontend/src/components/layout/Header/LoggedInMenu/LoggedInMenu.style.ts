@@ -7,6 +7,8 @@ export const imageStyling = css({
   minHeight: '32px',
   maxWidth: '32px',
   maxHeight: '32px',
+  width: '32px',
+  height: '32px',
   border: 'none',
   outline: 0,
   borderRadius: '50%',
@@ -14,6 +16,8 @@ export const imageStyling = css({
   backgroundColor: Theme.color.gray200,
 
   objectFit: 'cover',
+
+  cursor: 'pointer',
 });
 
 export const menuListStyling = css({

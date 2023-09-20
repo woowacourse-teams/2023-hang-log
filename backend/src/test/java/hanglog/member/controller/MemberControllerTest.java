@@ -1,6 +1,6 @@
 package hanglog.member.controller;
 
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -55,6 +55,7 @@ class MemberControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
     }

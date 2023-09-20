@@ -5,7 +5,7 @@ import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 import {
   badgeBoxStyling,
   boxStyling,
-  durationTextStyling,
+  descriptionStyling,
   imageStyling,
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
@@ -58,7 +58,7 @@ const TripsItem = ({
         {itemName}
       </Text>
       <Text size="medium">{duration}</Text>
-      <Text size="small" css={durationTextStyling}>
+      <Text size="small" css={descriptionStyling}>
         {description}
       </Text>
     </Flex>

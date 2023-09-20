@@ -8,6 +8,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.global.BaseEntity;
 import hanglog.global.exception.InvalidDomainException;
 import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.Trip;
@@ -16,8 +17,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,12 +30,17 @@ import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE shared_trip SET status = 'DELETED' WHERE id = ?")
 @NoArgsConstructor(access = PROTECTED)
-public class SharedTrip {
+@Where(clause = "status = 'USABLE'")
+@Table(name = "shared_trip", indexes = @Index(name = "ux_shared_trip_shared_code", columnList = "sharedCode", unique = true))
+public class SharedTrip extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

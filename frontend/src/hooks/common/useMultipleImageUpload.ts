@@ -1,8 +1,12 @@
 import type { ChangeEvent } from 'react';
 import { useCallback, useState } from 'react';
 
-import { useImageMutation } from '@hooks/api/useImageMutation';
+import imageCompression from 'browser-image-compression';
 
+import { useImageMutation } from '@hooks/api/useImageMutation';
+import { useToast } from '@hooks/common/useToast';
+
+import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface UseMultipleImageUploadParams {
@@ -20,18 +24,41 @@ export const useMultipleImageUpload = ({
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
 
+  const { createToast } = useToast();
+
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
-      const imageFiles = event.target.files;
+      const originalImageFiles = event.target.files;
 
-      if (!imageFiles) return;
+      if (!originalImageFiles) return;
 
-      if (imageFiles.length + uploadedImageUrls.length > maxUploadCount) {
+      if (originalImageFiles.length + uploadedImageUrls.length > maxUploadCount) {
         onError?.();
 
         return;
+      }
+
+      const prevImageUrls = uploadedImageUrls;
+
+      setUploadedImageUrls((prevImageUrls) => {
+        const newImageUrls = [...originalImageFiles].map((file) => URL.createObjectURL(file));
+
+        return [...prevImageUrls, ...newImageUrls];
+      });
+
+      const imageFiles: File[] = [];
+
+      try {
+        await Promise.all(
+          [...originalImageFiles].map(async (file) => {
+            const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
+            imageFiles.push(compressedImageFile);
+          })
+        );
+      } catch (e) {
+        imageFiles.push(...originalImageFiles);
       }
 
       const imageUploadFormData = new FormData();
@@ -44,12 +71,11 @@ export const useMultipleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
-            setUploadedImageUrls((prevImageUrls) => {
-              const updatedImageUrls = [...prevImageUrls, ...imageUrls];
-              onSuccess?.(updatedImageUrls);
-
-              return updatedImageUrls;
-            });
+            onSuccess?.([...prevImageUrls, ...imageUrls]);
+            createToast('이미지 업로드에 성공했습니다', 'success');
+          },
+          onError: () => {
+            setUploadedImageUrls(prevImageUrls);
           },
         }
       );
@@ -57,7 +83,7 @@ export const useMultipleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [imageMutation, maxUploadCount, onError, onSuccess, uploadedImageUrls.length]
+    [createToast, imageMutation, maxUploadCount, onError, onSuccess, uploadedImageUrls]
   );
 
   const handleImageRemoval = useCallback(

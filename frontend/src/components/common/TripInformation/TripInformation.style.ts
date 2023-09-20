@@ -51,15 +51,22 @@ export const titleStyling = css({
 
 export const descriptionStyling = css({
   marginTop: Theme.spacer.spacing3,
+
+  wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
 });
 
 export const buttonContainerStyling = css({
   position: 'absolute',
   top: Theme.spacer.spacing4,
-  right: Theme.spacer.spacing4,
+  right: '50px',
   display: 'flex',
   alignItems: 'center',
   gap: Theme.spacer.spacing1,
+
+  '@media screen and (max-width: 600px)': {
+    right: Theme.spacer.spacing4,
+  },
 });
 
 export const badgeStyling = css({
@@ -85,6 +92,6 @@ export const badgeWrapperStyling = css({
   },
 
   '@media screen and (max-width: 600px)': {
-    width: 'calc(100vw - 220px)',
+    width: 'calc(100vw - 232px)',
   },
 });

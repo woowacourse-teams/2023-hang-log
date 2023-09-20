@@ -1,13 +1,14 @@
 package hanglog.share.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
+import hanglog.city.domain.City;
 import hanglog.share.domain.SharedTrip;
-import hanglog.trip.domain.City;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,7 +26,8 @@ public class ShareFixture {
             LocalDate.of(2023, 7, 2),
             "",
             new SharedTrip(null, null, "sharedCode", SHARED),
-            new ArrayList<>()
+            new ArrayList<>(),
+            PublishedStatusType.UNPUBLISHED
     );
 
     public static final DayLog LONDON_DAYLOG_1 = new DayLog(
