@@ -92,11 +92,6 @@ class ExpenseServiceTest {
                 tripCities,
                 List.of(
                         new CategoryExpense(
-                                FOOD,
-                                KRW_100_FOOD.exchangeAmount,
-                                totalAmount
-                        ),
-                        new CategoryExpense(
                                 SHOPPING,
                                 EUR_100_SHOPPING.exchangeAmount,
                                 totalAmount
@@ -104,6 +99,11 @@ class ExpenseServiceTest {
                         new CategoryExpense(
                                 ACCOMMODATION,
                                 USD_100_ACCOMMODATION.exchangeAmount,
+                                totalAmount
+                        ),
+                        new CategoryExpense(
+                                FOOD,
+                                KRW_100_FOOD.exchangeAmount,
                                 totalAmount
                         )
                 ),
@@ -113,10 +113,16 @@ class ExpenseServiceTest {
                         new DayLogExpense(DAYLOG_2_FOR_EXPENSE, day2Amount)
                 )
         );
+        final List<String> expectCategories = expected.getCategories().stream()
+                .map(categoryExpenseResponse -> categoryExpenseResponse.getCategory().getName())
+                .toList();
 
         // when
         final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
-
+        final List<String> actualCategories = actual.getCategories().stream()
+                .filter(categoryExpenseResponse -> !categoryExpenseResponse.getAmount().equals(BigDecimal.ZERO))
+                .map(categoryExpenseResponse -> categoryExpenseResponse.getCategory().getName())
+                .toList();
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual)
@@ -126,6 +132,8 @@ class ExpenseServiceTest {
             softly.assertThat(actual.getCategories())
                     .usingRecursiveFieldByFieldElementComparatorOnFields()
                     .containsAll(expected.getCategories());
+            softly.assertThat(actualCategories)
+                    .isEqualTo(expectCategories);
         });
     }
 

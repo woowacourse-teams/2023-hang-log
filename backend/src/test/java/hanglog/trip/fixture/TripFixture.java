@@ -1,6 +1,6 @@
 package hanglog.trip.fixture;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_JAPAN_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_1;
@@ -8,6 +8,7 @@ import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_2;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_EXTRA;
 
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public final class TripFixture {
             LocalDate.of(2023, 7, 2),
             "",
             null,
-            new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA))
+            new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA)),
+            PublishedStatusType.UNPUBLISHED
     );
 
     public static final Trip LONDON_TO_JAPAN = new Trip(
@@ -35,6 +37,7 @@ public final class TripFixture {
             LocalDate.of(2023, 7, 2),
             "",
             null,
-            List.of(EXPENSE_LONDON_DAYLOG, EXPENSE_JAPAN_DAYLOG)
+            List.of(EXPENSE_LONDON_DAYLOG, EXPENSE_JAPAN_DAYLOG),
+            PublishedStatusType.UNPUBLISHED
     );
 }

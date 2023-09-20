@@ -10,6 +10,7 @@
     "^recoil(.*)",
     "^axios(.*)",
     "^msw(.*)",
+    "^browser-image-compression(.*)",
     "^hang-log-design-system(.*)",
     "^@pages/(.*)$",
     "^@components/(.*)$",

@@ -3,7 +3,8 @@ import { css } from '@emotion/react';
 import { Theme } from 'hang-log-design-system';
 
 export const shareButtonStyling = css({
-  marginLeft: Theme.spacer.spacing3,
+  height: '20px',
+  marginLeft: '12px',
   border: 'none',
 
   backgroundColor: 'transparent',

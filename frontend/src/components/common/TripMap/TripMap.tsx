@@ -31,6 +31,8 @@ const TripMap = ({ centerLat, centerLng, places }: TripMapProps) => {
         maxZoom: MAP_MAX_ZOOM_SIZE,
         disableDefaultUI: true,
         mapId: process.env.GOOGLE_MAP_ID,
+        gestureHandling: 'greedy',
+        clickableIcons: false,
       });
 
       setMap(initialMap);

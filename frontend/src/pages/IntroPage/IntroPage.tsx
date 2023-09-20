@@ -15,8 +15,8 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { PATH } from '@constants/path';
 
-import SampleTripImage from '@assets/png/sample-trip-image.png';
-import SampleTripImageMobile from '@assets/png/sample-trip-image_mobile.png';
+import SampleTripImage from '@assets/jpg/sample-trip-image.jpg';
+import SampleTripImageMobile from '@assets/jpg/sample-trip-image_mobile.jpg';
 
 const IntroPage = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const IntroPage = () => {
         여행과 관련된 모든 정보를 <br />
         한곳에서 기록해 보세요.
       </Heading>
-      <Button variant="primary" onClick={() => navigate(PATH.SIGN_UP)}>
+      <Button variant="primary" onClick={() => navigate(PATH.LOGIN)}>
         시작하기
       </Button>
       <img

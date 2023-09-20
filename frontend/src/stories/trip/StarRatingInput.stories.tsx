@@ -11,6 +11,7 @@ const meta = {
   component: StarRatingInput,
   args: {
     rating: 0,
+    isMobile: false,
   },
 } satisfies Meta<typeof StarRatingInput>;
 
@@ -18,7 +19,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
+  render: ({ ...args }) => {
     const [value, setValue] = useState<StarRatingData>(0);
 
     const updateInputValue = <K extends keyof TripItemFormData>(
@@ -28,6 +29,12 @@ export const Default: Story = {
       setValue(value as StarRatingData);
     };
 
-    return <StarRatingInput rating={value} updateInputValue={updateInputValue} />;
+    return (
+      <StarRatingInput
+        isMobile={args.isMobile}
+        rating={value}
+        updateInputValue={updateInputValue}
+      />
+    );
   },
 };

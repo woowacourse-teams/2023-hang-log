@@ -2,7 +2,7 @@ package hanglog.city.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import hanglog.trip.domain.City;
+import hanglog.city.domain.City;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

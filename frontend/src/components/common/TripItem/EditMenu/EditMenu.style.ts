@@ -20,25 +20,63 @@ export const moreButtonStyling = css({
   },
 });
 
-export const getMoreMenuStyling = (hasImage: boolean, imageHeight: number) => {
+export const getEditMenuStyling = (hasImage: boolean, imageHeight: number) => {
   return css({
     position: 'absolute',
     top: 0,
     right: 0,
 
+    cursor: 'pointer',
+
     '@media screen and (max-width: 600px)': {
       top: hasImage ? `calc(${imageHeight}px + ${Theme.spacer.spacing3})` : 0,
+    },
+
+    '& svg': {
+      width: '18px',
+      height: '18px',
     },
   });
 };
 
-export const moreMenuListStyling = css({
-  minWidth: 'unset',
-  width: 'max-content',
+export const binIconStyling = css({
+  '& path': {
+    stroke: Theme.color.gray600,
+  },
 
-  transform: 'translateY(16px)',
+  '&:hover path': {
+    stroke: Theme.color.red300,
+  },
+});
 
-  '& > li': {
-    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
+export const editIconStyling = css({
+  '& path': {
+    fill: Theme.color.gray600,
+  },
+
+  '&:hover path': {
+    fill: Theme.color.blue600,
+  },
+});
+
+export const modalContentStyling = css({
+  width: '350px',
+
+  '& h6': {
+    marginBottom: Theme.spacer.spacing3,
+
+    color: Theme.color.red300,
+  },
+});
+
+export const modalButtonContainerStyling = css({
+  gap: Theme.spacer.spacing1,
+  alignItems: 'stretch',
+
+  width: '100%',
+  marginTop: Theme.spacer.spacing5,
+
+  '& > *': {
+    width: '100%',
   },
 });

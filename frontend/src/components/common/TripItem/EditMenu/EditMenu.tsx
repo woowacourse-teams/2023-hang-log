@@ -1,9 +1,11 @@
-import { Menu, MenuItem, MenuList, useOverlay } from 'hang-log-design-system';
+import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import {
-  getMoreMenuStyling,
-  moreButtonStyling,
-  moreMenuListStyling,
+  binIconStyling,
+  editIconStyling,
+  getEditMenuStyling,
+  modalButtonContainerStyling,
+  modalContentStyling,
 } from '@components/common/TripItem/EditMenu/EditMenu.style';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
@@ -11,7 +13,8 @@ import { useDeleteTripItemMutation } from '@hooks/api/useDeleteTripItemMutation'
 
 import type { TripItemData } from '@type/tripItem';
 
-import MoreIcon from '@assets/svg/more-icon.svg';
+import BinIcon from '@assets/svg/bin-icon.svg';
+import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface EditMenuProps extends TripItemData {
   tripId: number;
@@ -23,8 +26,12 @@ interface EditMenuProps extends TripItemData {
 const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: EditMenuProps) => {
   const deleteTripItemMutation = useDeleteTripItemMutation();
 
-  const { isOpen: isMenuOpen, open: openMenu, close: closeMenu } = useOverlay();
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
+  const {
+    isOpen: isDeleteModalOpen,
+    close: closeDeleteModal,
+    open: openDeleteModal,
+  } = useOverlay();
 
   const handleTripItemDelete = () => {
     deleteTripItemMutation.mutate({ tripId, itemId: information.id });
@@ -32,17 +39,13 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
 
   return (
     <>
-      <Menu css={getMoreMenuStyling(hasImage, imageHeight)} closeMenu={closeMenu}>
-        <button css={moreButtonStyling} type="button" aria-label="더 보기 메뉴" onClick={openMenu}>
-          <MoreIcon />
-        </button>
-        {isMenuOpen && (
-          <MenuList css={moreMenuListStyling}>
-            <MenuItem onClick={openEditModal}>수정</MenuItem>
-            <MenuItem onClick={handleTripItemDelete}>삭제</MenuItem>
-          </MenuList>
-        )}
-      </Menu>
+      <Flex
+        styles={{ direction: 'column', gap: '12px' }}
+        css={getEditMenuStyling(hasImage, imageHeight)}
+      >
+        <EditIcon css={editIconStyling} role="button" aria-label="수정" onClick={openEditModal} />
+        <BinIcon css={binIconStyling} role="button" aria-label="삭제" onClick={openDeleteModal} />
+      </Flex>
       {isEditModalOpen && (
         <TripItemAddModal
           tripId={tripId}
@@ -68,6 +71,20 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
           }}
         />
       )}
+      <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
+        <Box css={modalContentStyling}>
+          <Heading size="xSmall">여행 기록을 삭제하겠어요?</Heading>
+          <Text>여행 기록을 한번 삭제하면 다시 복구하기는 힘들어요.</Text>
+          <Flex css={modalButtonContainerStyling}>
+            <Button variant="default" onClick={closeDeleteModal}>
+              취소
+            </Button>
+            <Button variant="danger" onClick={handleTripItemDelete}>
+              삭제
+            </Button>
+          </Flex>
+        </Box>
+      </Modal>
     </>
   );
 };

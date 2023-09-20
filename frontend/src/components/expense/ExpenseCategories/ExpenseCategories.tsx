@@ -15,6 +15,7 @@ interface ExpenseCategoriesProps {
 
 const ExpenseCategories = ({ tripId }: ExpenseCategoriesProps) => {
   const { categoryExpenseData } = useExpense(tripId);
+
   const { selected: selectedCategoryId, handleSelectClick: handleCategoryIdSelectClick } =
     useSelect(categoryExpenseData.categoryItems[0].category.id);
   const selectedCategory = categoryExpenseData.categoryItems.find(

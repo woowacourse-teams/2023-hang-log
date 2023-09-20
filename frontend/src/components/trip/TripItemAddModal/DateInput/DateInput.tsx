@@ -6,7 +6,7 @@ import { Select } from 'hang-log-design-system';
 
 import { selectStyling } from '@components/trip/TripItemAddModal/DateInput/DateInput.style';
 
-import { useTripDates } from '@hooks/trip/useTripDates';
+import { useTrip } from '@hooks/trip/useTrip';
 
 import { formatMonthDate } from '@utils/formatter';
 
@@ -20,7 +20,7 @@ interface DateInputProps {
 }
 
 const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: DateInputProps) => {
-  const { dates } = useTripDates(tripId);
+  const { dates } = useTrip(tripId);
 
   useEffect(() => {
     const indexOfDayLogId = dates.findIndex((date) => date.id === dayLogId);

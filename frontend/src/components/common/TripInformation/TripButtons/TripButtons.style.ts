@@ -2,39 +2,44 @@ import { css } from '@emotion/react';
 
 import { Theme } from 'hang-log-design-system';
 
-export const moreButtonStyling = css({
-  border: 'none',
-  outline: 0,
-
-  backgroundColor: 'transparent',
+export const svgButtonStyling = css({
+  width: '20px',
+  height: '20px',
+  marginLeft: '12px',
 
   cursor: 'pointer',
+});
 
-  '& svg': {
-    width: '20px',
-    height: '20px',
-
-    '& path': {
-      stroke: Theme.color.white,
-      strokeWidth: 1.5,
-    },
+export const binIconStyling = css({
+  '& path': {
+    stroke: Theme.color.white,
   },
 });
 
-export const moreMenuStyling = css({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-
-  marginLeft: Theme.spacer.spacing3,
+export const editIconStyling = css({
+  '& path': {
+    fill: Theme.color.white,
+  },
 });
 
-export const moreMenuListStyling = css({
-  transform: 'translateY(64px)',
+export const modalContentStyling = css({
+  width: '350px',
 
-  '& > li': {
-    padding: `${Theme.spacer.spacing2} ${Theme.spacer.spacing3}`,
+  '& h6': {
+    marginBottom: Theme.spacer.spacing3,
 
-    color: Theme.color.gray800,
+    color: Theme.color.red300,
+  },
+});
+
+export const modalButtonContainerStyling = css({
+  gap: Theme.spacer.spacing1,
+  alignItems: 'stretch',
+
+  width: '100%',
+  marginTop: Theme.spacer.spacing5,
+
+  '& > *': {
+    width: '100%',
   },
 });

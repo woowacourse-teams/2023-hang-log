@@ -3,12 +3,12 @@ package hanglog.expense.presentation;
 import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 import static hanglog.expense.fixture.AmountFixture.AMOUNT_20000;
 import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
+import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
-import static hanglog.trip.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -66,6 +66,7 @@ class ExpenseControllerTest extends ControllerTest {
     @Test
     void getExpenses() throws Exception {
         // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
@@ -79,7 +80,6 @@ class ExpenseControllerTest extends ControllerTest {
                 List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
         );
 
-        // when & then
         when(expenseService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
 
         // when

@@ -1,7 +1,7 @@
 package hanglog.trip.service;
 
-import static hanglog.global.IntegrationFixture.MEMBER;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -13,14 +13,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.CityRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -210,7 +211,8 @@ class TripServiceTest {
                     LocalDate.of(2023, 7, 3),
                     "",
                     null,
-                    new ArrayList<>(List.of(dayLog1, dayLog2, dayLog3, extraDayLog))
+                    new ArrayList<>(List.of(dayLog1, dayLog2, dayLog3, extraDayLog)),
+                    PublishedStatusType.UNPUBLISHED
             );
         }
 
@@ -233,7 +235,8 @@ class TripServiceTest {
                     updateRequest.getEndDate(),
                     updateRequest.getDescription(),
                     null,
-                    trip.getDayLogs()
+                    trip.getDayLogs(),
+                    PublishedStatusType.UNPUBLISHED
             );
 
             given(tripRepository.findById(trip.getId()))
@@ -283,7 +286,8 @@ class TripServiceTest {
                                                     dayLog1,
                                                     dayLog2,
                                                     extraDayLog
-                                            )
+                                            ),
+                                            PublishedStatusType.UNPUBLISHED
                                     )
                             )
                     );
@@ -323,7 +327,8 @@ class TripServiceTest {
                                                     DayLog.generateEmpty(4, trip),
                                                     DayLog.generateEmpty(5, trip),
                                                     extraDayLog
-                                            )
+                                            ),
+                                            PublishedStatusType.UNPUBLISHED
                                     )
                             )
                     );
