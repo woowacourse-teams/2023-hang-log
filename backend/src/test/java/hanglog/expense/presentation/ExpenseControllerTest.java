@@ -80,7 +80,6 @@ class ExpenseControllerTest extends ControllerTest {
                 List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
         );
 
-        // when & then
         when(expenseService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
 
         // when
