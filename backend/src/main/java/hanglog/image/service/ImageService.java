@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService {
     private static final int MAX_IMAGE_LIST_SIZE = 5;
     private static final int EMPTY_LIST_SIZE = 0;
-    private static final String CACHE_CONTROL_VALUE = "max-age=31536000";
+    private static final String CACHE_CONTROL_VALUE = "max-age=3153600";
 
     private final AmazonS3 s3Client;
 
