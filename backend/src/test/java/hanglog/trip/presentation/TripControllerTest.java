@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.global.ControllerTest;
-import hanglog.trip.dto.PublishedStatusRequest;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;

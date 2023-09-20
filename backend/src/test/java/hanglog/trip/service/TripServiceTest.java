@@ -25,7 +25,7 @@ import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
-import hanglog.trip.dto.PublishedStatusRequest;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;

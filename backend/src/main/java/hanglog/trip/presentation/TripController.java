@@ -3,7 +3,7 @@ package hanglog.trip.presentation;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
-import hanglog.trip.dto.PublishedStatusRequest;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;

@@ -1,4 +1,4 @@
-package hanglog.trip.dto;
+package hanglog.trip.dto.request;
 
 import static lombok.AccessLevel.PRIVATE;
 
