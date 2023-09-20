@@ -1,6 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.INVALID_PUBLISHED_STATUS_REQUEST;
 import static hanglog.global.exception.ExceptionCode.INVALID_TRIP_WITH_MEMBER;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
@@ -186,25 +185,20 @@ public class TripService {
     public void updatePublishedStatus(final Long tripId, final PublishedStatusRequest publishedStatusRequest) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        validatedPublishedStatusRequest(trip.getPublishedStatus(), publishedStatusRequest);
-
-        final boolean updatedPublishedStatus = publishedStatusRequest.getPublishedStatus();
-        if (updatedPublishedStatus) {
+        final boolean isPublished = publishedStatusRequest.getPublishedStatus();
+        if (!isChangedPublishedStatus(isPublished, trip)) {
+            return;
+        }
+        if (isPublished) {
             publishTrip(trip);
             return;
         }
         unpublishTrip(trip);
     }
 
-    private void validatedPublishedStatusRequest(
-            final PublishedStatusType publishedStatusType,
-            final PublishedStatusRequest publishedStatusRequest
-    ) {
-        final boolean isPublished = publishedStatusRequest.getPublishedStatus();
+    private boolean isChangedPublishedStatus(final boolean isPublished, final Trip trip) {
         final PublishedStatusType updatedPublishedStatus = PublishedStatusType.mappingType(isPublished);
-        if (publishedStatusType.equals(updatedPublishedStatus)) {
-            throw new BadRequestException(INVALID_PUBLISHED_STATUS_REQUEST);
-        }
+        return !updatedPublishedStatus.equals(trip.getPublishedStatus());
     }
 
     private void unpublishTrip(final Trip trip) {

@@ -23,6 +23,7 @@ public enum ExceptionCode {
     INVALID_TRIP_WITH_MEMBER(1011, "요청한 멤버와 ID에 해당하는 여행이 존재하지 않습니다."),
     FAIL_TO_GENERATE_RANDOM_NICKNAME(1012, "랜덤한 닉네임을 생성하는데 실패하였습니다."),
     DUPLICATED_MEMBER_NICKNAME(1013, "중복된 닉네임입니다."),
+    NOT_FOUND_PUBLISHED_TRIP_WITH_TRIP(1014, "요청한 여행에 해당하는 공개 여행이 존재하지 않습니다."),
 
     ALREADY_DELETED_TRIP_ITEM(2001, "이미 삭제된 여행 아이템입니다."),
     ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다."),
@@ -53,9 +54,6 @@ public enum ExceptionCode {
     NOT_FOUND_SHARED_CODE(7001, "요청한 URL에 해당하는 공유된 여행이 존재하지 않습니다."),
     INVALID_SHARE_CODE(7002, "공유가 허용되지 않은 코드입니다."),
     FAIL_SHARE_CODE_HASH(7101, "공유 코드를 해싱하는 데 실패했습니다."),
-
-    INVALID_PUBLISHED_STATUS_REQUEST(8001, "여행의 현재 공개 상태와 다른 상태로만 변경 할 수 있습니다."),
-    NOT_FOUND_PUBLISHED_TRIP_WITH_TRIP(8002, "요청한 여행에 해당하는 공개 여행이 존재하지 않습니다."),
 
     INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
     NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),

@@ -1,6 +1,5 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.INVALID_PUBLISHED_STATUS_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.CityFixture.LONDON;
@@ -244,38 +243,6 @@ class TripServiceTest {
 
         // then
         assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.UNPUBLISHED);
-    }
-
-    @DisplayName("이미 공개인 Trip을 공개로 변경하면 예외가 발생한다.")
-    @Test
-    void updatePublishedStatus_InvalidPublished() {
-        // given
-        LONDON_TRIP.changePublishedStatus(true);
-        given(tripRepository.findById(LONDON_TRIP.getId()))
-                .willReturn(Optional.of(LONDON_TRIP));
-        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
-
-        // when & then
-        assertThatThrownBy(() -> tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest))
-                .isInstanceOf(BadRequestException.class)
-                .extracting("code")
-                .isEqualTo(INVALID_PUBLISHED_STATUS_REQUEST.getCode());
-    }
-
-    @DisplayName("이미 비공개인 Trip을 비공개로 변경하면 예외가 발생한다.")
-    @Test
-    void updatePublishedStatus_InvalidUnpublished() {
-        // given
-        LONDON_TRIP.changePublishedStatus(false);
-        given(tripRepository.findById(LONDON_TRIP.getId()))
-                .willReturn(Optional.of(LONDON_TRIP));
-        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(false);
-
-        // when & then
-        assertThatThrownBy(() -> tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest))
-                .isInstanceOf(BadRequestException.class)
-                .extracting("code")
-                .isEqualTo(INVALID_PUBLISHED_STATUS_REQUEST.getCode());
     }
 
     @Nested
