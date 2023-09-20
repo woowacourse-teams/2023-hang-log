@@ -294,6 +294,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("공개 여부")
                                         .attributes(field("constraint", "boolean 공개시 true")),
+                                fieldWithPath("likeCount")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("좋아요 수")
+                                        .attributes(field("constraint", "0 또는 양의 정수")),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -391,6 +395,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
                                         .attributes(field("constraint", "이미지 URL")),
+                                fieldWithPath("[].likeCount")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("좋아요 수")
+                                        .attributes(field("constraint", "0 또는 양의 정수")),
                                 fieldWithPath("[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")

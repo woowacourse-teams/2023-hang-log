@@ -26,6 +26,7 @@ public class TripDetailResponse {
     private final String sharedCode;
     private final List<DayLogResponse> dayLogs;
     private final Boolean isPublished;
+    private final Integer likeCount;
 
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
         final List<DayLogResponse> dayLogResponses = trip.getDayLogs().stream()
@@ -50,7 +51,9 @@ public class TripDetailResponse {
                 convertNameToUrl(trip.getImageName()),
                 sharedCode,
                 dayLogResponses,
-                isPublished
+                isPublished,
+                // todo: 추후 like 구현 이후 like 개수 입력
+                1
         );
     }
 }
