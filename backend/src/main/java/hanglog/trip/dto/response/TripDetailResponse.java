@@ -6,7 +6,6 @@ import static lombok.AccessLevel.PRIVATE;
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityWithPositionResponse;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
@@ -38,8 +37,6 @@ public class TripDetailResponse {
 
         final String sharedCode = trip.getSharedCode().orElse(null);
 
-        final Boolean isPublished = PublishedStatusType.PUBLISHED.equals(trip.getPublishedStatus());
-
         return new TripDetailResponse(
                 trip.getId(),
                 cityWithPositionResponses,
@@ -50,7 +47,7 @@ public class TripDetailResponse {
                 convertNameToUrl(trip.getImageName()),
                 sharedCode,
                 dayLogResponses,
-                isPublished
+                trip.isPublished()
         );
     }
 }
