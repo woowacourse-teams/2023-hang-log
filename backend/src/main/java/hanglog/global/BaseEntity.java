@@ -45,8 +45,4 @@ public abstract class BaseEntity {
     public void changeStatusToDeleted() {
         this.status = DELETED;
     }
-
-    public void changeStatusToUsable() {
-        this.status = USABLE;
-    }
 }
