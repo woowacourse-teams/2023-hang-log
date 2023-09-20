@@ -130,7 +130,7 @@ class SharedTripControllerTest extends ControllerTest {
                                         .attributes(field("constraint", "이미지 URL")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
-                                        .description("공유 코")
+                                        .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null 입력"))
                                         .optional(),
                                 fieldWithPath("cities")
