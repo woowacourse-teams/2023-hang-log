@@ -17,8 +17,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +39,7 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE shared_trip SET status = 'DELETED' WHERE id = ?")
 @NoArgsConstructor(access = PROTECTED)
 @Where(clause = "status = 'USABLE'")
+@Table(name = "shared_trip", indexes = @Index(name = "ux_shared_trip_shared_code", columnList = "sharedCode", unique = true))
 public class SharedTrip extends BaseEntity {
 
     @Id
