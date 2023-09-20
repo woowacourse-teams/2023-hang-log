@@ -13,6 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://hanglog.com", "https://hanglog.site", "http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                .allowCredentials(true)
                 .exposedHeaders(HttpHeaders.LOCATION);
         WebMvcConfigurer.super.addCorsMappings(registry);
     }
