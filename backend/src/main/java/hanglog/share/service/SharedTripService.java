@@ -4,13 +4,18 @@ import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
+import hanglog.city.domain.City;
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
+import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SharedTripService {
 
     private final SharedTripRepository sharedTripRepository;
+    private final TripCityRepository tripCityRepository;
     private final TripRepository tripRepository;
 
     @Transactional(readOnly = true)
@@ -34,6 +40,19 @@ public class SharedTripService {
         }
 
         return sharedTrip.getTrip().getId();
+    }
+
+    public SharedTripDetailResponse getSharedTripDetail(final Long tripId) {
+        final Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        final List<City> cities = getCitiesByTripId(tripId);
+        return SharedTripDetailResponse.of(trip, cities);
+    }
+
+    private List<City> getCitiesByTripId(final Long tripId) {
+        return tripCityRepository.findByTripId(tripId).stream()
+                .map(TripCity::getCity)
+                .toList();
     }
 
     public SharedTripCodeResponse updateSharedTripStatus(
@@ -51,7 +70,7 @@ public class SharedTripService {
         return SharedTripCodeResponse.of(sharedTrip);
     }
 
-    private Trip findTripWithNoFetch(final Long tripId){
+    private Trip findTripWithNoFetch(final Long tripId) {
         return tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
     }

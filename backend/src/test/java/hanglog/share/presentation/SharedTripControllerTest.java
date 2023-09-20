@@ -28,8 +28,8 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
+import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.share.service.SharedTripService;
-import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -65,8 +65,8 @@ class SharedTripControllerTest extends ControllerTest {
         // given
         when(sharedTripService.getTripId(anyString()))
                 .thenReturn(1L);
-        when(tripService.getTripDetail(anyLong()))
-                .thenReturn(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
+        when(sharedTripService.getSharedTripDetail(anyLong()))
+                .thenReturn(SharedTripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
         // when
         mockMvc.perform(get("/shared-trips/{sharedCode}", "xxxxxx").contentType(APPLICATION_JSON))
@@ -81,6 +81,17 @@ class SharedTripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("writer")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("작성자"),
+                                fieldWithPath("writer.nickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 닉네임")
+                                        .attributes(field("constraint", "문자열")),
+                                fieldWithPath("writer.imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 이미지")
+                                        .attributes(field("constraint", "문자열")),
                                 fieldWithPath("title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
@@ -106,10 +117,6 @@ class SharedTripControllerTest extends ControllerTest {
                                         .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null 입력"))
                                         .optional(),
-                                fieldWithPath("isPublished")
-                                        .type(JsonFieldType.BOOLEAN)
-                                        .description("공개 여부")
-                                        .attributes(field("constraint", "boolean 공개시 true")),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
