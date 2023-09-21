@@ -36,7 +36,17 @@ export const useSingleImageUpload = ({
       let imageFile: File;
 
       try {
-        imageFile = await imageCompression(originalImageFile, IMAGE_COMPRESSION_OPTIONS);
+        const compressedImageFile = await imageCompression(
+          originalImageFile,
+
+          IMAGE_COMPRESSION_OPTIONS
+        );
+
+        const fileName = originalImageFile.name;
+
+        const fileType = compressedImageFile.type;
+
+        imageFile = new File([compressedImageFile], fileName, { type: fileType });
       } catch (e) {
         imageFile = originalImageFile;
       }
