@@ -10,11 +10,12 @@ export const AXIOS_BASE_URL = PROD
 
 export const END_POINTS = {
   TRIPS: '/trips',
-  TRIP: (tripId: number) => `/trips/${tripId}`,
-  DAY_LOG: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}`,
-  DAY_LOG_ORDER: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
-  CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
-  CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
+  TRIP: (tripId: number | string) => `/trips/${tripId}`,
+  DAY_LOG: (tripId: number | string, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}`,
+  DAY_LOG_ORDER: (tripId: number | string, dayLogId: number) =>
+    `/trips/${tripId}/daylogs/${dayLogId}/order`,
+  CREATE_TRIP_ITEM: (tripId: number | string) => `/trips/${tripId}/items`,
+  CHANGE_TRIP_ITEM: (tripId: number | string, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   CITY: '/cities',
   EXPENSE_CATEGORY: '/categories',
   EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,

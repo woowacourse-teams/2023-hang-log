@@ -26,7 +26,7 @@ import { formatDate } from '@utils/formatter';
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
 interface TripInformationProps {
-  tripId: number;
+  tripId: number | string;
   isEditable?: boolean;
   isShared?: boolean;
 }

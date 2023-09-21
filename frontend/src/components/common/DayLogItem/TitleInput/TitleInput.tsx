@@ -8,7 +8,7 @@ import { useDayLogTitleMutation } from '@hooks/api/useDayLogTitleMutation';
 import { DAYLOG_TITLE_MAX_LENGTH } from '@constants/ui';
 
 interface TitleInputProps {
-  tripId: number;
+  tripId: number | string;
   dayLogId: number;
   initialTitle: string;
 }
@@ -27,7 +27,7 @@ const TitleInput = ({ tripId, dayLogId, initialTitle }: TitleInputProps) => {
 
   const handleInputBlur = () => {
     dayLogTitleMutation.mutate(
-      { tripId, dayLogId, title },
+      { tripId: Number(tripId), dayLogId, title },
       {
         onError: () => setTitle(initialTitle),
       }

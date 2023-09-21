@@ -17,8 +17,8 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
-import { useTrip } from '@hooks/trip/useTrip';
 
+// import { useTrip } from '@hooks/trip/useTrip';
 import { formatMonthDate } from '@utils/formatter';
 
 interface TripMobilePageProps {
@@ -29,14 +29,18 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
-  const { tripData } = useTripQuery(Number(tripId));
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
+
+  const { tripData } = useTripQuery(tripId, isShared);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const { dates } = useTrip(Number(tripId));
-
+  const dates = tripData.dayLogs.map((data) => ({
+    id: data.id,
+    date: data.date,
+  }));
   const places = useMemo(
     () =>
       selectedDayLog.items
