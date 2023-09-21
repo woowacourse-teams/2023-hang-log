@@ -58,7 +58,7 @@ public class CommunityService {
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
-        final RecommendStrategies recommendStrategies = RecommendStrategies.generatedLikedBased(tripRepository);
+        final RecommendStrategies recommendStrategies = RecommendStrategies.generateLikedBased(tripRepository);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
         final List<Trip> trips = recommendStrategies.recommend(pageable);
 
