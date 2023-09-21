@@ -1,10 +1,12 @@
 package hanglog.community.service;
 
+import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.community.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
+import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikesRepository;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
@@ -29,6 +31,7 @@ public class CommunityService {
     private final LikesRepository likesRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
+    private final RecommendStrategies recommendStrategies;
 
     public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
@@ -58,14 +61,14 @@ public class CommunityService {
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
-        final RecommendStrategies recommendStrategies = RecommendStrategies.generateLikeBased(tripRepository);
+        final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
-        final List<Trip> trips = recommendStrategies.recommend(pageable);
+        final List<Trip> trips = recommendStrategy.recommend(pageable);
 
         final List<CommunityTripResponse> communityTripResponses = trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
 
-        return new RecommendTripListResponse(recommendStrategies.getTitle(), communityTripResponses);
+        return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
     }
 }

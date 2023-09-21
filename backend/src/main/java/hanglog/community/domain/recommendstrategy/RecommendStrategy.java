@@ -7,4 +7,8 @@ import org.springframework.data.domain.Pageable;
 public interface RecommendStrategy {
 
     List<Trip> recommend(Pageable pageable);
+
+    boolean isType(RecommendType recommendType);
+
+    String getTitle();
 }

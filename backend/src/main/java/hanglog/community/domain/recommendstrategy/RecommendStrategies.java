@@ -1,29 +1,21 @@
 package hanglog.community.domain.recommendstrategy;
 
-import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.repository.TripRepository;
+import hanglog.global.exception.ExceptionCode;
+import hanglog.global.exception.InvalidDomainException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class RecommendStrategies {
 
-    private final String title;
-    private final RecommendStrategy recommendStrategy;
+    private final List<RecommendStrategy> recommendStrategies;
 
-    public static RecommendStrategies generateLikeBased(final TripRepository tripRepository) {
-        return new RecommendStrategies(
-                "지금 인기있는 여행들이에요",
-                new LikesRecommendStrategy(tripRepository)
-        );
-    }
-
-    public List<Trip> recommend(final Pageable pageable) {
-        return this.recommendStrategy.recommend(pageable);
-    }
-
-    public String getTitle() {
-        return this.title;
+    public RecommendStrategy mapByRecommendType(final RecommendType recommendType) {
+        return recommendStrategies.stream()
+                .filter(recommendStrategy -> recommendStrategy.isType(recommendType))
+                .findFirst()
+                .orElseThrow(() -> new InvalidDomainException(ExceptionCode.NOT_FOUND_RECOMMEND_TRIP_STRATEGY));
     }
 }
