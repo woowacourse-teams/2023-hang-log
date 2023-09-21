@@ -1,3 +1,5 @@
+import { getSharedTrip } from '@/api/trip/getSharedTrip';
+
 import { useQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
