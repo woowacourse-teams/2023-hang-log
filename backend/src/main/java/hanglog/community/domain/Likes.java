@@ -1,10 +1,11 @@
-package hanglog.trip.domain;
+package hanglog.community.domain;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.member.domain.Member;
+import hanglog.trip.domain.Trip;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public class Like {
+public class Likes {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
