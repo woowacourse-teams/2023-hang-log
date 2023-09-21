@@ -38,7 +38,7 @@ public class CommunityService {
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        final Long likeCount = likesRepository.countLikesByTrip(trip);
+        final Long likeCount = likesRepository.countLikesByTripId(trip.getId());
 
         if (accessor.isMember()) {
             final boolean isLike = likesRepository.existsByMemberIdAndTripId(1L, trip.getId());
