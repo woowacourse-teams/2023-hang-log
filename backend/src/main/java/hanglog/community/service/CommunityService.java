@@ -41,7 +41,7 @@ public class CommunityService {
         final Long likeCount = likesRepository.countLikesByTripId(trip.getId());
 
         if (accessor.isMember()) {
-            final boolean isLike = likesRepository.existsByMemberIdAndTripId(1L, trip.getId());
+            final boolean isLike = likesRepository.existsByMemberIdAndTripId(trip.getMember().getId(), trip.getId());
             return CommunityTripResponse.of(trip, cities, isLike, likeCount);
         }
         return CommunityTripResponse.of(trip, cities, false, likeCount);
