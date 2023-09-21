@@ -58,14 +58,14 @@ public class CommunityService {
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
-        final RecommendStrategies recommendStrategies = RecommendStrategies.generateLikedBased(tripRepository);
+        final RecommendStrategies recommendStrategies = RecommendStrategies.generateLikeBased(tripRepository);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
         final List<Trip> trips = recommendStrategies.recommend(pageable);
 
-        final List<CommunityTripResponse> communitySingleTripResponses = trips.stream()
+        final List<CommunityTripResponse> communityTripResponses = trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
 
-        return new RecommendTripListResponse(recommendStrategies.getTitle(), communitySingleTripResponses);
+        return new RecommendTripListResponse(recommendStrategies.getTitle(), communityTripResponses);
     }
 }
