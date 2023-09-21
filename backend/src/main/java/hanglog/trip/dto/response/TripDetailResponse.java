@@ -3,8 +3,8 @@ package hanglog.trip.dto.response;
 import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
-import hanglog.city.dto.response.CityWithPositionResponse;
 import hanglog.city.domain.City;
+import hanglog.city.dto.response.CityWithPositionResponse;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +24,7 @@ public class TripDetailResponse {
     private final String imageUrl;
     private final String sharedCode;
     private final List<DayLogResponse> dayLogs;
+    private final Boolean isPublished;
 
     public static TripDetailResponse of(final Trip trip, final List<City> cities) {
         final List<DayLogResponse> dayLogResponses = trip.getDayLogs().stream()
@@ -45,7 +46,8 @@ public class TripDetailResponse {
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
                 sharedCode,
-                dayLogResponses
+                dayLogResponses,
+                trip.isPublished()
         );
     }
 }

@@ -5,10 +5,10 @@ import static hanglog.share.domain.type.SharedStatusType.SHARED;
 import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
 import hanglog.city.domain.City;
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.share.domain.SharedTrip;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.type.PublishedStatusType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;

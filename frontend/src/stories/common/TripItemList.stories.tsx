@@ -12,7 +12,7 @@ const meta = {
     dayLogId: { control: false },
   },
   args: {
-    tripId: 1,
+    tripId: '1',
     dayLogId: 1,
     tripItems: [...trip.dayLogs[0].items],
   },

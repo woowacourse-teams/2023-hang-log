@@ -10,10 +10,10 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.BaseEntity;
 import hanglog.member.domain.Member;
 import hanglog.share.domain.SharedTrip;
-import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -140,6 +140,10 @@ public class Trip extends BaseEntity {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
+    }
+
+    public Boolean isPublished() {
+        return this.publishedStatus.equals(PublishedStatusType.PUBLISHED);
     }
 
     public void changePublishedStatus(final Boolean isPublished) {

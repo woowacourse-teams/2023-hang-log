@@ -23,6 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -38,9 +39,9 @@ import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
+import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.share.service.SharedTripService;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.fixture.CityFixture;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
@@ -80,8 +81,8 @@ class SharedTripControllerTest extends ControllerTest {
         // given
         when(sharedTripService.getTripId(anyString()))
                 .thenReturn(1L);
-        when(tripService.getTripDetail(anyLong()))
-                .thenReturn(TripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
+        when(sharedTripService.getSharedTripDetail(anyLong()))
+                .thenReturn(SharedTripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
         // when
         mockMvc.perform(get("/shared-trips/{sharedCode}", "xxxxxx").contentType(APPLICATION_JSON))
@@ -96,6 +97,17 @@ class SharedTripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("writer")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("작성자"),
+                                fieldWithPath("writer.nickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 닉네임")
+                                        .attributes(field("constraint", "문자열")),
+                                fieldWithPath("writer.imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 이미지")
+                                        .attributes(field("constraint", "문자열")),
                                 fieldWithPath("title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
@@ -118,7 +130,7 @@ class SharedTripControllerTest extends ControllerTest {
                                         .attributes(field("constraint", "이미지 URL")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
-                                        .description("공유 코")
+                                        .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null 입력"))
                                         .optional(),
                                 fieldWithPath("cities")
@@ -194,6 +206,12 @@ class SharedTripControllerTest extends ControllerTest {
                                 pathParameters(
                                         parameterWithName("tripId")
                                                 .description("여행 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("sharedStatus")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("공유 유무")
+                                                .attributes(field("constraint", "공유시: true, 비공유시: false"))
                                 ),
                                 responseFields(
                                         fieldWithPath("sharedCode")

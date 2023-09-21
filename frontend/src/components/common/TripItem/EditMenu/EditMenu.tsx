@@ -17,7 +17,7 @@ import BinIcon from '@assets/svg/bin-icon.svg';
 import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface EditMenuProps extends TripItemData {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   hasImage: boolean;
   imageHeight: number;

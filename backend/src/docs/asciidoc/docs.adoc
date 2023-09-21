@@ -296,13 +296,14 @@ include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.
 
 ==== 응답
 include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
-include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.adoc[]
+include::{snippets}/shared-trip-controller-test/get-shared-trip/response-fields.adoc[]
 
 === 공유 상태 수정 (PATCH /trips/:tripId/share)
 
 ==== 요청
 include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
 include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
+include::{snippets}/shared-trip-controller-test/update-shared-status/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
@@ -317,3 +318,26 @@ include::{snippets}/shared-trip-controller-test/get-shared-expenses/path-paramet
 ==== 응답
 include::{snippets}/shared-trip-controller-test/get-shared-expenses/http-response.adoc[]
 include::{snippets}/shared-trip-controller-test/get-shared-expenses/response-fields.adoc[]
+
+== 커뮤니티 API
+
+=== 공개 여행 페이지 조회 (GET /community/trips)
+
+==== 요청
+include::{snippets}/community-controller-test/get-trips-by-page/http-request.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/path-parameters.adoc[]
+
+== 커뮤니티 API
+
+=== 공개 여행 페이지 조회 (GET /community/trips)
+
+==== 요청
+include::{snippets}/community-controller-test/get-trips-by-page/http-request.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
+include::{snippets}/community-controller-test/get-trips-by-page/response-fields.adoc[]

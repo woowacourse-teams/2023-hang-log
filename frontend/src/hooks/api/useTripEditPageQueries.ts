@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query';
 import { getExpenseCategory } from '@api/expense/getExpenseCategory';
 import { getTrip } from '@api/trip/getTrip';
 
-export const useTripEditPageQueries = (tripId: number) => {
+export const useTripEditPageQueries = (tripId: string) => {
   const [tripQuery, expenseCategoryQuery] = useQueries({
     queries: [
       { queryKey: ['trip', tripId], queryFn: () => getTrip(tripId) },

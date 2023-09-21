@@ -11,7 +11,7 @@ const meta = {
     tripId: { control: false },
   },
   args: {
-    tripId: 1,
+    tripId: '1',
     ...trip.dayLogs[0],
   },
 } satisfies Meta<typeof DayLogItem>;

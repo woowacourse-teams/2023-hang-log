@@ -10,7 +10,7 @@ import { formatDate, formatMonthDate, formatNumberToMoney } from '@utils/formatt
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseDatesProps {
-  tripId: number;
+  tripId: string;
 }
 
 const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {

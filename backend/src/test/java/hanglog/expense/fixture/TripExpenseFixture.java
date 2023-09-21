@@ -5,11 +5,11 @@ import static hanglog.expense.fixture.ExpenseFixture.KRW_100_FOOD_EXPENSE;
 import static hanglog.expense.fixture.ExpenseFixture.USD_100_ACCOMMODATION_EXPENSE;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.type.ItemType;
-import hanglog.trip.domain.type.PublishedStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
