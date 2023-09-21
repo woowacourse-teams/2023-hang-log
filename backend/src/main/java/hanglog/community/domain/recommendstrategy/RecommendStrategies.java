@@ -9,15 +9,15 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 public class RecommendStrategies {
 
+    private final String title;
+    private final RecommendStrategy recommendStrategy;
+
     public static RecommendStrategies generateLikeBased(final TripRepository tripRepository) {
         return new RecommendStrategies(
                 "지금 인기있는 여행들이에요",
                 new LikesRecommendStrategy(tripRepository)
         );
     }
-
-    private final String title;
-    private final RecommendStrategy recommendStrategy;
 
     public List<Trip> recommend(final Pageable pageable) {
         return this.recommendStrategy.recommend(pageable);
