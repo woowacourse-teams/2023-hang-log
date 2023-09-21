@@ -94,6 +94,17 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("trips[].writer")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("작성자"),
+                                fieldWithPath("trips[].writer.nickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 닉네임")
+                                        .attributes(field("constraint", "문자열")),
+                                fieldWithPath("trips[].writer.imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 이미지")
+                                        .attributes(field("constraint", "문자열")),
                                 fieldWithPath("trips[].authorNickname")
                                         .type(JsonFieldType.STRING)
                                         .description("작성자")

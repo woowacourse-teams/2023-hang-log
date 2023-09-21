@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityResponse;
+import hanglog.share.dto.response.WriterResponse;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ public class CommunityTripResponse {
 
     private final Long id;
     private final List<CityResponse> cities;
+    private final WriterResponse writer;
     private final String title;
     private final LocalDate startDate;
     private final LocalDate endDate;
@@ -39,6 +41,7 @@ public class CommunityTripResponse {
         return new CommunityTripResponse(
                 trip.getId(),
                 cityResponses,
+                WriterResponse.of(trip.getMember()),
                 trip.getTitle(),
                 trip.getStartDate(),
                 trip.getEndDate(),
