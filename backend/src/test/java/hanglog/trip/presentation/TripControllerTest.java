@@ -292,6 +292,10 @@ class TripControllerTest extends ControllerTest {
                                         .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null"))
                                         .optional(),
+                                fieldWithPath("isPublished")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("공개 여부")
+                                        .attributes(field("constraint", "boolean 공개시 true")),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
