@@ -141,4 +141,8 @@ public class Trip extends BaseEntity {
         }
         return Optional.of(sharedTrip.getSharedCode());
     }
+
+    public void changePublishedStatus(final Boolean isPublished) {
+        this.publishedStatus = PublishedStatusType.mappingType(isPublished);
+    }
 }

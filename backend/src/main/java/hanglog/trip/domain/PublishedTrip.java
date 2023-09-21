@@ -31,4 +31,8 @@ public class PublishedTrip extends BaseEntity {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
+
+    public PublishedTrip(final Trip trip) {
+        this(null, trip);
+    }
 }
