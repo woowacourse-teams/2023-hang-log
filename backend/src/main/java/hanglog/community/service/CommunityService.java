@@ -5,8 +5,8 @@ import static hanglog.community.domain.type.PublishedStatusType.PUBLISHED;
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.community.domain.repository.LikesRepository;
-import hanglog.community.dto.response.CommunitySingleTripResponse;
-import hanglog.community.dto.response.CommunityTripsResponse;
+import hanglog.community.dto.response.CommunityTripListResponse;
+import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
@@ -26,25 +26,25 @@ public class CommunityService {
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
 
-    public CommunityTripsResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
+    public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
-        final List<CommunitySingleTripResponse> communitySingleTripResponses = trips.stream()
+        final List<CommunityTripResponse> communityTripResponse = trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
         final Long lastPageIndex =
                 tripRepository.countTripByPublishedStatus(PUBLISHED) / pageable.getPageSize() + 1;
-        return new CommunityTripsResponse(communitySingleTripResponses, lastPageIndex);
+        return new CommunityTripListResponse(communityTripResponse, lastPageIndex);
     }
 
-    private CommunitySingleTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
+    private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
         final Long likeCount = likesRepository.countLikesByTrip(trip);
 
         if (accessor.isMember()) {
-            final boolean isLike = likesRepository.existsByMemberIdAndTrip(accessor.getMemberId(), trip);
-            return CommunitySingleTripResponse.of(trip, cities, isLike, likeCount);
+            final boolean isLike = likesRepository.existsByMemberIdAndTripId(1L, trip.getId());
+            return CommunityTripResponse.of(trip, cities, isLike, likeCount);
         }
-        return CommunitySingleTripResponse.of(trip, cities, false, likeCount);
+        return CommunityTripResponse.of(trip, cities, false, likeCount);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {

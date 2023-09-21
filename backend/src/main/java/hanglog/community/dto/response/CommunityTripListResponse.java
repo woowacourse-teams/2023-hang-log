@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CommunityTripsResponse {
+public class CommunityTripListResponse {
 
-    final List<CommunitySingleTripResponse> trips;
+    final List<CommunityTripResponse> trips;
     final Long lastPageIndex;
 }

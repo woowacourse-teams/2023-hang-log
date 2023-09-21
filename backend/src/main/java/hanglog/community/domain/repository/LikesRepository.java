@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikesRepository extends JpaRepository<Likes, Long> {
 
-    boolean existsByMemberIdAndTrip(final Long memberID, final Trip trip);
+    boolean existsByMemberIdAndTripId(final Long memberId, final Long tripId);
 
     Long countLikesByTrip(final Trip trip);
 }

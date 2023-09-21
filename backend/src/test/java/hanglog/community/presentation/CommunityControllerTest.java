@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
-import hanglog.community.dto.response.CommunitySingleTripResponse;
-import hanglog.community.dto.response.CommunityTripsResponse;
+import hanglog.community.dto.response.CommunityTripListResponse;
+import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.global.ControllerTest;
 import jakarta.servlet.http.Cookie;
@@ -74,8 +74,8 @@ class CommunityControllerTest extends ControllerTest {
     void getTripsByPage() throws Exception {
         // given
         when(communityService.getTripsByPage(any(), any()))
-                .thenReturn(new CommunityTripsResponse(
-                        List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+                .thenReturn(new CommunityTripListResponse(
+                        List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
                         1L
                 ));
 
@@ -146,13 +146,13 @@ class CommunityControllerTest extends ControllerTest {
                 ))
                 .andReturn();
 
-        final CommunityTripsResponse communityTripsResponses = objectMapper.readValue(
+        final CommunityTripListResponse communityTripListResponses = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
-                CommunityTripsResponse.class
+                CommunityTripListResponse.class
         );
 
-        assertThat(communityTripsResponses).usingRecursiveComparison().isEqualTo(new CommunityTripsResponse(
-                List.of(CommunitySingleTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
+        assertThat(communityTripListResponses).usingRecursiveComparison().isEqualTo(new CommunityTripListResponse(
+                List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
                 1L
         ));
     }

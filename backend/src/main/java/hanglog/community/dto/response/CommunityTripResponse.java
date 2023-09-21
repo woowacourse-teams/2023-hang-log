@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = PRIVATE)
-public class CommunitySingleTripResponse {
+public class CommunityTripResponse {
 
     private final Long id;
     private final List<CityResponse> cities;
@@ -26,7 +26,7 @@ public class CommunitySingleTripResponse {
     private final String authorNickname;
     private final Long likeCount;
 
-    public static CommunitySingleTripResponse of(
+    public static CommunityTripResponse of(
             final Trip trip,
             final List<City> cities,
             final boolean isLike,
@@ -36,7 +36,7 @@ public class CommunitySingleTripResponse {
                 .map(CityResponse::of)
                 .toList();
 
-        return new CommunitySingleTripResponse(
+        return new CommunityTripResponse(
                 trip.getId(),
                 cityResponses,
                 trip.getTitle(),
