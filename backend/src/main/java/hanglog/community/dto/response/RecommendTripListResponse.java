@@ -11,5 +11,4 @@ public class RecommendTripListResponse {
 
     private final String title;
     private final List<CommunityTripResponse> trips;
-
 }
