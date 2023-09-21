@@ -1,12 +1,16 @@
 package hanglog.community.service;
 
+import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.community.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.community.domain.recommendstrategy.RecommendStrategies;
+import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikesRepository;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
+import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
@@ -22,9 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CommunityService {
 
+    private static final int RECOMMEND_AMOUNT = 5;
+
     private final LikesRepository likesRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
+    private final RecommendStrategies recommendStrategies;
 
     public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
@@ -51,5 +58,17 @@ public class CommunityService {
         return tripCityRepository.findByTripId(tripId).stream()
                 .map(TripCity::getCity)
                 .toList();
+    }
+
+    public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
+        final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
+        final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
+        final List<Trip> trips = recommendStrategy.recommend(pageable);
+
+        final List<CommunityTripResponse> communityTripResponses = trips.stream()
+                .map(trip -> getTripResponse(accessor, trip))
+                .toList();
+
+        return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
     }
 }

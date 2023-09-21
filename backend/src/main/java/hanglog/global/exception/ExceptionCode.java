@@ -24,6 +24,7 @@ public enum ExceptionCode {
     FAIL_TO_GENERATE_RANDOM_NICKNAME(1012, "랜덤한 닉네임을 생성하는데 실패하였습니다."),
     DUPLICATED_MEMBER_NICKNAME(1013, "중복된 닉네임입니다."),
     NOT_FOUND_PUBLISHED_TRIP_WITH_TRIP(1014, "요청한 여행에 해당하는 공개 여행이 존재하지 않습니다."),
+    NOT_FOUND_RECOMMEND_TRIP_STRATEGY(1015, "요청에 해당하는 여행 추천 전략이 존재하지 않습니다."),
 
     ALREADY_DELETED_TRIP_ITEM(2001, "이미 삭제된 여행 아이템입니다."),
     ALREADY_DELETED_DATE(2002, "이미 삭제된 날짜입니다."),
