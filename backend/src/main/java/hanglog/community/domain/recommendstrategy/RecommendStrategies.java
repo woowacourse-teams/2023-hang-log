@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 public class RecommendStrategies {
 
-    public static RecommendStrategies LIKE(final TripRepository tripRepository) {
+    public static RecommendStrategies generatedLikedBased(final TripRepository tripRepository) {
         return new RecommendStrategies(
                 "지금 인기있는 여행들이에요",
                 new LikesRecommendStrategy(tripRepository)
@@ -26,6 +26,4 @@ public class RecommendStrategies {
     public String getTitle() {
         return this.title;
     }
-
-
 }
