@@ -37,7 +37,7 @@ const ExpenseList = ({ items }: ExpenseListProps) => {
 
 export default ExpenseList;
 
-ExpenseList.Empty = ({ tripId }: { tripId: number }) => {
+ExpenseList.Empty = ({ tripId }: { tripId: string }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 

@@ -1,3 +1,5 @@
+import { useTrip } from '@/hooks/trip/useTrip';
+
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -18,7 +20,6 @@ import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
 
-// import { useTrip } from '@hooks/trip/useTrip';
 import { formatMonthDate } from '@utils/formatter';
 
 interface TripMobilePageProps {
@@ -32,15 +33,13 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
   const { tripData } = useTripQuery(tripId, isShared);
+  const { dates } = useTrip(tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const dates = tripData.dayLogs.map((data) => ({
-    id: data.id,
-    date: data.date,
-  }));
+
   const places = useMemo(
     () =>
       selectedDayLog.items
@@ -56,7 +55,7 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(tripId)} isEditable={false} isShared={isShared} />
+        <TripInformation tripId={tripId} isEditable={false} isShared={isShared} />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {
@@ -80,7 +79,7 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
           </Tabs>
           {isDaylogShown && (
             <DayLogItem
-              tripId={Number(tripId)}
+              tripId={tripId}
               isEditable={false}
               isShared={isShared}
               {...selectedDayLog}

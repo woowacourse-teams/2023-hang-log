@@ -8,19 +8,11 @@ import { getTrip } from '@api/trip/getTrip';
 
 import type { TripData } from '@type/trip';
 
-export const useTripQuery = (tripId: number | string, isShared: boolean = false) => {
-  const { data } = useQuery<TripData, AxiosError>(['trip', tripId], () => getTrip(Number(tripId)), {
-    enabled: !isShared,
-  });
-
-  const { data: sharedData } = useQuery<TripData, AxiosError>(
+export const useTripQuery = (tripId: string, isShared: boolean = false) => {
+  const { data } = useQuery<TripData, AxiosError>(
     ['trip', tripId],
-    () => getSharedTrip(String(tripId)),
-    {
-      enabled: !!isShared,
-    }
+    isShared ? () => getSharedTrip(tripId) : () => getTrip(tripId)
   );
 
-  console.log(data);
-  return { tripData: isShared ? sharedData! : data! };
+  return { tripData: data! };
 };

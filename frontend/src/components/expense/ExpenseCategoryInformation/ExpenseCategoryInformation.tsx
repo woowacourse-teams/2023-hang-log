@@ -14,7 +14,7 @@ import { formatNumberToMoney } from '@utils/formatter';
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseCategoryInformationProps {
-  tripId: number;
+  tripId: string;
 }
 
 const ExpenseCategoryInformation = ({ tripId }: ExpenseCategoryInformationProps) => {

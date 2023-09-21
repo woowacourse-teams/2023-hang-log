@@ -24,7 +24,7 @@ import type { TripItemData } from '@type/tripItem';
 import { PATH } from '@constants/path';
 
 interface TripItemListProps {
-  tripId: number | string;
+  tripId: string;
   dayLogId: number;
   tripItems: TripItemData[];
   isEditable?: boolean;
@@ -49,7 +49,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
     const itemIds = newItems.map((item) => item.id);
 
     dayLogOrderMutation.mutate(
-      { tripId: Number(tripId), dayLogId, itemIds },
+      { tripId, dayLogId, itemIds },
       {
         onError: () => handleItemsUpdate(tripItems),
       }
@@ -86,7 +86,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
 };
 
 interface EmptyTripItemListProps {
-  tripId: number | string;
+  tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
   openAddModal?: () => void;

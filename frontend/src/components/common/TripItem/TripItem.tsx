@@ -34,7 +34,7 @@ import { CURRENCY_ICON } from '@constants/trip';
 import { TRIP_ITEM_IMAGE_HEIGHT, TRIP_ITEM_IMAGE_WIDTH } from '@constants/ui';
 
 interface TripListItemProps extends TripItemData {
-  tripId: number | string;
+  tripId: string;
   dayLogId: number;
   isEditable?: boolean;
   observer?: IntersectionObserver | null;
@@ -128,7 +128,7 @@ const TripItem = ({
         </div>
         {isEditable ? (
           <EditMenu
-            tripId={Number(tripId)}
+            tripId={tripId}
             dayLogId={dayLogId}
             hasImage={information.imageUrls.length > 0}
             imageHeight={height}

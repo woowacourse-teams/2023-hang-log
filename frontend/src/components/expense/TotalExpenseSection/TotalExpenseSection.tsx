@@ -20,7 +20,7 @@ import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { EXPENSE_CATEGORY_CHART_SIZE, EXPENSE_CATEGORY_CHART_STROKE_WIDTH } from '@constants/ui';
 
 interface TotalExpenseSectionProps {
-  tripId: number;
+  tripId: string;
   isShared: boolean;
 }
 
@@ -31,7 +31,7 @@ const TotalExpenseSection = ({ tripId, isShared }: TotalExpenseSectionProps) => 
 
   return (
     <section css={containerStyling}>
-      <ExpenseInformation tripId={expenseData.id} isShared={isShared} />
+      <ExpenseInformation tripId={String(expenseData.id)} isShared={isShared} />
       <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>

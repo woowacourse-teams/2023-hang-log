@@ -23,7 +23,7 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 import type { TripItemFormData } from '@type/tripItem';
 
 interface TripItemAddModalProps {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   itemId?: number;
   initialData?: TripItemFormData;

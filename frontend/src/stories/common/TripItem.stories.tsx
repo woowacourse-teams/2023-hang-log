@@ -8,7 +8,7 @@ const meta = {
   title: 'common/TripItem',
   component: TripItem,
   args: {
-    tripId: 1,
+    tripId: '1',
     dayLogId: 1,
   },
 } satisfies Meta<typeof TripItem>;

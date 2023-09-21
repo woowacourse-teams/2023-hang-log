@@ -5,7 +5,7 @@ import type { TripItemFormData } from '@type/tripItem';
 import { END_POINTS } from '@constants/api';
 
 export interface PostTripItemParams extends TripItemFormData {
-  tripId: number;
+  tripId: string;
 }
 
 export const postTripItem = ({ tripId, ...information }: PostTripItemParams) => {

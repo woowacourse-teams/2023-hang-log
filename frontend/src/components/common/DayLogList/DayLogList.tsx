@@ -10,7 +10,7 @@ import { formatMonthDate } from '@utils/formatter';
 import type { DayLogData } from '@type/dayLog';
 
 interface DayLogListProps {
-  tripId: number | string;
+  tripId: string;
   selectedDayLog: DayLogData;
   isEditable?: boolean;
   isShared?: boolean;
