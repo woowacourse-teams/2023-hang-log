@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CommunityService {
 
-    private static int RECOMMEND_AMOUNT = 5;
+    private static final int RECOMMEND_AMOUNT = 5;
 
     private final LikesRepository likesRepository;
     private final TripRepository tripRepository;
@@ -58,7 +58,7 @@ public class CommunityService {
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
-        final RecommendStrategies recommendStrategies = RecommendStrategies.LIKE(tripRepository);
+        final RecommendStrategies recommendStrategies = RecommendStrategies.generatedLikedBased(tripRepository);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
         final List<Trip> trips = recommendStrategies.recommend(pageable);
 
