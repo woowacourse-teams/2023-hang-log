@@ -12,7 +12,7 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import TripInformation from '@components/common/TripInformation/TripInformation';
 import TripMap from '@components/common/TripMap/TripMap';
 
-import { useSharedQuery } from '@hooks/api/useSharedTripQuery';
+import { useTripQuery } from '@hooks/api/useTripQuery';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
@@ -21,7 +21,7 @@ const SharedTripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 공유코드입니다.');
 
-  const { tripData } = useSharedQuery(tripId);
+  const { tripData } = useTripQuery(tripId, true);
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 

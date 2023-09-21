@@ -25,7 +25,7 @@ export const END_POINTS = {
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
   ACCOUNT: '/account',
-  SHARED_TRIP: (code: string) => `/shared-trips/${code}`,
+  SHARED_TRIP: (tripId: string) => `/shared-trips/${tripId}`,
   SHARED_EXPENSE: (tripId: string) => `/shared-trips/${tripId}/expense`,
 } as const;
 

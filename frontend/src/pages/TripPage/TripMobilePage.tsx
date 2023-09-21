@@ -1,3 +1,5 @@
+import { useTrip } from '@/hooks/trip/useTrip';
+
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -17,7 +19,6 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
-import { useTrip } from '@hooks/trip/useTrip';
 
 import { formatMonthDate } from '@utils/formatter';
 
@@ -29,15 +30,15 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error('해당 여행이 없습니다');
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
-  const { tripData } = useTripQuery(tripId);
+  const { tripData } = useTripQuery(tripId, isShared);
+  const { dates } = useTrip(tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const { dates } = useTrip(tripId);
 
   const places = useMemo(
     () =>

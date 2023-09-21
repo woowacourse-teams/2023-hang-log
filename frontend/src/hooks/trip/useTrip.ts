@@ -4,7 +4,6 @@ import type { TripData } from '@type/trip';
 
 export const useTrip = (tripId: string) => {
   const queryClient = useQueryClient();
-
   const tripData = queryClient.getQueryData<TripData>(['trip', tripId])!;
 
   const dates = tripData.dayLogs.map((data) => ({
