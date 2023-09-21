@@ -70,11 +70,5 @@ export const handleAPIError = (error: AxiosError<ErrorResponseData>) => {
     throw new HTTPError(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR, data.message);
   }
 
-  if (status === HTTP_STATUS_CODE.NOT_FOUND) {
-    throw new HTTPError(HTTP_STATUS_CODE.NOT_FOUND, data.message);
-  }
-
-  if (status >= HTTP_STATUS_CODE.BAD_REQUEST) {
-    throw new HTTPError(HTTP_STATUS_CODE.BAD_REQUEST, data.message);
-  }
+  throw new HTTPError(status, data.message);
 };
