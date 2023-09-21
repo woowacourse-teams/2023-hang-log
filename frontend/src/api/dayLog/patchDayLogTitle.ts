@@ -7,7 +7,7 @@ export interface PatchDayLogTitleRequestBody {
 }
 
 interface PatchDayLogTitleParams extends PatchDayLogTitleRequestBody {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
 }
 

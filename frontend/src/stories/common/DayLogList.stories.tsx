@@ -22,13 +22,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => {
-    useTripQuery(1);
+    useTripQuery('1');
     const { selected, handleSelectClick } = useSelect(trip.dayLogs[0].id);
     const selectedDayLog = trip.dayLogs.find((log) => log.id === selected)!;
 
     return (
       <DayLogList
-        tripId={1}
+        tripId="1"
         selectedDayLog={selectedDayLog}
         onTabChange={handleSelectClick}
         openAddModal={() => {}}
@@ -36,7 +36,7 @@ export const Default: Story = {
     );
   },
   args: {
-    tripId: 1,
+    tripId: '1',
     selectedDayLog: trip.dayLogs[0],
     onTabChange: () => {},
   },

@@ -11,13 +11,13 @@ const meta = {
   title: 'trip/TripItemAddModal',
   component: TripItemAddModal,
   args: {
-    tripId: 1,
+    tripId: '1',
     dayLogId: 1,
     onClose: () => {},
   },
   decorators: [
     (Story) => {
-      useTripQuery(1);
+      useTripQuery('1');
       useExpenseCategoryQuery();
 
       return <Story />;

@@ -13,12 +13,12 @@ const meta = {
   },
   args: {
     currentCategory: true,
-    tripId: 1,
+    tripId: '1',
     dayLogId: 1,
   },
   decorators: [
     (Story) => {
-      useTripQuery(1);
+      useTripQuery('1');
 
       return <Story />;
     },
