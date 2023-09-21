@@ -27,12 +27,13 @@ export const useLogInMutation = () => {
       axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
 
       setIsLoggedIn(true);
-      navigate(-2);
     },
     onError: () => {
       setIsLoggedIn(false);
 
       createToast('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    },
+    onSettled: () => {
       navigate(PATH.ROOT);
     },
   });
