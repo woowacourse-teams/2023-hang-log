@@ -65,13 +65,9 @@ const TripInformation = ({ isEditable = true, isShared = false, tripId }: TripIn
         </Box>
         <Box css={buttonContainerStyling}>
           {isEditable ? (
-            <TripEditButtons tripId={String(tripData.id)} openEditModal={openEditModal} />
+            <TripEditButtons tripId={tripId} openEditModal={openEditModal} />
           ) : (
-            <TripButtons
-              tripId={String(tripData.id)}
-              sharedCode={tripData.sharedCode}
-              isShared={isShared}
-            />
+            <TripButtons tripId={tripId} sharedCode={tripData.sharedCode} isShared={isShared} />
           )}
         </Box>
       </header>
