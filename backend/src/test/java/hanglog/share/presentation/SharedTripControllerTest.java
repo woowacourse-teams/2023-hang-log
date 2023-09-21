@@ -42,7 +42,6 @@ import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.share.service.SharedTripService;
 import hanglog.trip.domain.TripCity;
-import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.fixture.CityFixture;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
@@ -84,6 +83,7 @@ class SharedTripControllerTest extends ControllerTest {
                 .thenReturn(1L);
         when(sharedTripService.getSharedTripDetail(anyLong()))
                 .thenReturn(SharedTripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
+
         // when
         mockMvc.perform(get("/shared-trips/{sharedCode}", "xxxxxx").contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
