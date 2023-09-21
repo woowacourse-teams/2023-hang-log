@@ -24,13 +24,13 @@ const ExpensePage = ({ isShared = false }: ExpensePageProps) => {
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { expenseData } = useExpenseQuery(tripId, isShared);
+  useExpenseQuery(tripId, isShared);
 
   return (
     <Flex css={containerStyling}>
-      <TotalExpenseSection tripId={String(expenseData.id)} isShared={isShared} />
+      <TotalExpenseSection tripId={tripId} isShared={isShared} />
       {isMobile && <Divider css={dividerStyling} />}
-      <ExpenseListSection tripId={String(expenseData.id)} />
+      <ExpenseListSection tripId={tripId} />
     </Flex>
   );
 };
