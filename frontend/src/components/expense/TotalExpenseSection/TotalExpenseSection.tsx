@@ -31,7 +31,7 @@ const TotalExpenseSection = ({ tripId, isShared }: TotalExpenseSectionProps) => 
 
   return (
     <section css={containerStyling}>
-      <ExpenseInformation tripId={expenseData.id} isShared={isShared} />
+      <ExpenseInformation tripId={tripId} isShared={isShared} />
       <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>
