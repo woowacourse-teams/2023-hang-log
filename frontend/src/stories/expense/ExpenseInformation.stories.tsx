@@ -8,12 +8,12 @@ const meta = {
   title: 'expense/ExpenseInformation',
   component: ExpenseInformation,
   args: {
-    tripId: 1,
+    tripId: '1',
     isShared: false,
   },
   decorators: [
     (Story) => {
-      useExpenseQuery(1);
+      useExpenseQuery('1');
 
       return <Story />;
     },

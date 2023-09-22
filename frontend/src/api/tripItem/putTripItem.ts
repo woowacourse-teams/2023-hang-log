@@ -5,7 +5,7 @@ import type { TripItemFormData } from '@type/tripItem';
 import { END_POINTS } from '@constants/api';
 
 interface PutTripItemParams extends TripItemFormData {
-  tripId: number;
+  tripId: string;
   itemId: number;
 }
 

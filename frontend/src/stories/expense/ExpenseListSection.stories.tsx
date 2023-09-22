@@ -9,7 +9,7 @@ const meta = {
     tripId: { control: false },
   },
   args: {
-    tripId: 1,
+    tripId: '1',
   },
 } satisfies Meta<typeof ExpenseListSection>;
 

@@ -14,7 +14,7 @@ import type { TripItemFormData } from '@type/tripItem';
 
 interface DateInputProps {
   currentCategory: TripItemFormData['itemType'];
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }

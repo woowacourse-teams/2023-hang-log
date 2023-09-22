@@ -7,10 +7,10 @@ import { useTripQuery } from '@hooks/api/useTripQuery';
 const meta = {
   title: 'common/TripInformation',
   component: TripInformation,
-  args: { tripId: 1 },
+  args: { tripId: '1' },
   decorators: [
     (Story) => {
-      useTripQuery(1);
+      useTripQuery('1');
 
       return <Story />;
     },

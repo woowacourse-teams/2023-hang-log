@@ -21,7 +21,7 @@ import BinIcon from '@assets/svg/bin-icon.svg';
 import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface TripButtonsProps {
-  tripId: number;
+  tripId: string;
   sharedCode: TripData['sharedCode'];
   isShared: boolean;
 }

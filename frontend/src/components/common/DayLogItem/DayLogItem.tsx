@@ -11,7 +11,7 @@ import type { DayLogData } from '@type/dayLog';
 import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
 
 interface DayLogItemProps extends DayLogData {
-  tripId: number;
+  tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
   openAddModal?: () => void;

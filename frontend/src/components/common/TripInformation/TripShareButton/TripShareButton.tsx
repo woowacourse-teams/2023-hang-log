@@ -23,7 +23,7 @@ import { PATH } from '@constants/path';
 import ShareIcon from '@assets/svg/share-icon.svg';
 
 interface TripShareButtonProps {
-  tripId: number;
+  tripId: string;
   sharedCode: TripData['sharedCode'];
 }
 

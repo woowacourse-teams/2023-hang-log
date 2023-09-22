@@ -18,5 +18,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Empty: Story = {
-  render: () => <ExpenseList.Empty tripId={1} />,
+  render: () => <ExpenseList.Empty tripId="1" />,
 };

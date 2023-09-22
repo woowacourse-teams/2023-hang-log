@@ -17,11 +17,11 @@ import { useSharedQuery } from '@hooks/api/useSharedTripQuery';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 const SharedTripPage = () => {
-  const { code } = useParams();
+  const { tripId } = useParams();
 
-  if (!code) throw new Error('존재하지 않는 공유코드입니다.');
+  if (!tripId) throw new Error('존재하지 않는 공유코드입니다.');
 
-  const { tripData } = useSharedQuery(code);
+  const { tripData } = useSharedQuery(tripId);
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
@@ -45,9 +45,9 @@ const SharedTripPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(code)} isEditable={false} isShared />
+        <TripInformation tripId={tripId} isEditable={false} isShared />
         <DayLogList
-          tripId={Number(code)}
+          tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
           isShared

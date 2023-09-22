@@ -14,7 +14,7 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 import { EXPENSE_LIST_FILTERS } from '@constants/expense';
 
 interface ExpenseListProps {
-  tripId: number;
+  tripId: string;
 }
 
 const ExpenseListSection = ({ tripId }: ExpenseListProps) => {

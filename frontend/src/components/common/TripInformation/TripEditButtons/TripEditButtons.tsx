@@ -5,7 +5,7 @@ import { Button } from 'hang-log-design-system';
 import { editButtonStyling } from '@components/common/TripInformation/TripEditButtons/TripEditButtons.style';
 
 interface TripEditButtonsProps {
-  tripId: number;
+  tripId: string;
   openEditModal?: () => void;
 }
 
