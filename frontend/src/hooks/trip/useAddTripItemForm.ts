@@ -10,7 +10,7 @@ import { isEmptyString } from '@utils/validator';
 import type { TripItemFormData } from '@type/tripItem';
 
 interface UseAddTripItemFormParams {
-  tripId: number;
+  tripId: string;
   initialDayLogId: number;
   itemId?: number;
   initialData?: TripItemFormData;

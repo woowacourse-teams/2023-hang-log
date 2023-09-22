@@ -3,7 +3,7 @@ import { axiosInstance } from '@api/axiosInstance';
 import { END_POINTS } from '@constants/api';
 
 interface DeleteTripParams {
-  tripId: number;
+  tripId: string;
 }
 
 export const deleteTrip = ({ tripId }: DeleteTripParams) => {

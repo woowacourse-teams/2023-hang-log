@@ -24,7 +24,7 @@ import type { TripItemData } from '@type/tripItem';
 import { PATH } from '@constants/path';
 
 interface TripItemListProps {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   tripItems: TripItemData[];
   isEditable?: boolean;
@@ -86,7 +86,7 @@ const TripItemList = ({ tripId, dayLogId, tripItems, isEditable = true }: TripIt
 };
 
 interface EmptyTripItemListProps {
-  tripId: number;
+  tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
   openAddModal?: () => void;

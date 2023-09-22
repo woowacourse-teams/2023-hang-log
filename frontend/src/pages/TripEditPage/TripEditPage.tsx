@@ -28,7 +28,7 @@ const TripEditPage = () => {
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { tripData } = useTripEditPageQueries(Number(tripId));
+  const { tripData } = useTripEditPageQueries(tripId);
 
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
@@ -51,9 +51,9 @@ const TripEditPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(tripId)} />
+        <TripInformation tripId={tripId} />
         <DayLogList
-          tripId={Number(tripId)}
+          tripId={tripId}
           selectedDayLog={selectedDayLog}
           onTabChange={handleDayLogIdSelectClick}
           openAddModal={openAddModal}
@@ -64,11 +64,7 @@ const TripEditPage = () => {
           onClick={openAddModal}
         />
         {isAddModalOpen && (
-          <TripItemAddModal
-            tripId={Number(tripId)}
-            dayLogId={selectedDayLog.id}
-            onClose={closeAddModal}
-          />
+          <TripItemAddModal tripId={tripId} dayLogId={selectedDayLog.id} onClose={closeAddModal} />
         )}
       </section>
       {!isMobile && (

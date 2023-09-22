@@ -8,7 +8,7 @@ import type { ExpenseData, ExpenseItemData } from '@type/expense';
 
 import { EXPENSE_CHART_COLORS } from '@constants/expense';
 
-export const useExpense = (tripId: number) => {
+export const useExpense = (tripId: string) => {
   const queryClient = useQueryClient();
 
   const expenseData = queryClient.getQueryData<ExpenseData>(['expense', tripId])!;

@@ -5,7 +5,7 @@ import type { TripData, TripSharedStatusData } from '@type/trip';
 import { END_POINTS } from '@constants/api';
 
 interface PatchTripSharedStatusParams extends TripSharedStatusData {
-  tripId: number;
+  tripId: string;
 }
 
 interface ResponseData {

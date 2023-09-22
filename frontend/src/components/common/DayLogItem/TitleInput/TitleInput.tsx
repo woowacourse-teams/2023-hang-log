@@ -8,7 +8,7 @@ import { useDayLogTitleMutation } from '@hooks/api/useDayLogTitleMutation';
 import { DAYLOG_TITLE_MAX_LENGTH } from '@constants/ui';
 
 interface TitleInputProps {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   initialTitle: string;
 }

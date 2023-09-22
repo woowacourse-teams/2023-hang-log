@@ -8,11 +8,11 @@ const meta = {
   title: 'expense/ExpenseDates',
   component: ExpenseDates,
   args: {
-    tripId: 1,
+    tripId: '1',
   },
   decorators: [
     (Story) => {
-      useExpenseQuery(1);
+      useExpenseQuery('1');
 
       return <Story />;
     },

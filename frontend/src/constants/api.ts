@@ -10,23 +10,23 @@ export const AXIOS_BASE_URL = PROD
 
 export const END_POINTS = {
   TRIPS: '/trips',
-  TRIP: (tripId: number) => `/trips/${tripId}`,
-  DAY_LOG: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}`,
-  DAY_LOG_ORDER: (tripId: number, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
-  CREATE_TRIP_ITEM: (tripId: number) => `/trips/${tripId}/items`,
-  CHANGE_TRIP_ITEM: (tripId: number, itemId: number) => `/trips/${tripId}/items/${itemId}`,
+  TRIP: (tripId: string) => `/trips/${tripId}`,
+  DAY_LOG: (tripId: string, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}`,
+  DAY_LOG_ORDER: (tripId: string, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
+  CREATE_TRIP_ITEM: (tripId: string) => `/trips/${tripId}/items`,
+  CHANGE_TRIP_ITEM: (tripId: string, itemId: number) => `/trips/${tripId}/items/${itemId}`,
   CITY: '/cities',
   EXPENSE_CATEGORY: '/categories',
-  EXPENSE: (tripId: number | string) => `/trips/${tripId}/expense`,
+  EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
-  SHARE: (tripId: number | string) => `/trips/${tripId}/share`,
+  SHARE: (tripId: string) => `/trips/${tripId}/share`,
   TOKEN: '/token',
   LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
   ACCOUNT: '/account',
-  SHARED_TRIP: (code: string | number) => `/shared-trips/${code}`,
-  SHARED_EXPENSE: (tripId: string | number) => `/shared-trips/${tripId}/expense`,
+  SHARED_TRIP: (code: string) => `/shared-trips/${code}`,
+  SHARED_EXPENSE: (tripId: string) => `/shared-trips/${tripId}/expense`,
 } as const;
 
 export const NETWORK = {

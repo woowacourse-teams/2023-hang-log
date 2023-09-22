@@ -20,7 +20,7 @@ import { formatDate } from '@utils/formatter';
 import { PATH } from '@constants/path';
 
 interface ExpenseInformationProps {
-  tripId: number;
+  tripId: string;
   isShared: boolean;
 }
 
