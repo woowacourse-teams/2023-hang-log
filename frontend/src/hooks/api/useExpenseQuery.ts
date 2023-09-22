@@ -11,7 +11,7 @@ import type { ExpenseData } from '@type/expense';
 export const useExpenseQuery = (tripId: string, isShared = false) => {
   const { data } = useQuery<ExpenseData, AxiosError>(
     ['expense', tripId],
-    !isShared ? () => getExpense(tripId) : () => getSharedExpense(String(tripId))
+    !isShared ? () => getExpense(tripId) : () => getSharedExpense(tripId)
   );
 
   return { expenseData: data! };
