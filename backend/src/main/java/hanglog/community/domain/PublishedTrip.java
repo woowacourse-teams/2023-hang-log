@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE shared_trip SET status = 'DELETED' WHERE id = ?")
+@SQLDelete(sql = "UPDATE published_trip SET status = 'DELETED' WHERE id = ?")
 @NoArgsConstructor(access = PROTECTED)
 @Where(clause = "status = 'USABLE'")
 public class PublishedTrip extends BaseEntity {
