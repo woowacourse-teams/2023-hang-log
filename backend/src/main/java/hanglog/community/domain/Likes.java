@@ -1,16 +1,12 @@
 package hanglog.community.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.member.domain.Member;
-import hanglog.trip.domain.Trip;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,11 +21,14 @@ public class Likes {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+    @JoinColumn(name = "trip_id", nullable = false, unique = true)
+    private Long tripId;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "member_id", nullable = false, unique = true)
+    private Long memberId;
+
+    public Likes(final Long tripId, final Long memberId) {
+        this.tripId = tripId;
+        this.memberId = memberId;
+    }
 }
