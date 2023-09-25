@@ -25,7 +25,6 @@ public class CommunityTripResponse {
     private final String description;
     private final String imageUrl;
     private final Boolean isLike;
-    private final String authorNickname;
     private final Long likeCount;
 
     public static CommunityTripResponse of(
@@ -48,7 +47,6 @@ public class CommunityTripResponse {
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
                 isLike,
-                trip.getMember().getNickname(),
                 likeCount
         );
     }

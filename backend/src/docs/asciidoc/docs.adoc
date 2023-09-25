@@ -341,3 +341,12 @@ include::{snippets}/community-controller-test/get-trips-by-page/http-request.ado
 ==== 응답
 include::{snippets}/community-controller-test/get-trips-by-page/http-response.adoc[]
 include::{snippets}/community-controller-test/get-trips-by-page/response-fields.adoc[]
+
+=== 추천 여행 목록 조회 (GET /community/recommends)
+
+==== 요청
+include::{snippets}/community-controller-test/get-recommend-trips/http-request.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-recommend-trips/http-response.adoc[]
+include::{snippets}/community-controller-test/get-recommend-trips/response-fields.adoc[]

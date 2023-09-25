@@ -5,6 +5,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 import hanglog.auth.Auth;
 import hanglog.auth.domain.Accessor;
 import hanglog.community.dto.response.CommunityTripListResponse;
+import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,5 +29,11 @@ public class CommunityController {
     ) {
         final CommunityTripListResponse communityTripListResponse = communityService.getTripsByPage(accessor, pageable);
         return ResponseEntity.ok().body(communityTripListResponse);
+    }
+
+    @GetMapping("/recommends")
+    public ResponseEntity<RecommendTripListResponse> getRecommendTrips(@Auth final Accessor accessor) {
+        final RecommendTripListResponse tripResponses = communityService.getRecommendTrips(accessor);
+        return ResponseEntity.ok().body(tripResponses);
     }
 }
