@@ -17,7 +17,7 @@ const TripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
 
-  const { tripData } = useTripQuery(Number(tripId));
+  const { tripData } = useTripQuery(tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
@@ -39,9 +39,9 @@ const TripPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(tripId)} isEditable={false} />
+        <TripInformation tripId={tripId} isEditable={false} />
         <DayLogList
-          tripId={Number(tripId)}
+          tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
           onTabChange={handleDayLogIdSelectClick}

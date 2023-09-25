@@ -29,13 +29,15 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
-  const { tripData } = useTripQuery(Number(tripId));
+  if (!tripId) throw new Error('해당 여행이 없습니다');
+
+  const { tripData } = useTripQuery(tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id
   );
   const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const { dates } = useTrip(Number(tripId));
+  const { dates } = useTrip(tripId);
 
   const places = useMemo(
     () =>
@@ -52,7 +54,7 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation tripId={Number(tripId)} isEditable={false} isShared={isShared} />
+        <TripInformation tripId={tripId} isEditable={false} isShared={isShared} />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {
@@ -76,7 +78,7 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
           </Tabs>
           {isDaylogShown && (
             <DayLogItem
-              tripId={Number(tripId)}
+              tripId={tripId}
               isEditable={false}
               isShared={isShared}
               {...selectedDayLog}

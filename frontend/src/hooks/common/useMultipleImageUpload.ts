@@ -54,7 +54,12 @@ export const useMultipleImageUpload = ({
         await Promise.all(
           [...originalImageFiles].map(async (file) => {
             const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
-            imageFiles.push(compressedImageFile);
+
+            const fileName = file.name;
+            const fileType = compressedImageFile.type;
+            const convertedFile = new File([compressedImageFile], fileName, { type: fileType });
+
+            imageFiles.push(convertedFile);
           })
         );
       } catch (e) {

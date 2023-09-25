@@ -34,7 +34,7 @@ import { CURRENCY_ICON } from '@constants/trip';
 import { TRIP_ITEM_IMAGE_HEIGHT, TRIP_ITEM_IMAGE_WIDTH } from '@constants/ui';
 
 interface TripListItemProps extends TripItemData {
-  tripId: number;
+  tripId: string;
   dayLogId: number;
   isEditable?: boolean;
   observer?: IntersectionObserver | null;

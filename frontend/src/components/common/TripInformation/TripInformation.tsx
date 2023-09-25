@@ -26,7 +26,7 @@ import { formatDate } from '@utils/formatter';
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
 interface TripInformationProps {
-  tripId: number;
+  tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
 }
@@ -65,13 +65,9 @@ const TripInformation = ({ isEditable = true, isShared = false, tripId }: TripIn
         </Box>
         <Box css={buttonContainerStyling}>
           {isEditable ? (
-            <TripEditButtons tripId={tripData.id} openEditModal={openEditModal} />
+            <TripEditButtons tripId={tripId} openEditModal={openEditModal} />
           ) : (
-            <TripButtons
-              tripId={tripData.id}
-              sharedCode={tripData.sharedCode}
-              isShared={isShared}
-            />
+            <TripButtons tripId={tripId} sharedCode={tripData.sharedCode} isShared={isShared} />
           )}
         </Box>
       </header>

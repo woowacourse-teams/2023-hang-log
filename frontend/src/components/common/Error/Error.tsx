@@ -26,7 +26,9 @@ export interface ErrorProps {
 }
 
 const Error = ({ statusCode = HTTP_STATUS_CODE.NOT_FOUND, errorCode, resetError }: ErrorProps) => {
-  const isHTTPError = hasKeyInObject(HTTP_ERROR_MESSAGE, statusCode);
+  const currentStatusCode =
+    statusCode === HTTP_STATUS_CODE.CONTENT_TOO_LARGE ? HTTP_STATUS_CODE.BAD_REQUEST : statusCode;
+  const isHTTPError = hasKeyInObject(HTTP_ERROR_MESSAGE, currentStatusCode);
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { handleTokenError } = useTokenError();
@@ -44,11 +46,11 @@ const Error = ({ statusCode = HTTP_STATUS_CODE.NOT_FOUND, errorCode, resetError 
       <Flex styles={{ direction: 'column', align: 'center' }} css={containerStyling}>
         <ErrorImage width={isMobile ? '80%' : '476px'} aria-label="에러 이미지" />
         <Heading css={headingStyling} size="small">
-          {HTTP_ERROR_MESSAGE[statusCode].HEADING}
+          {HTTP_ERROR_MESSAGE[currentStatusCode].HEADING}
         </Heading>
-        <Text css={textStyling}>{HTTP_ERROR_MESSAGE[statusCode].BODY}</Text>
+        <Text css={textStyling}>{HTTP_ERROR_MESSAGE[currentStatusCode].BODY}</Text>
         <Button css={buttonStyling} variant="primary" onClick={resetError}>
-          {HTTP_ERROR_MESSAGE[statusCode].BUTTON}
+          {HTTP_ERROR_MESSAGE[currentStatusCode].BUTTON}
         </Button>
       </Flex>
     </Box>
