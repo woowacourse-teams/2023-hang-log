@@ -118,7 +118,7 @@ const AppRouter = () => {
           path: PATH.COMMUNITY_EXPENSE(':tripId'),
           element: (
             <Suspense fallback={<ExpensePageSkeleton />}>
-              <Lazy.ExpensePage isPublished />
+              <Lazy.ExpensePage isShared isPublished />
             </Suspense>
           ),
         },

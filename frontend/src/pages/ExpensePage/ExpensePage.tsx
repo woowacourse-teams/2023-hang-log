@@ -31,7 +31,7 @@ const ExpensePage = ({ isShared = false, isPublished = false }: ExpensePageProps
     <Flex css={containerStyling}>
       <TotalExpenseSection tripId={tripId} isShared={isShared} isPublished={isPublished} />
       {isMobile && <Divider css={dividerStyling} />}
-      <ExpenseListSection tripId={tripId} />
+      <ExpenseListSection tripId={tripId} isShared={isShared} />
     </Flex>
   );
 };
