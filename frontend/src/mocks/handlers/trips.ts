@@ -4,6 +4,7 @@ import type { TripFormData } from '@type/trip';
 
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
+import { communityTrip } from '@mocks/data/communityTrip';
 import { trip } from '@mocks/data/trip';
 import { trips } from '@mocks/data/trips';
 
@@ -55,5 +56,9 @@ export const tripsHandlers = [
 
   rest.patch(`${END_POINTS.TRIPS}/:tripId/publish`, async (req, res, ctx) => {
     return res(ctx.status(HTTP_STATUS_CODE.SUCCESS));
+  }),
+
+  rest.get(`${END_POINTS.COMMUNITY_TRIP(':tripId')}`, async (req, res, ctx) => {
+    return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(communityTrip));
   }),
 ];

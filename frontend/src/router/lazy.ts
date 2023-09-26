@@ -15,7 +15,7 @@ export const LogInPage = lazy(
 export const MyPage = lazy(() => import(/* webpackChunkName: "MyPage" */ '@pages/MyPage/MyPage'));
 
 export const SharedTripPage = lazy(
-  () => import(/* webpackChunkName: "SharedPage" */ '@/pages/SharedPage/SharedTripPage')
+  () => import(/* webpackChunkName: "SharedTripPage" */ '@/pages/SharedPage/SharedTripPage')
 );
 
 export const TripCreatePage = lazy(
@@ -31,9 +31,16 @@ export const TripPage = lazy(
 );
 
 export const TripMobilePage = lazy(
-  () => import(/* webpackChunkName: "TripPage" */ '@pages/TripPage/TripMobilePage')
+  () => import(/* webpackChunkName: "TripMobilePage" */ '@pages/TripPage/TripMobilePage')
 );
 
 export const TripsPage = lazy(
   () => import(/* webpackChunkName: "TripsPage" */ '@pages/TripsPage/TripsPage')
+);
+
+export const CommunityTripPage = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "CommunityTripPage" */ '@/pages/CommunityTripPage/CommunityTripPage'
+    )
 );

@@ -6,6 +6,8 @@ export const PATH = {
   EXPENSE: (tripId: string) => `/trip/${tripId}/expense`,
   SHARE_TRIP: (tripId: string) => `/trip/share/${tripId}`,
   SHARE_EXPENSE: (tripId: string) => `/trip/share/expense/${tripId}`,
+  COMMUNITY_TRIP: (tripId: string) => `/community/trip/${tripId}`,
+  COMMUNITY_EXPENSE: (tripId: string) => `/community/trip/expense/${tripId}`,
   LOGIN: '/login',
   MY_PAGE: '/my-page',
   REDIRECT: '/auth/:provider',

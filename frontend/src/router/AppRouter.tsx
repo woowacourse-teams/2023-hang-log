@@ -106,6 +106,22 @@ const AppRouter = () => {
             </Suspense>
           ),
         },
+        {
+          path: PATH.COMMUNITY_TRIP(':tripId'),
+          element: (
+            <Suspense fallback={<TripPageSkeleton />}>
+              {isMobile ? <Lazy.TripMobilePage isShared /> : <Lazy.CommunityTripPage />}
+            </Suspense>
+          ),
+        },
+        {
+          path: PATH.COMMUNITY_EXPENSE(':tripId'),
+          element: (
+            <Suspense fallback={<ExpensePageSkeleton />}>
+              <Lazy.ExpensePage isShared />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);

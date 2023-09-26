@@ -26,3 +26,14 @@ export interface TripPlaceType {
 export interface TripSharedStatusData {
   sharedStatus: boolean;
 }
+
+export interface CommunityTripData extends Omit<TripData, 'sharedCode'> {
+  writer: {
+    nickname: string;
+    imageUrl: string;
+  };
+  isWriter: boolean;
+  isLike: boolean;
+  likeCount: number;
+  publishedDate: string;
+}

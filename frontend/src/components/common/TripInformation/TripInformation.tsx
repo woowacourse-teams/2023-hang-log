@@ -1,3 +1,5 @@
+import type { CommunityTripData, TripData } from '@/types/trip';
+
 import { memo } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -29,9 +31,15 @@ interface TripInformationProps {
   tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
+  isPublished?: boolean;
 }
 
-const TripInformation = ({ isEditable = true, isShared = false, tripId }: TripInformationProps) => {
+const TripInformation = ({
+  isEditable = true,
+  isShared = false,
+  isPublished = false,
+  tripId,
+}: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
@@ -62,12 +70,22 @@ const TripInformation = ({ isEditable = true, isShared = false, tripId }: TripIn
           <Text css={descriptionStyling} size="small">
             {tripData.description}
           </Text>
+          {isPublished && (
+            <Text css={descriptionStyling} size="small">
+              {(tripData as CommunityTripData).writer.nickname}
+              ♥️{(tripData as CommunityTripData).likeCount}
+            </Text>
+          )}
         </Box>
         <Box css={buttonContainerStyling}>
           {isEditable ? (
             <TripEditButtons tripId={tripId} openEditModal={openEditModal} />
           ) : (
-            <TripButtons tripId={tripId} sharedCode={tripData.sharedCode} isShared={isShared} />
+            <TripButtons
+              tripId={tripId}
+              sharedCode={(tripData as TripData).sharedCode}
+              isShared={isShared}
+            />
           )}
         </Box>
       </header>
