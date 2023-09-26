@@ -13,17 +13,15 @@ export const useExpenseQuery = (
   tripId: string,
   { isShared, isPublished }: { isShared: boolean; isPublished: boolean }
 ) => {
-  let queryFn;
+  let queryFn = () => getExpense(tripId);
 
   if (isPublished) {
     queryFn = () => getCommunityTripExpense(tripId);
   }
 
-  if (isShared) {
+  if (isShared && !isPublished) {
     queryFn = () => getSharedExpense(tripId);
   }
-
-  queryFn = () => getExpense(tripId);
 
   const { data } = useQuery<ExpenseData, AxiosError>(['expense', tripId], queryFn);
 
