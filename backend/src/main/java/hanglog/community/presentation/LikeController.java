@@ -26,7 +26,7 @@ public class LikeController {
             @Auth final Accessor accessor,
             @PathVariable final Long tripId,
             @RequestBody final LikeRequest likeRequest
-            ) {
+    ) {
         likeService.update(accessor.getMemberId(), tripId, likeRequest);
         return ResponseEntity.noContent().build();
     }

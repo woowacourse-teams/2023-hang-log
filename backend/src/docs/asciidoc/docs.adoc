@@ -350,3 +350,12 @@ include::{snippets}/community-controller-test/get-recommend-trips/http-request.a
 ==== 응답
 include::{snippets}/community-controller-test/get-recommend-trips/http-response.adoc[]
 include::{snippets}/community-controller-test/get-recommend-trips/response-fields.adoc[]
+
+=== 게시물 좋아요 반영 (POST /trips/:tripId/like)
+
+==== 요청
+include::{snippets}/like-controller-test/update-like-status/http-request.adoc[]
+include::{snippets}/like-controller-test/update-like-status/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/like-controller-test/update-like-status/http-response.adoc[]
