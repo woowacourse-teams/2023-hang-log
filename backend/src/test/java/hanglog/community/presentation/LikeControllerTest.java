@@ -46,15 +46,11 @@ class LikeControllerTest extends ControllerTest {
     @MockBean
     private LikeService likeService;
 
-    @MockBean
-    private TripService tripService;
-
     @BeforeEach
     void setUp() {
         given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
     }
 
     private ResultActions performPostRequest(final Long tripId, final LikeRequest request) throws Exception {
