@@ -1,7 +1,7 @@
 package hanglog.community.service;
 
 import hanglog.community.domain.Likes;
-import hanglog.community.domain.repository.LikesRepository;
+import hanglog.community.domain.repository.LikeRepository;
 import hanglog.community.dto.request.LikeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,16 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LikeService {
 
-    private final LikesRepository likesRepository;
+    private final LikeRepository likeRepository;
 
     public void update(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
         final boolean requestStatus = likeRequest.getIsLike();
 
-        if (requestStatus && !likesRepository.existsByMemberIdAndTripId(memberId, tripId)) {
-            likesRepository.save(new Likes(tripId, memberId));
+        if (requestStatus && !likeRepository.existsByMemberIdAndTripId(memberId, tripId)) {
+            likeRepository.save(new Likes(tripId, memberId));
         }
         if (!requestStatus) {
-            likesRepository.deleteByMemberIdAndTripId(memberId, tripId);
+            likeRepository.deleteByMemberIdAndTripId(memberId, tripId);
         }
     }
 }

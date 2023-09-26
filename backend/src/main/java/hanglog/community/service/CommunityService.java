@@ -7,7 +7,7 @@ import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
-import hanglog.community.domain.repository.LikesRepository;
+import hanglog.community.domain.repository.LikeRepository;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
@@ -28,7 +28,7 @@ public class CommunityService {
 
     private static final int RECOMMEND_AMOUNT = 5;
 
-    private final LikesRepository likesRepository;
+    private final LikeRepository likeRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
     private final RecommendStrategies recommendStrategies;
@@ -45,10 +45,10 @@ public class CommunityService {
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        final Long likeCount = likesRepository.countLikesByTripId(trip.getId());
+        final Long likeCount = likeRepository.countLikesByTripId(trip.getId());
 
         if (accessor.isMember()) {
-            final boolean isLike = likesRepository.existsByMemberIdAndTripId(trip.getMember().getId(), trip.getId());
+            final boolean isLike = likeRepository.existsByMemberIdAndTripId(trip.getMember().getId(), trip.getId());
             return CommunityTripResponse.of(trip, cities, isLike, likeCount);
         }
         return CommunityTripResponse.of(trip, cities, false, likeCount);
