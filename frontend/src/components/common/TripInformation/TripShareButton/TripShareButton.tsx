@@ -26,9 +26,14 @@ import ShareIcon from '@assets/svg/share-icon.svg';
 interface TripShareButtonProps {
   tripId: string;
   sharedCode: TripData['sharedCode'];
+  isPublished: boolean;
 }
 
-const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
+const TripShareButton = ({
+  tripId,
+  sharedCode,
+  isPublished: initialPublishState,
+}: TripShareButtonProps) => {
   const tripShareStatusMutation = useTripShareStatusMutation();
   const tripPublishStatusMutation = useTripPublishStatusMutation();
 
@@ -36,7 +41,7 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
   const [sharedUrl, setShareUrl] = useState(
     sharedCode ? BASE_URL + PATH.SHARE_TRIP(sharedCode) : null
   );
-  const [isPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(initialPublishState);
 
   const { isOpen: isShareMenuOpen, close: closeShareMenu, toggle: toggleShareMenu } = useOverlay();
   const { handleCopyButtonClick } = useTripShare(sharedUrl);

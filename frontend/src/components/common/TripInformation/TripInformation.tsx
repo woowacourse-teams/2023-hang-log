@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Badge, Box, Heading, Text, useOverlay } from 'hang-log-design-system';
+import { Badge, Box, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
 
 import TripButtons from '@components/common/TripInformation/TripButtons/TripButtons';
 import TripEditButtons from '@components/common/TripInformation/TripEditButtons/TripEditButtons';
@@ -16,6 +16,7 @@ import {
   imageWrapperStyling,
   sectionStyling,
   titleStyling,
+  writerImageStyling,
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
 
@@ -26,6 +27,7 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 import { formatDate } from '@utils/formatter';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
+import LikeIcon from '@assets/svg/click-filled-like.svg';
 
 interface TripInformationProps {
   tripId: string;
@@ -71,10 +73,26 @@ const TripInformation = ({
             {tripData.description}
           </Text>
           {isPublished && (
-            <Text css={descriptionStyling} size="small">
-              {(tripData as CommunityTripData).writer.nickname}
-              ♥️{(tripData as CommunityTripData).likeCount}
-            </Text>
+            <Flex
+              styles={{
+                align: 'center',
+                gap: Theme.spacer.spacing4,
+                paddingTop: Theme.spacer.spacing3,
+              }}
+            >
+              <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
+                <img
+                  alt="작성자 이미지"
+                  src={(tripData as CommunityTripData).writer.imageUrl}
+                  css={writerImageStyling}
+                />
+                <Text size="small">{(tripData as CommunityTripData).writer.nickname}</Text>
+              </Flex>
+              <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
+                <LikeIcon />
+                {(tripData as CommunityTripData).likeCount}
+              </Flex>
+            </Flex>
           )}
         </Box>
         <Box css={buttonContainerStyling}>
@@ -85,6 +103,7 @@ const TripInformation = ({
               tripId={tripId}
               sharedCode={(tripData as TripData).sharedCode}
               isShared={isShared}
+              isPublished={(tripData as TripData).isPublished}
             />
           )}
         </Box>

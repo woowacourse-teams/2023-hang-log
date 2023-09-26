@@ -18,7 +18,7 @@ import { TRIP_DESCRIPTION_MAX_LENGTH, TRIP_TITLE_MAX_LENGTH } from '@constants/u
 
 import WarningIcon from '@assets/svg/warning-icon.svg';
 
-interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs' | 'sharedCode'> {
+interface TripInfoEditModalProps extends Omit<TripData, 'dayLogs' | 'sharedCode' | 'isPublished'> {
   isOpen: boolean;
   onClose: () => void;
 }
