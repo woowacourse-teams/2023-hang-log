@@ -13,6 +13,7 @@ const meta = {
   args: {
     tripId: '1',
     isShared: false,
+    isPublished: false,
   },
   decorators: [
     (Story) => {

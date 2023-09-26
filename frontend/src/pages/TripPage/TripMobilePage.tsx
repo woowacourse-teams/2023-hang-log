@@ -32,7 +32,7 @@ const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePag
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
-  const { tripData } = useTripQuery(tripId, isShared);
+  const { tripData } = useTripQuery(tripId, isShared, isPublished);
   const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
 
   return (
