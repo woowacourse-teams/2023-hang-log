@@ -27,6 +27,7 @@ export const END_POINTS = {
   ACCOUNT: '/account',
   SHARED_TRIP: (tripId: string) => `/shared-trips/${tripId}`,
   SHARED_EXPENSE: (tripId: string) => `/shared-trips/${tripId}/expense`,
+  PUBLISH: (tripId: string) => `trips/${tripId}/publish`,
 } as const;
 
 export const NETWORK = {

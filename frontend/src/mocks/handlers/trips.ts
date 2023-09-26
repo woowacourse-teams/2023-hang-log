@@ -52,4 +52,8 @@ export const tripsHandlers = [
   rest.get(`${END_POINTS.SHARED_TRIP(':code')}`, async (req, res, ctx) => {
     return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
   }),
+
+  rest.patch(`${END_POINTS.TRIPS}/:tripId/publish`, async (req, res, ctx) => {
+    return res(ctx.status(HTTP_STATUS_CODE.SUCCESS));
+  }),
 ];
