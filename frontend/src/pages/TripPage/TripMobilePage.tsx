@@ -1,9 +1,7 @@
-import { useTrip } from '@/hooks/trip/useTrip';
-
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Flex, Tab, Tabs, useSelect } from 'hang-log-design-system';
+import { Button, Flex, Tab, Tabs } from 'hang-log-design-system';
 
 import {
   buttonContainerStyling,
@@ -19,43 +17,33 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
+import { useTripPage } from '@hooks/trip/useTripPage';
 
 import { formatMonthDate } from '@utils/formatter';
 
 interface TripMobilePageProps {
   isShared?: boolean;
+  isPublished?: boolean;
 }
 
-const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
+const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePageProps) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
   const { tripData } = useTripQuery(tripId, isShared);
-  const { dates } = useTrip(tripId);
-
-  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    tripData.dayLogs[0].id
-  );
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-
-  const places = useMemo(
-    () =>
-      selectedDayLog.items
-        .filter((item) => item.itemType)
-        .map((item) => ({
-          id: item.id,
-          name: item.title,
-          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-        })),
-    [selectedDayLog.items]
-  );
+  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
 
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} isEditable={false} isShared={isShared} />
+        <TripInformation
+          tripId={tripId}
+          isEditable={false}
+          isShared={isShared}
+          isPublished={isPublished}
+        />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {

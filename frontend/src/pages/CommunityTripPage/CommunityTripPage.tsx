@@ -1,9 +1,6 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRecoilValue } from 'recoil';
-
-import { Flex, useSelect } from 'hang-log-design-system';
+import { Flex } from 'hang-log-design-system';
 
 import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
 
@@ -13,34 +10,16 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useCommunityTripQuery } from '@hooks/api/useCommunityTripQuery';
-
-import { mediaQueryMobileState } from '@store/mediaQuery';
+import { useTripPage } from '@hooks/trip/useTripPage';
 
 const CommunityTripPage = () => {
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error('존재하지 않는 공유코드입니다.');
+  if (!tripId) throw new Error('존재하지 않는 여행입니다.');
 
   const { tripData } = useCommunityTripQuery(tripId);
 
-  const isMobile = useRecoilValue(mediaQueryMobileState);
-
-  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    tripData.dayLogs[0].id
-  );
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-
-  const places = useMemo(
-    () =>
-      selectedDayLog.items
-        .filter((item) => item.itemType)
-        .map((item) => ({
-          id: item.id,
-          name: item.title,
-          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-        })),
-    [selectedDayLog.items]
-  );
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
 
   return (
     <Flex>
@@ -54,17 +33,15 @@ const CommunityTripPage = () => {
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>
-      {!isMobile && (
-        <section css={mapContainerStyling}>
-          <GoogleMapWrapper>
-            <TripMap
-              places={places}
-              centerLat={tripData.cities[0].latitude}
-              centerLng={tripData.cities[0].longitude}
-            />
-          </GoogleMapWrapper>
-        </section>
-      )}
+      <section css={mapContainerStyling}>
+        <GoogleMapWrapper>
+          <TripMap
+            places={places}
+            centerLat={tripData.cities[0].latitude}
+            centerLng={tripData.cities[0].longitude}
+          />
+        </GoogleMapWrapper>
+      </section>
     </Flex>
   );
 };

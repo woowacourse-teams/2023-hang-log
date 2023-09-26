@@ -110,7 +110,7 @@ const AppRouter = () => {
           path: PATH.COMMUNITY_TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              {isMobile ? <Lazy.TripMobilePage isShared /> : <Lazy.CommunityTripPage />}
+              {isMobile ? <Lazy.TripMobilePage isShared isPublished /> : <Lazy.CommunityTripPage />}
             </Suspense>
           ),
         },
