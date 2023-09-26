@@ -165,4 +165,8 @@ public class Trip extends BaseEntity {
     public void changePublishedStatus(final Boolean isPublished) {
         this.publishedStatus = PublishedStatusType.mappingType(isPublished);
     }
+
+    public Boolean isWriter(final Long memberId) {
+        return this.member.getId().equals(memberId);
+    }
 }
