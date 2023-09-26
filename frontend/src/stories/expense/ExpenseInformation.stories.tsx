@@ -13,7 +13,7 @@ const meta = {
   },
   decorators: [
     (Story) => {
-      useExpenseQuery('1');
+      useExpenseQuery('1', { isShared: false, isPublished: false });
 
       return <Story />;
     },

@@ -103,7 +103,8 @@ const TripInformation = ({
               tripId={tripId}
               sharedCode={(tripData as TripData).sharedCode}
               isShared={isShared}
-              isPublished={(tripData as TripData).isPublished}
+              isPublished={isPublished}
+              publishState={(tripData as TripData).isPublished}
             />
           )}
         </Box>

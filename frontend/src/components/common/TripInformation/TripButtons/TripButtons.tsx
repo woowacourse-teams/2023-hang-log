@@ -25,6 +25,7 @@ interface TripButtonsProps {
   sharedCode: TripData['sharedCode'];
   isShared: boolean;
   isPublished?: boolean;
+  publishState: boolean;
 }
 
 export const TripButtons = ({
@@ -32,6 +33,7 @@ export const TripButtons = ({
   sharedCode,
   isShared,
   isPublished = false,
+  publishState,
 }: TripButtonsProps) => {
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
@@ -48,7 +50,7 @@ export const TripButtons = ({
 
   const goToExpensePage = () => {
     if (isPublished) {
-      navigate(PATH.COMMUNITY_TRIP(tripId));
+      navigate(PATH.COMMUNITY_EXPENSE(tripId));
       return;
     }
 
@@ -76,7 +78,7 @@ export const TripButtons = ({
       </Button>
       {!isShared && (
         <>
-          <TripShareButton tripId={tripId} sharedCode={sharedCode} isPublished={isPublished} />
+          <TripShareButton tripId={tripId} sharedCode={sharedCode} publishState={publishState} />
           <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
           <BinIcon css={[svgButtonStyling, binIconStyling]} onClick={openDeleteModal} />
           <Modal isOpen={isDeleteModalOpen} closeModal={closeDeleteModal}>
