@@ -14,6 +14,8 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     void deleteByMemberIdAndTripId(final Long memberId, final Long tripId);
 
+    Long countLikesByTripId(final Long tripId);
+    
     @Query("""
             SELECT l.tripId,
             COUNT(l.memberId) AS like_count,
