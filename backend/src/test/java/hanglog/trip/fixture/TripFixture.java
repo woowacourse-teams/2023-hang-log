@@ -8,6 +8,7 @@ import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_2;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_EXTRA;
 
 import hanglog.community.domain.type.PublishedStatusType;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public final class TripFixture {
             "",
             null,
             new ArrayList<>(List.of(LONDON_DAYLOG_1, LONDON_DAYLOG_2, LONDON_DAYLOG_EXTRA)),
+            SharedStatusType.UNSHARED,
             PublishedStatusType.UNPUBLISHED
     );
 
@@ -38,6 +40,7 @@ public final class TripFixture {
             "",
             null,
             List.of(EXPENSE_LONDON_DAYLOG, EXPENSE_JAPAN_DAYLOG),
+            SharedStatusType.UNSHARED,
             PublishedStatusType.UNPUBLISHED
     );
 }

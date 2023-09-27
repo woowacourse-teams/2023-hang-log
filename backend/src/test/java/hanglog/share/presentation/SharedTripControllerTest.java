@@ -7,7 +7,7 @@ import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.share.fixture.ShareFixture.BEIJING;
 import static hanglog.share.fixture.ShareFixture.CALIFORNIA;
 import static hanglog.share.fixture.ShareFixture.TOKYO;
-import static hanglog.share.fixture.ShareFixture.TRIP;
+import static hanglog.share.fixture.ShareFixture.TRIP_SHARE;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
@@ -82,7 +82,7 @@ class SharedTripControllerTest extends ControllerTest {
         when(sharedTripService.getTripId(anyString()))
                 .thenReturn(1L);
         when(sharedTripService.getSharedTripDetail(anyLong()))
-                .thenReturn(SharedTripDetailResponse.of(TRIP, List.of(CALIFORNIA, TOKYO, BEIJING)));
+                .thenReturn(SharedTripDetailResponse.of(TRIP_SHARE, List.of(CALIFORNIA, TOKYO, BEIJING)));
 
         // when
         mockMvc.perform(get("/shared-trips/{sharedCode}", "xxxxxx").contentType(APPLICATION_JSON))

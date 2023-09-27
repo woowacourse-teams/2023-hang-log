@@ -6,6 +6,7 @@ import static hanglog.expense.fixture.ExpenseFixture.USD_100_ACCOMMODATION_EXPEN
 import static hanglog.integration.IntegrationFixture.MEMBER;
 
 import hanglog.community.domain.type.PublishedStatusType;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
@@ -27,6 +28,7 @@ public class TripExpenseFixture {
             "",
             null,
             new ArrayList<>(),
+            SharedStatusType.UNSHARED,
             PublishedStatusType.UNPUBLISHED
     );
 

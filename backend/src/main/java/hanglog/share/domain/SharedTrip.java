@@ -1,20 +1,15 @@
 package hanglog.share.domain;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_SHARE_CODE_HASH;
-import static hanglog.share.domain.type.SharedStatusType.SHARED;
-import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
-import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
 import hanglog.global.exception.InvalidDomainException;
-import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.Trip;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
@@ -53,12 +48,8 @@ public class SharedTrip extends BaseEntity {
     @Column(nullable = false)
     private String sharedCode;
 
-    @Column(nullable = false)
-    @Enumerated(value = STRING)
-    private SharedStatusType sharedStatus;
-
     public static SharedTrip createdBy(final Trip trip) {
-        return new SharedTrip(null, trip, createCode(trip.getId()), SHARED);
+        return new SharedTrip(null, trip, createCode(trip.getId()));
     }
 
     private static String createCode(final Long tripId) {
@@ -78,11 +69,11 @@ public class SharedTrip extends BaseEntity {
                 .collect(Collectors.joining());
     }
 
-    public void updateSharedStatus(final Boolean sharedStatus) {
-        this.sharedStatus = SharedStatusType.mappingType(sharedStatus);
+    public void changeSharedStatus(final Boolean sharedStatus) {
+        this.trip.changeSharedStatus(sharedStatus);
     }
 
-    public boolean isUnShared() {
-        return sharedStatus == UNSHARED;
+    public Boolean isShared() {
+        return this.trip.isShared();
     }
 }

@@ -14,6 +14,7 @@ import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.BaseEntity;
 import hanglog.member.domain.Member;
 import hanglog.share.domain.SharedTrip;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -70,6 +71,10 @@ public class Trip extends BaseEntity {
     @Enumerated(value = STRING)
     private PublishedStatusType publishedStatus;
 
+    @Column(nullable = false)
+    @Enumerated(value = STRING)
+    private SharedStatusType sharedStatus;
+
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
     private List<DayLog> dayLogs = new ArrayList<>();
@@ -87,7 +92,8 @@ public class Trip extends BaseEntity {
             final String description,
             final SharedTrip sharedTrip,
             final List<DayLog> dayLogs,
-            final PublishedStatusType publishedStatusType
+            final SharedStatusType sharedStatus,
+            final PublishedStatusType publishedStatus
     ) {
         super(USABLE);
         this.id = id;
@@ -99,7 +105,8 @@ public class Trip extends BaseEntity {
         this.description = description;
         this.sharedTrip = sharedTrip;
         this.dayLogs = dayLogs;
-        this.publishedStatus = publishedStatusType;
+        this.sharedStatus = sharedStatus;
+        this.publishedStatus = publishedStatus;
     }
 
     public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
@@ -113,6 +120,7 @@ public class Trip extends BaseEntity {
                 "",
                 null,
                 new ArrayList<>(),
+                SharedStatusType.UNSHARED,
                 PublishedStatusType.UNPUBLISHED
         );
     }
@@ -136,10 +144,18 @@ public class Trip extends BaseEntity {
         if (Optional.ofNullable(sharedTrip).isEmpty()) {
             return Optional.empty();
         }
-        if (sharedTrip.isUnShared()) {
+        if (this.sharedStatus.equals(SharedStatusType.SHARED)) {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
+    }
+
+    public Boolean isShared() {
+        return this.sharedStatus.equals(SharedStatusType.SHARED);
+    }
+
+    public void changeSharedStatus(final Boolean isShared) {
+        this.sharedStatus = SharedStatusType.mappingType(isShared);
     }
 
     public Boolean isPublished() {

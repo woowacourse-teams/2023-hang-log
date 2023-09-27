@@ -35,7 +35,7 @@ public class SharedTripService {
         final SharedTrip sharedTrip = sharedTripRepository.findBySharedCode(sharedCode)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_SHARED_CODE));
 
-        if (sharedTrip.isUnShared()) {
+        if (!sharedTrip.isShared()) {
             throw new BadRequestException(INVALID_SHARE_CODE);
         }
 
@@ -65,7 +65,7 @@ public class SharedTripService {
         final SharedTrip sharedTrip = Optional.ofNullable(trip.getSharedTrip())
                 .orElseGet(() -> SharedTrip.createdBy(trip));
 
-        sharedTrip.updateSharedStatus(sharedTripStatusRequest.getSharedStatus());
+        sharedTrip.changeSharedStatus(sharedTripStatusRequest.getSharedStatus());
         sharedTripRepository.save(sharedTrip);
         return SharedTripCodeResponse.of(sharedTrip);
     }
