@@ -44,7 +44,7 @@ const TripsItem = ({
       css={boxStyling}
       tabIndex={index + 5}
       aria-label={`${index + 1}번째 trip, ${itemName}`}
-      onClick={() => navigate(PATH.TRIP(id))}
+      onClick={() => navigate(PATH.TRIP(String(id)))}
     >
       <img
         src={coverImage ?? DefaultThumbnail}

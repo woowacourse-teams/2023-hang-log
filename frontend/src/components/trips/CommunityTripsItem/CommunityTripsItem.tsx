@@ -99,7 +99,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
       )}
 
       <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
-      <Box onClick={() => navigate(PATH.TRIP(id))} css={informationStyling}>
+      <Box onClick={() => navigate(PATH.TRIP(String(id)))} css={informationStyling}>
         <Box>
           <Box css={badgeBoxStyling}>
             {cities.map((cityTag) => (
