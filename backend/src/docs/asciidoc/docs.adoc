@@ -220,7 +220,7 @@ include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
 
 ==== 응답
 include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
-include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]비
+include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]
 
 == 멤버 API
 
