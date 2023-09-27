@@ -144,13 +144,13 @@ public class Trip extends BaseEntity {
         if (Optional.ofNullable(sharedTrip).isEmpty()) {
             return Optional.empty();
         }
-        if (this.sharedStatus.equals(SharedStatusType.SHARED)) {
+        if (isShared()) {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
     }
 
-    public Boolean isShared() {
+    public boolean isShared() {
         return this.sharedStatus.equals(SharedStatusType.SHARED);
     }
 
@@ -158,7 +158,7 @@ public class Trip extends BaseEntity {
         this.sharedStatus = SharedStatusType.mappingType(isShared);
     }
 
-    public Boolean isPublished() {
+    public boolean isPublished() {
         return this.publishedStatus.equals(PublishedStatusType.PUBLISHED);
     }
 

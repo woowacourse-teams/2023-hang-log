@@ -73,7 +73,7 @@ public class SharedTrip extends BaseEntity {
         this.trip.changeSharedStatus(sharedStatus);
     }
 
-    public Boolean isShared() {
+    public boolean isShared() {
         return this.trip.isShared();
     }
 }
