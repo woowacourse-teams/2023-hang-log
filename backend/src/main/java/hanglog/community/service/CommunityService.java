@@ -67,10 +67,11 @@ public class CommunityService {
 
     private Long getLastPageIndex(final int pageSize) {
         final Long totalTripCount = tripRepository.countTripByPublishedStatus(PUBLISHED);
+        final Long lastPageIndex = totalTripCount / pageSize;
         if (totalTripCount % pageSize == 0) {
-            return totalTripCount / pageSize;
+            return lastPageIndex;
         }
-        return totalTripCount / pageSize + 1;
+        return lastPageIndex + 1;
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
@@ -90,7 +91,7 @@ public class CommunityService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
-                .orElseThrow()
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
         final TripInfo tripInfo = likeRepository.countByMemberIdAndTripIds(accessor.getMemberId(), tripId)
                 .orElseGet(BaseTripInfo::new);

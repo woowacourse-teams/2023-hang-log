@@ -47,8 +47,10 @@ public class CommunityController {
             @Auth final Accessor accessor,
             @PathVariable final Long tripId
     ) {
-        final CommunityTripDetailResponse communityTripDetailResponse = communityService.getTripDetail(accessor,
-                tripId);
+        final CommunityTripDetailResponse communityTripDetailResponse = communityService.getTripDetail(
+                accessor,
+                tripId
+        );
         return ResponseEntity.ok().body(communityTripDetailResponse);
     }
 
