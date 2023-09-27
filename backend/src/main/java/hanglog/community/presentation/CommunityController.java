@@ -4,14 +4,18 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import hanglog.auth.Auth;
 import hanglog.auth.domain.Accessor;
+import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
+import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.expense.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommunityController {
 
     private final CommunityService communityService;
+    private final ExpenseService expenseService;
 
     @GetMapping("/trips")
     public ResponseEntity<CommunityTripListResponse> getTrips(
@@ -35,5 +40,23 @@ public class CommunityController {
     public ResponseEntity<RecommendTripListResponse> getRecommendTrips(@Auth final Accessor accessor) {
         final RecommendTripListResponse tripResponses = communityService.getRecommendTrips(accessor);
         return ResponseEntity.ok().body(tripResponses);
+    }
+
+    @GetMapping("/trips/{tripId}")
+    public ResponseEntity<CommunityTripDetailResponse> getTrip(
+            @Auth final Accessor accessor,
+            @PathVariable final Long tripId
+    ) {
+        final CommunityTripDetailResponse communityTripDetailResponse = communityService.getTripDetail(
+                accessor,
+                tripId
+        );
+        return ResponseEntity.ok().body(communityTripDetailResponse);
+    }
+
+    @GetMapping("/trips/{tripId}/expense")
+    public ResponseEntity<TripExpenseResponse> getExpenses(@PathVariable final Long tripId) {
+        final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(tripExpenseResponse);
     }
 }

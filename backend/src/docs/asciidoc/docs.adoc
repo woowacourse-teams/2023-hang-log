@@ -360,3 +360,23 @@ include::{snippets}/like-controller-test/update-like-status/request-fields.adoc[
 
 ==== 응답
 include::{snippets}/like-controller-test/update-like-status/http-response.adoc[]
+
+=== 공개 단일 여행 조회 (GET /community/trips/:tripId)
+
+==== 요청
+include::{snippets}/community-controller-test/get-trip/http-request.adoc[]
+include::{snippets}/community-controller-test/get-trip/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-trip/http-response.adoc[]
+include::{snippets}/community-controller-test/get-trip/response-fields.adoc[]
+
+=== 공개 단일 여행 경비 조회 (GET /community/trips/:tripId/expense)
+
+==== 요청
+include::{snippets}/community-controller-test/get-expenses/http-request.adoc[]
+include::{snippets}/community-controller-test/get-expenses/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/community-controller-test/get-expenses/http-response.adoc[]
+include::{snippets}/community-controller-test/get-expenses/response-fields.adoc[]
