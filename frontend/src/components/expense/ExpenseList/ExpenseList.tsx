@@ -37,7 +37,7 @@ const ExpenseList = ({ items }: ExpenseListProps) => {
 
 export default ExpenseList;
 
-ExpenseList.Empty = ({ tripId }: { tripId: string }) => {
+ExpenseList.Empty = ({ tripId, isShared }: { tripId: string; isShared: boolean }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
@@ -48,10 +48,14 @@ ExpenseList.Empty = ({ tripId }: { tripId: string }) => {
   return (
     <Box styles={{ marginTop: Theme.spacer.spacing3 }}>
       <Heading size="xSmall">아직 추가된 비용 기록이 없습니다!</Heading>
-      <Text css={emptyTextStyling}>여행하면서 사용했던 경비 기록을 추가해 보세요.</Text>
-      <Button css={addItemButtonStyling} type="button" variant="primary" onClick={goToEditPage}>
-        여행 수정하기
-      </Button>
+      {!isShared && (
+        <>
+          <Text css={emptyTextStyling}>여행하면서 사용했던 경비 기록을 추가해 보세요.</Text>
+          <Button css={addItemButtonStyling} type="button" variant="primary" onClick={goToEditPage}>
+            여행 수정하기
+          </Button>
+        </>
+      )}
     </Box>
   );
 };

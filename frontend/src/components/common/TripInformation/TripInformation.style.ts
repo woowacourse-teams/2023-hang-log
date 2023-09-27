@@ -95,3 +95,10 @@ export const badgeWrapperStyling = css({
     width: 'calc(100vw - 232px)',
   },
 });
+
+export const writerImageStyling = css({
+  width: '32px',
+  height: '32px',
+
+  borderRadius: '50%',
+});

@@ -4,10 +4,11 @@ import type { TripFormData } from '@type/trip';
 
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
+import { communityTrip } from '@mocks/data/communityTrip';
+import { trips } from '@mocks/data/myTrips';
 import { trip } from '@mocks/data/trip';
-import { trips } from '@mocks/data/trips';
 
-export const tripsHandlers = [
+export const myTripsHandlers = [
   rest.get(`${END_POINTS.TRIPS}`, (_, res, ctx) => {
     return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trips));
   }),
@@ -51,5 +52,13 @@ export const tripsHandlers = [
 
   rest.get(`${END_POINTS.SHARED_TRIP(':code')}`, async (req, res, ctx) => {
     return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
+  }),
+
+  rest.patch(`${END_POINTS.TRIPS}/:tripId/publish`, async (req, res, ctx) => {
+    return res(ctx.status(HTTP_STATUS_CODE.SUCCESS));
+  }),
+
+  rest.get(`${END_POINTS.COMMUNITY_TRIP(':tripId')}`, async (req, res, ctx) => {
+    return res(ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(communityTrip));
   }),
 ];

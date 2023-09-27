@@ -4,7 +4,7 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 import { sortByStartDate } from '@utils/sort';
 
-import { trips } from '@mocks/data/trips';
+import { trips } from '@mocks/data/myTrips';
 
 const meta = {
   title: 'trips/TripsItemList',

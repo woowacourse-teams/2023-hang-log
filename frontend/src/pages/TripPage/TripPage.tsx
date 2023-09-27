@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Flex, useSelect } from 'hang-log-design-system';
+import { Flex } from 'hang-log-design-system';
 
 import { containerStyling, mapContainerStyling } from '@pages/TripPage/TripPage.style';
 
@@ -11,6 +10,7 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
+import { useTripPage } from '@hooks/trip/useTripPage';
 
 const TripPage = () => {
   const { tripId } = useParams();
@@ -19,22 +19,7 @@ const TripPage = () => {
 
   const { tripData } = useTripQuery(tripId);
 
-  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    tripData.dayLogs[0].id
-  );
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-
-  const places = useMemo(
-    () =>
-      selectedDayLog.items
-        .filter((item) => item.itemType)
-        .map((item) => ({
-          id: item.id,
-          name: item.title,
-          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-        })),
-    [selectedDayLog.items]
-  );
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
 
   return (
     <Flex>

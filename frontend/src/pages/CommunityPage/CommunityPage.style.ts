@@ -2,6 +2,16 @@ import { css } from '@emotion/react';
 
 import { Theme } from 'hang-log-design-system';
 
+export interface subTitleStylingProps {
+  topPadding: number;
+  bottomPadding: number;
+}
+
+export interface subTitleSkeletonStylingProps {
+  topMargin: number;
+  bottomMargin: number;
+}
+
 export const containerStyling = css({
   margin: `0 ${Theme.spacer.spacing5}`,
   marginTop: Theme.spacer.spacing6,
@@ -53,5 +63,29 @@ export const imageStyling = css({
 
   '@media screen and (max-width: 600px)': {
     maxWidth: 'calc(100vw - 48px)',
+  },
+});
+
+export const subTitleStyling = ({ topPadding = 0, bottomPadding = 0 }: subTitleStylingProps) => {
+  return css({
+    paddingTop: `${topPadding}px`,
+    paddingLeft: '50px',
+    paddingBottom: `${bottomPadding}px`,
+
+    fontSize: Theme.heading.small.fontSize,
+    fontWeight: 600,
+  });
+};
+
+export const pagenationSkeletonStyling = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: 0,
+  width: '100%',
+  height: Theme.spacer.spacing6,
+
+  '& > div': {
+    width: '300px',
   },
 });

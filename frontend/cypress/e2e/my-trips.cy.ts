@@ -5,7 +5,7 @@ import { ACCESS_TOKEN_KEY } from '@constants/api';
 
 import { accessToken } from '@mocks/data/member';
 
-const TEST_URL = 'http://localhost:3000';
+const TEST_URL = 'http://localhost:3000/my-trips';
 
 describe('여행 목록 페이지', () => {
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('여행 목록 페이지', () => {
   it('여행 목록 페이지에 처음 방문 시 여행 목록 데이터가 렌더링되기 전에 skeleton을 볼 수 있다.', () => {
     cy.clock();
 
-    cy.visit(`${TEST_URL}/trip/1/edit`);
+    cy.visit(`http://localhost:3000/trip/1/edit`);
 
     cy.tick(3000);
 

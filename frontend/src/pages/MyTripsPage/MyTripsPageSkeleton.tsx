@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { FloatingButton } from 'hang-log-design-system';
 
-import { addButtonStyling } from '@pages/TripsPage/TripsPage.style';
+import { addButtonStyling } from '@pages/MyTripsPage/MyTripsPage.style';
 
 import TripsHeader from '@components/trips/TripsHeader/TripsHeader';
 import TripsHeaderSkeleton from '@components/trips/TripsHeader/TripsHeaderSkeleton';
