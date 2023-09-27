@@ -53,7 +53,7 @@ public class CommunityService {
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripIds(accessor.getMemberId(), trip.getId())
+        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), trip.getId())
                 .orElseGet(BaseTripInfo::new);
 
         return CommunityTripResponse.of(trip, cities, tripInfo.getIsLike(), tripInfo.getLikeCount());
@@ -93,7 +93,7 @@ public class CommunityService {
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
-        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripIds(accessor.getMemberId(), tripId)
+        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), tripId)
                 .orElseGet(BaseTripInfo::new);
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
         return CommunityTripDetailResponse.of(
