@@ -144,7 +144,7 @@ public class Trip extends BaseEntity {
         if (Optional.ofNullable(sharedTrip).isEmpty()) {
             return Optional.empty();
         }
-        if (isShared()) {
+        if (!isShared()) {
             return Optional.empty();
         }
         return Optional.of(sharedTrip.getSharedCode());
