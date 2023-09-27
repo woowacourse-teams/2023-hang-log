@@ -1,11 +1,10 @@
-import { getSharedExpense } from '@/api/expense/getSharedExpense';
-
 import { useQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
 
 import { getCommunityTripExpense } from '@api/expense/getCommunityTripExpense';
 import { getExpense } from '@api/expense/getExpense';
+import { getSharedExpense } from '@api/expense/getSharedExpense';
 
 import type { ExpenseData } from '@type/expense';
 

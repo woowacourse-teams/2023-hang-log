@@ -1,5 +1,3 @@
-import type { CommunityTripData, TripData } from '@/types/trip';
-
 import { memo } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -25,6 +23,8 @@ import { useTrip } from '@hooks/trip/useTrip';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
+
+import type { CommunityTripData, TripData } from '@type/trip';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 import LikeIcon from '@assets/svg/click-filled-like.svg';

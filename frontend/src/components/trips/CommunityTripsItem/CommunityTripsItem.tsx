@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useRecoilValue } from 'recoil';
-
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
 
+import LikeButton from '@components/common/LikeButton/LikeButton';
 import {
   badgeBoxStyling,
   boxStyling,
-  clickableLikeStyling,
   communityItemInfoStyling,
   durationAndDescriptionStyling,
   imageStyling,
@@ -17,23 +15,17 @@ import {
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
-import { useLikeMutation } from '@hooks/api/useLikeMutation';
-
-import { isLoggedInState } from '@store/auth';
-
 import { formatDate } from '@utils/formatter';
 
-import type { CommunityTripData } from '@type/trips';
+import type { CommunityTripsItemData } from '@type/trips';
 
 import { PATH } from '@constants/path';
 
 import DefaultThumbnail from '@assets/png/trip_default-thumbnail.png';
-import ClickEmptyLike from '@assets/svg/click-empty-like.svg';
-import ClickFilledLike from '@assets/svg/click-filled-like.svg';
 import EmptyLike from '@assets/svg/empty-like.svg';
 
 interface CommunityTripsItemProps {
-  trip: CommunityTripData;
+  trip: CommunityTripsItemData;
   index: number;
 }
 
@@ -50,28 +42,16 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
     description,
     authorNickname,
     isLike,
-    likeCount,
+    likeCount: initialLikeCount,
   } = trip;
 
   const coverImage = imageUrl;
   const duration = `${formatDate(startDate)} - ${formatDate(endDate)}`;
 
-  const likeMutation = useLikeMutation();
+  const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
 
-  const isLoggedIn = useRecoilValue(isLoggedInState);
-
-  const [isLikeChecked, setisLikeChecked] = useState<boolean>(isLike);
-
-  const handleLikeCheck = (isLike: boolean) => {
-    setisLikeChecked(isLike);
-    likeMutation.mutate(
-      { id, isLike, isLoggedIn },
-      {
-        onError: () => {
-          setisLikeChecked(!isLike);
-        },
-      }
-    );
+  const handleLikeCount = (count: number) => {
+    setLikeCount(count);
   };
 
   return (
@@ -82,24 +62,14 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
       tabIndex={index + 5}
       aria-label={`${index + 1}번째 trip, ${title}`}
     >
-      {isLikeChecked ? (
-        <ClickFilledLike
-          css={clickableLikeStyling}
-          onClick={() => {
-            handleLikeCheck(false);
-          }}
-        />
-      ) : (
-        <ClickEmptyLike
-          css={clickableLikeStyling}
-          onClick={() => {
-            handleLikeCheck(true);
-          }}
-        />
-      )}
-
+      <LikeButton
+        initialState={isLike}
+        tripId={String(id)}
+        handleLikeCount={handleLikeCount}
+        likeCount={likeCount}
+      />
       <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
-      <Box onClick={() => navigate(PATH.TRIP(String(id)))} css={informationStyling}>
+      <Box onClick={() => navigate(PATH.COMMUNITY_TRIP(String(id)))} css={informationStyling}>
         <Box>
           <Box css={badgeBoxStyling}>
             {cities.map((cityTag) => (

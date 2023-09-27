@@ -18,7 +18,7 @@ const CommunityHeader = () => {
       }}
     >
       <Heading css={headingStyling} size="large">
-        나만의 여행 기록, <span css={headingEmphasisStyling}>행록</span>
+        우리의 여행 기록, <span css={headingEmphasisStyling}>행록</span>
       </Heading>
       <CommunityHeaderImage css={imageStyling} />
     </Flex>

@@ -23,7 +23,7 @@ export const END_POINTS = {
   MY_PAGE: '/mypage',
   ACCOUNT: '/account',
   EXPENSE_CATEGORY: '/categories',
-  LIKE: (id: number) => `/trips/${id}/like`,
+  LIKE: (tripId: string) => `/trips/${tripId}/like`,
   COMMUNITY_TRIPS: (page: number, size: number) => `/community/trips?page=${page}&size=${size}`,
   EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,
   SHARE: (tripId: string) => `/trips/${tripId}/share`,

@@ -1,10 +1,9 @@
-import { getCommunityTrip } from '@/api/trip/getCommunityTrip';
-import { getSharedTrip } from '@/api/trip/getSharedTrip';
-
 import { useQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
 
+import { getCommunityTrip } from '@api/trip/getCommunityTrip';
+import { getSharedTrip } from '@api/trip/getSharedTrip';
 import { getTrip } from '@api/trip/getTrip';
 
 import type { CommunityTripData, TripData } from '@type/trip';

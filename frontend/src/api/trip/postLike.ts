@@ -4,12 +4,12 @@ import { axiosInstance } from '@api/axiosInstance';
 import { END_POINTS, ERROR_CODE, HTTP_STATUS_CODE } from '@constants/api';
 
 interface postLikeParams {
-  id: number;
+  tripId: string;
   isLike: boolean;
   isLoggedIn: boolean;
 }
 
-export const postLike = ({ id, isLike, isLoggedIn }: postLikeParams) => {
+export const postLike = ({ tripId, isLike, isLoggedIn }: postLikeParams) => {
   if (!isLoggedIn)
     throw new HTTPError(
       HTTP_STATUS_CODE.UNAUTHORIZED,
@@ -17,5 +17,5 @@ export const postLike = ({ id, isLike, isLoggedIn }: postLikeParams) => {
       ERROR_CODE.UNAUTHORIZED
     );
 
-  return axiosInstance.post(END_POINTS.LIKE(id), { isLike });
+  return axiosInstance.post(END_POINTS.LIKE(tripId), { isLike });
 };

@@ -23,17 +23,17 @@ export interface NewTripData {
 
 export interface RecommendedTripsData {
   title: string;
-  trips: CommunityTripData[];
+  trips: CommunityTripsItemData[];
 }
 
 export interface CommunityTripsData {
   lastPageIndex: number;
-  trips: CommunityTripData[];
+  trips: CommunityTripsItemData[];
 }
 
-export type CommunityTripData = TripsData & {
+export interface CommunityTripsItemData extends TripsData {
   authorNickname: string;
   description: string;
   likeCount: number;
   isLike: boolean;
-};
+}
