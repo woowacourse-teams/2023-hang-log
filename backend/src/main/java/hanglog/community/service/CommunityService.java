@@ -6,8 +6,6 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
-import hanglog.community.domain.BaseTripInfo;
-import hanglog.community.domain.TripInfo;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
@@ -53,10 +51,12 @@ public class CommunityService {
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), trip.getId())
-                .orElseGet(BaseTripInfo::new);
-
-        return CommunityTripResponse.of(trip, cities, tripInfo.getIsLike(), tripInfo.getLikeCount());
+        final Long likeCount = likeRepository.countLikesByTripId(trip.getId());
+        if (accessor.isMember()) {
+            final boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), trip.getId());
+            return CommunityTripResponse.of(trip, cities, isLike, likeCount);
+        }
+        return CommunityTripResponse.of(trip, cities, false, likeCount);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
@@ -93,14 +93,25 @@ public class CommunityService {
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
-        final TripInfo tripInfo = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), tripId)
-                .orElseGet(BaseTripInfo::new);
+        final Long likeCount = likeRepository.countLikesByTripId(tripId);
+        if (!accessor.isMember()) {
+            return CommunityTripDetailResponse.of(
+                    trip,
+                    cities,
+                    false,
+                    false,
+                    likeCount,
+                    publishedDate
+            );
+        }
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
+        final Boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), tripId);
         return CommunityTripDetailResponse.of(
                 trip,
                 cities,
                 isWriter,
-                tripInfo,
+                isLike,
+                likeCount,
                 publishedDate
         );
     }

@@ -5,7 +5,6 @@ import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityWithPositionResponse;
-import hanglog.community.domain.TripInfo;
 import hanglog.share.dto.response.WriterResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.dto.response.DayLogResponse;
@@ -37,7 +36,8 @@ public class CommunityTripDetailResponse {
             final Trip trip,
             final List<City> cities,
             final Boolean isWriter,
-            final TripInfo tripInfo,
+            final Boolean isLike,
+            final Long likeCount,
             final LocalDateTime publishedDate
     ) {
         final List<DayLogResponse> dayLogResponses = trip.getDayLogs().stream()
@@ -57,8 +57,8 @@ public class CommunityTripDetailResponse {
                 trip.getEndDate(),
                 trip.getDescription(),
                 convertNameToUrl(trip.getImageName()),
-                tripInfo.getIsLike(),
-                tripInfo.getLikeCount(),
+                isLike,
+                likeCount,
                 publishedDate,
                 cityWithPositionResponses,
                 dayLogResponses
