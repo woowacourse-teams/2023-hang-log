@@ -14,11 +14,13 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     Long countLikesByTripId(final Long tripId);
 
-    @Query("SELECT l.tripId, COUNT(l) AS row_count, " +
-            "CASE WHEN MAX(CASE WHEN l.memberId = :memberId THEN 1 ELSE 0 END) = 1 THEN TRUE ELSE FALSE END AS" +
-            " member_likes_trip " +
-            "FROM Likes l " +
-            "WHERE l.tripId IN :tripIds " +
-            "GROUP BY l.tripId")
+    @Query("""
+            SELECT l.tripId,
+            COUNT(l.memberId) AS like_count,
+            EXISTS(select 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId) AS is_like
+            FROM Likes l
+            WHERE l.tripId in :tripIds
+            GROUP BY l.tripId
+            """)
     List<Object[]> countByMemberIdAndTripIds(@Param("memberId") Long memberId, @Param("tripIds") List<Long> tripIds);
 }
