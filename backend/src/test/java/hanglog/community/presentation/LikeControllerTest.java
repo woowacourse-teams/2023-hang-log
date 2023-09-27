@@ -2,7 +2,6 @@ package hanglog.community.presentation;
 
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -19,7 +18,6 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.community.dto.request.LikeRequest;
 import hanglog.community.service.LikeService;
 import hanglog.global.ControllerTest;
-import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
