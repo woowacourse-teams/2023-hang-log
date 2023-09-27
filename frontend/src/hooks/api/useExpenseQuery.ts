@@ -12,17 +12,19 @@ export const useExpenseQuery = (
   tripId: string,
   { isShared, isPublished }: { isShared: boolean; isPublished: boolean }
 ) => {
-  let queryFn = () => getExpense(tripId);
+  const queryFn = {
+    expense: () => getExpense(tripId),
+  };
 
   if (isPublished) {
-    queryFn = () => getCommunityTripExpense(tripId);
+    queryFn.expense = () => getCommunityTripExpense(tripId);
   }
 
   if (isShared && !isPublished) {
-    queryFn = () => getSharedExpense(tripId);
+    queryFn.expense = () => getSharedExpense(tripId);
   }
 
-  const { data } = useQuery<ExpenseData, AxiosError>(['expense', tripId], queryFn);
+  const { data } = useQuery<ExpenseData, AxiosError>(['expense', tripId], queryFn.expense);
 
   return { expenseData: data! };
 };

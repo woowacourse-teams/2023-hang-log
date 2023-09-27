@@ -15,17 +15,22 @@ export const useTripQuery = (
   isShared: boolean = false,
   isPublished: boolean = false
 ) => {
-  let queryFn: QueryFnType = () => getTrip(tripId);
+  const queryFn: { trip: QueryFnType } = {
+    trip: () => getTrip(tripId),
+  };
 
   if (isPublished) {
-    queryFn = () => getCommunityTrip(tripId);
+    queryFn.trip = () => getCommunityTrip(tripId);
   }
 
   if (isShared && !isPublished) {
-    queryFn = () => getSharedTrip(tripId);
+    queryFn.trip = () => getSharedTrip(tripId);
   }
 
-  const { data } = useQuery<TripData | CommunityTripData, AxiosError>(['trip', tripId], queryFn);
+  const { data } = useQuery<TripData | CommunityTripData, AxiosError>(
+    ['trip', tripId],
+    queryFn.trip
+  );
 
   return { tripData: data! };
 };

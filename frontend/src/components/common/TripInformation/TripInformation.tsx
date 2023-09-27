@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
 import { Badge, Box, Flex, Heading, Text, Theme, useOverlay } from 'hang-log-design-system';
 
+import LikeButton from '@components/common/LikeButton/LikeButton';
 import TripButtons from '@components/common/TripInformation/TripButtons/TripButtons';
 import TripEditButtons from '@components/common/TripInformation/TripEditButtons/TripEditButtons';
 import {
@@ -27,7 +28,6 @@ import { formatDate } from '@utils/formatter';
 import type { CommunityTripData, TripData } from '@type/trip';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
-import LikeIcon from '@assets/svg/click-filled-like.svg';
 
 interface TripInformationProps {
   tripId: string;
@@ -47,6 +47,12 @@ const TripInformation = ({
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
   const { tripData } = useTrip(tripId);
+
+  const [likeCount, setLikeCount] = useState((tripData as CommunityTripData).likeCount);
+
+  const handleLikeCount = (likeCount: number) => {
+    setLikeCount(likeCount);
+  };
 
   return (
     <>
@@ -89,8 +95,13 @@ const TripInformation = ({
                 <Text size="small">{(tripData as CommunityTripData).writer.nickname}</Text>
               </Flex>
               <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
-                <LikeIcon />
-                {(tripData as CommunityTripData).likeCount}
+                <LikeButton
+                  likeCount={likeCount}
+                  initialState={(tripData as CommunityTripData).isLike}
+                  handleLikeCount={handleLikeCount}
+                  tripId={tripId}
+                />
+                {likeCount}
               </Flex>
             </Flex>
           )}
