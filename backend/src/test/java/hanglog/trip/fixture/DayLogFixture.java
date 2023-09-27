@@ -6,6 +6,7 @@ import static hanglog.trip.fixture.ItemFixture.JAPAN_HOTEL;
 import static hanglog.trip.fixture.ItemFixture.LONDON_EYE_ITEM;
 
 import hanglog.community.domain.type.PublishedStatusType;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public final class DayLogFixture {
             "",
             null,
             new ArrayList<>(),
+            SharedStatusType.UNSHARED,
             PublishedStatusType.UNPUBLISHED
     );
 
