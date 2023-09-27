@@ -3,10 +3,10 @@ package hanglog.community.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +21,10 @@ public class Likes {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "trip_id", nullable = false, unique = true)
+    @Column(nullable = false)
     private Long tripId;
 
-    @JoinColumn(name = "member_id", nullable = false, unique = true)
+    @Column(nullable = false)
     private Long memberId;
 
     public Likes(final Long tripId, final Long memberId) {
