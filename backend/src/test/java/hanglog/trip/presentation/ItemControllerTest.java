@@ -120,7 +120,7 @@ class ItemControllerTest extends ControllerTest {
         // when
         final ResultActions resultActions = performPostRequest(1, itemRequest);
 
-        // when & then
+        // then
         resultActions.andExpect(status().isCreated())
                 .andExpect(header().string(LOCATION, "/trips/1/items/1"))
                 .andDo(
