@@ -356,6 +356,7 @@ include::{snippets}/community-controller-test/get-recommend-trips/response-field
 ==== 요청
 include::{snippets}/like-controller-test/update-like-status/http-request.adoc[]
 include::{snippets}/like-controller-test/update-like-status/path-parameters.adoc[]
+include::{snippets}/like-controller-test/update-like-status/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/like-controller-test/update-like-status/http-response.adoc[]

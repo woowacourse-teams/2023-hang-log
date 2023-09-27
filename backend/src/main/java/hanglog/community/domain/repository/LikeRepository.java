@@ -17,7 +17,7 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     @Query("""
             SELECT l.tripId,
             COUNT(l.memberId) AS like_count,
-            EXISTS(select 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId) AS is_like
+            EXISTS(SELECT 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId) AS is_like
             FROM Likes l
             WHERE l.tripId in :tripIds
             GROUP BY l.tripId
