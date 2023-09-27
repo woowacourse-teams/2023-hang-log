@@ -100,6 +100,7 @@ const TripInformation = ({
                   initialState={(tripData as CommunityTripData).isLike}
                   handleLikeCount={handleLikeCount}
                   tripId={tripId}
+                  css={{ height: '20px', cursor: 'pointer' }}
                 />
                 {likeCount}
               </Flex>

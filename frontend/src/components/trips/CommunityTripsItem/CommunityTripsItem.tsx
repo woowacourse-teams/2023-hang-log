@@ -7,6 +7,7 @@ import LikeButton from '@components/common/LikeButton/LikeButton';
 import {
   badgeBoxStyling,
   boxStyling,
+  clickableLikeStyling,
   communityItemInfoStyling,
   durationAndDescriptionStyling,
   imageStyling,
@@ -67,6 +68,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
         tripId={String(id)}
         handleLikeCount={handleLikeCount}
         likeCount={likeCount}
+        css={clickableLikeStyling}
       />
       <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
       <Box onClick={() => navigate(PATH.COMMUNITY_TRIP(String(id)))} css={informationStyling}>
