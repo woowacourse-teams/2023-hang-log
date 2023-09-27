@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
+import hanglog.community.domain.BaseTripInfo;
 import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
@@ -308,8 +309,7 @@ class CommunityControllerTest extends ControllerTest {
                         LONDON_TRIP,
                         CITIES,
                         true,
-                        true,
-                        1L,
+                        new BaseTripInfo(),
                         LocalDateTime.of(2023, 1, 1, 1, 1)
                 ));
 
@@ -437,8 +437,7 @@ class CommunityControllerTest extends ControllerTest {
                         LONDON_TRIP,
                         CITIES,
                         true,
-                        true,
-                        1L,
+                        new BaseTripInfo(),
                         LocalDateTime.of(2023, 1, 1, 1, 1)
                 ));
     }

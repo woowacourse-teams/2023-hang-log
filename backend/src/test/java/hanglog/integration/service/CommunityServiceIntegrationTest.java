@@ -38,7 +38,7 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
 
     @BeforeEach
     void setTrips() {
-        for (long i = 1; i < 20; i++) {
+        for (long i = 1; i < 21; i++) {
             tripService.save(1L,
                     new TripCreateRequest(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 2), List.of(1L))
             );
@@ -59,7 +59,7 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
                 softly -> {
                     softly.assertThat(tripResponses).hasSize(10);
                     softly.assertThat(response.getLastPageIndex()).isEqualTo(2L);
-                    softly.assertThat(tripResponses.get(9).getId()).isEqualTo(10L);
+                    softly.assertThat(tripResponses.get(9).getId()).isEqualTo(11L);
                 }
         );
     }
