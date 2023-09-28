@@ -57,19 +57,20 @@ public class TripService {
     public Long save(final Long memberId, final TripCreateRequest tripCreateRequest) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
-        final List<City> cites = tripCreateRequest.getCityIds().stream()
-                .map(cityId -> cityRepository.findById(cityId)
-                        .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
-                .toList();
+
+        final List<City> cities = cityRepository.findCitiesByIds(tripCreateRequest.getCityIds());
+        if (cities.size() != tripCreateRequest.getCityIds().size()) {
+            throw new BadRequestException(NOT_FOUND_MEMBER_ID);
+        }
 
         final Trip newTrip = Trip.of(
                 member,
-                generateInitialTitle(cites),
+                generateInitialTitle(cities),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
         final Trip trip = tripRepository.save(newTrip);
-        customTripCityRepository.saveAll(cites, trip.getId());
+        customTripCityRepository.saveAll(cities, trip.getId());
         saveDayLogs(trip);
         return trip.getId();
     }
