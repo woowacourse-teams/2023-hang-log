@@ -15,6 +15,6 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void afterRequest(@NonNull final HttpServletRequest request, @NonNull final String message) {
-        logger.info(message);
+//        logger.info(message);
     }
 }
