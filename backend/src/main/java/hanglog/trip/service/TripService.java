@@ -17,6 +17,7 @@ import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
+import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -45,6 +46,7 @@ public class TripService {
     private final MemberRepository memberRepository;
     private final PublishedTripRepository publishedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
+    private final CustomTripCityRepository customTripCityRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -66,17 +68,10 @@ public class TripService {
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
-        saveTripCities(cites, newTrip);
         final Trip trip = tripRepository.save(newTrip);
+        customTripCityRepository.saveAll(cites, trip.getId());
         saveDayLogs(trip);
         return trip.getId();
-    }
-
-    private void saveTripCities(final List<City> cites, final Trip trip) {
-        final List<TripCity> tripCities = cites.stream()
-                .map(city -> new TripCity(trip, city))
-                .toList();
-        tripCityRepository.saveAll(tripCities);
     }
 
     private void saveDayLogs(final Trip savedTrip) {
@@ -123,16 +118,16 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        updateTripCities(tripId, trip, cities);
+        updateTripCities(tripId, cities);
         updateDayLog(updateRequest, trip);
         trip.update(updateRequest);
         tripRepository.save(trip);
     }
 
-    private void updateTripCities(final Long tripId, final Trip trip, final List<City> cities) {
+    private void updateTripCities(final Long tripId, final List<City> cities) {
         // TODO: 전체 삭제 후 지우는 로직 말고 다른 방법으로 리팩토링 필요
         tripCityRepository.deleteAllByTripId(tripId);
-        saveTripCities(cities, trip);
+        customTripCityRepository.saveAll(cities, tripId);
     }
 
     private void updateDayLog(final TripUpdateRequest updateRequest, final Trip trip) {

@@ -18,7 +18,7 @@ public class CustomDayLogRepositoryImpl implements CustomDayLogRepository {
     public void saveAll(final List<DayLog> dayLogs) {
         final String sql = """
                     INSERT INTO day_log (created_at, modified_at, ordinal, status, title, trip_id) 
-                    VALUES (:createdAt, :modifiedAt, :ordinal, :status, :title, :tripId);
+                    VALUES (:createdAt, :modifiedAt, :ordinal, :status, :title, :tripId)
                 """;
         namedParameterJdbcTemplate.batchUpdate(sql, getDayLogToSqlParameterSources(dayLogs));
     }
