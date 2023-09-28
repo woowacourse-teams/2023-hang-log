@@ -4,9 +4,9 @@ import type { CommunityTripData } from '@type/trip';
 
 import { END_POINTS } from '@constants/api';
 
-export const getCommunityTrip = async (tripId: string) => {
+export const getCommunityTrip = async (tripId: string, isLoggedIn: boolean) => {
   const { data } = await axiosInstance.get<CommunityTripData>(END_POINTS.COMMUNITY_TRIP(tripId), {
-    useAuth: false,
+    useAuth: isLoggedIn,
   });
 
   return data;
