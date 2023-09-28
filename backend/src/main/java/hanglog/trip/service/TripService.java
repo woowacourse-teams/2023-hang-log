@@ -16,6 +16,7 @@ import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -43,6 +44,7 @@ public class TripService {
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
     private final PublishedTripRepository publishedTripRepository;
+    private final CustomDayLogRepository customDayLogRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -65,8 +67,8 @@ public class TripService {
                 tripCreateRequest.getEndDate()
         );
         saveTripCities(cites, newTrip);
-        saveDayLogs(newTrip);
         final Trip trip = tripRepository.save(newTrip);
+        saveDayLogs(trip);
         return trip.getId();
     }
 
@@ -85,7 +87,7 @@ public class TripService {
         final List<DayLog> dayLogs = IntStream.rangeClosed(1, days + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
-        savedTrip.getDayLogs().addAll(dayLogs);
+        customDayLogRepository.saveAll(dayLogs);
     }
 
     public List<TripResponse> getAllTrips(final Long memberId) {
