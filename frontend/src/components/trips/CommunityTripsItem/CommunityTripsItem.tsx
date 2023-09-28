@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Badge, Box, Flex, Text } from 'hang-log-design-system';
+import { Badge, Box, Flex, Text, Theme } from 'hang-log-design-system';
 
 import LikeButton from '@components/common/LikeButton/LikeButton';
+import { writerImageStyling } from '@components/common/TripInformation/TripInformation.style';
 import {
   badgeBoxStyling,
   boxStyling,
@@ -41,7 +42,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
     startDate,
     endDate,
     description,
-    authorNickname,
+    writer,
     isLike,
     likeCount: initialLikeCount,
   } = trip;
@@ -89,7 +90,10 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
           </Text>
         </Box>
         <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between' }}>
-          <Box>{authorNickname}</Box>
+          <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
+            <img alt="작성자 이미지" src={writer.imageUrl} css={writerImageStyling} />
+            <Text size="small">{writer.nickname}</Text>
+          </Flex>
           <Box css={likeCountBoxStyling}>
             <EmptyLike />
             {likeCount}
