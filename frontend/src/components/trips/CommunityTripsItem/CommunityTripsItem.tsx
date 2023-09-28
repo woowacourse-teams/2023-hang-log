@@ -63,6 +63,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
       css={boxStyling}
       tabIndex={index + 5}
       aria-label={`${index + 1}번째 trip, ${title}`}
+      onClick={() => navigate(PATH.COMMUNITY_TRIP(String(id)))}
     >
       <LikeButton
         initialState={isLike}
@@ -72,7 +73,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
         css={clickableLikeStyling}
       />
       <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
-      <Box onClick={() => navigate(PATH.COMMUNITY_TRIP(String(id)))} css={informationStyling}>
+      <Box css={informationStyling}>
         <Box>
           <Box css={badgeBoxStyling}>
             {cities.map((cityTag) => (
