@@ -91,12 +91,12 @@ public class TripExpenseFixture {
     private static void addDayLogsToTrip(final Trip trip, final List<DayLog> dayLogs) {
         dayLogs.stream()
                 .filter(dayLog -> !trip.getDayLogs().contains(dayLog))
-                .forEachOrdered(dayLog -> trip.getDayLogs().add(dayLog));
+                .forEachOrdered(trip::addDayLog);
     }
 
     private static void addItemsToDayLog(final DayLog dayLog, final List<Item> items) {
         items.stream()
                 .filter(item -> !dayLog.getItems().contains(item))
-                .forEachOrdered(item -> dayLog.getItems().add(item));
+                .forEachOrdered(dayLog::addItem);
     }
 }

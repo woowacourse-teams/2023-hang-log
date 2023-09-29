@@ -172,6 +172,10 @@ public class Trip extends BaseEntity {
         return this.member.getId().equals(memberId);
     }
 
+    public void addDayLog(final DayLog dayLog) {
+        dayLogs.add(dayLog);
+    }
+
     public List<DayLog> getDayLogs() {
         return new ArrayList<>(dayLogs);
     }

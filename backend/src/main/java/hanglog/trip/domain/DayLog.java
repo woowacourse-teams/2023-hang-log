@@ -86,6 +86,10 @@ public class DayLog extends BaseEntity {
         return startDate.plusDays((long) ordinal - DEFAULT_DAY);
     }
 
+    public void addItem(final Item item) {
+        items.add(item);
+    }
+
     public List<Item> getItems() {
         return new ArrayList<>(items);
     }
