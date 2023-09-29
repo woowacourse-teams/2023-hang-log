@@ -1,6 +1,7 @@
 package hanglog.expense.dto.response;
 
 
+import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityResponse;
 import hanglog.currency.domain.Currency;
 import hanglog.expense.domain.Amount;
@@ -38,6 +39,39 @@ public class TripExpenseResponse {
     ) {
         final List<CityResponse> cityExpenseResponses = tripCities.stream()
                 .map(tripCity -> CityResponse.of(tripCity.getCity()))
+                .toList();
+
+        final List<CategoryExpenseResponse> categoryExpenseResponses = categoryExpenses.stream()
+                .map(CategoryExpenseResponse::of)
+                .toList();
+
+        final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogExpenses.stream()
+                .map(DayLogExpenseResponse::of)
+                .toList();
+
+        return new TripExpenseResponse(
+                trip.getId(),
+                trip.getTitle(),
+                trip.getStartDate(),
+                trip.getEndDate(),
+                cityExpenseResponses,
+                totalAmount.getValue(),
+                categoryExpenseResponses,
+                ExchangeRateResponse.of(currency),
+                dayLogExpenseResponses
+        );
+    }
+
+    public static TripExpenseResponse of2(
+            final Trip trip,
+            final Amount totalAmount,
+            final List<City> cities,
+            final List<CategoryExpense> categoryExpenses,
+            final Currency currency,
+            final List<DayLogExpense> dayLogExpenses
+    ) {
+        final List<CityResponse> cityExpenseResponses = cities.stream()
+                .map(CityResponse::of)
                 .toList();
 
         final List<CategoryExpenseResponse> categoryExpenseResponses = categoryExpenses.stream()
