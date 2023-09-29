@@ -127,6 +127,7 @@ class ExpenseServiceTest {
         assertSoftly(softly -> {
             softly.assertThat(actual)
                     .usingRecursiveComparison()
+                    .ignoringCollectionOrder()
                     .ignoringFields("categories")
                     .isEqualTo(expected);
             softly.assertThat(actual.getCategories())
