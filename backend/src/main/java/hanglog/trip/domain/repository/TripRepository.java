@@ -35,4 +35,18 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     void deleteAllByMemberId(final Long memberId);
 
+    @Query("""
+            SELECT trip
+            FROM Trip trip
+            LEFT JOIN FETCH trip.sharedTrip sharedTrip
+            JOIN FETCH trip.dayLogs dayLogs
+            LEFT JOIN FETCH dayLogs.items items
+            LEFT JOIN FETCH items.images images
+            LEFT JOIN FETCH items.expense expense
+            LEFT JOIN FETCH items.place place
+            JOIN FETCH expense.category expense_category
+            JOIN FETCH place.category place_category
+            WHERE dayLogs.trip.id = :tripId
+            """)
+    Optional<Trip> findById(@Param("tripId") Long tripId);
 }

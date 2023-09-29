@@ -14,4 +14,12 @@ public interface CityRepository extends JpaRepository<City, Long> {
             WHERE c.id in :ids
              """)
     List<City> findCitiesByIds(@Param("ids") final List<Long> ids);
+
+    @Query("""
+            SELECT c
+            FROM City c, TripCity tc
+            WHERE c.id = tc.city.id
+            AND tc.trip.id = :tripId
+            """)
+    List<City> findCitiesByTripId(@Param("tripId") final Long tripId);
 }

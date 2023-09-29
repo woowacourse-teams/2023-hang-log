@@ -15,7 +15,6 @@ import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
@@ -94,21 +93,15 @@ public class TripService {
     }
 
     private TripResponse getTripResponse(final Trip trip) {
-        final List<City> cities = getCitiesByTripId(trip.getId());
+        final List<City> cities = cityRepository.findCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
 
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = getCitiesByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
         return TripDetailResponse.of(trip, cities);
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
