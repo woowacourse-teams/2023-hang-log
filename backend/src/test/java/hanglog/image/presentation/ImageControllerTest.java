@@ -46,7 +46,7 @@ class ImageControllerTest extends ControllerTest {
 
         final ImagesResponse imagesResponse = new ImagesResponse(List.of(""));
 
-        when(imageService.save(any())).thenReturn(imagesResponse);
+        when(imageService.saveImages(any())).thenReturn(imagesResponse);
 
         // when & then
         mockMvc.perform(

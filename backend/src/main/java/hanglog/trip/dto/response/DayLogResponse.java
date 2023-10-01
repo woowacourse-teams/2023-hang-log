@@ -18,7 +18,8 @@ public class DayLogResponse {
 
     public static DayLogResponse of(final DayLog dayLog) {
         final List<ItemResponse> itemResponses = dayLog.getItems().stream()
-                .map(ItemResponse::of)
+                .map(item -> item.getImages().stream()
+                        .map(image -> image.getName()))
                 .toList();
 
         return new DayLogResponse(

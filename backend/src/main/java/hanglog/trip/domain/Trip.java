@@ -1,7 +1,6 @@
 package hanglog.trip.domain;
 
 import static hanglog.global.type.StatusType.USABLE;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
@@ -41,8 +40,6 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE trip SET status = 'DELETED' WHERE id = ?")
 @Where(clause = "status = 'USABLE'")
 public class Trip extends BaseEntity {
-
-    private static final String DEFAULT_IMAGE_NAME = "default-image.png";
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -109,12 +106,13 @@ public class Trip extends BaseEntity {
         this.publishedStatus = publishedStatus;
     }
 
-    public static Trip of(final Member member, final String title, final LocalDate startDate, final LocalDate endDate) {
+    public static Trip of(final Member member, final String title, final String imageName, final LocalDate startDate,
+                          final LocalDate endDate) {
         return new Trip(
                 null,
                 member,
                 title,
-                DEFAULT_IMAGE_NAME,
+                imageName,
                 startDate,
                 endDate,
                 "",
@@ -125,19 +123,12 @@ public class Trip extends BaseEntity {
         );
     }
 
-    public void update(final TripUpdateRequest updateRequest) {
+    public void update(final TripUpdateRequest updateRequest, final String imageUrl) {
         this.title = updateRequest.getTitle();
-        this.imageName = updateImageUrl(updateRequest.getImageUrl());
+        this.imageName = imageUrl;
         this.startDate = updateRequest.getStartDate();
         this.endDate = updateRequest.getEndDate();
         this.description = updateRequest.getDescription();
-    }
-
-    private String updateImageUrl(final String imageUrl) {
-        if (imageUrl == null) {
-            return DEFAULT_IMAGE_NAME;
-        }
-        return convertUrlToName(imageUrl);
     }
 
     public Optional<String> getSharedCode() {

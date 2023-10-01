@@ -14,6 +14,7 @@ import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.util.ImageUrlConverter;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.PublishedTripRepository;
@@ -38,6 +39,7 @@ public class CommunityService {
     private final TripCityRepository tripCityRepository;
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
+    private final ImageUrlConverter imageUrlConverter;
 
     public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
@@ -54,9 +56,20 @@ public class CommunityService {
         final Long likeCount = likeRepository.countLikesByTripId(trip.getId());
         if (accessor.isMember()) {
             final boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), trip.getId());
-            return CommunityTripResponse.of(trip, cities, isLike, likeCount);
+            return CommunityTripResponse.of(
+                    trip,
+                    imageUrlConverter.convertNameToUrl(trip.getImageName()),
+                    cities,
+                    isLike, likeCount
+            );
         }
-        return CommunityTripResponse.of(trip, cities, false, likeCount);
+        return CommunityTripResponse.of(
+                trip,
+                imageUrlConverter.convertNameToUrl(trip.getImageName()),
+                cities,
+                false,
+                likeCount
+        );
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
@@ -97,6 +110,7 @@ public class CommunityService {
         if (!accessor.isMember()) {
             return CommunityTripDetailResponse.of(
                     trip,
+                    trip.getImageName(),
                     cities,
                     false,
                     false,
@@ -108,6 +122,7 @@ public class CommunityService {
         final Boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), tripId);
         return CommunityTripDetailResponse.of(
                 trip,
+                trip.getImageName(),
                 cities,
                 isWriter,
                 isLike,

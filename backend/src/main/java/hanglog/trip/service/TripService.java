@@ -11,6 +11,7 @@ import hanglog.community.domain.PublishedTrip;
 import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.util.ImageUrlConverter;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
@@ -37,12 +38,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class TripService {
 
     private static final String TITLE_POSTFIX = " 여행";
+    private static final String DEFAULT_IMAGE_NAME = "default-image.png";
 
     private final TripRepository tripRepository;
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
     private final PublishedTripRepository publishedTripRepository;
+    private final ImageUrlConverter imageUrlConverter;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -61,6 +64,7 @@ public class TripService {
         final Trip newTrip = Trip.of(
                 member,
                 generateInitialTitle(cites),
+                DEFAULT_IMAGE_NAME,
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
@@ -97,14 +101,14 @@ public class TripService {
 
     private TripResponse getTripResponse(final Trip trip) {
         final List<City> cities = getCitiesByTripId(trip.getId());
-        return TripResponse.of(trip, cities);
+        return TripResponse.of(trip, imageUrlConverter.convertNameToUrl(trip.getImageName()), cities);
     }
 
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
-        return TripDetailResponse.of(trip, cities);
+        return TripDetailResponse.of(trip, imageUrlConverter.convertNameToUrl(trip.getImageName()), cities);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
@@ -123,7 +127,7 @@ public class TripService {
 
         updateTripCities(tripId, trip, cities);
         updateDayLog(updateRequest, trip);
-        trip.update(updateRequest);
+        trip.update(updateRequest, updateImageUrl(updateRequest.getImageUrl()));
         tripRepository.save(trip);
     }
 
@@ -168,6 +172,13 @@ public class TripService {
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         trip.getDayLogs()
                 .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod);
+    }
+
+    private String updateImageUrl(final String imageUrl) {
+        if (imageUrl == null) {
+            return DEFAULT_IMAGE_NAME;
+        }
+        return imageUrlConverter.convertUrlToName(imageUrl);
     }
 
     public void delete(final Long tripId) {

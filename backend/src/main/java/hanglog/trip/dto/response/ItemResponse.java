@@ -1,10 +1,7 @@
 package hanglog.trip.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
-
 import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.ItemExpenseResponse;
-import hanglog.image.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import java.util.List;
@@ -25,7 +22,7 @@ public class ItemResponse {
     private final PlaceResponse place;
     private final ItemExpenseResponse expense;
 
-    public static ItemResponse of(final Item item) {
+    public static ItemResponse of(final Item item, final List<String> imageUrls) {
         return new ItemResponse(
                 item.getId(),
                 item.getItemType().isSpot(),
@@ -33,7 +30,7 @@ public class ItemResponse {
                 item.getOrdinal(),
                 item.getRating(),
                 item.getMemo(),
-                getImageUrls(item.getImages()),
+                imageUrls,
                 getPlaceResponse(item.getPlace()),
                 getExpenseResponse(item.getExpense())
         );
@@ -51,11 +48,5 @@ public class ItemResponse {
             return null;
         }
         return ItemExpenseResponse.of(expense);
-    }
-
-    private static List<String> getImageUrls(final List<Image> images) {
-        return images.stream()
-                .map(image -> convertNameToUrl(image.getName()))
-                .toList();
     }
 }

@@ -29,7 +29,7 @@ class ImageServiceTest {
         final List<MultipartFile> files = List.of();
 
         // when & then
-        assertThatThrownBy(() -> imageService.save(files))
+        assertThatThrownBy(() -> imageService.saveImages(files))
                 .isInstanceOf(ImageException.class)
                 .extracting("code")
                 .isEqualTo(5003);
@@ -49,7 +49,7 @@ class ImageServiceTest {
         final List<MultipartFile> files = new ArrayList<>(Collections.nCopies(11, file));
 
         // when & then
-        assertThatThrownBy(() -> imageService.save(files))
+        assertThatThrownBy(() -> imageService.saveImages(files))
                 .isInstanceOf(ImageException.class)
                 .extracting("code")
                 .isEqualTo(5004);

@@ -6,6 +6,7 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.util.ImageUrlConverter;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
@@ -29,6 +30,7 @@ public class SharedTripService {
     private final SharedTripRepository sharedTripRepository;
     private final TripCityRepository tripCityRepository;
     private final TripRepository tripRepository;
+    private final ImageUrlConverter imageUrlConverter;
 
     @Transactional(readOnly = true)
     public Long getTripId(final String sharedCode) {
@@ -46,7 +48,7 @@ public class SharedTripService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
-        return SharedTripDetailResponse.of(trip, cities);
+        return SharedTripDetailResponse.of(trip, imageUrlConverter.convertNameToUrl(trip.getImageName()), cities);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {

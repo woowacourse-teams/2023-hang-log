@@ -4,7 +4,6 @@ import static hanglog.global.exception.ExceptionCode.NOT_ASSOCIATE_DAYLOG_WITH_T
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
@@ -14,6 +13,7 @@ import hanglog.expense.domain.Expense;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
+import hanglog.image.util.ImageUrlConverter;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
@@ -26,6 +26,7 @@ import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,7 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
     private final ImageRepository imageRepository;
+    private final ImageUrlConverter imageUrlConverter;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
@@ -69,7 +71,7 @@ public class ItemService {
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
         final List<Image> images = itemRequest.getImageUrls().stream()
-                .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
+                .map(imageUrl -> new Image(imageUrlConverter.convertUrlToName(imageUrl)))
                 .toList();
 
         return imageRepository.saveAll(images);
@@ -145,7 +147,7 @@ public class ItemService {
     }
 
     private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
-        final String imageName = convertUrlToName(imageUrl);
+        final String imageName = imageUrlConverter.convertUrlToName(imageUrl);
 
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))
@@ -187,7 +189,12 @@ public class ItemService {
 
     public List<ItemResponse> getItems() {
         return itemRepository.findAll().stream()
-                .map(ItemResponse::of)
+                .flatMap(item -> {
+                    final List<String> imageUrls = item.getImages().stream()
+                            .map(image -> imageUrlConverter.convertNameToUrl(image.getName()))
+                            .toList();
+                    return Stream.of(ItemResponse.of(item, imageUrls));
+                })
                 .toList();
     }
 }
