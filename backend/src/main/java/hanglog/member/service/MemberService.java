@@ -4,11 +4,13 @@ import static hanglog.global.exception.ExceptionCode.DUPLICATED_MEMBER_NICKNAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.util.ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
     public MyPageResponse getMyPageInfo(final Long memberId) {
@@ -32,6 +35,10 @@ public class MemberService {
 
         if (member.isNicknameChanged(myPageRequest.getNickname())) {
             checkDuplicatedNickname(myPageRequest.getNickname());
+        }
+
+        if (!member.getImageUrl().equals(myPageRequest.getImageUrl())) {
+            publisher.publishEvent(new ImageEvent(member.getImageUrl()));
         }
 
         final Member updateMember = new Member(
