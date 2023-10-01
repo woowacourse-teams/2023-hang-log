@@ -8,10 +8,12 @@ import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
 import hanglog.image.dto.ImagesResponse;
+import hanglog.image.util.ImageUrlConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -74,5 +76,11 @@ public class ImageService {
             throw new ImageException(INVALID_IMAGE);
         }
         return convertNameToUrl(imageFile.getHashedName());
+    }
+
+    private void deleteImage(final String imagePath) {
+        final String imageName = ImageUrlConverter.convertUrlToName(imagePath);
+        final DeleteObjectRequest request = new DeleteObjectRequest(bucket, imageName);
+        s3Client.deleteObject(request);
     }
 }
