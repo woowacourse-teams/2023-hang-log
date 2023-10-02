@@ -4,13 +4,13 @@ import static hanglog.global.exception.ExceptionCode.NOT_ASSOCIATE_DAYLOG_WITH_T
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
+import hanglog.global.ImageNameParser;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
@@ -69,7 +69,7 @@ public class ItemService {
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
         final List<Image> images = itemRequest.getImageUrls().stream()
-                .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
+                .map(imageUrl -> new Image(ImageNameParser.parse(imageUrl)))
                 .toList();
 
         return imageRepository.saveAll(images);
@@ -145,7 +145,7 @@ public class ItemService {
     }
 
     private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
-        final String imageName = convertUrlToName(imageUrl);
+        final String imageName = ImageNameParser.parse(imageUrl);
 
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))

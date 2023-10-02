@@ -169,10 +169,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 유무")
                                         .attributes(field("constraint", "boolean (true : 좋아요)")),
-                                fieldWithPath("trips[].imageUrl")
+                                fieldWithPath("trips[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("trips[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -268,10 +268,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 유무")
                                         .attributes(field("constraint", "boolean (true : 좋아요)")),
-                                fieldWithPath("trips[].imageUrl")
+                                fieldWithPath("trips[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("trips[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -363,10 +363,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("imageUrl")
+                                fieldWithPath("imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
                                         .description("공유 코드")

@@ -1,7 +1,5 @@
 package hanglog.image.dto;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
-
 import hanglog.image.domain.Image;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -13,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ImagesResponse {
 
-    private List<String> imageUrls;
+    private List<String> imageNames;
 
     public static ImagesResponse of(final List<Image> images) {
         return new ImagesResponse(
                 images.stream()
-                        .map(image -> convertNameToUrl(image.getName()))
+                        .map(Image::getName)
                         .toList());
     }
 }

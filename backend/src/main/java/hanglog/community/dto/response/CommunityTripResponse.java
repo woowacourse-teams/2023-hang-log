@@ -1,6 +1,5 @@
 package hanglog.community.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
@@ -23,7 +22,7 @@ public class CommunityTripResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String description;
-    private final String imageUrl;
+    private final String imageName;
     private final Boolean isLike;
     private final Long likeCount;
 
@@ -45,7 +44,7 @@ public class CommunityTripResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 isLike,
                 likeCount
         );
