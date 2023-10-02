@@ -1,6 +1,5 @@
 package hanglog.trip.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static hanglog.trip.dto.response.type.TripType.PERSONAL;
 import static hanglog.trip.dto.response.type.TripType.PUBLISHED;
 import static hanglog.trip.dto.response.type.TripType.SHARED;
@@ -8,7 +7,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityWithPositionResponse;
-import hanglog.member.dto.response.WriterResponse;
+import hanglog.share.dto.response.WriterResponse;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.dto.response.type.TripType;
@@ -50,7 +49,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 null,
                 null,
                 null,
@@ -71,7 +70,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 null,
                 null,
                 null,
@@ -99,7 +98,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 isLike,
                 likeCount,
                 publishedDate,

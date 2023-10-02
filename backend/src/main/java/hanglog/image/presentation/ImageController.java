@@ -22,7 +22,7 @@ public class ImageController {
     @PostMapping
     public ResponseEntity<ImagesResponse> uploadImage(@RequestPart final List<MultipartFile> images) {
         final ImagesResponse imagesResponse = imageService.save(images);
-        final String firstImageUrl = imagesResponse.getImageUrls().get(0);
-        return ResponseEntity.created(URI.create(firstImageUrl)).body(imagesResponse);
+        final String firstImageName = imagesResponse.getImageNames().get(0);
+        return ResponseEntity.created(URI.create(firstImageName)).body(imagesResponse);
     }
 }

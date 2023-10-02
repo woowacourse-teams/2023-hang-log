@@ -1,7 +1,5 @@
 package hanglog.trip.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
-
 import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.image.domain.Image;
@@ -55,7 +53,7 @@ public class ItemResponse {
 
     private static List<String> getImageUrls(final List<Image> images) {
         return images.stream()
-                .map(image -> convertNameToUrl(image.getName()))
+                .map(Image::getName)
                 .toList();
     }
 }

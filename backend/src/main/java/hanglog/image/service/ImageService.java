@@ -4,7 +4,6 @@ import static hanglog.global.exception.ExceptionCode.EMPTY_IMAGE_LIST;
 import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_LIST_SIZE;
 import static hanglog.global.exception.ExceptionCode.INVALID_IMAGE;
 import static hanglog.global.exception.ExceptionCode.INVALID_IMAGE_PATH;
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -40,8 +39,8 @@ public class ImageService {
         final List<ImageFile> imageFiles = images.stream()
                 .map(ImageFile::new)
                 .toList();
-        final List<String> imageUrls = uploadImages(imageFiles);
-        return new ImagesResponse(imageUrls);
+        final List<String> imageNames = uploadImages(imageFiles);
+        return new ImagesResponse(imageNames);
     }
 
     private void validateSizeOfImages(final List<MultipartFile> images) {
@@ -73,6 +72,6 @@ public class ImageService {
         } catch (final IOException e) {
             throw new ImageException(INVALID_IMAGE);
         }
-        return convertNameToUrl(imageFile.getHashedName());
+        return imageFile.getHashedName();
     }
 }

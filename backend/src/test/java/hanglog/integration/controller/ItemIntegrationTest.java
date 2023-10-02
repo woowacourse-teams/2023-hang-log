@@ -17,6 +17,7 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
+import hanglog.global.ImageNameParser;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -40,7 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-public class ItemIntegrationTest extends IntegrationTest {
+class ItemIntegrationTest extends IntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -138,7 +139,9 @@ public class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageUrls().stream()
+                        .map(ImageNameParser::parse)
+                        .toList(),
                 expectedPlaceResponse,
                 expectedItemExpenseResponse
         );
@@ -455,7 +458,9 @@ public class ItemIntegrationTest extends IntegrationTest {
                 ordinal,
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                itemUpdateRequest.getImageUrls(),
+                itemUpdateRequest.getImageUrls().stream()
+                        .map(ImageNameParser::parse)
+                        .toList(),
                 createMockIdPlaceResponseBy(itemUpdateRequest.getPlace()),
                 createMockIdExpenseResponseBy(itemUpdateRequest.getExpense())
         );
