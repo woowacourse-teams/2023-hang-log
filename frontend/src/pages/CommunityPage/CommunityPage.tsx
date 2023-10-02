@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Text } from 'hang-log-design-system';
+import { Heading } from 'hang-log-design-system';
 
 import { subTitleStyling } from '@pages/CommunityPage/CommunityPage.style';
 
@@ -37,13 +37,13 @@ const CommunityPage = () => {
   return (
     <>
       <CommunityHeader />
-      <Text css={subTitleStyling({ topPadding: 32, bottomPadding: 8 })}>
+      <Heading size="medium" css={subTitleStyling({ topPadding: 32, bottomPadding: 8 })}>
         {recommendedTripsData.title}
-      </Text>
+      </Heading>
       <CommunityTripItemList trips={recommendedTripsData.trips} />
-      <Text css={subTitleStyling({ topPadding: 57, bottomPadding: 8 })}>
+      <Heading size="medium" css={subTitleStyling({ topPadding: 100, bottomPadding: 8 })}>
         더 많은 여행들을 확인해보세요
-      </Text>
+      </Heading>
       <CommunityTripItemList trips={communityTripsData.trips} />
       <PageNavigation
         pages={pageIndexDatas}

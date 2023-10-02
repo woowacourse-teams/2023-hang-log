@@ -52,13 +52,15 @@ const LikeButton = ({
     <div {...attribute}>
       {isLikeChecked ? (
         <ClickFilledLike
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             handleLikeCheck(false);
           }}
         />
       ) : (
         <ClickEmptyLike
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             handleLikeCheck(true);
           }}
         />

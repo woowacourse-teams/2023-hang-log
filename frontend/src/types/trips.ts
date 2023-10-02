@@ -32,8 +32,11 @@ export interface CommunityTripsData {
 }
 
 export interface CommunityTripsItemData extends TripsData {
-  authorNickname: string;
-  description: string;
+  writer: {
+    nickname: string;
+    imageUrl: string;
+  };
+  description: string | null;
   likeCount: number;
   isLike: boolean;
 }

@@ -17,10 +17,10 @@ const CommunityHeader = () => {
         marginBottom: Theme.spacer.spacing4,
       }}
     >
+      <CommunityHeaderImage css={imageStyling} />
       <Heading css={headingStyling} size="large">
         우리의 여행 기록, <span css={headingEmphasisStyling}>행록</span>
       </Heading>
-      <CommunityHeaderImage css={imageStyling} />
     </Flex>
   );
 };
