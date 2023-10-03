@@ -26,6 +26,7 @@ import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.service.TripService;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +54,9 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @BeforeEach
     void setUp() {
@@ -113,7 +117,6 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
         // when
         final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
-        System.out.println("tripDetailResponse.getDayLogs().size() = " + tripDetailResponse.getDayLogs().size());
 
         // then
         assertSoftly(
@@ -177,6 +180,8 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
     void update_IncreaseDayLogs() {
         // given
         final Long tripId = tripService.save(member.getId(), TRIP_CREATE_REQUEST);
+        entityManager.flush();
+        entityManager.clear();
 
         final String updatedTitle = "수정된 여행 제목";
         final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
@@ -218,6 +223,8 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
     void update_DecreaseDayLogs() {
         // given
         final Long tripId = tripService.save(member.getId(), TRIP_CREATE_REQUEST);
+        entityManager.flush();
+        entityManager.clear();
 
         final String updatedTitle = "수정된 여행 제목";
         final String updatedDescription = "매번 색다르고 즐거운 서유럽 여행";
