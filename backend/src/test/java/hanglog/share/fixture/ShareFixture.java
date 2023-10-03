@@ -11,6 +11,7 @@ import hanglog.trip.domain.Trip;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShareFixture {
@@ -101,8 +102,12 @@ public class ShareFixture {
     );
 
     static {
-        final List<DayLog> dayLogs = TRIP_SHARE.getDayLogs();
-        dayLogs.add(LONDON_DAYLOG_1);
-        dayLogs.add(LONDON_DAYLOG_2);
+        addDayLogsToTrip(TRIP_SHARE, Arrays.asList(LONDON_DAYLOG_1, LONDON_DAYLOG_2));
+    }
+
+    private static void addDayLogsToTrip(final Trip trip, final List<DayLog> dayLogs) {
+        dayLogs.stream()
+                .filter(dayLog -> !trip.getDayLogs().contains(dayLog))
+                .forEachOrdered(trip::addDayLog);
     }
 }

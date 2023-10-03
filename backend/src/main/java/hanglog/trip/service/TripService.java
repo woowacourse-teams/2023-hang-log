@@ -59,7 +59,7 @@ public class TripService {
 
         final List<City> cities = cityRepository.findCitiesByIds(tripCreateRequest.getCityIds());
         if (cities.size() != tripCreateRequest.getCityIds().size()) {
-            throw new BadRequestException(NOT_FOUND_MEMBER_ID);
+            throw new BadRequestException(NOT_FOUND_CITY_ID);
         }
 
         final Trip newTrip = Trip.of(
@@ -153,12 +153,13 @@ public class TripService {
         final List<DayLog> emptyDayLogs = IntStream.range(currentPeriod, requestPeriod)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal + 1, trip))
                 .toList();
-        trip.getDayLogs().addAll(emptyDayLogs);
+        emptyDayLogs.forEach(trip::addDayLog);
     }
 
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        trip.getDayLogs()
-                .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod);
+        trip.getDayLogs().stream()
+                .filter(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod)
+                .forEach(trip::removeDayLog);
     }
 
     public void delete(final Long tripId) {

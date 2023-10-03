@@ -176,6 +176,10 @@ public class Trip extends BaseEntity {
         dayLogs.add(dayLog);
     }
 
+    public void removeDayLog(final DayLog dayLog) {
+        dayLogs.remove(dayLog);
+    }
+
     public List<DayLog> getDayLogs() {
         return new ArrayList<>(dayLogs);
     }

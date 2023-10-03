@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
+import hanglog.trip.domain.repository.CustomDayLogRepositoryImpl;
+import hanglog.trip.domain.repository.CustomTripCityRepositoryImpl;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -33,7 +35,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
-@Import(TripService.class)
+@Import({
+        TripService.class,
+        CustomTripCityRepositoryImpl.class,
+        CustomDayLogRepositoryImpl.class
+})
 class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
@@ -107,6 +113,7 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
         // when
         final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+        System.out.println("tripDetailResponse.getDayLogs().size() = " + tripDetailResponse.getDayLogs().size());
 
         // then
         assertSoftly(

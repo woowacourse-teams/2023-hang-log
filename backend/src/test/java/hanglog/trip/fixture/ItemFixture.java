@@ -3,6 +3,7 @@ package hanglog.trip.fixture;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.type.ItemType;
+import java.util.List;
 
 public final class ItemFixture {
 
@@ -45,11 +46,12 @@ public final class ItemFixture {
             DAYLOG_FOR_ITEM_FIXTURE,
             ExpenseFixture.EURO_10000
     );
+
     public static final Item JAPAN_HOTEL = new Item(
             4L,
             ItemType.NON_SPOT,
             "호텔",
-            3,
+            4,
             4.5,
             "일본에서 묵은 호텔",
             new DayLog(
@@ -59,4 +61,14 @@ public final class ItemFixture {
             ),
             ExpenseFixture.JPY_10000
     );
+
+    static {
+        addItemsToDayLog(DAYLOG_FOR_ITEM_FIXTURE, List.of(LONDON_EYE_ITEM, AIRPLANE_ITEM, TAXI_ITEM, JAPAN_HOTEL));
+    }
+
+    private static void addItemsToDayLog(final DayLog dayLog, final List<Item> items) {
+        items.stream()
+                .filter(item -> !dayLog.getItems().contains(item))
+                .forEachOrdered(dayLog::addItem);
+    }
 }
