@@ -27,6 +27,7 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -158,8 +159,12 @@ public class TripService {
 
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
         trip.getDayLogs().stream()
-                .filter(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod)
+                .filter(getDayLogOutOfPeriod(currentPeriod, requestPeriod))
                 .forEach(trip::removeDayLog);
+    }
+
+    private Predicate<DayLog> getDayLogOutOfPeriod(final int currentPeriod, final int requestPeriod) {
+        return dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
     }
 
     public void delete(final Long tripId) {
