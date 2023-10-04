@@ -39,7 +39,7 @@ export const tripItemHandlers = [
             },
           }
         : null,
-      imageUrls: [],
+      imageNames: [],
     };
 
     trip.dayLogs[0].items.push(newTripItem);
@@ -105,7 +105,7 @@ export const tripItemHandlers = [
             },
           }
         : null,
-      imageUrls: response.imageUrls,
+      imageNames: response.imageNames,
     };
 
     return res(ctx.status(HTTP_STATUS_CODE.NO_CONTENT));

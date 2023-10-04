@@ -32,7 +32,7 @@ export const myTripsHandlers = [
     trip.startDate = response.startDate;
     trip.endDate = response.endDate;
     trip.description = response.description;
-    trip.imageUrl = response.imageUrl;
+    trip.imageName = response.imageName;
 
     return res(ctx.status(HTTP_STATUS_CODE.NO_CONTENT));
   }),
