@@ -48,5 +48,5 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
             LEFT JOIN FETCH place.category place_category
             WHERE dayLogs.trip.id = :tripId
             """)
-    Optional<Trip> findById(@Param("tripId") Long tripId);
+    Optional<Trip> findById(@Param("tripId") final Long tripId);
 }
