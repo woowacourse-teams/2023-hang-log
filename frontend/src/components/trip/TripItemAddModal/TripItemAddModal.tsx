@@ -110,7 +110,7 @@ const TripItemAddModal = ({
             >
               <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
               <ImageInput
-                initialImageUrls={tripItemInformation.imageUrls}
+                initialImageNames={tripItemInformation.imageNames}
                 updateInputValue={updateInputValue}
               />
             </Flex>

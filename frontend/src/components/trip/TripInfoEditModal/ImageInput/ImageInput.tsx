@@ -22,7 +22,7 @@ const ImageInput = ({ initialImage, updateCoverImage }: ImageInputProps) => {
     handleImageUpload,
     handleImageRemoval,
   } = useMultipleImageUpload({
-    initialImageUrls: initialImage === null ? [] : [initialImage],
+    initialImageNames: initialImage === null ? [] : [initialImage],
     onSuccess: handleImageUrlsChange,
   });
   return (

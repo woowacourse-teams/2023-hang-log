@@ -50,6 +50,8 @@ const TripInformation = ({
 
   const [likeCount, setLikeCount] = useState((tripData as CommunityTripData).likeCount);
 
+  const coverImage = `${process.env.IMAGE_BASEURL}${tripData.imageName}`;
+
   const handleLikeCount = (likeCount: number) => {
     setLikeCount(likeCount);
   };
@@ -59,7 +61,7 @@ const TripInformation = ({
       <header css={sectionStyling}>
         <Box css={imageWrapperStyling}>
           <div />
-          <img src={tripData.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
+          <img src={coverImage ?? DefaultThumbnail} alt="여행 대표 이미지" />
         </Box>
         <Box tag="section">
           <Box css={badgeWrapperStyling}>

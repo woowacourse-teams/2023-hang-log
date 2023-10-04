@@ -41,7 +41,7 @@ export const useAddTripItemForm = ({
       rating: null,
       expense: null,
       memo: null,
-      imageUrls: [],
+      imageNames: [],
     }
   );
   const [isTitleError, setIsTitleError] = useState(false);

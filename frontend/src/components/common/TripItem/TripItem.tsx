@@ -63,6 +63,8 @@ const TripItem = ({
   const { isDragging, handleDrag, handleDragEnd } = useDraggedItem(onDragEnd);
   const itemRef = useRef<HTMLLIElement>(null);
 
+  const imagesList = information.imageNames.map((img) => `${process.env.IMAGE_BASEURL}${img}`);
+
   useEffect(() => {
     if (itemRef.current) {
       observer?.observe(itemRef.current);
@@ -82,7 +84,7 @@ const TripItem = ({
         onDragEnd={isEditable ? handleDragEnd : undefined}
       >
         <div ref={scrollRef} css={contentContainerStyling}>
-          {information.imageUrls.length > 0 && (
+          {imagesList.length > 0 && (
             // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
               onClick={isMobile ? undefined : openImageModal}
@@ -97,9 +99,9 @@ const TripItem = ({
                 height={isMobile ? height : TRIP_ITEM_IMAGE_HEIGHT}
                 isDraggable={false}
                 showNavigationOnHover={!isMobile}
-                showArrows={information.imageUrls.length > 1}
-                showDots={information.imageUrls.length > 1}
-                images={information.imageUrls}
+                showArrows={imagesList.length > 1}
+                showDots={imagesList.length > 1}
+                images={imagesList}
               />
             </div>
           )}
@@ -130,7 +132,7 @@ const TripItem = ({
           <EditMenu
             tripId={tripId}
             dayLogId={dayLogId}
-            hasImage={information.imageUrls.length > 0}
+            hasImage={imagesList.length > 0}
             imageHeight={height}
             {...information}
           />
@@ -143,13 +145,13 @@ const TripItem = ({
             height={500}
             isDraggable={false}
             showNavigationOnHover={!isMobile}
-            showArrows={information.imageUrls.length > 1}
-            showDots={information.imageUrls.length > 1}
-            images={information.imageUrls}
+            showArrows={imagesList.length > 1}
+            showDots={imagesList.length > 1}
+            images={imagesList}
           >
-            {information.imageUrls.map((imageUrl) => (
+            {imagesList.map((imageName) => (
               <div css={expandedImageContainer}>
-                <img src={imageUrl} alt="이미지" css={expandedImage} />
+                <img src={imageName} alt="이미지" css={expandedImage} />
               </div>
             ))}
           </Carousel>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import type { CommunityTripsData } from '@type/trips';
 
@@ -14,7 +14,7 @@ export const useTripPageIndex = (data: CommunityTripsData, page: number) => {
   const isCurrentPageBeforeCenter = page >= data.lastPageIndex - centerIndex;
   const isCurrentPageCenter = page < data.lastPageIndex - centerIndex;
 
-  const changeNavigationDatas = () => {
+  const changeNavigationDatas = useCallback(() => {
     if (isCurrentPageAfterCenter) {
       setPageIndexDatas(Array.from({ length: TRIP_INDEX_UNIT_LENGTH }, (_, index) => index));
     }
@@ -41,7 +41,13 @@ export const useTripPageIndex = (data: CommunityTripsData, page: number) => {
 
       setPageIndexDatas(refreshedIndexDatas);
     }
-  };
+  }, [
+    data.lastPageIndex,
+    isCurrentPageAfterCenter,
+    isCurrentPageBeforeCenter,
+    isCurrentPageCenter,
+    page,
+  ]);
 
   return { pageIndexDatas, changeNavigationDatas };
 };

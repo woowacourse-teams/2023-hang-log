@@ -36,7 +36,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
 
   const {
     id,
-    imageUrl,
+    imageName,
     title,
     cities,
     startDate,
@@ -47,7 +47,8 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
     likeCount: initialLikeCount,
   } = trip;
 
-  const coverImage = imageUrl;
+  const coverImage = `${process.env.IMAGE_BASEURL}${imageName}`;
+
   const duration = `${formatDate(startDate)} - ${formatDate(endDate)}`;
 
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);

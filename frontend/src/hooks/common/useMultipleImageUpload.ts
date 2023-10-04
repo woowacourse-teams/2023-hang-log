@@ -10,14 +10,14 @@ import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface UseMultipleImageUploadParams {
-  initialImageUrls: string[];
+  initialImageNames: string[];
   maxUploadCount?: number;
   onSuccess?: CallableFunction;
   onError?: CallableFunction;
 }
 
 export const useMultipleImageUpload = ({
-  initialImageUrls,
+  initialImageNames,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
   onSuccess,
   onError,
@@ -26,7 +26,8 @@ export const useMultipleImageUpload = ({
 
   const { createToast } = useToast();
 
-  const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
+  const imageDatas = initialImageNames.map((img) => `${process.env.IMAGE_BASEURL}${img}`);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState(imageDatas);
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -75,8 +76,8 @@ export const useMultipleImageUpload = ({
       imageMutation.mutate(
         { images: imageUploadFormData },
         {
-          onSuccess: ({ imageUrls }) => {
-            onSuccess?.([...prevImageUrls, ...imageUrls]);
+          onSuccess: ({ imageNames }) => {
+            onSuccess?.([...prevImageUrls, ...imageNames]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {

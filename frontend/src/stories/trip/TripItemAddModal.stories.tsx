@@ -48,7 +48,7 @@ export const WithInitialData: Story = {
         categoryId: item.expense!.id,
       },
       memo: item.memo,
-      imageUrls: item.imageUrls,
+      imageNames: item.imageNames,
     },
   },
 };

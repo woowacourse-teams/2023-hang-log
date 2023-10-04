@@ -16,7 +16,7 @@ export const useTripEditForm = (
     startDate,
     endDate,
     description,
-    imageUrl,
+    imageName,
   }: Omit<TripData, 'dayLogs' | 'sharedCode' | 'isPublished'>,
   onClose: () => void
 ) => {
@@ -25,7 +25,7 @@ export const useTripEditForm = (
     startDate,
     endDate,
   });
-  const [tripInfo, setTripInfo] = useState({ title, description, imageUrl, ...cityDateInfo });
+  const [tripInfo, setTripInfo] = useState({ title, description, imageName, ...cityDateInfo });
   const [isCityError, setIsCityError] = useState(false);
   const [isTitleError, setIsTitleError] = useState(false);
   const tripEditMutation = useTripEditMutation();
@@ -43,9 +43,9 @@ export const useTripEditForm = (
       });
     };
 
-  const updateCoverImage = (imageUrl: string) => {
+  const updateCoverImage = (imageName: string) => {
     setTripInfo((prevTripInfo) => {
-      return { ...prevTripInfo, imageUrl };
+      return { ...prevTripInfo, imageName };
     });
   };
 

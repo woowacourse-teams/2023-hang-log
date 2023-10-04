@@ -57,8 +57,8 @@ export const useSingleImageUpload = ({
       imageMutation.mutate(
         { images: imageUploadFormData },
         {
-          onSuccess: ({ imageUrls }) => {
-            onSuccess?.(imageUrls[0]);
+          onSuccess: ({ imageNames }) => {
+            onSuccess?.(imageNames[0]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {

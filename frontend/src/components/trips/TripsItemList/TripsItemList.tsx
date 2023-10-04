@@ -53,11 +53,13 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
       </Flex>
       <Box tag="ol" css={gridBoxStyling}>
         {trips.map((trip, index) => {
+          const coverImage = `${process.env.IMAGE_BASEURL}${trip.imageName}`;
+
           return (
             <TripsItem
               key={trip.id}
               id={trip.id}
-              coverImage={trip.imageUrl}
+              coverImage={coverImage}
               cityTags={trip.cities}
               itemName={trip.title}
               duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}

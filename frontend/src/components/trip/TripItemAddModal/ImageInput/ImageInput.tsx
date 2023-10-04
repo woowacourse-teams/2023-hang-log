@@ -10,16 +10,16 @@ import type { TripItemFormData } from '@type/tripItem';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface ImageInputProps {
-  initialImageUrls: string[];
+  initialImageNames: string[];
   updateInputValue: <K extends keyof TripItemFormData>(key: K, value: TripItemFormData[K]) => void;
 }
 
-const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => {
+const ImageInput = ({ initialImageNames, updateInputValue }: ImageInputProps) => {
   const { createToast } = useToast();
 
   const handleImageUrlsChange = useCallback(
-    (imageUrls: string[]) => {
-      updateInputValue('imageUrls', imageUrls);
+    (imageNames: string[]) => {
+      updateInputValue('imageNames', imageNames);
     },
     [updateInputValue]
   );
@@ -29,7 +29,7 @@ const ImageInput = ({ initialImageUrls, updateInputValue }: ImageInputProps) => 
   };
 
   const { uploadedImageUrls, handleImageUpload, handleImageRemoval } = useMultipleImageUpload({
-    initialImageUrls,
+    initialImageNames,
     onSuccess: handleImageUrlsChange,
     onError: handleImageUploadError,
   });

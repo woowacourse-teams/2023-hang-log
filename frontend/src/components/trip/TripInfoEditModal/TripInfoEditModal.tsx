@@ -87,7 +87,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           onChange={updateInputValue('description')}
           css={textareaStyling}
         />
-        <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
+        <ImageInput initialImage={tripInfo.imageName} updateCoverImage={updateCoverImage} />
         <Button variant="primary">여행 정보 수정하기</Button>
       </form>
     </Modal>

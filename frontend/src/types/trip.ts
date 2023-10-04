@@ -9,7 +9,7 @@ export interface TripData {
   startDate: string;
   endDate: string;
   description: string | null;
-  imageUrl: string | null;
+  imageName: string | null;
   cities: CityData[];
   dayLogs: DayLogData[];
 }
