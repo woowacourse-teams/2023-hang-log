@@ -1,4 +1,4 @@
-package hanglog.detector;
+package hanglog.global.detector;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -11,8 +11,7 @@ import org.aopalliance.intercept.MethodInvocation;
 @RequiredArgsConstructor
 public class PreparedStatementProxyHandler implements MethodInterceptor {
 
-    private static final List<String> JDBC_QUERY_METHOD =
-            List.of("executeQuery", "execute", "executeUpdate");
+    private static final List<String> JDBC_QUERY_METHOD = List.of("executeQuery", "execute", "executeUpdate");
 
     private final LoggingForm loggingForm;
 

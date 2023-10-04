@@ -1,4 +1,4 @@
-package hanglog.detector;
+package hanglog.global.detector;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +13,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 @Slf4j
 @Component
-public class NPlus1DetectorAop {
+public class QueryCounterAop {
 
     private final ThreadLocal<LoggingForm> currentLoggingForm;
 
-    public NPlus1DetectorAop() {
+    public QueryCounterAop() {
         this.currentLoggingForm = new ThreadLocal<>();
     }
 
@@ -40,11 +40,11 @@ public class NPlus1DetectorAop {
     public void loggingAfterApiFinish() {
         final LoggingForm loggingForm = getCurrentLoggingForm();
 
-        ServletRequestAttributes attributes =
+        final ServletRequestAttributes attributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
         if (isInRequestScope(attributes)) {
-            HttpServletRequest request = attributes.getRequest();
+            final HttpServletRequest request = attributes.getRequest();
 
             loggingForm.setApiMethod(request.getMethod());
             loggingForm.setApiUrl(request.getRequestURI());

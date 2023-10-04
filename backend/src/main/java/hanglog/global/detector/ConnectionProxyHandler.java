@@ -1,4 +1,4 @@
-package hanglog.detector;
+package hanglog.global.detector;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

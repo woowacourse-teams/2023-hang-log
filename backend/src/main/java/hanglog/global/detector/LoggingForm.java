@@ -1,4 +1,4 @@
-package hanglog.detector;
+package hanglog.global.detector;
 
 import lombok.Getter;
 import lombok.ToString;
