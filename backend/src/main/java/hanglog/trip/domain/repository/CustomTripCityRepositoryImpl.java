@@ -32,7 +32,7 @@ public class CustomTripCityRepositoryImpl implements CustomTripCityRepository {
     }
 
     private MapSqlParameterSource getTripCityToSqlParameterSource(final City city, final Long tripId) {
-        LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime now = LocalDateTime.now();
         return new MapSqlParameterSource()
                 .addValue("cityId", city.getId())
                 .addValue("createdAt", now)

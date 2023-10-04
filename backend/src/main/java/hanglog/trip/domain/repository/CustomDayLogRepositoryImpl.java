@@ -30,7 +30,7 @@ public class CustomDayLogRepositoryImpl implements CustomDayLogRepository {
     }
 
     private MapSqlParameterSource getDayLogToSqlParameterSource(final DayLog dayLog) {
-        LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime now = LocalDateTime.now();
         return new MapSqlParameterSource()
                 .addValue("createdAt", now)
                 .addValue("modifiedAt", now)
