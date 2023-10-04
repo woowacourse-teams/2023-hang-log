@@ -161,7 +161,7 @@ describe('여행 정보 수정', () => {
 
     cy.fixture('trip.json').then((expectedData) => {
       cy.findByRole('dialog').find('img').should('exist');
-      cy.findByRole('dialog').find(`img[src="${expectedData.imageUrl}"]`).should('not.exist');
+      cy.findByRole('dialog').find(`img[src="${expectedData.imageName}"]`).should('not.exist');
     });
   });
 
