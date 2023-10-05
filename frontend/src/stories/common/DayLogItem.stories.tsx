@@ -11,6 +11,7 @@ const meta = {
     tripId: { control: false },
   },
   args: {
+    tripType: 'PERSONAL',
     tripId: '1',
     ...trip.dayLogs[0],
   },

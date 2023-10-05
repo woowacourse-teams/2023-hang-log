@@ -33,7 +33,6 @@ const SharedTripPage = () => {
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
-          isShared
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>

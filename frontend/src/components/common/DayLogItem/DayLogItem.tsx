@@ -7,20 +7,21 @@ import TitleInput from '@components/common/DayLogItem/TitleInput/TitleInput';
 import TripItemList from '@components/common/TripItemList/TripItemList';
 
 import type { DayLogData } from '@type/dayLog';
+import type { TripTypeData } from '@type/trip';
 
-import { DAY_LOG_ITEM_FILTERS } from '@constants/trip';
+import { DAY_LOG_ITEM_FILTERS, TRIP_TYPE } from '@constants/trip';
 
 interface DayLogItemProps extends DayLogData {
   tripId: string;
+  tripType: TripTypeData;
   isEditable?: boolean;
-  isShared?: boolean;
   openAddModal?: () => void;
 }
 
 const DayLogItem = ({
   tripId,
+  tripType,
   isEditable = true,
-  isShared = false,
   openAddModal,
   ...information
 }: DayLogItemProps) => {
@@ -71,7 +72,7 @@ const DayLogItem = ({
         <TripItemList.Empty
           tripId={tripId}
           isEditable={isEditable}
-          isShared={isShared}
+          isShared={tripType === TRIP_TYPE.SHARED || tripType === TRIP_TYPE.PUBLISHED}
           openAddModal={openAddModal}
         />
       )}

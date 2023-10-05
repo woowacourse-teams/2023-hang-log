@@ -70,9 +70,9 @@ const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
           </Tabs>
           {isDaylogShown && (
             <DayLogItem
+              tripType={tripData.tripType}
               tripId={tripId}
               isEditable={false}
-              isShared={tripType === TRIP_TYPE.SHARED}
               {...selectedDayLog}
             />
           )}
