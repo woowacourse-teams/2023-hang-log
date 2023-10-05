@@ -24,7 +24,11 @@ const CommunityPage = () => {
   const { tripsData: recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
   const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
 
-  const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(communityTripsData, page);
+  const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(
+    communityTripsData,
+    page,
+    communityTripsData.lastPageIndex
+  );
 
   const handleSetPage = useCallback((page: number) => {
     setPage(page);
