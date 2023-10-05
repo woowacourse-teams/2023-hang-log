@@ -8,25 +8,26 @@ import { useTrip } from '@hooks/trip/useTrip';
 import { formatMonthDate } from '@utils/formatter';
 
 import type { DayLogData } from '@type/dayLog';
+import type { TripTypeData } from '@type/trip';
 
 interface DayLogListProps {
+  tripType: TripTypeData;
   tripId: string;
   selectedDayLog: DayLogData;
   isEditable?: boolean;
-  isShared?: boolean;
   onTabChange: (selectedId: string | number) => void;
   openAddModal?: () => void;
 }
 
 const DayLogList = ({
+  tripType,
   tripId,
   selectedDayLog,
   isEditable = true,
-  isShared = false,
   onTabChange,
   openAddModal,
 }: DayLogListProps) => {
-  const { dates } = useTrip(tripId);
+  const { dates } = useTrip(tripType, tripId);
 
   return (
     <section css={containerStyling}>
@@ -62,9 +63,9 @@ const DayLogList = ({
         })}
       </Tabs>
       <DayLogItem
+        tripType={tripType}
         tripId={tripId}
         isEditable={isEditable}
-        isShared={isShared}
         openAddModal={openAddModal}
         {...selectedDayLog}
       />

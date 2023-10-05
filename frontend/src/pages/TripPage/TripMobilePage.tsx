@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -21,28 +23,29 @@ import { useTripPage } from '@hooks/trip/useTripPage';
 
 import { formatMonthDate } from '@utils/formatter';
 
-interface TripMobilePageProps {
-  isShared?: boolean;
-  isPublished?: boolean;
-}
+import type { TripTypeData } from '@type/trip';
 
-const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePageProps) => {
+const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
-  const { tripData } = useTripQuery(tripId, isShared, isPublished);
-  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { tripData } = useTripQuery(tripType, tripId);
+  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripType,
+    tripId
+  );
 
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
         <TripInformation
+          tripType={tripType}
           tripId={tripId}
           isEditable={false}
-          isShared={isShared}
-          isPublished={isPublished}
+          isShared={tripType === TRIP_TYPE.SHARED}
+          isPublished={tripType === TRIP_TYPE.PUBLISHED}
         />
         <section css={contentStyling}>
           <Tabs>
@@ -67,9 +70,9 @@ const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePag
           </Tabs>
           {isDaylogShown && (
             <DayLogItem
+              tripType={tripData.tripType}
               tripId={tripId}
               isEditable={false}
-              isShared={isShared}
               {...selectedDayLog}
             />
           )}
@@ -92,7 +95,7 @@ const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePag
           onClick={() => setIsDaylogShown((prev) => !prev)}
           css={buttonStyling}
         >
-          {isDaylogShown ? '지도 보기' : '데이로그 보기'}
+          {isDaylogShown ? '지도 보기' : '일정 보기'}
         </Button>
       </div>
     </Flex>

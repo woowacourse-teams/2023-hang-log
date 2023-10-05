@@ -1,3 +1,4 @@
+import { TRIP_TYPE } from '@/constants/trip';
 import { isLoggedInState } from '@/store/auth';
 
 import { useQuery } from '@tanstack/react-query';
@@ -10,33 +11,24 @@ import { getCommunityTrip } from '@api/trip/getCommunityTrip';
 import { getSharedTrip } from '@api/trip/getSharedTrip';
 import { getTrip } from '@api/trip/getTrip';
 
-import type { CommunityTripData, TripData } from '@type/trip';
+import type { TripData, TripTypeData } from '@type/trip';
 
-type QueryFnType = (() => Promise<TripData>) | (() => Promise<CommunityTripData>);
-
-export const useTripQuery = (
-  tripId: string,
-  isShared: boolean = false,
-  isPublished: boolean = false
-) => {
+export const useTripQuery = (tripType: TripTypeData, tripId: string) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const queryFn: { trip: QueryFnType } = {
+  const queryFn: { trip: () => Promise<TripData> } = {
     trip: () => getTrip(tripId),
   };
 
-  if (isPublished) {
+  if (tripType === TRIP_TYPE.PUBLISHED) {
     queryFn.trip = () => getCommunityTrip(tripId, isLoggedIn);
   }
 
-  if (isShared && !isPublished) {
+  if (tripType === TRIP_TYPE.SHARED) {
     queryFn.trip = () => getSharedTrip(tripId);
   }
 
-  const { data } = useQuery<TripData | CommunityTripData, AxiosError>(
-    ['trip', tripId],
-    queryFn.trip
-  );
+  const { data } = useQuery<TripData, AxiosError>([tripType, tripId], queryFn.trip);
 
   return { tripData: data! };
 };

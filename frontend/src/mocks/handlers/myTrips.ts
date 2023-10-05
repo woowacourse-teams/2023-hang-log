@@ -6,6 +6,7 @@ import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
 import { communityTrip } from '@mocks/data/communityTrip';
 import { trips } from '@mocks/data/myTrips';
+import { sharedTrip } from '@mocks/data/sharedTrip';
 import { trip } from '@mocks/data/trip';
 
 export const myTripsHandlers = [
@@ -51,7 +52,7 @@ export const myTripsHandlers = [
   }),
 
   rest.get(`${END_POINTS.SHARED_TRIP(':code')}`, async (req, res, ctx) => {
-    return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(trip));
+    return res(ctx.delay(1000), ctx.status(HTTP_STATUS_CODE.SUCCESS), ctx.json(sharedTrip));
   }),
 
   rest.patch(`${END_POINTS.TRIPS}/:tripId/publish`, async (req, res, ctx) => {

@@ -7,9 +7,11 @@ import { useTrip } from '@hooks/trip/useTrip';
 
 import { isEmptyString } from '@utils/validator';
 
+import type { TripTypeData } from '@type/trip';
 import type { TripItemFormData } from '@type/tripItem';
 
 interface UseAddTripItemFormParams {
+  tripType: TripTypeData;
   tripId: string;
   initialDayLogId: number;
   itemId?: number;
@@ -19,6 +21,7 @@ interface UseAddTripItemFormParams {
 }
 
 export const useAddTripItemForm = ({
+  tripType,
   tripId,
   initialDayLogId,
   itemId,
@@ -26,7 +29,7 @@ export const useAddTripItemForm = ({
   onSuccess,
   onError,
 }: UseAddTripItemFormParams) => {
-  const { dates } = useTrip(tripId);
+  const { dates } = useTrip(tripType, tripId);
 
   const dayLogIndex = dates.findIndex((date) => date.id === initialDayLogId)!;
 

@@ -123,6 +123,7 @@ export const likeCountBoxStyling = css({
 });
 
 export const informationStyling = css({
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',

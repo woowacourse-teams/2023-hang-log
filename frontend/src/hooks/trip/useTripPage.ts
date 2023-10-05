@@ -2,10 +2,12 @@ import { useMemo } from 'react';
 
 import { useSelect } from 'hang-log-design-system';
 
-import { useTrip } from './useTrip';
+import { useTrip } from '@hooks/trip/useTrip';
 
-export const useTripPage = (tripId: string) => {
-  const { tripData, dates } = useTrip(tripId);
+import type { TripTypeData } from '@type/trip';
+
+export const useTripPage = (tripType: TripTypeData, tripId: string) => {
+  const { tripData, dates } = useTrip(tripType, tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     tripData.dayLogs[0].id

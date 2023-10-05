@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@hooks/common/useToast';
@@ -16,7 +18,7 @@ export const useUpdateTripItemMutation = () => {
   const updateTripItemMutation = useMutation({
     mutationFn: putTripItem,
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
     },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {

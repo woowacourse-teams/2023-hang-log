@@ -17,15 +17,19 @@ const TripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다.');
 
-  const { tripData } = useTripQuery(tripId);
+  const { tripData } = useTripQuery('PERSONAL', tripId);
 
-  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripData.tripType,
+    tripId
+  );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} isEditable={false} />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} isEditable={false} />
         <DayLogList
+          tripType={tripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}

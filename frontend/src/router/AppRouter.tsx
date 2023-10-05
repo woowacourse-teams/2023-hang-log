@@ -1,4 +1,5 @@
 import App from '@/App';
+import { TRIP_TYPE } from '@/constants/trip';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -15,6 +16,8 @@ import TripPageSkeleton from '@pages/TripPage/TripPageSkeleton';
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import * as Lazy from '@router/lazy';
+
+import type { TripTypeData } from '@type/trip';
 
 import { PATH } from '@constants/path';
 
@@ -47,7 +50,11 @@ const AppRouter = () => {
           path: PATH.TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              {isMobile ? <Lazy.TripMobilePage /> : <Lazy.TripPage />}
+              {isMobile ? (
+                <Lazy.TripMobilePage tripType={TRIP_TYPE.PERSONAL as TripTypeData} />
+              ) : (
+                <Lazy.TripPage />
+              )}
             </Suspense>
           ),
         },
@@ -99,7 +106,11 @@ const AppRouter = () => {
           path: PATH.SHARE_TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              {isMobile ? <Lazy.TripMobilePage isShared /> : <Lazy.SharedTripPage />}
+              {isMobile ? (
+                <Lazy.TripMobilePage tripType={TRIP_TYPE.SHARED as TripTypeData} />
+              ) : (
+                <Lazy.SharedTripPage />
+              )}
             </Suspense>
           ),
         },
@@ -115,7 +126,11 @@ const AppRouter = () => {
           path: PATH.COMMUNITY_TRIP(':tripId'),
           element: (
             <Suspense fallback={<TripPageSkeleton />}>
-              {isMobile ? <Lazy.TripMobilePage isShared isPublished /> : <Lazy.CommunityTripPage />}
+              {isMobile ? (
+                <Lazy.TripMobilePage tripType={TRIP_TYPE.PUBLISHED as TripTypeData} />
+              ) : (
+                <Lazy.CommunityTripPage />
+              )}
             </Suspense>
           ),
         },

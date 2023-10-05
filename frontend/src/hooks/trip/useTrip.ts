@@ -1,10 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import type { CommunityTripData, TripData } from '@type/trip';
+import type { TripData, TripTypeData } from '@type/trip';
 
-export const useTrip = (tripId: string) => {
+export const useTrip = (tripType: TripTypeData, tripId: string) => {
   const queryClient = useQueryClient();
-  const tripData = queryClient.getQueryData<TripData | CommunityTripData>(['trip', tripId])!;
+  const tripData = queryClient.getQueryData<TripData>([tripType, tripId])!;
 
   const dates = tripData.dayLogs.map((data) => ({
     id: data.id,

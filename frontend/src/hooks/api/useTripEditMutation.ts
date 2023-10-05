@@ -17,7 +17,7 @@ export const useTripEditMutation = () => {
   const tripMutation = useMutation({
     mutationFn: putTrip,
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      queryClient.invalidateQueries({ queryKey: ['PERSONAL', tripId] });
     },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {

@@ -9,7 +9,7 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import TripInformation from '@components/common/TripInformation/TripInformation';
 import TripMap from '@components/common/TripMap/TripMap';
 
-import { useTripQuery } from '@hooks/api/useTripQuery';
+import { useSharedTripQuery } from '@hooks/api/useSharedTripQuery';
 import { useTripPage } from '@hooks/trip/useTripPage';
 
 const SharedTripPage = () => {
@@ -17,19 +17,22 @@ const SharedTripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 공유코드입니다.');
 
-  const { tripData } = useTripQuery(tripId, true);
+  const { tripData } = useSharedTripQuery(tripId);
 
-  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripData.tripType,
+    tripId
+  );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} isEditable={false} isShared />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} isEditable={false} isShared />
         <DayLogList
+          tripType={tripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
-          isShared
           onTabChange={handleDayLogIdSelectClick}
         />
       </section>
