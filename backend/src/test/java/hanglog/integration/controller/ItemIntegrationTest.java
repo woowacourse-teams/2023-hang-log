@@ -17,7 +17,6 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
-import hanglog.global.ImageNameParser;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -456,9 +455,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 ordinal,
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                itemUpdateRequest.getImageNames().stream()
-                        .map(ImageNameParser::parse)
-                        .toList(),
+                itemUpdateRequest.getImageNames(),
                 createMockIdPlaceResponseBy(itemUpdateRequest.getPlace()),
                 createMockIdExpenseResponseBy(itemUpdateRequest.getExpense())
         );
