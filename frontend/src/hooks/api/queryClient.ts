@@ -8,6 +8,7 @@ export const queryClient = new QueryClient({
       retry: NETWORK.RETRY_COUNT,
       suspense: true,
       useErrorBoundary: true,
+      cacheTime: 0,
     },
   },
 });

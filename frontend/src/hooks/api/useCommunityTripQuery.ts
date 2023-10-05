@@ -13,8 +13,12 @@ import type { TripData } from '@type/trip';
 export const useCommunityTripQuery = (tripId: string) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const { data } = useQuery<TripData, AxiosError>(['PUBLISHED', tripId], () =>
-    getCommunityTrip(tripId, isLoggedIn)
+  const { data } = useQuery<TripData, AxiosError>(
+    ['PUBLISHED', tripId],
+    () => getCommunityTrip(tripId, isLoggedIn),
+    {
+      cacheTime: 0,
+    }
   );
 
   return { tripData: data! };
