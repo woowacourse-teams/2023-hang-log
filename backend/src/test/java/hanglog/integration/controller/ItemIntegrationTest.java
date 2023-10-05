@@ -84,7 +84,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageNames(),
                 null,
                 null
         );
@@ -139,9 +139,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls().stream()
-                        .map(ImageNameParser::parse)
-                        .toList(),
+                itemRequest.getImageNames(),
                 expectedPlaceResponse,
                 expectedItemExpenseResponse
         );

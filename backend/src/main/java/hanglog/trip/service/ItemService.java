@@ -68,10 +68,9 @@ public class ItemService {
     }
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
-        final List<Image> images = itemRequest.getImageUrls().stream()
-                .map(imageUrl -> new Image(ImageNameParser.parse(imageUrl)))
+        final List<Image> images = itemRequest.getImageNames().stream()
+                .map(Image::new)
                 .toList();
-
         return imageRepository.saveAll(images);
     }
 

@@ -1,7 +1,7 @@
 package hanglog.trip.domain;
 
-import static hanglog.global.type.StatusType.USABLE;
 import static hanglog.global.ImageNameParser.parse;
+import static hanglog.global.type.StatusType.USABLE;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
