@@ -126,7 +126,7 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
                             .usingRecursiveComparison()
                             .ignoringFields("id", "dayLogs")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
-                            .isEqualTo(TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
+                            .isEqualTo(TripDetailResponse.personalTrip(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
                 }
         );
     }

@@ -5,7 +5,11 @@ export const communityTripsData = {
       id: 1,
       title: '런던1 여행2',
       imageUrl: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -27,7 +31,11 @@ export const communityTripsData = {
       title: '파리2 여행',
       imageUrl:
         'https://images.squarespace-cdn.com/content/v1/586ebc34d482e9c69268b69a/1624386887478-9Z3XA27D8WFVDWKW00QS/20201230173806551_JRT8E1VC.png',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -49,7 +57,11 @@ export const communityTripsData = {
       title: '서울 여행4',
       imageUrl:
         'https://a.cdn-hotels.com/gdcs/production144/d992/418cd5c1-7f91-4c44-9f39-3016b033eaa1.jpg?impolicy=fcrop&w=800&h=533&q=medium',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -71,7 +83,11 @@ export const communityTripsData = {
       title: '도쿄 여행6',
       imageUrl:
         'https://www.jamonfive.com/files/attach/images/1032/015/002/aa092a675ca23b89e818562389d62c12.jpg',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -93,7 +109,11 @@ export const communityTripsData = {
       title: '런던 여행7',
       imageUrl:
         'https://www.discoverlosangeles.com/sites/default/files/images/2023-02/IMG_0410-Edit-3.jpg?width=1600&height=1200&fit=crop&quality=78&auto=webp',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -114,7 +134,11 @@ export const communityTripsData = {
       id: 6,
       title: '런던 여행142',
       imageUrl: 'https://res.klook.com/image/upload/Mobile/City/n9sn4fajwa1skldmdeex.jpg',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -136,7 +160,11 @@ export const communityTripsData = {
       title: '파리 여행23445',
       imageUrl:
         'https://images.squarespace-cdn.com/content/v1/586ebc34d482e9c69268b69a/1624386887478-9Z3XA27D8WFVDWKW00QS/20201230173806551_JRT8E1VC.png',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -158,7 +186,11 @@ export const communityTripsData = {
       title: '서울2345 여행',
       imageUrl:
         'https://a.cdn-hotels.com/gdcs/production144/d992/418cd5c1-7f91-4c44-9f39-3016b033eaa1.jpg?impolicy=fcrop&w=800&h=533&q=medium',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -180,7 +212,11 @@ export const communityTripsData = {
       title: '도쿄 여행5678',
       imageUrl:
         'https://www.jamonfive.com/files/attach/images/1032/015/002/aa092a675ca23b89e818562389d62c12.jpg',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,
@@ -202,7 +238,11 @@ export const communityTripsData = {
       title: '런던 여행4567458',
       imageUrl:
         'https://www.discoverlosangeles.com/sites/default/files/images/2023-02/IMG_0410-Edit-3.jpg?width=1600&height=1200&fit=crop&quality=78&auto=webp',
-      authorNickname: '양파쿵야',
+      writer: {
+        nickname: '양파쿵야',
+        imagUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
+      },
       cities: [
         {
           id: 1,

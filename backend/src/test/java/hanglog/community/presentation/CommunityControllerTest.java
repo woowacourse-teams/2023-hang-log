@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
-import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
@@ -37,6 +36,7 @@ import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.fixture.CityFixture;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
@@ -304,7 +304,7 @@ class CommunityControllerTest extends ControllerTest {
     void getTrip() throws Exception {
         // given
         when(communityService.getTripDetail(any(), any()))
-                .thenReturn(CommunityTripDetailResponse.of(
+                .thenReturn(TripDetailResponse.publishedTrip(
                         LONDON_TRIP,
                         CITIES,
                         true,
@@ -324,6 +324,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         ),
                         responseFields(
+                                fieldWithPath("tripType")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 응답 종류")
+                                        .attributes(field("constraint", "문자열 'PRIVATE'")),
                                 fieldWithPath("id")
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
@@ -341,8 +345,8 @@ class CommunityControllerTest extends ControllerTest {
                                         .attributes(field("constraint", "문자열")),
                                 fieldWithPath("isWriter")
                                         .type(JsonFieldType.BOOLEAN)
-                                        .description("본인 작성물")
-                                        .attributes(field("constraint", "true: 본인 작성물, false: 타인 작성물")),
+                                        .description("본인 작성 여부")
+                                        .attributes(field("constraint", "true: 본인 작성, false: 타인 작성")),
                                 fieldWithPath("title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
@@ -380,6 +384,11 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("공개 날짜")
                                         .attributes(field("constraint", "yyyy-MM-dd-hh-mm-ss")),
+                                fieldWithPath("isPublished")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("공개 여부")
+                                        .attributes(field("constraint", "boolean 공개시 true"))
+                                        .optional(),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -428,12 +437,12 @@ class CommunityControllerTest extends ControllerTest {
                 ))
                 .andReturn();
 
-        final CommunityTripDetailResponse communityTripDetailResponse = objectMapper.readValue(
+        final TripDetailResponse tripDetailResponse = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
-                CommunityTripDetailResponse.class
+                TripDetailResponse.class
         );
-        assertThat(communityTripDetailResponse).usingRecursiveComparison()
-                .isEqualTo(CommunityTripDetailResponse.of(
+        assertThat(tripDetailResponse).usingRecursiveComparison()
+                .isEqualTo(TripDetailResponse.publishedTrip(
                         LONDON_TRIP,
                         CITIES,
                         true,

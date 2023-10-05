@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Text } from 'hang-log-design-system';
+import { Heading } from 'hang-log-design-system';
 
 import { subTitleStyling } from '@pages/CommunityPage/CommunityPage.style';
 
@@ -24,7 +24,11 @@ const CommunityPage = () => {
   const { tripsData: recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
   const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
 
-  const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(communityTripsData, page);
+  const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(
+    communityTripsData,
+    page,
+    communityTripsData.lastPageIndex
+  );
 
   const handleSetPage = useCallback((page: number) => {
     setPage(page);
@@ -37,13 +41,13 @@ const CommunityPage = () => {
   return (
     <>
       <CommunityHeader />
-      <Text css={subTitleStyling({ topPadding: 32, bottomPadding: 8 })}>
+      <Heading size="medium" css={subTitleStyling({ topPadding: 32, bottomPadding: 8 })}>
         {recommendedTripsData.title}
-      </Text>
+      </Heading>
       <CommunityTripItemList trips={recommendedTripsData.trips} />
-      <Text css={subTitleStyling({ topPadding: 57, bottomPadding: 8 })}>
+      <Heading size="medium" css={subTitleStyling({ topPadding: 100, bottomPadding: 8 })}>
         더 많은 여행들을 확인해보세요
-      </Text>
+      </Heading>
       <CommunityTripItemList trips={communityTripsData.trips} />
       <PageNavigation
         pages={pageIndexDatas}

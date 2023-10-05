@@ -22,9 +22,9 @@ const CommunityTripItemList = (data: Omit<RecommendedTripsData, 'title'>) => {
   return (
     <section css={containerStyling}>
       <Box tag="ol" css={gridBoxStyling}>
-        {trips.map((trip, index) => {
-          return <CommunityTripsItem key={trip.id} trip={trip} index={index} />;
-        })}
+        {trips.map((trip, index) => (
+          <CommunityTripsItem key={trip.id} trip={trip} index={index} />
+        ))}
       </Box>
     </section>
   );

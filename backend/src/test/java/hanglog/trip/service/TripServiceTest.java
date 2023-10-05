@@ -150,7 +150,7 @@ class TripServiceTest {
 
         // then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripDetailResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
+                .isEqualTo(TripDetailResponse.personalTrip(LONDON_TRIP, List.of(PARIS, LONDON)));
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
