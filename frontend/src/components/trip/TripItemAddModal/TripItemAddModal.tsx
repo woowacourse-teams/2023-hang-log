@@ -1,4 +1,4 @@
-import { TRIP_TYPE } from '@/constants/trip';
+import { useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
@@ -24,6 +24,8 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import type { TripTypeData } from '@type/trip';
 import type { TripItemFormData } from '@type/tripItem';
+
+import { TRIP_TYPE } from '@constants/trip';
 
 interface TripItemAddModalProps {
   tripId: string;
@@ -53,6 +55,12 @@ const TripItemAddModal = ({
       initialData,
       onSuccess: onClose,
     });
+
+  const [tripImages, setTripImages] = useState(tripItemInformation.imageUrls);
+
+  const handleInitialImages = (images: string[]) => {
+    setTripImages(images);
+  };
 
   return (
     <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -114,7 +122,8 @@ const TripItemAddModal = ({
             >
               <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
               <ImageInput
-                initialImageUrls={tripItemInformation.imageUrls}
+                initialImageUrls={tripImages}
+                handleInitialImage={handleInitialImages}
                 updateInputValue={updateInputValue}
               />
             </Flex>

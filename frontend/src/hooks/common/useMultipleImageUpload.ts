@@ -12,6 +12,7 @@ import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 interface UseMultipleImageUploadParams {
   initialImageUrls: string[];
   maxUploadCount?: number;
+  handleInitialImage?: (images: string[]) => void;
   onSuccess?: CallableFunction;
   onError?: CallableFunction;
 }
@@ -19,13 +20,13 @@ interface UseMultipleImageUploadParams {
 export const useMultipleImageUpload = ({
   initialImageUrls,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
+  handleInitialImage = () => {},
   onSuccess,
   onError,
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
 
   const { createToast } = useToast();
-
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
   const handleImageUpload = useCallback(
@@ -54,11 +55,9 @@ export const useMultipleImageUpload = ({
         await Promise.all(
           [...originalImageFiles].map(async (file) => {
             const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
-
             const fileName = file.name;
             const fileType = compressedImageFile.type;
             const convertedFile = new File([compressedImageFile], fileName, { type: fileType });
-
             imageFiles.push(convertedFile);
           })
         );
@@ -77,6 +76,7 @@ export const useMultipleImageUpload = ({
         {
           onSuccess: ({ imageUrls }) => {
             onSuccess?.([...prevImageUrls, ...imageUrls]);
+            handleInitialImage([...prevImageUrls, ...imageUrls]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {
@@ -102,6 +102,6 @@ export const useMultipleImageUpload = ({
     },
     [onSuccess]
   );
-
+  console.log(uploadedImageUrls);
   return { uploadedImageUrls, handleImageUpload, handleImageRemoval };
 };
