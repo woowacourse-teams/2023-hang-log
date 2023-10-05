@@ -95,7 +95,7 @@ const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
           onClick={() => setIsDaylogShown((prev) => !prev)}
           css={buttonStyling}
         >
-          {isDaylogShown ? '지도 보기' : '데이로그 보기'}
+          {isDaylogShown ? '지도 보기' : '일정 보기'}
         </Button>
       </div>
     </Flex>
