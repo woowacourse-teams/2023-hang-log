@@ -9,6 +9,7 @@ import { deleteTripItem } from '@api/tripItem/deleteTripItem';
 import type { TripData } from '@type/trip';
 
 import { ERROR_CODE } from '@constants/api';
+import { TRIP_TYPE } from '@constants/trip';
 
 export const useDeleteTripItemMutation = () => {
   const queryClient = useQueryClient();
@@ -19,9 +20,9 @@ export const useDeleteTripItemMutation = () => {
   const deleteTripItemMutation = useMutation({
     mutationFn: deleteTripItem,
     onMutate: ({ tripId, itemId }) => {
-      const tripData = queryClient.getQueryData<TripData>(['trip', tripId]);
+      const tripData = queryClient.getQueryData<TripData>([TRIP_TYPE.PERSONAL, tripId]);
 
-      queryClient.setQueryData<TripData>(['trip', tripId], (prevTripData) => {
+      queryClient.setQueryData<TripData>([TRIP_TYPE.PERSONAL, tripId], (prevTripData) => {
         if (!prevTripData) return prevTripData;
 
         const updatedDayLogs = prevTripData.dayLogs.map((dayLog) => {
@@ -43,13 +44,13 @@ export const useDeleteTripItemMutation = () => {
         return;
       }
 
-      queryClient.setQueryData<TripData>(['trip', tripId], context?.tripData);
+      queryClient.setQueryData<TripData>([TRIP_TYPE.PERSONAL, tripId], context?.tripData);
 
       createToast('아이템 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
 
     onSettled: (data, error, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
     },
   });
 

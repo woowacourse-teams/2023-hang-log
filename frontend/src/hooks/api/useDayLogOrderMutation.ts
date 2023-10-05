@@ -7,6 +7,7 @@ import { patchDayLogItemOrder } from '@api/dayLog/patchDayLogItemOrder';
 import type { ErrorResponseData } from '@api/interceptors';
 
 import { ERROR_CODE } from '@constants/api';
+import { TRIP_TYPE } from '@constants/trip';
 
 export const useDayLogOrderMutation = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const useDayLogOrderMutation = () => {
   const dayLogOrderMutation = useMutation({
     mutationFn: patchDayLogItemOrder,
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
     },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
