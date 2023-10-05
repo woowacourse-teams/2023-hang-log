@@ -17,7 +17,19 @@ export const useTripEditForm = (
     endDate,
     description,
     imageUrl,
-  }: Omit<TripData, 'dayLogs' | 'sharedCode' | 'isPublished'>,
+  }: Omit<
+    TripData,
+    | 'tripType'
+    | 'dayLogs'
+    | 'sharedCode'
+    | 'isPublished'
+    | 'writer'
+    | 'publishedDate'
+    | 'isLike'
+    | 'likeCount'
+    | 'isWriter'
+    | 'tripType'
+  >,
   onClose: () => void
 ) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({

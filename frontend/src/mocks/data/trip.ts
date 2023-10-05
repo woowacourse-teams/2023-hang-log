@@ -1,6 +1,7 @@
 import type { TripData } from '@type/trip';
 
 export const trip: TripData = {
+  tripType: 'PERSONAL',
   id: 1,
   title: '런던 여행',
   startDate: '2023-07-01',
@@ -8,6 +9,14 @@ export const trip: TripData = {
   description: '라곤의 좌충우돌 유럽 여행기',
   sharedCode: null,
   isPublished: true,
+  writer: {
+    nickname: null,
+    imageUrl: null,
+  },
+  isLike: null,
+  likeCount: null,
+  isWriter: null,
+  publishedDate: null,
   imageUrl:
     'https://a.cdn-hotels.com/gdcs/production153/d1371/e6c1f55e-51ac-41d5-8c63-2d0c63faf59e.jpg',
   cities: [

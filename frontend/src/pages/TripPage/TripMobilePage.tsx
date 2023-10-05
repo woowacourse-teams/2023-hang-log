@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -21,28 +23,29 @@ import { useTripPage } from '@hooks/trip/useTripPage';
 
 import { formatMonthDate } from '@utils/formatter';
 
-interface TripMobilePageProps {
-  isShared?: boolean;
-  isPublished?: boolean;
-}
+import type { TripTypeData } from '@type/trip';
 
-const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePageProps) => {
+const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
-  const { tripData } = useTripQuery(tripId, isShared, isPublished);
-  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { tripData } = useTripQuery(tripType, tripId);
+  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripType,
+    tripId
+  );
 
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
         <TripInformation
+          tripType={tripType}
           tripId={tripId}
           isEditable={false}
-          isShared={isShared}
-          isPublished={isPublished}
+          isShared={tripType === TRIP_TYPE.SHARED}
+          isPublished={tripType === TRIP_TYPE.PUBLISHED}
         />
         <section css={contentStyling}>
           <Tabs>
@@ -69,7 +72,7 @@ const TripMobilePage = ({ isShared = false, isPublished = false }: TripMobilePag
             <DayLogItem
               tripId={tripId}
               isEditable={false}
-              isShared={isShared}
+              isShared={tripType === TRIP_TYPE.SHARED}
               {...selectedDayLog}
             />
           )}

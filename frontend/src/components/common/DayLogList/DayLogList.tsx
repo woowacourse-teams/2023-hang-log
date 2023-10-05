@@ -8,8 +8,10 @@ import { useTrip } from '@hooks/trip/useTrip';
 import { formatMonthDate } from '@utils/formatter';
 
 import type { DayLogData } from '@type/dayLog';
+import type { TripTypeData } from '@type/trip';
 
 interface DayLogListProps {
+  tripType: TripTypeData;
   tripId: string;
   selectedDayLog: DayLogData;
   isEditable?: boolean;
@@ -19,6 +21,7 @@ interface DayLogListProps {
 }
 
 const DayLogList = ({
+  tripType,
   tripId,
   selectedDayLog,
   isEditable = true,
@@ -26,7 +29,7 @@ const DayLogList = ({
   onTabChange,
   openAddModal,
 }: DayLogListProps) => {
-  const { dates } = useTrip(tripId);
+  const { dates } = useTrip(tripType, tripId);
 
   return (
     <section css={containerStyling}>

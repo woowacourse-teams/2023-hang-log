@@ -19,13 +19,23 @@ const CommunityTripPage = () => {
 
   const { tripData } = useCommunityTripQuery(tripId);
 
-  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripData.tripType,
+    tripId
+  );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} isEditable={false} isShared isPublished />
+        <TripInformation
+          tripType={tripData.tripType}
+          tripId={tripId}
+          isEditable={false}
+          isShared
+          isPublished
+        />
         <DayLogList
+          tripType={tripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}

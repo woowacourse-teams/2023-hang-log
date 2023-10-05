@@ -25,11 +25,12 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
 
-import type { CommunityTripData, TripData } from '@type/trip';
+import type { TripTypeData } from '@type/trip';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
 interface TripInformationProps {
+  tripType: TripTypeData;
   tripId: string;
   isEditable?: boolean;
   isShared?: boolean;
@@ -41,14 +42,15 @@ const TripInformation = ({
   isShared = false,
   isPublished = false,
   tripId,
+  tripType,
 }: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
-  const { tripData } = useTrip(tripId);
+  const { tripData } = useTrip(tripType, tripId);
 
-  const [likeCount, setLikeCount] = useState((tripData as CommunityTripData).likeCount);
+  const [likeCount, setLikeCount] = useState(tripData.likeCount);
 
   const handleLikeCount = (likeCount: number) => {
     setLikeCount(likeCount);
@@ -89,15 +91,15 @@ const TripInformation = ({
               <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
                 <img
                   alt="작성자 이미지"
-                  src={(tripData as CommunityTripData).writer.imageUrl}
+                  src={tripData.writer.imageUrl || ''}
                   css={writerImageStyling}
                 />
-                <Text size="small">{(tripData as CommunityTripData).writer.nickname}</Text>
+                <Text size="small">{tripData.writer.nickname}</Text>
               </Flex>
               <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
                 <LikeButton
-                  likeCount={likeCount}
-                  initialState={(tripData as CommunityTripData).isLike}
+                  likeCount={likeCount ?? 0}
+                  initialState={tripData.isLike ?? false}
                   handleLikeCount={handleLikeCount}
                   tripId={tripId}
                   css={{ height: '20px', cursor: 'pointer' }}
@@ -113,10 +115,10 @@ const TripInformation = ({
           ) : (
             <TripButtons
               tripId={tripId}
-              sharedCode={(tripData as TripData).sharedCode}
+              sharedCode={tripData.sharedCode}
               isShared={isShared}
               isPublished={isPublished}
-              publishState={(tripData as TripData).isPublished}
+              publishState={tripData.isPublished}
             />
           )}
         </Box>

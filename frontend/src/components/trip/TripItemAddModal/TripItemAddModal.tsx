@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { useRecoilValue } from 'recoil';
 
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
@@ -20,6 +22,7 @@ import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
+import type { TripTypeData } from '@type/trip';
 import type { TripItemFormData } from '@type/tripItem';
 
 interface TripItemAddModalProps {
@@ -43,6 +46,7 @@ const TripItemAddModal = ({
 
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
+      tripType: TRIP_TYPE.PERSONAL as TripTypeData,
       tripId,
       initialDayLogId: dayLogId,
       itemId,

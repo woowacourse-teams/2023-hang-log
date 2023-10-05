@@ -31,13 +31,17 @@ const TripEditPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
 
   const { tripData } = useTripEditPageQueries(tripId);
-  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(tripId);
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripData.tripType,
+    tripId
+  );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} />
         <DayLogList
+          tripType={tripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           onTabChange={handleDayLogIdSelectClick}
