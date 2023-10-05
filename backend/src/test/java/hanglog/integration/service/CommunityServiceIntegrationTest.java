@@ -5,13 +5,13 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
-import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.service.ExpenseService;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.List;
@@ -68,7 +68,7 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void getTripDetail_Guest() {
         // when
-        final CommunityTripDetailResponse response = communityService.getTripDetail(Accessor.guest(), 1L);
+        final TripDetailResponse response = communityService.getTripDetail(Accessor.guest(), 1L);
 
         //then
         assertSoftly(
@@ -83,7 +83,7 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void getTripDetail_MemberOtherTrip() {
         // when
-        final CommunityTripDetailResponse response = communityService.getTripDetail(Accessor.member(2L), 1L);
+        final TripDetailResponse response = communityService.getTripDetail(Accessor.member(2L), 1L);
 
         //then
         assertSoftly(
@@ -98,7 +98,7 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void getTripDetail_MemberOwnTrip() {
         // when
-        final CommunityTripDetailResponse response = communityService.getTripDetail(Accessor.member(1L), 1L);
+        final TripDetailResponse response = communityService.getTripDetail(Accessor.member(1L), 1L);
 
         //then
         assertSoftly(

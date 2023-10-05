@@ -6,8 +6,8 @@ import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
-import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.share.service.SharedTripService;
+import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.service.TripService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +28,10 @@ public class SharedTripController {
     private final ExpenseService expenseService;
 
     @GetMapping("/shared-trips/{sharedCode}")
-    public ResponseEntity<SharedTripDetailResponse> getSharedTrip(@PathVariable final String sharedCode) {
+    public ResponseEntity<TripDetailResponse> getSharedTrip(@PathVariable final String sharedCode) {
         final Long tripId = sharedTripService.getTripId(sharedCode);
-        final SharedTripDetailResponse sharedTripDetailResponse = sharedTripService.getSharedTripDetail(tripId);
-        return ResponseEntity.ok().body(sharedTripDetailResponse);
+        final TripDetailResponse tripDetailResponse = sharedTripService.getSharedTripDetail(tripId);
+        return ResponseEntity.ok().body(tripDetailResponse);
     }
 
     @PatchMapping("/trips/{tripId}/share")

@@ -4,12 +4,12 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import hanglog.auth.Auth;
 import hanglog.auth.domain.Accessor;
-import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
+import hanglog.trip.dto.response.TripDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -43,15 +43,15 @@ public class CommunityController {
     }
 
     @GetMapping("/trips/{tripId}")
-    public ResponseEntity<CommunityTripDetailResponse> getTrip(
+    public ResponseEntity<TripDetailResponse> getTrip(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId
     ) {
-        final CommunityTripDetailResponse communityTripDetailResponse = communityService.getTripDetail(
+        final TripDetailResponse tripDetailResponse = communityService.getTripDetail(
                 accessor,
                 tripId
         );
-        return ResponseEntity.ok().body(communityTripDetailResponse);
+        return ResponseEntity.ok().body(tripDetailResponse);
     }
 
     @GetMapping("/trips/{tripId}/expense")
