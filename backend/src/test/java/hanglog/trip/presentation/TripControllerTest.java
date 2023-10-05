@@ -250,7 +250,7 @@ class TripControllerTest extends ControllerTest {
         makeTrip();
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
         when(tripService.getTripDetail(1L))
-                .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
+                .thenReturn(TripDetailResponse.personalTrip(LONDON_TRIP, CITIES));
 
         // when
         final ResultActions resultActions = performGetRequest(1);
@@ -263,10 +263,33 @@ class TripControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         ),
                         responseFields(
+                                fieldWithPath("tripType")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 응답 종류")
+                                        .attributes(field("constraint", "문자열 'PRIVATE'")),
                                 fieldWithPath("id")
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("writer")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("작성자")
+                                        .optional(),
+                                fieldWithPath("writer.nickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 닉네임")
+                                        .attributes(field("constraint", "문자열"))
+                                        .optional(),
+                                fieldWithPath("writer.imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 이미지")
+                                        .attributes(field("constraint", "문자열"))
+                                        .optional(),
+                                fieldWithPath("isWriter")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("본인 작성 여부")
+                                        .attributes(field("constraint", "true: 본인 작성, false: 타인 작성"))
+                                        .optional(),
                                 fieldWithPath("title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
@@ -291,6 +314,21 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null"))
+                                        .optional(),
+                                fieldWithPath("isLike")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("좋아요 여부")
+                                        .attributes(field("constraint", "true : 본인 좋아요, false : 본인 싫어요"))
+                                        .optional(),
+                                fieldWithPath("likeCount")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("좋아요 갯수")
+                                        .attributes(field("constraint", "0 또는 양의 정수"))
+                                        .optional(),
+                                fieldWithPath("publishedDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("공개 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd-hh-mm-ss"))
                                         .optional(),
                                 fieldWithPath("isPublished")
                                         .type(JsonFieldType.BOOLEAN)

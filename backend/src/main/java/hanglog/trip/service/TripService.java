@@ -104,7 +104,7 @@ public class TripService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
-        return TripDetailResponse.of(trip, cities);
+        return TripDetailResponse.personalTrip(trip, cities);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {

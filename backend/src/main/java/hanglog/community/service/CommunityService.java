@@ -9,7 +9,6 @@ import hanglog.city.domain.City;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
-import hanglog.community.dto.response.CommunityTripDetailResponse;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
@@ -19,6 +18,7 @@ import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -86,7 +86,7 @@ public class CommunityService {
         return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
     }
 
-    public CommunityTripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
+    public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
@@ -95,7 +95,7 @@ public class CommunityService {
                 .getCreatedAt();
         final Long likeCount = likeRepository.countLikesByTripId(tripId);
         if (!accessor.isMember()) {
-            return CommunityTripDetailResponse.of(
+            return TripDetailResponse.publishedTrip(
                     trip,
                     cities,
                     false,
@@ -106,7 +106,7 @@ public class CommunityService {
         }
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
         final Boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), tripId);
-        return CommunityTripDetailResponse.of(
+        return TripDetailResponse.publishedTrip(
                 trip,
                 cities,
                 isWriter,

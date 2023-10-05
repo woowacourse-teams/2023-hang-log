@@ -10,11 +10,11 @@ import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
-import hanglog.share.dto.response.SharedTripDetailResponse;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.dto.response.TripDetailResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +42,11 @@ public class SharedTripService {
         return sharedTrip.getTrip().getId();
     }
 
-    public SharedTripDetailResponse getSharedTripDetail(final Long tripId) {
+    public TripDetailResponse getSharedTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
-        return SharedTripDetailResponse.of(trip, cities);
+        return TripDetailResponse.sharedTrip(trip, cities);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
