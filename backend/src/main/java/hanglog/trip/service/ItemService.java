@@ -10,7 +10,6 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
-import hanglog.global.ImageNameParser;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
@@ -136,16 +135,14 @@ public class ItemService {
     }
 
     private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
-        final List<Image> updatedImages = itemUpdateRequest.getImageUrls().stream()
-                .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages))
+        final List<Image> updatedImages = itemUpdateRequest.getImageNames().stream()
+                .map(imageName -> makeUpdatedImage(imageName, originalImages))
                 .toList();
 
         return imageRepository.saveAll(updatedImages);
     }
 
-    private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
-        final String imageName = ImageNameParser.parse(imageUrl);
-
+    private Image makeUpdatedImage(final String imageName, final List<Image> originalImages) {
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))
                 .findAny()
