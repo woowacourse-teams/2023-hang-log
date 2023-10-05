@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useRecoilValue } from 'recoil';
 
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
@@ -55,12 +53,6 @@ const TripItemAddModal = ({
       initialData,
       onSuccess: onClose,
     });
-
-  const [tripImages, setTripImages] = useState(tripItemInformation.imageUrls);
-
-  const handleInitialImages = (images: string[]) => {
-    setTripImages(images);
-  };
 
   return (
     <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
@@ -122,8 +114,7 @@ const TripItemAddModal = ({
             >
               <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
               <ImageInput
-                initialImageUrls={tripImages}
-                handleInitialImage={handleInitialImages}
+                initialImageUrls={tripItemInformation.imageUrls}
                 updateInputValue={updateInputValue}
               />
             </Flex>

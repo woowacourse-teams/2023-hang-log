@@ -20,7 +20,7 @@ interface UseMultipleImageUploadParams {
 export const useMultipleImageUpload = ({
   initialImageUrls,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
-  handleInitialImage = () => {},
+
   onSuccess,
   onError,
 }: UseMultipleImageUploadParams) => {
@@ -55,9 +55,11 @@ export const useMultipleImageUpload = ({
         await Promise.all(
           [...originalImageFiles].map(async (file) => {
             const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
+
             const fileName = file.name;
             const fileType = compressedImageFile.type;
             const convertedFile = new File([compressedImageFile], fileName, { type: fileType });
+
             imageFiles.push(convertedFile);
           })
         );
@@ -75,8 +77,7 @@ export const useMultipleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
-            onSuccess?.([...prevImageUrls, ...imageUrls]);
-            handleInitialImage([...prevImageUrls, ...imageUrls]);
+            onSuccess?.([...initialImageUrls, ...imageUrls]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {
@@ -88,7 +89,15 @@ export const useMultipleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [createToast, imageMutation, maxUploadCount, onError, onSuccess, uploadedImageUrls]
+    [
+      createToast,
+      imageMutation,
+      initialImageUrls,
+      maxUploadCount,
+      onError,
+      onSuccess,
+      uploadedImageUrls,
+    ]
   );
 
   const handleImageRemoval = useCallback(
@@ -102,6 +111,6 @@ export const useMultipleImageUpload = ({
     },
     [onSuccess]
   );
-  console.log(uploadedImageUrls);
+
   return { uploadedImageUrls, handleImageUpload, handleImageRemoval };
 };
