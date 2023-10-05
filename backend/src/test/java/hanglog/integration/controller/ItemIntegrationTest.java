@@ -216,7 +216,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 true,
                 updatedPlaceRequest,
                 getExpenseRequest()
@@ -254,7 +254,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 false,
                 getPlaceRequest(),
                 getExpenseRequest()
@@ -456,7 +456,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 ordinal,
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                itemUpdateRequest.getImageUrls().stream()
+                itemUpdateRequest.getImageNames().stream()
                         .map(ImageNameParser::parse)
                         .toList(),
                 createMockIdPlaceResponseBy(itemUpdateRequest.getPlace()),
