@@ -21,7 +21,6 @@ export const headingStyling = css({
   fontWeight: 400,
 
   '@media screen and (max-width: 600px)': {
-    marginRight: Theme.spacer.spacing4,
     padding: '36px 0',
     fontSize: Theme.heading.medium.fontSize,
   },
