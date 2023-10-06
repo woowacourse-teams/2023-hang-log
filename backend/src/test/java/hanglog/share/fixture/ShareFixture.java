@@ -1,14 +1,13 @@
 package hanglog.share.fixture;
 
 import static hanglog.integration.IntegrationFixture.MEMBER;
-import static hanglog.share.domain.type.SharedStatusType.SHARED;
-import static hanglog.share.domain.type.SharedStatusType.UNSHARED;
 
 import hanglog.city.domain.City;
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.share.domain.SharedTrip;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.type.PublishedStatusType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
 public class ShareFixture {
 
 
-    public static final Trip TRIP = new Trip(
+    public static final Trip TRIP_SHARE = new Trip(
             1L,
             MEMBER,
             "test",
@@ -25,8 +24,23 @@ public class ShareFixture {
             LocalDate.of(2023, 7, 1),
             LocalDate.of(2023, 7, 2),
             "",
-            new SharedTrip(null, null, "sharedCode", SHARED),
+            new SharedTrip(null, null, "sharedCode"),
             new ArrayList<>(),
+            SharedStatusType.SHARED,
+            PublishedStatusType.UNPUBLISHED
+    );
+
+    public static final Trip TRIP_UNSHARE = new Trip(
+            1L,
+            MEMBER,
+            "test",
+            "default-image.png",
+            LocalDate.of(2023, 7, 1),
+            LocalDate.of(2023, 7, 2),
+            "",
+            new SharedTrip(null, null, "sharedCode"),
+            new ArrayList<>(),
+            SharedStatusType.UNSHARED,
             PublishedStatusType.UNPUBLISHED
     );
 
@@ -34,7 +48,7 @@ public class ShareFixture {
             1L,
             "런던 여행 1일차",
             1,
-            TRIP,
+            TRIP_SHARE,
             List.of()
     );
 
@@ -42,7 +56,7 @@ public class ShareFixture {
             2L,
             "런던 여행 2일차",
             2,
-            TRIP,
+            TRIP_SHARE,
             List.of()
     );
 
@@ -69,11 +83,25 @@ public class ShareFixture {
             BigDecimal.valueOf(-33.9248685),
             BigDecimal.valueOf(18.4240553)
     );
-    public static final SharedTrip SHARED_TRIP = new SharedTrip(1L, TRIP, "sharedCode", SHARED);
-    public static final SharedTrip UNSHARED_TRIP = new SharedTrip(2L, TRIP, "sharedCode", UNSHARED);
+    public static final SharedTrip SHARED_TRIP = new SharedTrip(1L, TRIP_SHARE, "sharedCode");
+    public static final SharedTrip UNSHARED_TRIP = new SharedTrip(2L, TRIP_UNSHARE, "sharedCode");
+
+    public static final Trip TRIP_HAS_SHARED_TRIP = new Trip(
+            1L,
+            MEMBER,
+            "test",
+            "default-image.png",
+            LocalDate.of(2023, 7, 1),
+            LocalDate.of(2023, 7, 2),
+            "",
+            SHARED_TRIP,
+            new ArrayList<>(),
+            SharedStatusType.SHARED,
+            PublishedStatusType.UNPUBLISHED
+    );
 
     static {
-        final List<DayLog> dayLogs = TRIP.getDayLogs();
+        final List<DayLog> dayLogs = TRIP_SHARE.getDayLogs();
         dayLogs.add(LONDON_DAYLOG_1);
         dayLogs.add(LONDON_DAYLOG_2);
     }

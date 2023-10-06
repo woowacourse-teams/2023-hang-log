@@ -7,6 +7,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.community.domain.PublishedTrip;
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
@@ -14,8 +16,10 @@ import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -38,6 +42,7 @@ public class TripService {
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
+    private final PublishedTripRepository publishedTripRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -99,7 +104,7 @@ public class TripService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final List<City> cities = getCitiesByTripId(tripId);
-        return TripDetailResponse.of(trip, cities);
+        return TripDetailResponse.personalTrip(trip, cities);
     }
 
     private List<City> getCitiesByTripId(final Long tripId) {
@@ -170,9 +175,41 @@ public class TripService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         tripRepository.delete(trip);
         tripCityRepository.deleteAllByTripId(tripId);
+        publishedTripRepository.deleteByTripId(tripId);
     }
 
     private String generateInitialTitle(final List<City> cites) {
         return cites.get(0).getName() + TITLE_POSTFIX;
+    }
+
+    public void updatePublishedStatus(final Long tripId, final PublishedStatusRequest publishedStatusRequest) {
+        final Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        final boolean isPublished = publishedStatusRequest.getPublishedStatus();
+        if (!isChangedPublishedStatus(isPublished, trip)) {
+            return;
+        }
+        if (isPublished) {
+            publishTrip(trip);
+            return;
+        }
+        unpublishTrip(trip);
+    }
+
+    private boolean isChangedPublishedStatus(final boolean isPublished, final Trip trip) {
+        final PublishedStatusType updatedPublishedStatus = PublishedStatusType.mappingType(isPublished);
+        return !updatedPublishedStatus.equals(trip.getPublishedStatus());
+    }
+
+    private void unpublishTrip(final Trip trip) {
+        trip.changePublishedStatus(false);
+    }
+
+    private void publishTrip(final Trip trip) {
+        trip.changePublishedStatus(true);
+        if (!publishedTripRepository.existsByTripId(trip.getId())) {
+            final PublishedTrip publishedTrip = new PublishedTrip(trip);
+            publishedTripRepository.save(publishedTrip);
+        }
     }
 }

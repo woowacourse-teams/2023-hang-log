@@ -4,7 +4,7 @@ import { Theme } from 'hang-log-design-system';
 
 export const imageStyling = css({
   width: '854px',
-  marginRight: '50px',
+  marginLeft: Theme.spacer.spacing6,
 
   '@media screen and (max-width: 1200px)': {
     width: '65%',
@@ -16,10 +16,11 @@ export const imageStyling = css({
 });
 
 export const headingStyling = css({
-  marginLeft: '50px',
+  margin: `0 ${Theme.spacer.spacing9}`,
+
+  fontWeight: 400,
 
   '@media screen and (max-width: 600px)': {
-    marginLeft: Theme.spacer.spacing4,
     padding: '36px 0',
     fontSize: Theme.heading.medium.fontSize,
   },

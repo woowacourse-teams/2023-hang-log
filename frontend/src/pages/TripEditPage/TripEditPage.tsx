@@ -1,9 +1,8 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRecoilValue } from 'recoil';
 
-import { Flex, FloatingButton, useOverlay, useSelect } from 'hang-log-design-system';
+import { Flex, FloatingButton, useOverlay } from 'hang-log-design-system';
 
 import {
   addButtonStyling,
@@ -18,6 +17,7 @@ import TripMap from '@components/common/TripMap/TripMap';
 import TripItemAddModal from '@components/trip/TripItemAddModal/TripItemAddModal';
 
 import { useTripEditPageQueries } from '@hooks/api/useTripEditPageQueries';
+import { useTripPage } from '@hooks/trip/useTripPage';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
@@ -28,31 +28,20 @@ const TripEditPage = () => {
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { tripData } = useTripEditPageQueries(tripId);
-
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
-  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    tripData.dayLogs[0].id
-  );
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
 
-  const places = useMemo(
-    () =>
-      selectedDayLog.items
-        .filter((item) => item.itemType)
-        .map((item) => ({
-          id: item.id,
-          name: item.title,
-          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-        })),
-    [selectedDayLog.items]
+  const { tripData } = useTripEditPageQueries(tripId);
+  const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripData.tripType,
+    tripId
   );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} />
         <DayLogList
+          tripType={tripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           onTabChange={handleDayLogIdSelectClick}

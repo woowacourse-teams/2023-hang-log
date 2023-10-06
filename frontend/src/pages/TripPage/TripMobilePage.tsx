@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Flex, Tab, Tabs, useSelect } from 'hang-log-design-system';
+import { Button, Flex, Tab, Tabs } from 'hang-log-design-system';
 
 import {
   buttonContainerStyling,
@@ -17,44 +17,36 @@ import TripInformation from '@components/common/TripInformation/TripInformation'
 import TripMap from '@components/common/TripMap/TripMap';
 
 import { useTripQuery } from '@hooks/api/useTripQuery';
-import { useTrip } from '@hooks/trip/useTrip';
+import { useTripPage } from '@hooks/trip/useTripPage';
 
 import { formatMonthDate } from '@utils/formatter';
 
-interface TripMobilePageProps {
-  isShared?: boolean;
-}
+import type { TripTypeData } from '@type/trip';
 
-const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
+import { TRIP_TYPE } from '@constants/trip';
+
+const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
 
-  if (!tripId) throw new Error('해당 여행이 없습니다');
+  if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
-  const { tripData } = useTripQuery(tripId);
-
-  const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
-    tripData.dayLogs[0].id
-  );
-  const selectedDayLog = tripData.dayLogs.find((log) => log.id === selectedDayLogId)!;
-  const { dates } = useTrip(tripId);
-
-  const places = useMemo(
-    () =>
-      selectedDayLog.items
-        .filter((item) => item.itemType)
-        .map((item) => ({
-          id: item.id,
-          name: item.title,
-          coordinate: { lat: item.place!.latitude, lng: item.place!.longitude },
-        })),
-    [selectedDayLog.items]
+  const { tripData } = useTripQuery(tripType, tripId);
+  const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
+    tripType,
+    tripId
   );
 
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation tripId={tripId} isEditable={false} isShared={isShared} />
+        <TripInformation
+          tripType={tripType}
+          tripId={tripId}
+          isEditable={false}
+          isShared={tripType === TRIP_TYPE.SHARED}
+          isPublished={tripType === TRIP_TYPE.PUBLISHED}
+        />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {
@@ -78,9 +70,9 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
           </Tabs>
           {isDaylogShown && (
             <DayLogItem
+              tripType={tripData.tripType}
               tripId={tripId}
               isEditable={false}
-              isShared={isShared}
               {...selectedDayLog}
             />
           )}
@@ -103,7 +95,7 @@ const TripMobilePage = ({ isShared = false }: TripMobilePageProps) => {
           onClick={() => setIsDaylogShown((prev) => !prev)}
           css={buttonStyling}
         >
-          {isDaylogShown ? '지도 보기' : '데이로그 보기'}
+          {isDaylogShown ? '지도 보기' : '일정 보기'}
         </Button>
       </div>
     </Flex>

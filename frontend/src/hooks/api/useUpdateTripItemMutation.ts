@@ -7,6 +7,7 @@ import type { ErrorResponseData } from '@api/interceptors';
 import { putTripItem } from '@api/tripItem/putTripItem';
 
 import { ERROR_CODE } from '@constants/api';
+import { TRIP_TYPE } from '@constants/trip';
 
 export const useUpdateTripItemMutation = () => {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ export const useUpdateTripItemMutation = () => {
   const updateTripItemMutation = useMutation({
     mutationFn: putTripItem,
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
     },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {

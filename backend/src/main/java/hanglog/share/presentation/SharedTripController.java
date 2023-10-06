@@ -30,7 +30,7 @@ public class SharedTripController {
     @GetMapping("/shared-trips/{sharedCode}")
     public ResponseEntity<TripDetailResponse> getSharedTrip(@PathVariable final String sharedCode) {
         final Long tripId = sharedTripService.getTripId(sharedCode);
-        final TripDetailResponse tripDetailResponse = tripService.getTripDetail(tripId);
+        final TripDetailResponse tripDetailResponse = sharedTripService.getSharedTripDetail(tripId);
         return ResponseEntity.ok().body(tripDetailResponse);
     }
 

@@ -20,3 +20,23 @@ export interface NewTripData {
   endDate: string | null;
   cityIds: number[];
 }
+
+export interface RecommendedTripsData {
+  title: string;
+  trips: CommunityTripsItemData[];
+}
+
+export interface CommunityTripsData {
+  lastPageIndex: number;
+  trips: CommunityTripsItemData[];
+}
+
+export interface CommunityTripsItemData extends TripsData {
+  writer: {
+    nickname: string;
+    imageUrl: string;
+  };
+  description: string | null;
+  likeCount: number;
+  isLike: boolean;
+}

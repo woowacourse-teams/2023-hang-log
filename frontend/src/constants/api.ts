@@ -15,18 +15,24 @@ export const END_POINTS = {
   DAY_LOG_ORDER: (tripId: string, dayLogId: number) => `/trips/${tripId}/daylogs/${dayLogId}/order`,
   CREATE_TRIP_ITEM: (tripId: string) => `/trips/${tripId}/items`,
   CHANGE_TRIP_ITEM: (tripId: string, itemId: number) => `/trips/${tripId}/items/${itemId}`,
+  RECOMMENDED_TRIPS: '/community/recommends',
   CITY: '/cities',
-  EXPENSE_CATEGORY: '/categories',
-  EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,
   IMAGES: '/images',
-  SHARE: (tripId: string) => `/trips/${tripId}/share`,
   TOKEN: '/token',
-  LOGIN: (provider: string) => `/login/${provider}`,
   LOGOUT: '/logout',
   MY_PAGE: '/mypage',
   ACCOUNT: '/account',
-  SHARED_TRIP: (code: string) => `/shared-trips/${code}`,
+  EXPENSE_CATEGORY: '/categories',
+  LIKE: (tripId: string) => `/trips/${tripId}/like`,
+  COMMUNITY_TRIPS: (page: number, size: number) => `/community/trips?page=${page}&size=${size}`,
+  EXPENSE: (tripId: string) => `/trips/${tripId}/expense`,
+  SHARE: (tripId: string) => `/trips/${tripId}/share`,
+  LOGIN: (provider: string) => `/login/${provider}`,
+  SHARED_TRIP: (tripId: string) => `/shared-trips/${tripId}`,
   SHARED_EXPENSE: (tripId: string) => `/shared-trips/${tripId}/expense`,
+  PUBLISH: (tripId: string) => `trips/${tripId}/publish`,
+  COMMUNITY_TRIP: (tripId: string) => `/community/trips/${tripId}`,
+  COMMUNITY_EXPENSE: (tripId: string) => `/community/trips/${tripId}/expense`,
 } as const;
 
 export const NETWORK = {
@@ -54,6 +60,7 @@ export const ERROR_CODE = {
   EXPIRED_ACCESS_TOKEN: 9104,
   INVALID_TOKEN_VALIDATE: 9105,
   NULL_REFRESH_TOKEN: 9106,
+  UNAUTHORIZED: 9201,
   UNEXPECTED_TOKEN_ERROR: 9999,
 } as const;
 

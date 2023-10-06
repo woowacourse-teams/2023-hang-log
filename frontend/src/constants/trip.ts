@@ -22,3 +22,9 @@ export const TRIP_ITEM_ADD_CATEGORIES = {
   SPOT: '장소',
   NON_SPOT: '기타',
 } as const;
+
+export const TRIP_TYPE = {
+  PERSONAL: 'PERSONAL',
+  SHARED: 'SHARED',
+  PUBLISHED: 'PUBLISHED',
+};

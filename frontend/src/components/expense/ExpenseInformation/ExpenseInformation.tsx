@@ -22,9 +22,10 @@ import { PATH } from '@constants/path';
 interface ExpenseInformationProps {
   tripId: string;
   isShared: boolean;
+  isPublished: boolean;
 }
 
-const ExpenseInformation = ({ tripId, isShared }: ExpenseInformationProps) => {
+const ExpenseInformation = ({ tripId, isShared, isPublished }: ExpenseInformationProps) => {
   const navigate = useNavigate();
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
@@ -32,12 +33,17 @@ const ExpenseInformation = ({ tripId, isShared }: ExpenseInformationProps) => {
   const { expenseData } = useExpense(tripId);
 
   const goToTripPage = () => {
-    if (!isShared) {
-      navigate(PATH.TRIP(tripId));
+    if (isPublished) {
+      navigate(PATH.COMMUNITY_TRIP(tripId));
       return;
     }
 
-    navigate(PATH.SHARE_TRIP(tripId));
+    if (isShared) {
+      navigate(PATH.SHARE_TRIP(tripId));
+      return;
+    }
+
+    navigate(PATH.TRIP(tripId));
   };
 
   return (

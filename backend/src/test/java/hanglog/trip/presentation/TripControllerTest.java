@@ -18,6 +18,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -34,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.global.ControllerTest;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -248,7 +250,7 @@ class TripControllerTest extends ControllerTest {
         makeTrip();
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
         when(tripService.getTripDetail(1L))
-                .thenReturn(TripDetailResponse.of(LONDON_TRIP, CITIES));
+                .thenReturn(TripDetailResponse.personalTrip(LONDON_TRIP, CITIES));
 
         // when
         final ResultActions resultActions = performGetRequest(1);
@@ -261,10 +263,33 @@ class TripControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         ),
                         responseFields(
+                                fieldWithPath("tripType")
+                                        .type(JsonFieldType.STRING)
+                                        .description("여행 응답 종류")
+                                        .attributes(field("constraint", "문자열 'PRIVATE'")),
                                 fieldWithPath("id")
                                         .type(JsonFieldType.NUMBER)
                                         .description("여행 ID")
                                         .attributes(field("constraint", "양의 정수")),
+                                fieldWithPath("writer")
+                                        .type(JsonFieldType.OBJECT)
+                                        .description("작성자")
+                                        .optional(),
+                                fieldWithPath("writer.nickname")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 닉네임")
+                                        .attributes(field("constraint", "문자열"))
+                                        .optional(),
+                                fieldWithPath("writer.imageUrl")
+                                        .type(JsonFieldType.STRING)
+                                        .description("작성자 이미지")
+                                        .attributes(field("constraint", "문자열"))
+                                        .optional(),
+                                fieldWithPath("isWriter")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("본인 작성 여부")
+                                        .attributes(field("constraint", "true: 본인 작성, false: 타인 작성"))
+                                        .optional(),
                                 fieldWithPath("title")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 제목")
@@ -290,6 +315,25 @@ class TripControllerTest extends ControllerTest {
                                         .description("공유 코드")
                                         .attributes(field("constraint", "문자열 비공유시 null"))
                                         .optional(),
+                                fieldWithPath("isLike")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("좋아요 여부")
+                                        .attributes(field("constraint", "true : 본인 좋아요, false : 본인 싫어요"))
+                                        .optional(),
+                                fieldWithPath("likeCount")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("좋아요 갯수")
+                                        .attributes(field("constraint", "0 또는 양의 정수"))
+                                        .optional(),
+                                fieldWithPath("publishedDate")
+                                        .type(JsonFieldType.STRING)
+                                        .description("공개 날짜")
+                                        .attributes(field("constraint", "yyyy-MM-dd-hh-mm-ss"))
+                                        .optional(),
+                                fieldWithPath("isPublished")
+                                        .type(JsonFieldType.BOOLEAN)
+                                        .description("공개 여부")
+                                        .attributes(field("constraint", "boolean 공개시 true")),
                                 fieldWithPath("cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -663,5 +707,37 @@ class TripControllerTest extends ControllerTest {
                                         .description("여행 ID")
                         )
                 ));
+    }
+
+    @DisplayName("커뮤니티 공개 상태를 변경한다")
+    @Test
+    void updatePublishedStatus() throws Exception {
+        // given
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/publish", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(publishedStatusRequest)))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("publishedStatus")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("공개 상태")
+                                )
+                        )
+                )
+                .andReturn();
     }
 }

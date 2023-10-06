@@ -18,6 +18,7 @@ export const useSingleImageUpload = ({
   onSuccess,
 }: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
+  const isImageUploading = imageMutation.isLoading;
 
   const { createToast } = useToast();
 
@@ -78,5 +79,5 @@ export const useSingleImageUpload = ({
     onSuccess?.(null);
   }, [onSuccess]);
 
-  return { uploadedImageUrl, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageUrl, handleImageUpload, handleImageRemoval };
 };

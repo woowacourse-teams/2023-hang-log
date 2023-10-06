@@ -33,3 +33,5 @@ export const EXPENSE_CATEGORY_CHART_STROKE_WIDTH = 60;
 export const TRIP_ITEM_IMAGE_WIDTH = 250;
 
 export const TRIP_ITEM_IMAGE_HEIGHT = 167;
+
+export const TRIP_INDEX_UNIT_LENGTH = 5;

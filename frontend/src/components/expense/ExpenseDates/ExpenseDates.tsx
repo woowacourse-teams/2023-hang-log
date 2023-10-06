@@ -11,9 +11,10 @@ import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseDatesProps {
   tripId: string;
+  isShared: boolean;
 }
 
-const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {
+const ExpenseDates = ({ tripId, isShared }: ExpenseDatesProps) => {
   const { expenseData, dates } = useExpense(tripId);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
@@ -74,7 +75,7 @@ const ExpenseDates = ({ tripId }: ExpenseDatesProps) => {
           </Flex>
         </>
       ) : (
-        <ExpenseList.Empty tripId={tripId} />
+        <ExpenseList.Empty tripId={tripId} isShared={isShared} />
       )}
     </>
   );

@@ -14,14 +14,18 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.community.domain.PublishedTrip;
+import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -57,6 +61,9 @@ class TripServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private PublishedTripRepository publishedTripRepository;
 
     @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
     @Test
@@ -137,7 +144,7 @@ class TripServiceTest {
 
         // then
         assertThat(actual).usingRecursiveComparison()
-                .isEqualTo(TripDetailResponse.of(LONDON_TRIP, List.of(PARIS, LONDON)));
+                .isEqualTo(TripDetailResponse.personalTrip(LONDON_TRIP, List.of(PARIS, LONDON)));
     }
 
     @DisplayName("update 호출 시 id를 검증하고 save 메서드를 호출한다.")
@@ -184,6 +191,61 @@ class TripServiceTest {
                 .isEqualTo(1001);
     }
 
+    @DisplayName("비공개인 Trip을 공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_FirstPublished() {
+        // given
+        LONDON_TRIP.changePublishedStatus(false);
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
+                .willReturn(false);
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        verify(publishedTripRepository).save(any(PublishedTrip.class));
+        assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.PUBLISHED);
+    }
+
+    @DisplayName("PublishedTrip이 존재하는 비공개 Trip을 공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_NotFirstPublished() {
+        // given
+        LONDON_TRIP.changePublishedStatus(false);
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        publishedTrip.changeStatusToDeleted();
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
+                .willReturn(true);
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.PUBLISHED);
+    }
+
+    @DisplayName("공개된 Trip을 비공개로 변경한다.")
+    @Test
+    void updatePublishedStatus_Unpublished() {
+        // given
+        LONDON_TRIP.changePublishedStatus(true);
+        given(tripRepository.findById(LONDON_TRIP.getId()))
+                .willReturn(Optional.of(LONDON_TRIP));
+        final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(false);
+
+        // when
+        tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
+
+        // then
+        assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.UNPUBLISHED);
+    }
+
     @Nested
     @DisplayName("Trip 일정 변경 시 DayLog 업데이트 테스트")
     class UpdateTripTests {
@@ -212,6 +274,7 @@ class TripServiceTest {
                     "",
                     null,
                     new ArrayList<>(List.of(dayLog1, dayLog2, dayLog3, extraDayLog)),
+                    SharedStatusType.UNSHARED,
                     PublishedStatusType.UNPUBLISHED
             );
         }
@@ -236,6 +299,7 @@ class TripServiceTest {
                     updateRequest.getDescription(),
                     null,
                     trip.getDayLogs(),
+                    SharedStatusType.UNSHARED,
                     PublishedStatusType.UNPUBLISHED
             );
 
@@ -287,6 +351,7 @@ class TripServiceTest {
                                                     dayLog2,
                                                     extraDayLog
                                             ),
+                                            SharedStatusType.UNSHARED,
                                             PublishedStatusType.UNPUBLISHED
                                     )
                             )
@@ -328,6 +393,7 @@ class TripServiceTest {
                                                     DayLog.generateEmpty(5, trip),
                                                     extraDayLog
                                             ),
+                                            SharedStatusType.UNSHARED,
                                             PublishedStatusType.UNPUBLISHED
                                     )
                             )

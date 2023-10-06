@@ -11,9 +11,10 @@ import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseCategoriesProps {
   tripId: string;
+  isShared: boolean;
 }
 
-const ExpenseCategories = ({ tripId }: ExpenseCategoriesProps) => {
+const ExpenseCategories = ({ tripId, isShared }: ExpenseCategoriesProps) => {
   const { categoryExpenseData } = useExpense(tripId);
 
   const { selected: selectedCategoryId, handleSelectClick: handleCategoryIdSelectClick } =
@@ -56,7 +57,7 @@ const ExpenseCategories = ({ tripId }: ExpenseCategoriesProps) => {
           </Flex>
         </>
       ) : (
-        <ExpenseList.Empty tripId={tripId} />
+        <ExpenseList.Empty tripId={tripId} isShared={isShared} />
       )}
     </>
   );

@@ -4,7 +4,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_SHARE_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.share.fixture.ShareFixture.SHARED_TRIP;
-import static hanglog.share.fixture.ShareFixture.TRIP;
+import static hanglog.share.fixture.ShareFixture.TRIP_HAS_SHARED_TRIP;
 import static hanglog.share.fixture.ShareFixture.UNSHARED_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -88,7 +88,7 @@ class SharedTripServiceTest {
         // given
         final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
-                .willReturn(Optional.of(TRIP));
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
 
         // when
         final SharedTripCodeResponse actual = sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest);
@@ -104,7 +104,7 @@ class SharedTripServiceTest {
         // given
         final SharedTripStatusRequest sharedTripStatusRequest = new SharedTripStatusRequest(true);
         given(tripRepository.findById(anyLong()))
-                .willReturn(Optional.of(TRIP));
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
 
         // when
         final SharedTripCodeResponse actual = sharedTripService.updateSharedTripStatus(1L, sharedTripStatusRequest);

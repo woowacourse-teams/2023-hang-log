@@ -17,7 +17,7 @@ const meta = {
   },
   decorators: [
     (Story) => {
-      useTripQuery('1');
+      useTripQuery('PERSONAL', '1');
       useExpenseCategoryQuery();
 
       return <Story />;

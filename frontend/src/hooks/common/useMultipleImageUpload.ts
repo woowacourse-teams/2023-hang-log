@@ -12,6 +12,7 @@ import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 interface UseMultipleImageUploadParams {
   initialImageUrls: string[];
   maxUploadCount?: number;
+  handleInitialImage?: (images: string[]) => void;
   onSuccess?: CallableFunction;
   onError?: CallableFunction;
 }
@@ -23,9 +24,9 @@ export const useMultipleImageUpload = ({
   onError,
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
+  const isImageUploading = imageMutation.isLoading;
 
   const { createToast } = useToast();
-
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
   const handleImageUpload = useCallback(
@@ -76,7 +77,14 @@ export const useMultipleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
-            onSuccess?.([...prevImageUrls, ...imageUrls]);
+            if (imageUrls.length === 1) {
+              onSuccess?.([...imageUrls]);
+              createToast('이미지 업로드에 성공했습니다', 'success');
+
+              return;
+            }
+
+            onSuccess?.([...initialImageUrls, ...imageUrls]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {
@@ -88,7 +96,15 @@ export const useMultipleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [createToast, imageMutation, maxUploadCount, onError, onSuccess, uploadedImageUrls]
+    [
+      createToast,
+      imageMutation,
+      initialImageUrls,
+      maxUploadCount,
+      onError,
+      onSuccess,
+      uploadedImageUrls,
+    ]
   );
 
   const handleImageRemoval = useCallback(
@@ -103,5 +119,5 @@ export const useMultipleImageUpload = ({
     [onSuccess]
   );
 
-  return { uploadedImageUrls, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval };
 };

@@ -17,7 +17,19 @@ export const useTripEditForm = (
     endDate,
     description,
     imageUrl,
-  }: Omit<TripData, 'dayLogs' | 'sharedCode'>,
+  }: Omit<
+    TripData,
+    | 'tripType'
+    | 'dayLogs'
+    | 'sharedCode'
+    | 'isPublished'
+    | 'writer'
+    | 'publishedDate'
+    | 'isLike'
+    | 'likeCount'
+    | 'isWriter'
+    | 'tripType'
+  >,
   onClose: () => void
 ) => {
   const { cityDateInfo, updateCityInfo, updateDateInfo } = useCityDateForm({
@@ -77,6 +89,7 @@ export const useTripEditForm = (
     tripEditMutation.mutate(
       {
         ...tripInfo,
+        imageUrl: tripInfo.imageUrl,
         tripId: String(tripId),
         startDate: tripInfo.startDate!,
         endDate: tripInfo.endDate!,

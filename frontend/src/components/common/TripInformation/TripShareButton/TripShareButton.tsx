@@ -12,6 +12,7 @@ import {
   shareUrlWrapperStyling,
 } from '@components/common/TripInformation/TripShareButton/TripShareButton.style';
 
+import { useTripPublishStatusMutation } from '@hooks/api/useTripPublishMutation';
 import { useTripShareStatusMutation } from '@hooks/api/useTripShareStatusMutation';
 import { useTripShare } from '@hooks/trip/useTripShare';
 
@@ -25,15 +26,20 @@ import ShareIcon from '@assets/svg/share-icon.svg';
 interface TripShareButtonProps {
   tripId: string;
   sharedCode: TripData['sharedCode'];
+  publishState: boolean;
 }
 
-const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
+const TripShareButton = ({ tripId, sharedCode, publishState }: TripShareButtonProps) => {
   const tripShareStatusMutation = useTripShareStatusMutation();
+  const tripPublishStatusMutation = useTripPublishStatusMutation();
+
   const [isSharable, setIsSharable] = useState(!!sharedCode);
   const [sharedUrl, setShareUrl] = useState(
     sharedCode ? BASE_URL + PATH.SHARE_TRIP(sharedCode) : null
   );
-  const { isOpen: isShareMenuOpen, open: openShareMenu, close: closeShareMenu } = useOverlay();
+  const [isPublished, setIsPublished] = useState(publishState);
+
+  const { isOpen: isShareMenuOpen, close: closeShareMenu, toggle: toggleShareMenu } = useOverlay();
   const { handleCopyButtonClick } = useTripShare(sharedUrl);
 
   const handleShareStateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,10 +62,26 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
     );
   };
 
+  const handlePublishStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+
+    tripPublishStatusMutation.mutate(
+      {
+        tripId,
+        publishedStatus: isChecked,
+      },
+      {
+        onSuccess: () => {
+          setIsPublished(isChecked);
+        },
+      }
+    );
+  };
+
   return (
     <Menu closeMenu={closeShareMenu}>
       <button
-        onClick={openShareMenu}
+        onClick={toggleShareMenu}
         type="button"
         aria-label="공유하기 버튼"
         css={shareButtonStyling}
@@ -68,6 +90,10 @@ const TripShareButton = ({ tripId, sharedCode }: TripShareButtonProps) => {
       </button>
       {isShareMenuOpen && (
         <MenuList css={shareContainerStyling}>
+          <div css={shareItemStyling}>
+            <span css={{ color: 'black' }}>커뮤니티 공개</span>
+            <SwitchToggle checkedState={isPublished} onChange={handlePublishStatusChange} />
+          </div>
           <div css={shareItemStyling}>
             <span css={{ color: 'black' }}>여행 공유</span>
             <SwitchToggle checkedState={isSharable} onChange={handleShareStateChange} />

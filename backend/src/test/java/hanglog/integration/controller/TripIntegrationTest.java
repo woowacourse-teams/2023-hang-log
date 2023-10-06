@@ -41,7 +41,7 @@ public class TripIntegrationTest extends IntegrationTest {
                             .usingRecursiveComparison()
                             .ignoringFields("id", "dayLogs", "sharedCode")
                             .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
-                            .isEqualTo(TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
+                            .isEqualTo(TripDetailResponse.personalTrip(LAHGON_TRIP, List.of(LONDON, EDINBURGH)));
                     softly.assertThat(tripDetailResponse.getDayLogs().size()).isEqualTo(4);
                 }
         );
@@ -53,7 +53,7 @@ public class TripIntegrationTest extends IntegrationTest {
         // given
         final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
         final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
-        final TripDetailResponse expected = TripDetailResponse.of(LAHGON_TRIP, List.of(LONDON, EDINBURGH));
+        final TripDetailResponse expected = TripDetailResponse.personalTrip(LAHGON_TRIP, List.of(LONDON, EDINBURGH));
 
         // when
         final ExtractableResponse<Response> response = requestGetTrip(memberTokens, tripId);

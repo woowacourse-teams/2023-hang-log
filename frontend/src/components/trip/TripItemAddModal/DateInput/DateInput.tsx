@@ -20,7 +20,7 @@ interface DateInputProps {
 }
 
 const DateInput = ({ currentCategory, tripId, dayLogId, updateInputValue }: DateInputProps) => {
-  const { dates } = useTrip(tripId);
+  const { dates } = useTrip('PERSONAL', tripId);
 
   useEffect(() => {
     const indexOfDayLogId = dates.findIndex((date) => date.id === dayLogId);

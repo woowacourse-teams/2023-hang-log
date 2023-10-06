@@ -161,7 +161,7 @@ class AuthControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(authService).removeMemberRefreshToken(anyLong());
+        doNothing().when(authService).removeRefreshToken(anyString());
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
@@ -186,7 +186,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
 
         // then
-        verify(authService).removeMemberRefreshToken(anyLong());
+        verify(authService).removeRefreshToken(anyString());
     }
 
 
