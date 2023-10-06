@@ -100,7 +100,7 @@ public class ItemService {
                 updatedPlace,
                 dayLog,
                 makeExpense(itemUpdateRequest.getExpense()),
-                makeUpdatedImages(itemUpdateRequest, item.getImages())
+                makeUpdatedImages(itemUpdateRequest.getImageNames(), item.getImages())
         );
 
         itemRepository.save(updatedItem);
@@ -134,8 +134,8 @@ public class ItemService {
         return categories.get(0);
     }
 
-    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
-        final List<Image> updatedImages = itemUpdateRequest.getImageNames().stream()
+    private List<Image> makeUpdatedImages(final List<String> updateImageNames, final List<Image> originalImages) {
+        final List<Image> updatedImages = updateImageNames.stream()
                 .map(imageName -> makeUpdatedImage(imageName, originalImages))
                 .toList();
 
