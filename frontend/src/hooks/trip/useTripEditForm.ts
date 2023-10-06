@@ -89,6 +89,7 @@ export const useTripEditForm = (
     tripEditMutation.mutate(
       {
         ...tripInfo,
+        imageUrl: tripInfo.imageUrl,
         tripId: String(tripId),
         startDate: tripInfo.startDate!,
         endDate: tripInfo.endDate!,
