@@ -78,6 +78,9 @@ public class AuthService {
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
             return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
         }
+        if (jwtProvider.isValidRefreshAndValidAccess(refreshTokenRequest, accessToken)) {
+            return accessToken;
+        }
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
 

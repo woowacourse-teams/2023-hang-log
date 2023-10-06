@@ -110,4 +110,14 @@ public class JwtProvider {
     public String regenerateAccessToken(final String subject) {
         return createToken(subject, accessExpirationTime);
     }
+
+    public boolean isValidRefreshAndValidAccess(final String refreshToken, final String accessToken) {
+        try {
+            validateRefreshToken(refreshToken);
+            validateAccessToken(accessToken);
+            return true;
+        } catch (final JwtException e) {
+            return false;
+        }
+    }
 }
