@@ -1,5 +1,4 @@
 import App from '@/App';
-import { TRIP_TYPE } from '@/constants/trip';
 
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -20,6 +19,7 @@ import * as Lazy from '@router/lazy';
 import type { TripTypeData } from '@type/trip';
 
 import { PATH } from '@constants/path';
+import { TRIP_TYPE } from '@constants/trip';
 
 const AppRouter = () => {
   const isMobile = useRecoilValue(mediaQueryMobileState);

@@ -6,6 +6,10 @@ import { images } from '@mocks/data/image';
 
 export const imageHandlers = [
   rest.post(END_POINTS.IMAGES, (_, res, ctx) => {
-    return res(ctx.status(HTTP_STATUS_CODE.CREATED), ctx.json({ imageUrls: images }));
+    return res(
+      ctx.status(HTTP_STATUS_CODE.CREATED),
+      ctx.delay(2000),
+      ctx.json({ imageUrls: images })
+    );
   }),
 ];

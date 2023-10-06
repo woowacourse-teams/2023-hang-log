@@ -1,5 +1,3 @@
-import { TRIP_TYPE } from '@/constants/trip';
-
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -24,6 +22,8 @@ import { useTripPage } from '@hooks/trip/useTripPage';
 import { formatMonthDate } from '@utils/formatter';
 
 import type { TripTypeData } from '@type/trip';
+
+import { TRIP_TYPE } from '@constants/trip';
 
 const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
