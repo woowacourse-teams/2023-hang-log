@@ -16,7 +16,7 @@ export const useLikeMutation = () => {
   const likeMutation = useMutation({
     mutationFn: postLike,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['communityTrips', 1] });
+      queryClient.invalidateQueries({ queryKey: ['communityTrips'] });
       queryClient.invalidateQueries({ queryKey: ['recommendedTrips'] });
     },
     onError: (error: ErrorResponseData) => {
@@ -28,6 +28,7 @@ export const useLikeMutation = () => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
         handleTokenError();
       }
+
       createToast('오류가 발생했습니다. 다시 시도해 주세요.');
     },
   });
