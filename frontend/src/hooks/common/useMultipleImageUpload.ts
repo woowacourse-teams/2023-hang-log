@@ -77,7 +77,7 @@ export const useMultipleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
-            if (imageUrls.length === 1) {
+            if (maxUploadCount === 1) {
               onSuccess?.([...imageUrls]);
               createToast('이미지 업로드에 성공했습니다', 'success');
 
