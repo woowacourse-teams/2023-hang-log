@@ -90,7 +90,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
             {description}
           </Text>
         </Box>
-        <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between' }}>
+        <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between', align: 'center' }}>
           <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
             <img alt="작성자 이미지" src={writer.imageUrl} css={writerImageStyling} />
             <Text size="small">{writer.nickname}</Text>
