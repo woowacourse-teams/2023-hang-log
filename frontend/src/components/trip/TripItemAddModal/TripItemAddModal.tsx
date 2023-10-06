@@ -1,12 +1,18 @@
+import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@/constants/ui';
+import { useMultipleImageUpload } from '@/hooks/common/useMultipleImageUpload';
+import { useToast } from '@/hooks/common/useToast';
+
+import { useCallback } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
-import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
+import { Button, Flex, ImageUploadInput, Modal, Theme } from 'hang-log-design-system';
 
 import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapper';
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
 import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
 import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
-import ImageInput from '@components/trip/TripItemAddModal/ImageInput/ImageInput';
+// import ImageInput from '@components/trip/TripItemAddModal/ImageInput/ImageInput';
 import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
 import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
@@ -43,6 +49,7 @@ const TripItemAddModal = ({
   onClose,
 }: TripItemAddModalProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
+  const { createToast } = useToast();
 
   const { tripItemInformation, isTitleError, updateInputValue, disableTitleError, handleSubmit } =
     useAddTripItemForm({
@@ -52,6 +59,24 @@ const TripItemAddModal = ({
       itemId,
       initialData,
       onSuccess: onClose,
+    });
+
+  const handleImageUrlsChange = useCallback(
+    (imageUrls: string[]) => {
+      updateInputValue('imageUrls', imageUrls);
+    },
+    [updateInputValue]
+  );
+
+  const handleImageUploadError = () => {
+    createToast('이미지는 최대 5개 업로드할 수 있습니다.');
+  };
+
+  const { isLoadingMutation, uploadedImageUrls, handleImageUpload, handleImageRemoval } =
+    useMultipleImageUpload({
+      initialImageUrls: tripItemInformation.imageUrls,
+      onSuccess: handleImageUrlsChange,
+      onError: handleImageUploadError,
     });
 
   return (
@@ -113,13 +138,22 @@ const TripItemAddModal = ({
               }}
             >
               <MemoInput value={tripItemInformation.memo} updateInputValue={updateInputValue} />
-              <ImageInput
-                initialImageUrls={tripItemInformation.imageUrls}
-                updateInputValue={updateInputValue}
+              <ImageUploadInput
+                id="image-upload"
+                label="이미지 업로드"
+                imageUrls={uploadedImageUrls}
+                imageAltText="여행 일정 업로드 이미지"
+                supportingText="사진은 최대 5장 올릴 수 있어요."
+                maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
+                multiple
+                onChange={handleImageUpload}
+                onRemove={handleImageRemoval}
               />
             </Flex>
           </Flex>
-          <Button variant="primary">일정 기록 {itemId ? '수정하기' : '추가하기'}</Button>
+          <Button variant={isLoadingMutation ? 'default' : 'primary'} disabled={isLoadingMutation}>
+            일정 기록 {itemId ? '수정하기' : '추가하기'}
+          </Button>
         </form>
       </GoogleMapWrapper>
     </Modal>
