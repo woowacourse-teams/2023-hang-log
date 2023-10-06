@@ -82,7 +82,7 @@ class DayLogServiceTest {
     @Test
     void updateItemOrdinals() {
         // given
-        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(3L, 2L, 1L));
+        final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(4L, 3L, 2L, 1L));
         given(dayLogRepository.findById(1L))
                 .willReturn(Optional.of(DAYLOG_FOR_ITEM_FIXTURE));
         given(itemRepository.findById(1L))
@@ -91,6 +91,8 @@ class DayLogServiceTest {
                 .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(1)));
         given(itemRepository.findById(3L))
                 .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(2)));
+        given(itemRepository.findById(4L))
+                .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(3)));
 
         // when
         dayLogService.updateOrdinalOfItems(1L, request);
@@ -98,9 +100,10 @@ class DayLogServiceTest {
         // then
         final List<Item> items = DAYLOG_FOR_ITEM_FIXTURE.getItems();
         assertSoftly(softly -> {
-            softly.assertThat(items.get(0).getOrdinal()).isEqualTo(3);
-            softly.assertThat(items.get(1).getOrdinal()).isEqualTo(2);
-            softly.assertThat(items.get(2).getOrdinal()).isEqualTo(1);
+            softly.assertThat(items.get(0).getOrdinal()).isEqualTo(4);
+            softly.assertThat(items.get(1).getOrdinal()).isEqualTo(3);
+            softly.assertThat(items.get(2).getOrdinal()).isEqualTo(2);
+            softly.assertThat(items.get(3).getOrdinal()).isEqualTo(1);
         });
     }
 }

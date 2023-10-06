@@ -16,7 +16,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -47,7 +49,7 @@ public class DayLog extends BaseEntity {
 
     @OneToMany(mappedBy = "dayLog", cascade = REMOVE, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
-    private List<Item> items = new ArrayList<>();
+    private Set<Item> items = new HashSet<>();
 
     public DayLog(
             final Long id,
@@ -60,7 +62,7 @@ public class DayLog extends BaseEntity {
         this.title = title;
         this.ordinal = ordinal;
         this.trip = trip;
-        this.items = items;
+        this.items = new HashSet<>(items);
     }
 
     public DayLog(
@@ -82,5 +84,13 @@ public class DayLog extends BaseEntity {
     public LocalDate calculateDate() {
         final LocalDate startDate = trip.getStartDate();
         return startDate.plusDays((long) ordinal - DEFAULT_DAY);
+    }
+
+    public void addItem(final Item item) {
+        items.add(item);
+    }
+
+    public List<Item> getItems() {
+        return new ArrayList<>(items);
     }
 }

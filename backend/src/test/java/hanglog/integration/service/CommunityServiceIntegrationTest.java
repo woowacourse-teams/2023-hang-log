@@ -9,6 +9,8 @@ import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.service.ExpenseService;
+import hanglog.trip.domain.repository.CustomDayLogRepositoryImpl;
+import hanglog.trip.domain.repository.CustomTripCityRepositoryImpl;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -27,12 +29,15 @@ import org.springframework.data.domain.Pageable;
         TripService.class,
         CommunityService.class,
         ExpenseService.class,
-        RecommendStrategies.class
+        RecommendStrategies.class,
+        CustomDayLogRepositoryImpl.class,
+        CustomTripCityRepositoryImpl.class
 })
 public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private TripService tripService;
+
     @Autowired
     private CommunityService communityService;
 

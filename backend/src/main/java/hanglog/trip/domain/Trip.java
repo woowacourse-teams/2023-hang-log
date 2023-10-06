@@ -28,8 +28,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -77,7 +79,7 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
-    private List<DayLog> dayLogs = new ArrayList<>();
+    private Set<DayLog> dayLogs = new HashSet<>();
 
     @OneToOne(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     private SharedTrip sharedTrip;
@@ -104,7 +106,7 @@ public class Trip extends BaseEntity {
         this.endDate = endDate;
         this.description = description;
         this.sharedTrip = sharedTrip;
-        this.dayLogs = dayLogs;
+        this.dayLogs = new HashSet<>(dayLogs);
         this.sharedStatus = sharedStatus;
         this.publishedStatus = publishedStatus;
     }
@@ -168,5 +170,17 @@ public class Trip extends BaseEntity {
 
     public Boolean isWriter(final Long memberId) {
         return this.member.getId().equals(memberId);
+    }
+
+    public void addDayLog(final DayLog dayLog) {
+        dayLogs.add(dayLog);
+    }
+
+    public void removeDayLog(final DayLog dayLog) {
+        dayLogs.remove(dayLog);
+    }
+
+    public List<DayLog> getDayLogs() {
+        return new ArrayList<>(dayLogs);
     }
 }

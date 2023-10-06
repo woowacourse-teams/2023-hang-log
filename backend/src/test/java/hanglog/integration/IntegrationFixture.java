@@ -147,4 +147,14 @@ public class IntegrationFixture {
             new Expense("gbp", new Amount(0.0), CULTURE_CATEGORY),
             List.of(DEFAULT_IMAGE)
     );
+
+    static {
+        addDayLogsToTrip(LAHGON_TRIP, Arrays.asList(DAY_LOG_1));
+    }
+
+    private static void addDayLogsToTrip(final Trip trip, final List<DayLog> dayLogs) {
+        dayLogs.stream()
+                .filter(dayLog -> !trip.getDayLogs().contains(dayLog))
+                .forEachOrdered(trip::addDayLog);
+    }
 }

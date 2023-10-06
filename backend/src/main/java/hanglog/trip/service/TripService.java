@@ -15,7 +15,8 @@ import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
+import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -26,6 +27,7 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,8 @@ public class TripService {
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
     private final PublishedTripRepository publishedTripRepository;
+    private final CustomDayLogRepository customDayLogRepository;
+    private final CustomTripCityRepository customTripCityRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -53,28 +57,22 @@ public class TripService {
     public Long save(final Long memberId, final TripCreateRequest tripCreateRequest) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_MEMBER_ID));
-        final List<City> cites = tripCreateRequest.getCityIds().stream()
-                .map(cityId -> cityRepository.findById(cityId)
-                        .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
-                .toList();
+
+        final List<City> cities = cityRepository.findCitiesByIds(tripCreateRequest.getCityIds());
+        if (cities.size() != tripCreateRequest.getCityIds().size()) {
+            throw new BadRequestException(NOT_FOUND_CITY_ID);
+        }
 
         final Trip newTrip = Trip.of(
                 member,
-                generateInitialTitle(cites),
+                generateInitialTitle(cities),
                 tripCreateRequest.getStartDate(),
                 tripCreateRequest.getEndDate()
         );
-        saveTripCities(cites, newTrip);
-        saveDayLogs(newTrip);
         final Trip trip = tripRepository.save(newTrip);
+        customTripCityRepository.saveAll(cities, trip.getId());
+        saveDayLogs(trip);
         return trip.getId();
-    }
-
-    private void saveTripCities(final List<City> cites, final Trip trip) {
-        final List<TripCity> tripCities = cites.stream()
-                .map(city -> new TripCity(trip, city))
-                .toList();
-        tripCityRepository.saveAll(tripCities);
     }
 
     private void saveDayLogs(final Trip savedTrip) {
@@ -85,7 +83,7 @@ public class TripService {
         final List<DayLog> dayLogs = IntStream.rangeClosed(1, days + 1)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal, savedTrip))
                 .toList();
-        savedTrip.getDayLogs().addAll(dayLogs);
+        customDayLogRepository.saveAll(dayLogs);
     }
 
     public List<TripResponse> getAllTrips(final Long memberId) {
@@ -96,21 +94,15 @@ public class TripService {
     }
 
     private TripResponse getTripResponse(final Trip trip) {
-        final List<City> cities = getCitiesByTripId(trip.getId());
+        final List<City> cities = cityRepository.findCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
 
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = getCitiesByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
         return TripDetailResponse.personalTrip(trip, cities);
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
     }
 
     public void update(final Long tripId, final TripUpdateRequest updateRequest) {
@@ -121,16 +113,16 @@ public class TripService {
                         .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID)))
                 .toList();
 
-        updateTripCities(tripId, trip, cities);
+        updateTripCities(tripId, cities);
         updateDayLog(updateRequest, trip);
         trip.update(updateRequest);
         tripRepository.save(trip);
     }
 
-    private void updateTripCities(final Long tripId, final Trip trip, final List<City> cities) {
+    private void updateTripCities(final Long tripId, final List<City> cities) {
         // TODO: 전체 삭제 후 지우는 로직 말고 다른 방법으로 리팩토링 필요
         tripCityRepository.deleteAllByTripId(tripId);
-        saveTripCities(cities, trip);
+        customTripCityRepository.saveAll(cities, tripId);
     }
 
     private void updateDayLog(final TripUpdateRequest updateRequest, final Trip trip) {
@@ -162,12 +154,17 @@ public class TripService {
         final List<DayLog> emptyDayLogs = IntStream.range(currentPeriod, requestPeriod)
                 .mapToObj(ordinal -> DayLog.generateEmpty(ordinal + 1, trip))
                 .toList();
-        trip.getDayLogs().addAll(emptyDayLogs);
+        emptyDayLogs.forEach(trip::addDayLog);
     }
 
     private void removeRemainingDayLogs(final Trip trip, final int currentPeriod, final int requestPeriod) {
-        trip.getDayLogs()
-                .removeIf(dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod);
+        trip.getDayLogs().stream()
+                .filter(getDayLogOutOfPeriod(currentPeriod, requestPeriod))
+                .forEach(trip::removeDayLog);
+    }
+
+    private Predicate<DayLog> getDayLogOutOfPeriod(final int currentPeriod, final int requestPeriod) {
+        return dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
     }
 
     public void delete(final Long tripId) {

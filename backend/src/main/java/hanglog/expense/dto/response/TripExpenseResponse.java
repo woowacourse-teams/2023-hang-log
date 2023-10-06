@@ -1,6 +1,7 @@
 package hanglog.expense.dto.response;
 
 
+import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityResponse;
 import hanglog.currency.domain.Currency;
 import hanglog.expense.domain.Amount;

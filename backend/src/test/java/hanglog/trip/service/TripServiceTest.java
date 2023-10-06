@@ -9,8 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
@@ -21,7 +23,8 @@ import hanglog.member.domain.repository.MemberRepository;
 import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
+import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -65,6 +68,12 @@ class TripServiceTest {
     @Mock
     private PublishedTripRepository publishedTripRepository;
 
+    @Mock
+    private CustomDayLogRepository customDayLogRepository;
+
+    @Mock
+    private CustomTripCityRepository customTripCityRepository;
+
     @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
     @Test
     void validateTripByMember() {
@@ -88,14 +97,13 @@ class TripServiceTest {
                 List.of(1L, 2L)
         );
 
-        given(cityRepository.findById(1L))
-                .willReturn(Optional.of(LONDON));
-        given(cityRepository.findById(2L))
-                .willReturn(Optional.of(PARIS));
-        given(tripRepository.save(any(Trip.class)))
-                .willReturn(LONDON_TRIP);
         given(memberRepository.findById(anyLong()))
                 .willReturn(Optional.of(MEMBER));
+        given(tripRepository.save(any(Trip.class)))
+                .willReturn(LONDON_TRIP);
+        given(cityRepository.findCitiesByIds(anyList()))
+                .willReturn(List.of(PARIS, LONDON));
+        doNothing().when(customDayLogRepository).saveAll(any());
 
         // when
         final Long actualId = tripService.save(MEMBER.getId(), tripCreateRequest);
@@ -115,12 +123,10 @@ class TripServiceTest {
                 invalidCities
         );
 
-        given(cityRepository.findById(1L))
-                .willReturn(Optional.of(LONDON));
-        given(cityRepository.findById(3L))
-                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
         given(memberRepository.findById(anyLong()))
                 .willReturn(Optional.of(MEMBER));
+        given(cityRepository.findCitiesByIds(anyList()))
+                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
 
         // when & then
         assertThatThrownBy(() -> tripService.save(MEMBER.getId(), tripCreateRequest))
@@ -136,8 +142,8 @@ class TripServiceTest {
         given(tripRepository.findById(1L))
                 .willReturn(Optional.of(LONDON_TRIP));
 
-        given(tripCityRepository.findByTripId(1L))
-                .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
+        given(cityRepository.findCitiesByTripId(anyLong()))
+                .willReturn(List.of(PARIS, LONDON));
 
         // when
         final TripDetailResponse actual = tripService.getTripDetail(1L);
@@ -166,6 +172,7 @@ class TripServiceTest {
                 .willReturn(Optional.of(PARIS));
         given(cityRepository.findById(2L))
                 .willReturn(Optional.of(LONDON));
+        doNothing().when(customTripCityRepository).saveAll(any(), anyLong());
 
         // when
         tripService.update(LONDON_TRIP.getId(), updateRequest);
@@ -326,7 +333,10 @@ class TripServiceTest {
             assertSoftly(
                     softly -> {
                         softly.assertThat(trip.getDayLogs().size()).isEqualTo(4);
-                        softly.assertThat(trip.getDayLogs()).containsExactly(dayLog1, dayLog2, dayLog3, extraDayLog);
+                        softly.assertThat(trip.getDayLogs())
+                                .usingRecursiveComparison()
+                                .ignoringCollectionOrder()
+                                .isEqualTo(List.of(dayLog1, dayLog2, dayLog3, extraDayLog));
                     }
             );
         }
@@ -365,7 +375,10 @@ class TripServiceTest {
             assertSoftly(
                     softly -> {
                         softly.assertThat(actualDayLogs.size()).isEqualTo(3);
-                        softly.assertThat(actualDayLogs).containsExactly(dayLog1, dayLog2, extraDayLog);
+                        softly.assertThat(actualDayLogs)
+                                .usingRecursiveComparison()
+                                .ignoringCollectionOrder()
+                                .isEqualTo(List.of(dayLog1, dayLog2, extraDayLog));
                     }
             );
         }
@@ -410,6 +423,7 @@ class TripServiceTest {
                         softly.assertThat(actualDayLogs)
                                 .usingRecursiveComparison()
                                 .ignoringFields("trip")
+                                .ignoringCollectionOrder()
                                 .isEqualTo(List.of(
                                         dayLog1,
                                         dayLog2,
