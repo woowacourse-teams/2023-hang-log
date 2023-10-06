@@ -1,7 +1,3 @@
-import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@/constants/ui';
-import { useMultipleImageUpload } from '@/hooks/common/useMultipleImageUpload';
-import { useToast } from '@/hooks/common/useToast';
-
 import { useCallback } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -12,7 +8,6 @@ import GoogleMapWrapper from '@components/common/GoogleMapWrapper/GoogleMapWrapp
 import CategoryInput from '@components/trip/TripItemAddModal/CategoryInput/CategoryInput';
 import DateInput from '@components/trip/TripItemAddModal/DateInput/DateInput';
 import ExpenseInput from '@components/trip/TripItemAddModal/ExpenseInput/ExpenseInput';
-// import ImageInput from '@components/trip/TripItemAddModal/ImageInput/ImageInput';
 import MemoInput from '@components/trip/TripItemAddModal/MemoInput/MemoInput';
 import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput';
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
@@ -22,6 +17,8 @@ import {
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
 
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
+import { useToast } from '@hooks/common/useToast';
 import { useAddTripItemForm } from '@hooks/trip/useAddTripItemForm';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
@@ -30,6 +27,7 @@ import type { TripTypeData } from '@type/trip';
 import type { TripItemFormData } from '@type/tripItem';
 
 import { TRIP_TYPE } from '@constants/trip';
+import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface TripItemAddModalProps {
   tripId: string;
