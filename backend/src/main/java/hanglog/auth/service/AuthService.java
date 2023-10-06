@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static hanglog.global.exception.ExceptionCode.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -77,6 +79,9 @@ public class AuthService {
             final RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest)
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
             return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
+        }
+        if (jwtProvider.isValidRefreshAndValidAccess(refreshTokenRequest, accessToken)) {
+            return accessToken;
         }
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
