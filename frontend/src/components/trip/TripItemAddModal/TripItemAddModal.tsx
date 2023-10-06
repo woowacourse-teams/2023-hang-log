@@ -70,7 +70,7 @@ const TripItemAddModal = ({
     createToast('이미지는 최대 5개 업로드할 수 있습니다.');
   };
 
-  const { isLoadingMutation, uploadedImageUrls, handleImageUpload, handleImageRemoval } =
+  const { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval } =
     useMultipleImageUpload({
       initialImageUrls: tripItemInformation.imageUrls,
       onSuccess: handleImageUrlsChange,
@@ -149,7 +149,7 @@ const TripItemAddModal = ({
               />
             </Flex>
           </Flex>
-          <Button variant={isLoadingMutation ? 'default' : 'primary'} disabled={isLoadingMutation}>
+          <Button variant={isImageUploading ? 'default' : 'primary'} disabled={isImageUploading}>
             일정 기록 {itemId ? '수정하기' : '추가하기'}
           </Button>
         </form>

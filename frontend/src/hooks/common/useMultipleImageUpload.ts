@@ -25,7 +25,7 @@ export const useMultipleImageUpload = ({
   onError,
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
-  const isLoadingMutation = imageMutation.isLoading;
+  const isImageUploading = imageMutation.isLoading;
 
   const { createToast } = useToast();
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
@@ -113,5 +113,5 @@ export const useMultipleImageUpload = ({
     [onSuccess]
   );
 
-  return { isLoadingMutation, uploadedImageUrls, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval };
 };
