@@ -159,7 +159,7 @@ class TripServiceTest {
         // given
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 5),
                 "추가된 여행 설명",
@@ -275,7 +275,7 @@ class TripServiceTest {
                     2L,
                     MEMBER,
                     "파리 여행",
-                    "https://hanglog.com/img/default-image.png",
+                    "default-image.png",
                     LocalDate.of(2023, 7, 1),
                     LocalDate.of(2023, 7, 3),
                     "",
@@ -289,7 +289,7 @@ class TripServiceTest {
         void changeDate(final int startDay, final int endDay) {
             updateRequest = new TripUpdateRequest(
                     "변경된 타이틀",
-                    "https://hanglog.com/img/default-image.png",
+                    "default-image.png",
                     LocalDate.of(2023, 7, startDay),
                     LocalDate.of(2023, 7, endDay),
                     "추가된 여행 설명",

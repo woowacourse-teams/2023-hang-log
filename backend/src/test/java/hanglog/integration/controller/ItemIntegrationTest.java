@@ -402,7 +402,7 @@ class ItemIntegrationTest extends IntegrationTest {
                 5.0,
                 "memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 getPlaceRequest(),
                 getExpenseRequest()
         );
