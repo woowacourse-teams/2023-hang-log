@@ -1,5 +1,9 @@
 package hanglog.auth.service;
 
+import static hanglog.global.exception.ExceptionCode.FAIL_TO_GENERATE_RANDOM_NICKNAME;
+import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
+import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
+
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
@@ -15,8 +19,6 @@ import hanglog.trip.domain.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static hanglog.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
@@ -79,8 +81,8 @@ public class AuthService {
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
 
-    public void removeMemberRefreshToken(final Long memberId) {
-        refreshTokenRepository.deleteByMemberId(memberId);
+    public void removeRefreshToken(final String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 
     public void deleteAccount(final Long memberId) {
