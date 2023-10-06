@@ -20,7 +20,6 @@ interface UseMultipleImageUploadParams {
 export const useMultipleImageUpload = ({
   initialImageUrls,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
-
   onSuccess,
   onError,
 }: UseMultipleImageUploadParams) => {
@@ -78,6 +77,13 @@ export const useMultipleImageUpload = ({
         { images: imageUploadFormData },
         {
           onSuccess: ({ imageUrls }) => {
+            if (imageUrls.length === 1) {
+              onSuccess?.([...imageUrls]);
+              createToast('이미지 업로드에 성공했습니다', 'success');
+
+              return;
+            }
+
             onSuccess?.([...initialImageUrls, ...imageUrls]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
