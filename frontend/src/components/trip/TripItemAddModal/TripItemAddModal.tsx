@@ -1,5 +1,3 @@
-import { TRIP_TYPE } from '@/constants/trip';
-
 import { useRecoilValue } from 'recoil';
 
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
@@ -24,6 +22,8 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import type { TripTypeData } from '@type/trip';
 import type { TripItemFormData } from '@type/tripItem';
+
+import { TRIP_TYPE } from '@constants/trip';
 
 interface TripItemAddModalProps {
   tripId: string;
