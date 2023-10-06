@@ -29,7 +29,9 @@ export const useTripQuery = (tripType: TripTypeData, tripId: string) => {
     queryFn.trip = () => getSharedTrip(tripId);
   }
 
-  const { data } = useQuery<TripData, AxiosError>([tripType, tripId], queryFn.trip);
+  const { data } = useQuery<TripData, AxiosError>([tripType, tripId], queryFn.trip, {
+    cacheTime: 0,
+  });
 
   return { tripData: data! };
 };
