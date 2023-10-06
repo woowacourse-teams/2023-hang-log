@@ -20,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static hanglog.global.exception.ExceptionCode.*;
-
 @Service
 @Transactional
 @RequiredArgsConstructor

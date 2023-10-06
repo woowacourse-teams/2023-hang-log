@@ -116,7 +116,7 @@ public class JwtProvider {
             validateRefreshToken(refreshToken);
             validateAccessToken(accessToken);
             return true;
-        } catch (JwtException e) {
+        } catch (final JwtException e) {
             return false;
         }
     }
