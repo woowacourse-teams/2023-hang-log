@@ -1,5 +1,9 @@
 package hanglog.auth.service;
 
+import static hanglog.global.exception.ExceptionCode.FAIL_TO_GENERATE_RANDOM_NICKNAME;
+import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
+import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
+
 import hanglog.auth.domain.BearerAuthorizationExtractor;
 import hanglog.auth.domain.JwtProvider;
 import hanglog.auth.domain.MemberTokens;
@@ -15,8 +19,6 @@ import hanglog.trip.domain.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static hanglog.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
@@ -75,6 +77,9 @@ public class AuthService {
             final RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest)
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
             return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
+        }
+        if (jwtProvider.isValidRefreshAndValidAccess(refreshTokenRequest, accessToken)) {
+            return accessToken;
         }
         throw new AuthException(FAIL_TO_VALIDATE_TOKEN);
     }
