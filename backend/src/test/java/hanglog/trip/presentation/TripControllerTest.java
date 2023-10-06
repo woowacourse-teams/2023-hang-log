@@ -465,7 +465,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -524,7 +524,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -550,7 +550,7 @@ class TripControllerTest extends ControllerTest {
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -576,7 +576,7 @@ class TripControllerTest extends ControllerTest {
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "updatedTitle",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 updateDescription,
@@ -600,7 +600,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 null,
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -624,7 +624,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 null,
                 "추가된 여행 설명",
@@ -648,7 +648,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -672,7 +672,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
