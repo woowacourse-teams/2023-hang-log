@@ -78,7 +78,13 @@ const TripItemAddModal = ({
     });
 
   return (
-    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
+    <Modal
+      css={wrapperStyling}
+      isOpen={isOpen}
+      closeModal={onClose}
+      isBackdropClosable={false}
+      hasCloseButton
+    >
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ gap: Theme.spacer.spacing4, direction: isMobile ? 'column' : 'row' }}>
