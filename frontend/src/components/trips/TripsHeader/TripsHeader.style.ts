@@ -15,13 +15,16 @@ export const imageStyling = css({
   },
 });
 
-export const headingStyling = css({
-  margin: `0 ${Theme.spacer.spacing9}`,
+export const headingStyling = () =>
+  css({
+    margin: `0 ${Theme.spacer.spacing9}`,
 
-  fontWeight: 400,
+    fontWeight: 400,
+    wordBreak: 'keep-all',
 
-  '@media screen and (max-width: 600px)': {
-    padding: '36px 0',
-    fontSize: Theme.heading.medium.fontSize,
-  },
-});
+    '@media screen and (max-width: 600px)': {
+      margin: `0 ${Theme.spacer.spacing5}`,
+      padding: '48px 0 16px 0',
+      fontSize: Theme.heading.medium.fontSize,
+    },
+  });
