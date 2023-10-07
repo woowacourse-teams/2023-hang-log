@@ -27,13 +27,7 @@ const CommunityTripPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation
-          tripType={tripData.tripType}
-          tripId={tripId}
-          isEditable={false}
-          isShared
-          isPublished
-        />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} isEditable={false} />
         <DayLogList
           tripType={tripData.tripType}
           tripId={tripId}

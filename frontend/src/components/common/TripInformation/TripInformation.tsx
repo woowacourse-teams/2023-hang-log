@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { memo, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -33,18 +35,11 @@ interface TripInformationProps {
   tripType: TripTypeData;
   tripId: string;
   isEditable?: boolean;
-  isShared?: boolean;
-  isPublished?: boolean;
 }
 
-const TripInformation = ({
-  isEditable = true,
-  isShared = false,
-  isPublished = false,
-  tripId,
-  tripType,
-}: TripInformationProps) => {
+const TripInformation = ({ isEditable = true, tripId, tripType }: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
+  const isPublished = tripType === TRIP_TYPE.PUBLISHED;
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
 
@@ -91,7 +86,7 @@ const TripInformation = ({
               <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
                 <img
                   alt="작성자 이미지"
-                  src={tripData.writer.imageUrl || ''}
+                  src={tripData.writer.imageUrl ?? ''}
                   css={writerImageStyling}
                 />
                 <Text size="small">{tripData.writer.nickname}</Text>
@@ -114,10 +109,9 @@ const TripInformation = ({
             <TripEditButtons tripId={tripId} openEditModal={openEditModal} />
           ) : (
             <TripButtons
+              tripType={tripType}
               tripId={tripId}
               sharedCode={tripData.sharedCode}
-              isShared={isShared}
-              isPublished={isPublished}
               publishState={tripData.isPublished}
             />
           )}
