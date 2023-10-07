@@ -1,4 +1,4 @@
-import { TRIP_TYPE } from '@/constants/trip';
+import { useTrip } from '@/hooks/trip/useTrip';
 
 import { memo, useState } from 'react';
 
@@ -21,13 +21,13 @@ import {
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
 
-import { useTrip } from '@hooks/trip/useTrip';
-
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
 
-import type { TripTypeData } from '@type/trip';
+import type { TripData, TripTypeData } from '@type/trip';
+
+import { TRIP_TYPE } from '@constants/trip';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
@@ -35,15 +35,22 @@ interface TripInformationProps {
   tripType: TripTypeData;
   tripId: string;
   isEditable?: boolean;
+  initialTripData?: TripData;
 }
 
-const TripInformation = ({ isEditable = true, tripId, tripType }: TripInformationProps) => {
+const TripInformation = ({
+  isEditable = true,
+  tripId,
+  tripType,
+  initialTripData,
+}: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
   const isPublished = tripType === TRIP_TYPE.PUBLISHED;
+  const { tripData: savedTripData } = useTrip(tripType, tripId);
+
+  const tripData = initialTripData || savedTripData;
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
-
-  const { tripData } = useTrip(tripType, tripId);
 
   const [likeCount, setLikeCount] = useState(tripData.likeCount);
 
