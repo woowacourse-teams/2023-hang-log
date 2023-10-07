@@ -17,28 +17,30 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
 
+import type { TripTypeData } from '@type/trip';
+
 import { PATH } from '@constants/path';
+import { TRIP_TYPE } from '@constants/trip';
 
 interface ExpenseInformationProps {
   tripId: string;
-  isShared: boolean;
-  isPublished: boolean;
+  tripType: TripTypeData;
 }
 
-const ExpenseInformation = ({ tripId, isShared, isPublished }: ExpenseInformationProps) => {
+const ExpenseInformation = ({ tripId, tripType }: ExpenseInformationProps) => {
   const navigate = useNavigate();
 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { expenseData } = useExpense(tripId);
+  const { expenseData } = useExpense(tripId, tripType);
 
   const goToTripPage = () => {
-    if (isPublished) {
+    if (tripType === TRIP_TYPE.PUBLISHED) {
       navigate(PATH.COMMUNITY_TRIP(tripId));
       return;
     }
 
-    if (isShared) {
+    if (tripType === TRIP_TYPE.SHARED) {
       navigate(PATH.SHARE_TRIP(tripId));
       return;
     }

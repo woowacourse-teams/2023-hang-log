@@ -7,15 +7,17 @@ import { useExpense } from '@hooks/expense/useExpense';
 
 import { formatDate, formatNumberToMoney } from '@utils/formatter';
 
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
+import type { TripTypeData } from '@type/trip';
+
+import { CURRENCY_ICON, DEFAULT_CURRENCY, TRIP_TYPE } from '@constants/trip';
 
 interface ExpenseCategoriesProps {
   tripId: string;
-  isShared: boolean;
+  tripType: TripTypeData;
 }
 
-const ExpenseCategories = ({ tripId, isShared }: ExpenseCategoriesProps) => {
-  const { categoryExpenseData } = useExpense(tripId);
+const ExpenseCategories = ({ tripId, tripType }: ExpenseCategoriesProps) => {
+  const { categoryExpenseData } = useExpense(tripId, tripType);
 
   const { selected: selectedCategoryId, handleSelectClick: handleCategoryIdSelectClick } =
     useSelect(categoryExpenseData.categoryItems[0].category.id);
@@ -57,7 +59,7 @@ const ExpenseCategories = ({ tripId, isShared }: ExpenseCategoriesProps) => {
           </Flex>
         </>
       ) : (
-        <ExpenseList.Empty tripId={tripId} isShared={isShared} />
+        <ExpenseList.Empty tripId={tripId} isShared={tripType !== TRIP_TYPE.PERSONAL} />
       )}
     </>
   );

@@ -11,14 +11,16 @@ import {
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
+import type { TripTypeData } from '@type/trip';
+
 import { EXPENSE_LIST_FILTERS } from '@constants/expense';
 
 interface ExpenseListProps {
   tripId: string;
-  isShared: boolean;
+  tripType: TripTypeData;
 }
 
-const ExpenseListSection = ({ tripId, isShared }: ExpenseListProps) => {
+const ExpenseListSection = ({ tripId, tripType }: ExpenseListProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
@@ -47,9 +49,9 @@ const ExpenseListSection = ({ tripId, isShared }: ExpenseListProps) => {
         </ToggleGroup>
       </Flex>
       {selectedFilter === EXPENSE_LIST_FILTERS.DAY_LOG ? (
-        <ExpenseDates tripId={tripId} isShared={isShared} />
+        <ExpenseDates tripId={tripId} tripType={tripType} />
       ) : (
-        <ExpenseCategories tripId={tripId} isShared={isShared} />
+        <ExpenseCategories tripId={tripId} tripType={tripType} />
       )}
     </section>
   );
