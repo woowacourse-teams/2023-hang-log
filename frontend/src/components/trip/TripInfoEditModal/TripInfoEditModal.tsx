@@ -4,6 +4,7 @@ import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
 import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput';
 import {
+  buttonStyling,
   dateInputSupportingText,
   formStyling,
   textareaStyling,
@@ -88,7 +89,9 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           css={textareaStyling}
         />
         <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
-        <Button variant="primary">여행 정보 수정하기</Button>
+        <Button variant="primary" css={buttonStyling}>
+          여행 정보 수정하기
+        </Button>
       </form>
     </Modal>
   );

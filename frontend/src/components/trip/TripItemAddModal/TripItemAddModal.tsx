@@ -13,6 +13,7 @@ import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput'
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
 import TitleInput from '@components/trip/TripItemAddModal/TitleInput/TitleInput';
 import {
+  buttonStyling,
   formStyling,
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
@@ -87,11 +88,17 @@ const TripItemAddModal = ({
     >
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
-          <Flex styles={{ gap: Theme.spacer.spacing4, direction: isMobile ? 'column' : 'row' }}>
+          <Flex
+            styles={{
+              gap: Theme.spacer.spacing4,
+              direction: isMobile ? 'column' : 'row',
+              marginBottom: Theme.spacer.spacing4,
+            }}
+          >
             <Flex
               styles={{
                 direction: 'column',
-                gap: '16px',
+                gap: Theme.spacer.spacing3,
                 width: isMobile ? '100%' : '312px',
                 align: 'stretch',
               }}
@@ -155,7 +162,11 @@ const TripItemAddModal = ({
               />
             </Flex>
           </Flex>
-          <Button variant={isImageUploading ? 'default' : 'primary'} disabled={isImageUploading}>
+          <Button
+            variant={isImageUploading ? 'default' : 'primary'}
+            disabled={isImageUploading}
+            css={buttonStyling}
+          >
             일정 기록 {itemId ? '수정하기' : '추가하기'}
           </Button>
         </form>
