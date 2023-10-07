@@ -81,7 +81,8 @@ export const descriptionStyling = css({
 
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  wordBreak: 'break-word',
+  wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
 });
 
 export const skeletonDurationTextStyling = css({

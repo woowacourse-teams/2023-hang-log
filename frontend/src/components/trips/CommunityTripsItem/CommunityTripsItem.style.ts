@@ -68,7 +68,7 @@ export const badgeBoxStyling = css({
   },
 });
 
-export const durationAndDescriptionStyling = css({
+export const durationStyling = css({
   marginBottom: Theme.spacer.spacing1,
 
   '@media screen and (max-width: 600px)': {
@@ -76,19 +76,18 @@ export const durationAndDescriptionStyling = css({
   },
 });
 
-export const durationTextStyling = css({
+export const descriptionStyling = css({
   display: '-webkit-box',
+  '-webkit-line-clamp': '2',
+  '-webkit-box-orient': 'vertical',
 
   marginTop: '4px',
   width: '100%',
 
-  color: Theme.color.gray700,
-
-  textOverflow: 'ellipsis',
   overflow: 'hidden',
-  wordBreak: 'break-word',
-  '-webkit-line-clamp': '2',
-  '-webkit-box-orient': 'vertical',
+  textOverflow: 'ellipsis',
+  wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
 });
 
 export const skeletonDurationTextStyling = css({
