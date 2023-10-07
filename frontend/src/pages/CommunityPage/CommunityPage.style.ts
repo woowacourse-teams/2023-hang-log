@@ -74,6 +74,11 @@ export const subTitleStyling = ({ topPadding = 0, bottomPadding = 0 }: subTitleS
 
     fontSize: Theme.heading.small.fontSize,
     fontWeight: 600,
+
+    '@media screen and (max-width: 600px)': {
+      paddingLeft: Theme.spacer.spacing5,
+      fontSize: Theme.heading.xSmall.fontSize,
+    },
   });
 };
 
