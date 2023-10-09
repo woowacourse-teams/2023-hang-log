@@ -23,7 +23,19 @@ public class CustomDayLogRepositoryImpl implements CustomDayLogRepository {
         namedParameterJdbcTemplate.batchUpdate(sql, getDayLogToSqlParameterSources(dayLogs));
     }
 
-    private MapSqlParameterSource[] getDayLogToSqlParameterSources(final List<DayLog> dayLogs)  {
+    @Override
+    public List<Long> findDayLogIdsByTripIds(final List<Long> tripIds) {
+        final String sql = """
+                SELECT d.id
+                FROM day_log d
+                WHERE d.trip_id IN (:tripIds)
+                """;
+        final MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("tripIds", tripIds);
+        return namedParameterJdbcTemplate.queryForList(sql, parameters, Long.class);
+    }
+
+    private MapSqlParameterSource[] getDayLogToSqlParameterSources(final List<DayLog> dayLogs) {
         return dayLogs.stream()
                 .map(this::getDayLogToSqlParameterSource)
                 .toArray(MapSqlParameterSource[]::new);
