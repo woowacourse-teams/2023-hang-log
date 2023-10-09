@@ -12,7 +12,7 @@ import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,9 @@ public class MemberDeleteEventListener {
     private final TripRepository tripRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @EventListener
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(fallbackExecution = true)
     public void delete(final MemberDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
         List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
