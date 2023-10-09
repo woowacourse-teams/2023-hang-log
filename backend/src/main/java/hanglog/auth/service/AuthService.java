@@ -19,6 +19,7 @@ import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.CustomTripRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.dto.ItemElement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -99,11 +100,10 @@ public class AuthService {
     public void deleteAccount(final Long memberId) {
         final List<Long> tripIds = customTripRepository.findTripIdsByMemberId(memberId);
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(tripIds);
-        final List<Long> itemIds = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
+        List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
 
-
-        refreshTokenRepository.deleteByMemberId(memberId);
-        tripRepository.deleteAllByMemberId(memberId);
-        memberRepository.deleteById(memberId);
+//        refreshTokenRepository.deleteByMemberId(memberId);
+//        tripRepository.deleteAllByMemberId(memberId);
+//        memberRepository.deleteById(memberId);
     }
 }

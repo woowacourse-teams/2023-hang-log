@@ -1,8 +1,9 @@
 package hanglog.trip.domain.repository;
 
+import hanglog.trip.dto.ItemElement;
 import java.util.List;
 
 public interface CustomItemRepository {
 
-    List<Long> findItemIdsByDayLogIds(final List<Long> dayLogIds);
+    List<ItemElement> findItemIdsByDayLogIds(final List<Long> dayLogIds);
 }
