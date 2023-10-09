@@ -17,12 +17,14 @@ import hanglog.global.exception.AuthException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.CustomTripRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
+import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
@@ -53,6 +55,8 @@ public class AuthService {
     private final ImageRepository imageRepository;
     private final DayLogRepository dayLogRepository;
     private final ItemRepository itemRepository;
+    private final SharedTripRepository sharedTripRepository;
+    private final PublishedTripRepository publishedTripRepository;
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
@@ -133,6 +137,10 @@ public class AuthService {
         itemRepository.deleteByIds(itemIds);
 
         dayLogRepository.deleteByIds(dayLogIds);
+
+        sharedTripRepository.deleteByTripIds(tripIds);
+
+        publishedTripRepository.deleteByTripIds(tripIds);
 
         tripRepository.deleteByMemberId(memberId);
 
