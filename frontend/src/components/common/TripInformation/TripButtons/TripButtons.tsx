@@ -38,7 +38,7 @@ export const TripButtons = ({ tripType, tripId, sharedCode, publishState }: Trip
 
   const {
     tripData: { isWriter },
-  } = useTrip(tripType as TripTypeData, tripId);
+  } = useTrip(tripType, tripId);
 
   const {
     isOpen: isDeleteModalOpen,

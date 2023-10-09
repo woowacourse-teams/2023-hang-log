@@ -1,5 +1,3 @@
-import { useTrip } from '@/hooks/trip/useTrip';
-
 import { memo, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -20,6 +18,8 @@ import {
   writerImageStyling,
 } from '@components/common/TripInformation/TripInformation.style';
 import TripInfoEditModal from '@components/trip/TripInfoEditModal/TripInfoEditModal';
+
+import { useTrip } from '@hooks/trip/useTrip';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
