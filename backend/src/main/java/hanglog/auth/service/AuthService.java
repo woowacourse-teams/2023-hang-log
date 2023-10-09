@@ -16,6 +16,10 @@ import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.member.event.MemberDeleteEvent;
+import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.trip.domain.repository.CustomTripRepository;
+import hanglog.trip.domain.repository.PublishedTripRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -30,7 +34,10 @@ public class AuthService {
     private static final int FOUR_DIGIT_RANGE = 10000;
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PublishedTripRepository publishedTripRepository;
     private final MemberRepository memberRepository;
+    private final CustomTripRepository customTripRepository;
+    private final SharedTripRepository sharedTripRepository;
     private final OauthProviders oauthProviders;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
@@ -90,6 +97,10 @@ public class AuthService {
     }
 
     public void deleteAccount(final Long memberId) {
-        publisher.publishEvent(new MemberDeleteEvent(memberId));
+        final List<Long> tripIds = customTripRepository.findTripIdsByMemberId(memberId);
+        publishedTripRepository.deleteByTripIds(tripIds);
+        sharedTripRepository.deleteByTripIds(tripIds);
+        memberRepository.deleteByMemberId(memberId);
+        publisher.publishEvent(new MemberDeleteEvent(tripIds, memberId));
     }
 }
