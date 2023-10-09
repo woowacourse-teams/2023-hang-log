@@ -39,30 +39,37 @@ public class MemberDeleteEventListener {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
         List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
 
+        deletePlaces(itemElements);
+        deleteExpenses(itemElements);
+        deleteImageAndItems(itemElements);
+
+        dayLogRepository.deleteByIds(dayLogIds);
+        tripRepository.deleteByMemberId(event.getMemberId());
+        refreshTokenRepository.deleteByMemberId(event.getMemberId());
+    }
+
+    private void deletePlaces(final List<ItemElement> itemElements) {
         final List<Long> placeIds = itemElements.stream()
                 .map(ItemElement::getPlaceId)
                 .toList();
 
         placeRepository.deleteByIds(placeIds);
+    }
 
+    private void deleteExpenses(final List<ItemElement> itemElements) {
         final List<Long> expenseIds = itemElements.stream()
                 .map(ItemElement::getExpenseId)
                 .toList();
 
         expenseRepository.deleteByIds(expenseIds);
+    }
 
+    private void deleteImageAndItems(final List<ItemElement> itemElements) {
         final List<Long> itemIds = itemElements.stream()
                 .map(ItemElement::getItemId)
                 .toList();
 
         imageRepository.deleteByItemIds(itemIds);
-
         itemRepository.deleteByIds(itemIds);
-
-        dayLogRepository.deleteByIds(dayLogIds);
-
-        tripRepository.deleteByMemberId(event.getMemberId());
-
-        refreshTokenRepository.deleteByMemberId(event.getMemberId());
     }
 }
