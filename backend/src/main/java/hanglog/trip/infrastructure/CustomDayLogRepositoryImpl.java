@@ -1,6 +1,7 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.infrastructure;
 
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

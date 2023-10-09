@@ -1,8 +1,9 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.infrastructure;
 
 import static hanglog.global.type.StatusType.USABLE;
 
 import hanglog.city.domain.City;
+import hanglog.trip.domain.repository.CustomTripCityRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.infrastructure;
 
+import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.infrastructure;
 
+import hanglog.trip.domain.repository.CustomTripRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
