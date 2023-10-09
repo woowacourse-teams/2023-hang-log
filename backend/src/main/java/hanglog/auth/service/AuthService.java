@@ -12,23 +12,12 @@ import hanglog.auth.domain.oauthprovider.OauthProvider;
 import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
-import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.AuthException;
-import hanglog.image.domain.repository.ImageRepository;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.share.domain.repository.SharedTripRepository;
-import hanglog.trip.domain.repository.CustomDayLogRepository;
-import hanglog.trip.domain.repository.CustomItemRepository;
-import hanglog.trip.domain.repository.CustomTripRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.domain.repository.ItemRepository;
-import hanglog.trip.domain.repository.PlaceRepository;
-import hanglog.trip.domain.repository.PublishedTripRepository;
-import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.dto.ItemElement;
-import java.util.List;
+import hanglog.member.event.MemberDeleteEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,23 +29,12 @@ public class AuthService {
     private static final int MAX_TRY_COUNT = 5;
     private static final int FOUR_DIGIT_RANGE = 10000;
 
+    private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
     private final OauthProviders oauthProviders;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final TripRepository tripRepository;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
-
-    private final CustomTripRepository customTripRepository;
-    private final CustomDayLogRepository customDayLogRepository;
-    private final CustomItemRepository customItemRepository;
-    private final PlaceRepository placeRepository;
-    private final ExpenseRepository expenseRepository;
-    private final ImageRepository imageRepository;
-    private final DayLogRepository dayLogRepository;
-    private final ItemRepository itemRepository;
-    private final SharedTripRepository sharedTripRepository;
-    private final PublishedTripRepository publishedTripRepository;
+    private final ApplicationEventPublisher publisher;
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
@@ -112,40 +90,6 @@ public class AuthService {
     }
 
     public void deleteAccount(final Long memberId) {
-        final List<Long> tripIds = customTripRepository.findTripIdsByMemberId(memberId);
-        final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(tripIds);
-        List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
-
-        final List<Long> placeIds = itemElements.stream()
-                .map(ItemElement::getPlaceId)
-                .toList();
-
-        placeRepository.deleteByIds(placeIds);
-
-        final List<Long> expenseIds = itemElements.stream()
-                .map(ItemElement::getExpenseId)
-                .toList();
-
-        expenseRepository.deleteByIds(expenseIds);
-
-        final List<Long> itemIds = itemElements.stream()
-                .map(ItemElement::getItemId)
-                .toList();
-
-        imageRepository.deleteByItemIds(itemIds);
-
-        itemRepository.deleteByIds(itemIds);
-
-        dayLogRepository.deleteByIds(dayLogIds);
-
-        sharedTripRepository.deleteByTripIds(tripIds);
-
-        publishedTripRepository.deleteByTripIds(tripIds);
-
-        tripRepository.deleteByMemberId(memberId);
-
-        refreshTokenRepository.deleteByMemberId(memberId);
-
-        memberRepository.deleteByMemberId(memberId);
+        publisher.publishEvent(new MemberDeleteEvent(memberId));
     }
 }
