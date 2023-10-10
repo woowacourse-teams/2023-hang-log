@@ -254,7 +254,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 "updated memo",
                 dayLogId,
                 List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
-                false,
+                true,
                 getPlaceRequest(),
                 getExpenseRequest()
         );
