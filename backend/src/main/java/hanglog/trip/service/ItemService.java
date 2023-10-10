@@ -156,17 +156,26 @@ public class ItemService {
                 .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages, item))
                 .toList();
 
-        final List<Image> deletedImages = originalImages.stream()
-                .filter(image -> !updatedImages.contains(image))
-                .toList();
-        imageRepository.deleteAll(deletedImages);
+        deleteNotUsedImages(originalImages, updatedImages);
+        saveNewImages(originalImages, updatedImages);
+        return updatedImages;
+    }
 
+    private void saveNewImages(final List<Image> originalImages, final List<Image> updatedImages) {
         final List<Image> newImages = updatedImages.stream()
                 .filter(image -> !originalImages.contains(image))
                 .toList();
         customImageRepository.saveAll(newImages);
+    }
 
-        return updatedImages;
+    private void deleteNotUsedImages(final List<Image> originalImages, final List<Image> updatedImages) {
+        final List<Image> deletedImages = originalImages.stream()
+                .filter(image -> !updatedImages.contains(image))
+                .toList();
+        if (deletedImages.isEmpty()) {
+            return;
+        }
+        imageRepository.deleteAll(deletedImages);
     }
 
     private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages, final Item item) {
