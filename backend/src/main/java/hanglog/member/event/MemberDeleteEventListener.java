@@ -37,7 +37,7 @@ public class MemberDeleteEventListener {
     @TransactionalEventListener(fallbackExecution = true)
     public void delete(final MemberDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
-        List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
+        final List<ItemElement> itemElements = customItemRepository.findItemIdsByDayLogIds(dayLogIds);
 
         deletePlaces(itemElements);
         deleteExpenses(itemElements);
