@@ -22,8 +22,7 @@ export const recommendedTripsData = {
       ],
       startDate: '2023-06-13',
       endDate: '2023-06-20',
-      description:
-        '어쩌구 저쩌구 \n좌충우돌좌충우돌좌충우돌좌충우돌  좌충우돌좌충우돌 라곤의 런던 여행기',
+      description: '어쩌구 저쩌구',
       likeCount: 123,
       isLike: true,
     },
