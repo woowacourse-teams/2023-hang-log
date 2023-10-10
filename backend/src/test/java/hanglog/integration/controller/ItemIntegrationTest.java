@@ -156,9 +156,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("NonSpot인 아이템을 Spot으로 수정한다.")
+    @DisplayName("Spot인 아이템을 NonSpot으로 수정한다.")
     @Test
-    void updateItem_NonSpotToSpot() {
+    void updateItem_SpotToNonSpot() {
         // when
         final ItemRequest itemRequest = getSpotItemRequest();
         final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
@@ -239,9 +239,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("Spot에서 NonSpot으로 수정한다.")
+    @DisplayName("NonSpot에서 Spot으로 수정한다.")
     @Test
-    void updateItem_SpotToNonSpot() {
+    void updateItem_NonSpotToSpot() {
         // when
         final ItemRequest itemRequest = getNonSpotItemRequest();
         final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
