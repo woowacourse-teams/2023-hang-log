@@ -5,6 +5,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
@@ -17,8 +19,6 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,18 +35,18 @@ public class ExpenseService {
 
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;
-    private final TripCityRepository tripCityRepository;
+    private final CityRepository cityRepository;
     private final CategoryRepository categoryRepository;
 
     public TripExpenseResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
-                .orElse(findOldestCurrency());
+                .orElseGet(this::findOldestCurrency);
 
         final Map<DayLog, Amount> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
         final Map<Category, Amount> categoryAmounts = getCategoryAmounts();
-        final List<TripCity> tripCities = tripCityRepository.findByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
 
         for (final DayLog dayLog : trip.getDayLogs()) {
             calculateAmounts(dayLog, currency, dayLogAmounts, categoryAmounts);
@@ -66,7 +66,7 @@ public class ExpenseService {
         return TripExpenseResponse.of(
                 trip,
                 totalAmount,
-                tripCities,
+                cities,
                 categoryExpenses,
                 currency,
                 dayLogExpenses

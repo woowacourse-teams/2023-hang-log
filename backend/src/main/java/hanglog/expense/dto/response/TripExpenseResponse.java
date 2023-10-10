@@ -8,7 +8,6 @@ import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,13 +31,13 @@ public class TripExpenseResponse {
     public static TripExpenseResponse of(
             final Trip trip,
             final Amount totalAmount,
-            final List<TripCity> tripCities,
+            final List<City> cities,
             final List<CategoryExpense> categoryExpenses,
             final Currency currency,
             final List<DayLogExpense> dayLogExpenses
     ) {
-        final List<CityResponse> cityExpenseResponses = tripCities.stream()
-                .map(tripCity -> CityResponse.of(tripCity.getCity()))
+        final List<CityResponse> cityExpenseResponses = cities.stream()
+                .map(CityResponse::of)
                 .toList();
 
         final List<CategoryExpenseResponse> categoryExpenseResponses = categoryExpenses.stream()

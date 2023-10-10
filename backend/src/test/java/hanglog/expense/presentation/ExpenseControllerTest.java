@@ -8,7 +8,6 @@ import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
-import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +28,6 @@ import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
-import hanglog.trip.domain.TripCity;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -74,7 +72,7 @@ class ExpenseControllerTest extends ControllerTest {
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
                 AMOUNT_20000,
-                List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, TOKYO)),
+                List.of(LONDON, TOKYO),
                 List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), AMOUNT_20000, AMOUNT_20000)),
                 DEFAULT_CURRENCY,
                 List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
