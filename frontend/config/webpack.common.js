@@ -4,11 +4,8 @@ const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { convertToAbsolutePath } = require('./webpackUtil');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-const smp = new SpeedMeasurePlugin();
-
-module.exports = smp.wrap({
+module.exports = {
   entry: convertToAbsolutePath('src/index.tsx'),
   module: {
     rules: [
@@ -76,4 +73,4 @@ module.exports = smp.wrap({
     new Dotenv(),
     new ForkTsCheckerWebpackPlugin(),
   ],
-});
+};
