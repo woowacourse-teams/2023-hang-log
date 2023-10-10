@@ -159,7 +159,7 @@ public class ItemService {
         final List<Image> deletedImages = originalImages.stream()
                 .filter(image -> !updatedImages.contains(image))
                 .toList();
-        imageRepository.deleteAllInBatch(deletedImages);
+        imageRepository.deleteAll(deletedImages);
 
         final List<Image> newImages = updatedImages.stream()
                 .filter(image -> !originalImages.contains(image))
