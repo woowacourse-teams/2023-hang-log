@@ -3,15 +3,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { convertToAbsolutePath } = require('./webpackUtil');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-module.exports = {
+const smp = new SpeedMeasurePlugin();
+
+module.exports = smp.wrap({
   entry: convertToAbsolutePath('src/index.tsx'),
   module: {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
-        use: ['ts-loader'],
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2021',
+        },
       },
       {
         test: /\.svg$/i,
@@ -67,5 +74,6 @@ module.exports = {
       favicon: convertToAbsolutePath('public/favicon.ico'),
     }),
     new Dotenv(),
+    new ForkTsCheckerWebpackPlugin(),
   ],
-};
+});
