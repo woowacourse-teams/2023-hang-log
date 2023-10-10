@@ -11,6 +11,7 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
+import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.CustomImageRepository;
@@ -20,6 +21,7 @@ import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
+import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -41,10 +43,12 @@ public class ItemService {
     private final DayLogRepository dayLogRepository;
     private final ImageRepository imageRepository;
     private final CustomImageRepository customImageRepository;
+    private final PlaceRepository placeRepository;
+    private final ExpenseRepository expenseRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
-        final DayLog dayLog = dayLogRepository.findWithItemById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findWithItemsById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
 
@@ -80,20 +84,19 @@ public class ItemService {
     }
 
     public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
-        final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findWithItemDetailsById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
 
-        final Item item = itemRepository.findById(itemId)
+        final Item item = dayLog.getItems().stream()
+                .filter(target -> target.getId().equals(itemId))
+                .findFirst()
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
 
-        Place updatedPlace = item.getPlace();
-        if (itemUpdateRequest.getIsPlaceUpdated() || isChangedToSpot(itemUpdateRequest, item)) {
-            updatedPlace = makePlace(itemUpdateRequest.getPlace());
-        }
-
+        Place updatedPlace = makeUpdatedPlace(itemUpdateRequest, item);
         if (item.getItemType() == ItemType.SPOT && !itemUpdateRequest.getItemType()) {
             updatedPlace = null;
+            placeRepository.delete(item.getPlace());
         }
 
         final Item updatedItem = new Item(
@@ -105,15 +108,21 @@ public class ItemService {
                 itemUpdateRequest.getMemo(),
                 updatedPlace,
                 dayLog,
-                makeExpense(itemUpdateRequest.getExpense()),
-                makeUpdatedImages(itemUpdateRequest, item.getImages())
+                makeUpdatedExpense(itemUpdateRequest.getExpense(), item.getExpense()),
+                makeUpdatedImages(itemUpdateRequest, item)
         );
-
         itemRepository.save(updatedItem);
     }
 
-    private boolean isChangedToSpot(final ItemUpdateRequest itemUpdateRequest, final Item item) {
-        return item.getItemType().equals(ItemType.NON_SPOT) && itemUpdateRequest.getPlace() != null;
+    private Place makeUpdatedPlace(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        final Place originalPlace = item.getPlace();
+        if (!itemUpdateRequest.getIsPlaceUpdated()) {
+            return originalPlace;
+        }
+        if (originalPlace != null) {
+            placeRepository.delete(originalPlace);
+        }
+        return makePlace(itemUpdateRequest.getPlace());
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {
@@ -124,12 +133,13 @@ public class ItemService {
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        return new Place(
+        final Place place = new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 findCategoryByApiCategory(placeRequest.getApiCategory())
         );
+        return placeRepository.save(place);
     }
 
     private Category findCategoryByApiCategory(final List<String> apiCategory) {
@@ -140,21 +150,57 @@ public class ItemService {
         return categories.get(0);
     }
 
-    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
+    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        final List<Image> originalImages = item.getImages();
         final List<Image> updatedImages = itemUpdateRequest.getImageUrls().stream()
-                .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages))
+                .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages, item))
                 .toList();
 
-        return imageRepository.saveAll(updatedImages);
+        final List<Image> deletedImages = originalImages.stream()
+                .filter(image -> !updatedImages.contains(image))
+                .toList();
+        imageRepository.deleteAllInBatch(deletedImages);
+
+        final List<Image> newImages = updatedImages.stream()
+                .filter(image -> !originalImages.contains(image))
+                .toList();
+        customImageRepository.saveAll(newImages);
+
+        return updatedImages;
     }
 
-    private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
+    private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages, final Item item) {
         final String imageName = convertUrlToName(imageUrl);
 
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))
                 .findAny()
-                .orElseGet(() -> new Image(imageName));
+                .orElseGet(() -> new Image(imageName, item));
+    }
+
+    private Expense makeUpdatedExpense(final ExpenseRequest expenseRequest, final Expense originalExpense) {
+        final Expense updatedExpense = makeExpense(expenseRequest);
+        deleteOriginalExpense(originalExpense, updatedExpense);
+        return saveUpdatedExpense(originalExpense, updatedExpense);
+    }
+
+    private Expense saveUpdatedExpense(final Expense originalExpense, final Expense updatedExpense) {
+        if (updatedExpense == null) {
+            return null;
+        }
+        if (updatedExpense.isDifferent(originalExpense)) {
+            return expenseRepository.save(updatedExpense);
+        }
+        return originalExpense;
+    }
+
+    private void deleteOriginalExpense(final Expense originalExpense, final Expense updatedExpense) {
+        if (originalExpense == null) {
+            return;
+        }
+        if (originalExpense.isDifferent(updatedExpense)) {
+            expenseRepository.delete(originalExpense);
+        }
     }
 
     private Expense makeExpense(final ExpenseRequest expenseRequest) {
@@ -168,12 +214,12 @@ public class ItemService {
         final Category expenseCategory = categoryRepository.findById(expenseRequest.getCategoryId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
         final String currency = CurrencyType.getMappedCurrencyType(expenseRequest.getCurrency()).getCode();
-
-        return new Expense(
+        final Expense expense = new Expense(
                 currency,
                 new Amount(expenseRequest.getAmount()),
                 expenseCategory
         );
+        return expenseRepository.save(expense);
     }
 
     private int getNewItemOrdinal(final DayLog dayLog) {

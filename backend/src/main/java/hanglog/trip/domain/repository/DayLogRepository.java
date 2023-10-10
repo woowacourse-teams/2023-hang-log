@@ -14,5 +14,18 @@ public interface DayLogRepository extends JpaRepository<DayLog, Long> {
             LEFT JOIN FETCH dayLog.items items
             WHERE dayLog.id = :dayLogId
             """)
-    Optional<DayLog> findWithItemById(@Param("dayLogId") final Long dayLogId);
+    Optional<DayLog> findWithItemsById(@Param("dayLogId") final Long dayLogId);
+
+    @Query("""
+            SELECT dayLog
+            FROM DayLog dayLog
+            LEFT JOIN FETCH dayLog.items items
+            LEFT JOIN FETCH items.images images
+            LEFT JOIN FETCH items.expense expense
+            LEFT JOIN FETCH items.place place
+            LEFT JOIN FETCH expense.category expense_category
+            LEFT JOIN FETCH place.category place_category
+            WHERE dayLog.id = :dayLogId
+            """)
+    Optional<DayLog> findWithItemDetailsById(@Param("dayLogId") final Long dayLogId);
 }

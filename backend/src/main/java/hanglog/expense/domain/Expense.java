@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -58,5 +59,13 @@ public class Expense extends BaseEntity {
             final Category category
     ) {
         this(null, currency, amount, category);
+    }
+
+    public boolean isDifferent(final Expense expense) {
+        if (expense == null) {
+            return true;
+        }
+        return !(Objects.equals(currency, expense.currency) && Objects.equals(amount, expense.amount)
+                && Objects.equals(category, expense.category));
     }
 }
