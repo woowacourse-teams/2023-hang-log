@@ -80,7 +80,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = REMOVE)
     private List<Image> images = new ArrayList<>();
 
     public Item(

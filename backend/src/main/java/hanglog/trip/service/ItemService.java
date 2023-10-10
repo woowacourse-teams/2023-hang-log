@@ -13,6 +13,7 @@ import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
+import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -39,25 +40,30 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
     private final ImageRepository imageRepository;
+    private final CustomImageRepository customImageRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         // TODO: 유저 인가 로직 필요
-        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findWithItemById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
 
+        final List<Image> images = makeImages(itemRequest);
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
-                getNewItemOrdinal(dayLog.getId()),
+                getNewItemOrdinal(dayLog),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
                 makePlace(itemRequest.getPlace()),
                 dayLog,
                 makeExpense(itemRequest.getExpense()),
-                makeImages(itemRequest)
+                images
         );
-        return itemRepository.save(item).getId();
+        final Item savedItem = itemRepository.save(item);
+        images.forEach(image -> image.setItem(savedItem));
+        customImageRepository.saveAll(images);
+        return savedItem.getId();
     }
 
     private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {
@@ -68,11 +74,9 @@ public class ItemService {
     }
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
-        final List<Image> images = itemRequest.getImageUrls().stream()
+        return itemRequest.getImageUrls().stream()
                 .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
                 .toList();
-
-        return imageRepository.saveAll(images);
     }
 
     public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
@@ -172,11 +176,8 @@ public class ItemService {
         );
     }
 
-    private int getNewItemOrdinal(final Long dayLogId) {
-        return dayLogRepository.findById(dayLogId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID))
-                .getItems()
-                .size() + 1;
+    private int getNewItemOrdinal(final DayLog dayLog) {
+        return dayLog.getItems().size() + 1;
     }
 
     public void delete(final Long itemId) {

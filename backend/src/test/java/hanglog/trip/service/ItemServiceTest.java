@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.fixture.CategoryFixture;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -53,6 +55,9 @@ class ItemServiceTest {
     @Mock
     private ImageRepository imageRepository;
 
+    @Mock
+    private CustomImageRepository customImageRepository;
+
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
     void save() {
@@ -77,10 +82,11 @@ class ItemServiceTest {
 
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
         given(categoryRepository.findById(any()))
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        doNothing().when(customImageRepository).saveAll(any());
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
@@ -112,7 +118,7 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when & then
@@ -141,7 +147,7 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when & then
