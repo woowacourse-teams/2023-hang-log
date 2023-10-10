@@ -11,9 +11,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Modifying
     @Query("""
-                UPDATE Item item
-                SET item.status = 'DELETED'
-                WHERE item.id IN :itemIds
+            UPDATE Item item
+            SET item.status = 'DELETED'
+            WHERE item.id IN :itemIds
             """)
     void deleteByIds(@Param("itemIds") final List<Long> itemIds);
 }
