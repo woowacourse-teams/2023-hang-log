@@ -45,11 +45,23 @@ public class CommunityService {
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
-    public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
+    public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
-        final List<Long> tripIds = trips.stream()
-                .map(Trip::getId)
-                .toList();
+        final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
+        final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
+        return new CommunityTripListResponse(communityTripResponses, lastPageIndex);
+    }
+
+    public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
+        final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
+        final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
+        final List<Trip> trips = recommendStrategy.recommend(pageable);
+        final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
+        return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
+    }
+
+    private List<CommunityTripResponse> getCommunityTripResponses(final Accessor accessor, final List<Trip> trips) {
+        final List<Long> tripIds = trips.stream().map(Trip::getId).toList();
 
         final List<TripCityInfoDto> tripIdAndCitiesByTripIds = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
         final Map<Long, List<City>> citiesByTrip = toMap(tripIdAndCitiesByTripIds);
@@ -57,17 +69,13 @@ public class CommunityService {
         final List<LikeInfoDto> likeInfoDtos = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), tripIds);
         final Map<Long, LikeInfo> likeInfoByTrip = toLikeMap(likeInfoDtos);
 
-        final List<CommunityTripResponse> communityTripResponse = trips.stream()
+        return trips.stream()
                 .map(trip -> CommunityTripResponse.of(
                         trip,
                         citiesByTrip.get(trip.getId()),
                         isLike(likeInfoByTrip, trip.getId()),
                         getLikeCount(likeInfoByTrip, trip.getId())
-                ))
-                .toList();
-        final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
-
-        return new CommunityTripListResponse(communityTripResponse, lastPageIndex);
+                )).toList();
     }
 
     private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
@@ -86,22 +94,6 @@ public class CommunityService {
         return likeInfo.getLikeCount();
     }
 
-    private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
-        final List<City> cities = getCitiesByTripId(trip.getId());
-        final Long likeCount = likeRepository.countLikesByTripId(trip.getId());
-        if (accessor.isMember()) {
-            final boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), trip.getId());
-            return CommunityTripResponse.of(trip, cities, isLike, likeCount);
-        }
-        return CommunityTripResponse.of(trip, cities, false, likeCount);
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
-    }
-
     private Long getLastPageIndex(final int pageSize) {
         final Long totalTripCount = tripRepository.countTripByPublishedStatus(PUBLISHED);
         final Long lastPageIndex = totalTripCount / pageSize;
@@ -109,18 +101,6 @@ public class CommunityService {
             return lastPageIndex;
         }
         return lastPageIndex + 1;
-    }
-
-    public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
-        final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
-        final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
-        final List<Trip> trips = recommendStrategy.recommend(pageable);
-
-        final List<CommunityTripResponse> communityTripResponses = trips.stream()
-                .map(trip -> getTripResponse(accessor, trip))
-                .toList();
-
-        return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
     }
 
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
@@ -151,5 +131,11 @@ public class CommunityService {
                 likeCount,
                 publishedDate
         );
+    }
+
+    private List<City> getCitiesByTripId(final Long tripId) {
+        return tripCityRepository.findByTripId(tripId).stream()
+                .map(TripCity::getCity)
+                .toList();
     }
 }

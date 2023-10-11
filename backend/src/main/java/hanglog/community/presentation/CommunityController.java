@@ -32,7 +32,7 @@ public class CommunityController {
             @Auth final Accessor accessor,
             @PageableDefault(sort = "publishedTrip.id", direction = DESC) final Pageable pageable
     ) {
-        final CommunityTripListResponse communityTripListResponse = communityService.getTripsByPage(accessor, pageable);
+        final CommunityTripListResponse communityTripListResponse = communityService.getCommunityTripsByPage(accessor, pageable);
         return ResponseEntity.ok().body(communityTripListResponse);
     }
 
