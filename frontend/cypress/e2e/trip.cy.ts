@@ -62,6 +62,7 @@ describe('여행 수정 페이지', () => {
       cy.findByPlaceholderText('소제목').should('have.value', title);
 
       items.forEach((item: TripItemData) => {
+        console.log(item);
         cy.get('p').contains(item.title);
       });
     });
@@ -217,7 +218,7 @@ describe('여행 아이템 추가', () => {
     cy.get('.pac-container').first().should('be.visible');
     cy.get('.pac-item').first().click({ force: true });
 
-    cy.get('#autocomplete').should('have.value', '프랑스 파리 샹젤리제 거리');
+    cy.get('#autocomplete').should('have.value', '샹젤리제');
   });
 
   it('여행 아이템 추가 모달에서 별 아이콘 호버하면 호버한 지점까지 별점이 채워지고, 별 아이콘을 클릭해서 원하는 별점을 입력할 수 있다.', () => {

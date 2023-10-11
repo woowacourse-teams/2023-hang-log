@@ -72,8 +72,8 @@ export const sharedTrip: TripData = {
             },
           },
           imageNames: [
-            'default-image.png',
-            'default-image.png',
+            'default-image2.png',
+            'default-image2.png',
             'default-image.png',
             'default-image.png',
           ],
