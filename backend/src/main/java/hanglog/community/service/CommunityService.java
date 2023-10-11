@@ -1,11 +1,13 @@
 package hanglog.community.service;
 
+import static hanglog.community.domain.TripCityInfoDto.toMap;
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.community.domain.TripCityInfoDto;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
@@ -21,6 +23,7 @@ import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,11 @@ public class CommunityService {
 
     public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
+        final List<Long> tripIds = trips.stream()
+                .map(Trip::getId)
+                .toList();
+        final List<TripCityInfoDto> tripIdAndCitiesByTripIds = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
+        final Map<Long, List<City>> citiesByTrip = toMap(tripIdAndCitiesByTripIds);
         final List<CommunityTripResponse> communityTripResponse = trips.stream()
                 .map(trip -> getTripResponse(accessor, trip))
                 .toList();
