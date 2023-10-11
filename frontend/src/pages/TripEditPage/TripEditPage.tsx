@@ -39,7 +39,7 @@ const TripEditPage = () => {
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripType={tripData.tripType} tripId={tripId} />
+        <TripInformation tripType={tripData.tripType} tripId={tripId} initialTripData={tripData} />
         <DayLogList
           tripType={tripData.tripType}
           tripId={tripId}

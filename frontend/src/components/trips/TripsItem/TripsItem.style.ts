@@ -45,7 +45,7 @@ export const nameStyling = css({
 
 export const badgeBoxStyling = css({
   width: `calc((100vw - 196px) / 5)`,
-  minHeight: '22px',
+  minHeight: '24px',
   marginTop: Theme.spacer.spacing3,
   marginBottom: Theme.spacer.spacing2,
 
@@ -81,7 +81,8 @@ export const descriptionStyling = css({
 
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  wordBreak: 'break-word',
+  wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
 });
 
 export const skeletonDurationTextStyling = css({

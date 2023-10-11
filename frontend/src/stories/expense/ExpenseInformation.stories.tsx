@@ -9,12 +9,11 @@ const meta = {
   component: ExpenseInformation,
   args: {
     tripId: '1',
-    isShared: false,
-    isPublished: false,
+    tripType: 'PERSONAL',
   },
   decorators: [
     (Story) => {
-      useExpenseQuery('1', { isShared: false, isPublished: false });
+      useExpenseQuery('1', 'PERSONAL');
 
       return <Story />;
     },

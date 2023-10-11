@@ -30,7 +30,8 @@ export const useTripQuery = (tripType: TripTypeData, tripId: string) => {
   }
 
   const { data } = useQuery<TripData, AxiosError>([tripType, tripId], queryFn.trip, {
-    cacheTime: 0,
+    cacheTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000,
   });
 
   return { tripData: data! };

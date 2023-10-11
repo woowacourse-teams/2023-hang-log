@@ -25,7 +25,9 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatDate } from '@utils/formatter';
 
-import type { TripTypeData } from '@type/trip';
+import type { TripData, TripTypeData } from '@type/trip';
+
+import { TRIP_TYPE } from '@constants/trip';
 
 import DefaultThumbnail from '@assets/png/trip-information_default-thumbnail.png';
 
@@ -33,22 +35,22 @@ interface TripInformationProps {
   tripType: TripTypeData;
   tripId: string;
   isEditable?: boolean;
-  isShared?: boolean;
-  isPublished?: boolean;
+  initialTripData?: TripData;
 }
 
 const TripInformation = ({
   isEditable = true,
-  isShared = false,
-  isPublished = false,
   tripId,
   tripType,
+  initialTripData,
 }: TripInformationProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
+  const isPublished = tripType === TRIP_TYPE.PUBLISHED;
+  const { tripData: savedTripData } = useTrip(tripType, tripId);
+
+  const tripData = initialTripData || savedTripData;
 
   const { isOpen: isEditModalOpen, close: closeEditModal, open: openEditModal } = useOverlay();
-
-  const { tripData } = useTrip(tripType, tripId);
 
   const [likeCount, setLikeCount] = useState(tripData.likeCount);
 
@@ -91,7 +93,7 @@ const TripInformation = ({
               <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
                 <img
                   alt="작성자 이미지"
-                  src={tripData.writer.imageUrl || ''}
+                  src={tripData.writer.imageUrl ?? ''}
                   css={writerImageStyling}
                 />
                 <Text size="small">{tripData.writer.nickname}</Text>
@@ -114,10 +116,9 @@ const TripInformation = ({
             <TripEditButtons tripId={tripId} openEditModal={openEditModal} />
           ) : (
             <TripButtons
+              tripType={tripType}
               tripId={tripId}
               sharedCode={tripData.sharedCode}
-              isShared={isShared}
-              isPublished={isPublished}
               publishState={tripData.isPublished}
             />
           )}

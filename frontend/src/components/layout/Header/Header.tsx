@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header css={headerStyling}>
       <Flex styles={{ justify: 'space-between', align: 'center' }}>
-        <Flex styles={{ align: 'center', gap: Theme.spacer.spacing5 }}>
+        <Flex styles={{ align: 'center', gap: Theme.spacer.spacing4 }}>
           <LogoHorizontal
             css={getItemStyling(isLoggedIn)}
             tabIndex={0}
@@ -44,7 +44,6 @@ const Header = () => {
           >
             커뮤니티
           </Text>
-
           <Text
             css={getTapNavigateButtonStyling(isLoggedIn, location === PATH.MY_TRIPS)}
             tabIndex={2}
