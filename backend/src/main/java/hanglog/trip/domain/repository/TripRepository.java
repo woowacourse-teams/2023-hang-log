@@ -29,6 +29,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     @Query("SELECT trip FROM Trip trip "
             + "LEFT JOIN Likes likes ON likes.tripId = trip.id "
+            + "LEFT JOIN FETCH trip.sharedTrip sharedTrip "
             + "WHERE trip.publishedStatus = 'PUBLISHED' "
             + "GROUP BY trip.id "
             + "ORDER BY COUNT(likes.tripId) DESC")
