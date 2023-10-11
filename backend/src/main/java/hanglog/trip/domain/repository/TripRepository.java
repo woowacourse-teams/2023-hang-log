@@ -22,6 +22,8 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     @Query("SELECT trip FROM Trip trip "
             + "LEFT JOIN PublishedTrip publishedTrip ON publishedTrip.trip = trip "
+            + "LEFT JOIN FETCH trip.sharedTrip sharedTrip "
+            + "LEFT JOIN FETCH trip.member member "
             + "WHERE trip.publishedStatus = 'PUBLISHED'")
     List<Trip> findPublishedTripByPageable(final Pageable pageable);
 
