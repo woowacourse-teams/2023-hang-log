@@ -117,6 +117,7 @@ export const useMultipleImageUpload = ({
         const updatedImageNames = prevImageNames.filter(
           (imageName) => imageName !== selectedImageName
         );
+
         onSuccess?.(updatedImageNames);
 
         return updatedImageNames;

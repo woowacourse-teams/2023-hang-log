@@ -72,12 +72,7 @@ export const communityTrip: TripData = {
               name: '관광',
             },
           },
-          imageNames: [
-            'default-image2.png',
-            'default-image2.png',
-            'default-image.png',
-            'default-image.png',
-          ],
+          imageNames: ['default-image2.png', 'default-image.png'],
         },
         {
           id: 2,

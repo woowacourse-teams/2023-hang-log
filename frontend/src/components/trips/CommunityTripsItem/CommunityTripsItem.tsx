@@ -57,7 +57,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
   const handleLikeCount = (count: number) => {
     setLikeCount(count);
   };
-  console.log(coverImage);
+
   return (
     <Flex
       tag="li"
