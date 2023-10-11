@@ -1,5 +1,6 @@
 package hanglog.community.domain.repository;
 
+import hanglog.community.domain.LikeInfoDto;
 import hanglog.community.domain.Likes;
 import hanglog.community.domain.TripInfo;
 import java.util.List;
@@ -15,16 +16,15 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     void deleteByMemberIdAndTripId(final Long memberId, final Long tripId);
 
     Long countLikesByTripId(final Long tripId);
-    
+
     @Query("""
-            SELECT l.tripId,
-            COUNT(l.memberId) AS like_count,
-            EXISTS(SELECT 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId) AS is_like
+            SELECT new hanglog.community.domain.LikeInfoDto
+            (l.tripId, COUNT(l.memberId), EXISTS(SELECT 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId))
             FROM Likes l
             WHERE l.tripId in :tripIds
             GROUP BY l.tripId
-            """)
-    List<Object[]> countByMemberIdAndTripId(@Param("memberId") Long memberId, @Param("tripIds") List<Long> tripIds);
+             """)
+    List<LikeInfoDto> countByMemberIdAndTripId(@Param("memberId") final Long memberId, @Param("tripIds") final List<Long> tripIds);
 
     @Query("""
             SELECT COUNT(l.memberId) AS like_count,
