@@ -53,6 +53,14 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query("""
             UPDATE  Trip trip
             SET trip.status = 'DELETED'
+            WHERE trip.id = :tripId
+            """)
+    void deleteById(@Param("tripId") final Long tripId);
+
+    @Modifying
+    @Query("""
+            UPDATE  Trip trip
+            SET trip.status = 'DELETED'
             WHERE trip.member.id = :memberId
             """)
     void deleteByMemberId(@Param("memberId") final Long memberId);

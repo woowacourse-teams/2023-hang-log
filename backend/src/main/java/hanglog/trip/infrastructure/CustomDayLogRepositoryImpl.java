@@ -25,6 +25,18 @@ public class CustomDayLogRepositoryImpl implements CustomDayLogRepository {
     }
 
     @Override
+    public List<Long> findDayLogIdsByTripId(final Long tripId) {
+        final String sql = """
+                SELECT d.id
+                FROM day_log d
+                WHERE d.trip_id = :tripId
+                """;
+        final MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("tripId", tripId);
+        return namedParameterJdbcTemplate.queryForList(sql, parameters, Long.class);
+    }
+
+    @Override
     public List<Long> findDayLogIdsByTripIds(final List<Long> tripIds) {
         final String sql = """
                 SELECT d.id
