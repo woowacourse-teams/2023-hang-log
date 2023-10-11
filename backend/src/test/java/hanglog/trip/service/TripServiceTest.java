@@ -188,8 +188,7 @@ class TripServiceTest {
         // given
         final Long invalidTripId = 2L;
 
-        given(tripRepository.findById(invalidTripId))
-                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
+        given(tripRepository.existsById(invalidTripId)).willReturn(false);
 
         // when & then
         assertThatThrownBy(() -> tripService.delete(invalidTripId))

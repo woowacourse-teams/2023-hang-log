@@ -16,6 +16,14 @@ public interface SharedTripRepository extends JpaRepository<SharedTrip, Long> {
     @Query("""
             UPDATE SharedTrip sharedTrip
             SET sharedTrip.status = 'DELETED'
+            WHERE sharedTrip.trip.id = :tripId
+            """)
+    void deleteByTripId(@Param("tripId") final Long tripId);
+
+    @Modifying
+    @Query("""
+            UPDATE SharedTrip sharedTrip
+            SET sharedTrip.status = 'DELETED'
             WHERE sharedTrip.trip.id IN :tripIds
             """)
     void deleteByTripIds(@Param("tripIds") final List<Long> tripIds);

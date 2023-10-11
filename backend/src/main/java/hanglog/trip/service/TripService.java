@@ -12,8 +12,10 @@ import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +48,10 @@ public class TripService {
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
     private final PublishedTripRepository publishedTripRepository;
+    private final SharedTripRepository sharedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
+    private final ApplicationEventPublisher publisher;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -168,11 +173,14 @@ public class TripService {
     }
 
     public void delete(final Long tripId) {
-        final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        tripRepository.delete(trip);
-        tripCityRepository.deleteAllByTripId(tripId);
+        if (!tripRepository.existsById(tripId)) {
+            throw new BadRequestException(NOT_FOUND_TRIP_ID);
+        }
+
         publishedTripRepository.deleteByTripId(tripId);
+        sharedTripRepository.deleteByTripId(tripId);
+        tripRepository.deleteById(tripId);
+        publisher.publishEvent(new TripDeleteEvent(tripId));
     }
 
     private String generateInitialTitle(final List<City> cites) {
