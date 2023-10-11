@@ -1,8 +1,9 @@
-package hanglog.member.event;
+package hanglog.listener;
 
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
+import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;

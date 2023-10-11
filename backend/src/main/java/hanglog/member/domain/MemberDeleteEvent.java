@@ -1,4 +1,4 @@
-package hanglog.member.event;
+package hanglog.member.domain;
 
 import java.util.List;
 import lombok.Getter;

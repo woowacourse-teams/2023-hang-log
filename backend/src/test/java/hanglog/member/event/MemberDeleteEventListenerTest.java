@@ -10,6 +10,8 @@ import static org.mockito.Mockito.when;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
+import hanglog.listener.MemberDeleteEventListener;
+import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
