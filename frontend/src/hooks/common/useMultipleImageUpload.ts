@@ -1,5 +1,3 @@
-import convertImageNames from '@/utils/convertImageNames';
-
 import type { ChangeEvent } from 'react';
 import { useCallback, useState } from 'react';
 
@@ -7,6 +5,8 @@ import imageCompression from 'browser-image-compression';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
 import { useToast } from '@hooks/common/useToast';
+
+import convertImageNames from '@utils/convertImageNames';
 
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';

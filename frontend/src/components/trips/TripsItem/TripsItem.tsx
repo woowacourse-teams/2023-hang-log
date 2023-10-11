@@ -1,5 +1,3 @@
-import convertImageName from '@/utils/convertImageName';
-
 import { useNavigate } from 'react-router-dom';
 
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
@@ -11,6 +9,8 @@ import {
   imageStyling,
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
+
+import convertImageName from '@utils/convertImageName';
 
 import type { CityData } from '@type/city';
 

@@ -1,5 +1,3 @@
-import convertImageName from '@/utils/convertImageName';
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +18,7 @@ import {
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
+import convertImageName from '@utils/convertImageName';
 import { formatDate } from '@utils/formatter';
 
 import type { CommunityTripsItemData } from '@type/trips';

@@ -1,5 +1,3 @@
-import { useSingleImageUpload } from '@/hooks/common/useSingleImageUpload';
-
 import { useCallback, useRef } from 'react';
 
 import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
@@ -18,6 +16,7 @@ import {
 import NicknameInput from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput';
 
 import { useDeleteAccountMutation } from '@hooks/api/useDeleteAccountMutation';
+import { useSingleImageUpload } from '@hooks/common/useSingleImageUpload';
 import { useEditUserProfileForm } from '@hooks/member/useEditUserProfileForm';
 
 import type { UserData } from '@type/member';

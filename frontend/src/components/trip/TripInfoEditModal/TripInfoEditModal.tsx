@@ -1,5 +1,3 @@
-import { useMultipleImageUpload } from '@/hooks/common/useMultipleImageUpload';
-
 import { useCallback } from 'react';
 
 import {
@@ -22,6 +20,7 @@ import {
   wrapperStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import type { TripData } from '@type/trip';
