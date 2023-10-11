@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
-import hanglog.trip.domain.repository.CustomDayLogRepositoryImpl;
-import hanglog.trip.domain.repository.CustomTripCityRepositoryImpl;
+import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
+import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;

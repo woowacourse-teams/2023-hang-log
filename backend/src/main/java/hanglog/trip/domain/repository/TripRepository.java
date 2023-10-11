@@ -1,11 +1,12 @@
 package hanglog.trip.domain.repository;
 
-import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -33,8 +34,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     Long countTripByPublishedStatus(final PublishedStatusType publishedStatusType);
 
-    void deleteAllByMemberId(final Long memberId);
-
     @Query("""
             SELECT trip
             FROM Trip trip
@@ -49,4 +48,12 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
             WHERE dayLogs.trip.id = :tripId
             """)
     Optional<Trip> findById(@Param("tripId") final Long tripId);
+
+    @Modifying
+    @Query("""
+            UPDATE  Trip trip
+            SET trip.status = 'DELETED'
+            WHERE trip.member.id = :memberId
+            """)
+    void deleteByMemberId(@Param("memberId") final Long memberId);
 }

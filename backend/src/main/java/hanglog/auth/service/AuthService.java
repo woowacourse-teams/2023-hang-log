@@ -14,9 +14,14 @@ import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
+import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.trip.domain.repository.TripRepository;
+import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.trip.domain.repository.CustomTripRepository;
+import hanglog.trip.domain.repository.PublishedTripRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +33,15 @@ public class AuthService {
     private static final int MAX_TRY_COUNT = 5;
     private static final int FOUR_DIGIT_RANGE = 10000;
 
-    private final MemberRepository memberRepository;
-    private final OauthProviders oauthProviders;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final TripRepository tripRepository;
+    private final PublishedTripRepository publishedTripRepository;
+    private final MemberRepository memberRepository;
+    private final CustomTripRepository customTripRepository;
+    private final SharedTripRepository sharedTripRepository;
+    private final OauthProviders oauthProviders;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
+    private final ApplicationEventPublisher publisher;
 
     public MemberTokens login(final String providerName, final String code) {
         final OauthProvider provider = oauthProviders.mapping(providerName);
@@ -89,8 +97,10 @@ public class AuthService {
     }
 
     public void deleteAccount(final Long memberId) {
-        refreshTokenRepository.deleteByMemberId(memberId);
-        tripRepository.deleteAllByMemberId(memberId);
-        memberRepository.deleteById(memberId);
+        final List<Long> tripIds = customTripRepository.findTripIdsByMemberId(memberId);
+        publishedTripRepository.deleteByTripIds(tripIds);
+        sharedTripRepository.deleteByTripIds(tripIds);
+        memberRepository.deleteByMemberId(memberId);
+        publisher.publishEvent(new MemberDeleteEvent(tripIds, memberId));
     }
 }

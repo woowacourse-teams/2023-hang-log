@@ -1,4 +1,4 @@
-package hanglog.share.dto.response;
+package hanglog.member.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
