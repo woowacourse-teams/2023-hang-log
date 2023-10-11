@@ -1,8 +1,8 @@
 package hanglog.community.service;
 
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
-import static hanglog.community.domain.type.PublishedStatusType.PUBLISHED;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;

@@ -1,7 +1,7 @@
 package hanglog.trip.domain.repository;
 
-import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.trip.domain.Trip;
+import hanglog.trip.domain.type.PublishedStatusType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
