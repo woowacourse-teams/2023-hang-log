@@ -8,7 +8,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityWithPositionResponse;
-import hanglog.share.dto.response.WriterResponse;
+import hanglog.member.dto.response.WriterResponse;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.dto.response.type.TripType;
