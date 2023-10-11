@@ -8,7 +8,7 @@ import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_2;
 import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_EXTRA;
 
 import hanglog.community.domain.type.PublishedStatusType;
-import hanglog.share.domain.type.SharedStatusType;
+import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import static hanglog.integration.IntegrationFixture.MEMBER;
 import hanglog.city.domain.City;
 import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.share.domain.SharedTrip;
-import hanglog.share.domain.type.SharedStatusType;
+import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import java.math.BigDecimal;
