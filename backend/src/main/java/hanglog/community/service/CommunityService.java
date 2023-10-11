@@ -1,5 +1,6 @@
 package hanglog.community.service;
 
+import static hanglog.community.domain.LikeInfoDto.toLikeMap;
 import static hanglog.community.domain.TripCityInfoDto.toMap;
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
@@ -7,6 +8,8 @@ import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.community.domain.LikeInfo;
+import hanglog.community.domain.LikeInfoDto;
 import hanglog.community.domain.TripCityInfoDto;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
@@ -47,14 +50,40 @@ public class CommunityService {
         final List<Long> tripIds = trips.stream()
                 .map(Trip::getId)
                 .toList();
+
         final List<TripCityInfoDto> tripIdAndCitiesByTripIds = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
         final Map<Long, List<City>> citiesByTrip = toMap(tripIdAndCitiesByTripIds);
+
+        final List<LikeInfoDto> likeInfoDtos = likeRepository.countByMemberIdAndTripId(accessor.getMemberId(), tripIds);
+        final Map<Long, LikeInfo> likeInfoByTrip = toLikeMap(likeInfoDtos);
+
         final List<CommunityTripResponse> communityTripResponse = trips.stream()
-                .map(trip -> getTripResponse(accessor, trip))
+                .map(trip -> CommunityTripResponse.of(
+                        trip,
+                        citiesByTrip.get(trip.getId()),
+                        isLike(likeInfoByTrip, trip.getId()),
+                        getLikeCount(likeInfoByTrip, trip.getId())
+                ))
                 .toList();
         final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
 
         return new CommunityTripListResponse(communityTripResponse, lastPageIndex);
+    }
+
+    private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
+        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
+        if (likeInfo == null) {
+            return false;
+        }
+        return likeInfo.isLike();
+    }
+
+    private Long getLikeCount(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
+        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
+        if (likeInfo == null) {
+            return 0L;
+        }
+        return likeInfo.getLikeCount();
     }
 
     private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
