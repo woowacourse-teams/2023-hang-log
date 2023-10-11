@@ -1,4 +1,4 @@
-package hanglog.community.domain;
+package hanglog.community.dto;
 
 import hanglog.city.domain.City;
 import java.util.ArrayList;
@@ -7,21 +7,19 @@ import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
-@ToString
-public class TripCityInfoDto {
+public class CityInfoByTrip {
 
     private final Long tripId;
     private final City city;
 
-    public static Map<Long, List<City>> toMap(final List<TripCityInfoDto> tripCityInfoDtos) {
+    public static Map<Long, List<City>> toCityMap(final List<CityInfoByTrip> cityInfoByTripList) {
         final Map<Long, List<City>> map = new HashMap<>();
-        for (final TripCityInfoDto tripCityInfoDto : tripCityInfoDtos) {
-            final Long tripId = tripCityInfoDto.getTripId();
-            final City city = tripCityInfoDto.getCity();
+        for (final CityInfoByTrip cityInfoByTrip : cityInfoByTripList) {
+            final Long tripId = cityInfoByTrip.getTripId();
+            final City city = cityInfoByTrip.getCity();
             map.computeIfAbsent(tripId, k -> new ArrayList<>()).add(city);
         }
         return map;
