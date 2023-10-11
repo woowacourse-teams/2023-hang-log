@@ -60,9 +60,9 @@ const TripItemAddModal = ({
       onSuccess: onClose,
     });
 
-  const handleImageUrlsChange = useCallback(
-    (imageUrls: string[]) => {
-      updateInputValue('imageUrls', imageUrls);
+  const handleImageNamesChange = useCallback(
+    (imageNames: string[]) => {
+      updateInputValue('imageNames', imageNames);
     },
     [updateInputValue]
   );
@@ -71,10 +71,10 @@ const TripItemAddModal = ({
     createToast('이미지는 최대 5개 업로드할 수 있습니다.');
   };
 
-  const { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval } =
+  const { isImageUploading, uploadedImageNames, handleImageUpload, handleImageRemoval } =
     useMultipleImageUpload({
-      initialImageUrls: tripItemInformation.imageUrls,
-      onSuccess: handleImageUrlsChange,
+      initialImageNames: tripItemInformation.imageNames,
+      onSuccess: handleImageNamesChange,
       onError: handleImageUploadError,
     });
 
@@ -152,7 +152,7 @@ const TripItemAddModal = ({
               <ImageUploadInput
                 id="image-upload"
                 label="이미지 업로드"
-                imageUrls={uploadedImageUrls}
+                imageUrls={uploadedImageNames}
                 imageAltText="여행 일정 업로드 이미지"
                 supportingText="사진은 최대 5장 올릴 수 있어요."
                 maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}

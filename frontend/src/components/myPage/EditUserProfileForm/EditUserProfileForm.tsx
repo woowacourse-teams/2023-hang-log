@@ -55,8 +55,8 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
     [updateInputValue]
   );
 
-  const { isImageUploading, uploadedImageUrl, handleImageUpload } = useSingleImageUpload({
-    initialImageUrl: initialData.imageUrl,
+  const { isImageUploading, uploadedImageName, handleImageUpload } = useSingleImageUpload({
+    initialImageName: initialData.imageUrl,
     onSuccess: handleImageUrlsChange,
   });
 
@@ -81,7 +81,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
             ref={inputRef}
             onChange={handleImageUpload}
           />
-          <img css={imageStyling} src={uploadedImageUrl!} alt="사용자 프로필 이미지" />
+          <img css={imageStyling} src={uploadedImageName!} alt="사용자 프로필 이미지" />
         </Box>
         <NicknameInput
           value={userInfo.nickname}

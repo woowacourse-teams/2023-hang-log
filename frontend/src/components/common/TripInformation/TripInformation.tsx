@@ -1,3 +1,5 @@
+import convertImageUrl from '@/utils/convertImageName';
+
 import { memo, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -63,7 +65,10 @@ const TripInformation = ({
       <header css={sectionStyling}>
         <Box css={imageWrapperStyling}>
           <div />
-          <img src={tripData.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
+          <img
+            src={tripData.imageName ? convertImageUrl(tripData.imageName) : DefaultThumbnail}
+            alt="여행 대표 이미지"
+          />
         </Box>
         <Box tag="section">
           <Box css={badgeWrapperStyling}>

@@ -1,3 +1,5 @@
+import convertImageNames from '@/utils/convertImageNames';
+
 import type { ChangeEvent } from 'react';
 import { useCallback, useState } from 'react';
 
@@ -10,7 +12,7 @@ import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 
 interface UseMultipleImageUploadParams {
-  initialImageUrls: string[];
+  initialImageNames: string[];
   maxUploadCount?: number;
   handleInitialImage?: (images: string[]) => void;
   onSuccess?: CallableFunction;
@@ -18,7 +20,7 @@ interface UseMultipleImageUploadParams {
 }
 
 export const useMultipleImageUpload = ({
-  initialImageUrls,
+  initialImageNames,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
   onSuccess,
   onError,
@@ -26,8 +28,10 @@ export const useMultipleImageUpload = ({
   const imageMutation = useImageMutation();
   const isImageUploading = imageMutation.isLoading;
 
+  const convertedImageNames = convertImageNames(initialImageNames);
+
   const { createToast } = useToast();
-  const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
+  const [uploadedImageNames, setUploadedImageNames] = useState(convertedImageNames);
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -35,18 +39,18 @@ export const useMultipleImageUpload = ({
 
       if (!originalImageFiles) return;
 
-      if (originalImageFiles.length + uploadedImageUrls.length > maxUploadCount) {
+      if (originalImageFiles.length + uploadedImageNames.length > maxUploadCount) {
         onError?.();
 
         return;
       }
 
-      const prevImageUrls = uploadedImageUrls;
+      const prevImageNames = uploadedImageNames;
 
-      setUploadedImageUrls((prevImageUrls) => {
-        const newImageUrls = [...originalImageFiles].map((file) => URL.createObjectURL(file));
+      setUploadedImageNames((prevImageNames) => {
+        const newImageNames = [...originalImageFiles].map((file) => URL.createObjectURL(file));
 
-        return [...prevImageUrls, ...newImageUrls];
+        return [...prevImageNames, ...newImageNames];
       });
 
       const imageFiles: File[] = [];
@@ -76,19 +80,19 @@ export const useMultipleImageUpload = ({
       imageMutation.mutate(
         { images: imageUploadFormData },
         {
-          onSuccess: ({ imageUrls }) => {
+          onSuccess: ({ imageNames }) => {
             if (maxUploadCount === 1) {
-              onSuccess?.([...imageUrls]);
+              onSuccess?.([...imageNames]);
               createToast('이미지 업로드에 성공했습니다', 'success');
 
               return;
             }
 
-            onSuccess?.([...initialImageUrls, ...imageUrls]);
+            onSuccess?.([...convertedImageNames, ...imageNames]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {
-            setUploadedImageUrls(prevImageUrls);
+            setUploadedImageNames(prevImageNames);
           },
         }
       );
@@ -99,25 +103,27 @@ export const useMultipleImageUpload = ({
     [
       createToast,
       imageMutation,
-      initialImageUrls,
+      convertedImageNames,
       maxUploadCount,
       onError,
       onSuccess,
-      uploadedImageUrls,
+      uploadedImageNames,
     ]
   );
 
   const handleImageRemoval = useCallback(
-    (selectedImageUrl: string) => () => {
-      setUploadedImageUrls((prevImageUrls) => {
-        const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
-        onSuccess?.(updatedImageUrls);
+    (selectedImageName: string) => () => {
+      setUploadedImageNames((prevImageNames) => {
+        const updatedImageNames = prevImageNames.filter(
+          (imageName) => imageName !== selectedImageName
+        );
+        onSuccess?.(updatedImageNames);
 
-        return updatedImageUrls;
+        return updatedImageNames;
       });
     },
     [onSuccess]
   );
 
-  return { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageNames, handleImageUpload, handleImageRemoval };
 };

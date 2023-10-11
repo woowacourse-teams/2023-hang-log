@@ -67,7 +67,7 @@ const EditMenu = ({ tripId, dayLogId, hasImage, imageHeight, ...information }: E
                 }
               : null,
             memo: information.memo,
-            imageUrls: information.imageUrls,
+            imageNames: information.imageNames,
           }}
         />
       )}

@@ -1,3 +1,5 @@
+import convertImageName from '@/utils/convertImageName';
+
 import { useNavigate } from 'react-router-dom';
 
 import { Badge, Box, Flex, Text } from 'hang-log-design-system';
@@ -47,7 +49,7 @@ const TripsItem = ({
       onClick={() => navigate(PATH.TRIP(String(id)))}
     >
       <img
-        src={coverImage ?? DefaultThumbnail}
+        src={coverImage ? convertImageName(coverImage) : DefaultThumbnail}
         css={imageStyling}
         alt={`${itemName} 대표 이미지`}
       />
