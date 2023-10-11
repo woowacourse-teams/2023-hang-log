@@ -11,9 +11,17 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Modifying
     @Query("""
-                UPDATE Expense expense
-                SET expense.status = 'DELETED'
-                WHERE expense.id IN :expenseIds
+            UPDATE Expense expense
+            SET expense.status = 'DELETED'
+            WHERE expense.id = :id
+            """)
+    void deleteById(@Param("id") final Long id);
+
+    @Modifying
+    @Query("""
+            UPDATE Expense expense
+            SET expense.status = 'DELETED'
+            WHERE expense.id IN :expenseIds
             """)
     void deleteByIds(@Param("expenseIds") final List<Long> expenseIds);
 }

@@ -10,6 +10,7 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
+import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.ImageRepository;
@@ -18,6 +19,7 @@ import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
+import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -37,10 +39,11 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
+    private final PlaceRepository placeRepository;
+    private final ExpenseRepository expenseRepository;
     private final ImageRepository imageRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
-        // TODO: 유저 인가 로직 필요
         final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
@@ -178,7 +181,17 @@ public class ItemService {
     public void delete(final Long itemId) {
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-        itemRepository.delete(item);
+
+        if (!item.getImages().isEmpty()) {
+            imageRepository.deleteByItemId(itemId);
+        }
+        if (item.getPlace() != null) {
+            placeRepository.deleteById(item.getPlace().getId());
+        }
+        if (item.getExpense() != null) {
+            expenseRepository.deleteById(item.getExpense().getId());
+        }
+        itemRepository.deleteById(itemId);
     }
 
     public List<ItemResponse> getItems() {

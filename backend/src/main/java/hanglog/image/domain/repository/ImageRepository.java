@@ -11,9 +11,17 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
     @Modifying
     @Query("""
-                UPDATE Image image
-                SET image.status = 'DELETED'
-                WHERE image.item.id IN :itemIds
+            UPDATE Image image
+            SET image.status = 'DELETED'
+            WHERE image.item.id = :itemId
+            """)
+    void deleteByItemId(@Param("itemId") final Long itemId);
+
+    @Modifying
+    @Query("""
+            UPDATE Image image
+            SET image.status = 'DELETED'
+            WHERE image.item.id IN :itemIds
             """)
     void deleteByItemIds(@Param("itemIds") final List<Long> itemIds);
 }
