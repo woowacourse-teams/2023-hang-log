@@ -15,7 +15,6 @@ import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.repository.CustomImageRepository;
-import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
@@ -41,7 +40,6 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
-    private final ImageRepository imageRepository;
     private final CustomImageRepository customImageRepository;
     private final PlaceRepository placeRepository;
     private final ExpenseRepository expenseRepository;
@@ -175,7 +173,7 @@ public class ItemService {
         if (deletedImages.isEmpty()) {
             return;
         }
-        imageRepository.deleteAll(deletedImages);
+        customImageRepository.deleteAll(deletedImages);
     }
 
     private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages, final Item item) {

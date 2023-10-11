@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -21,6 +22,21 @@ public class CustomImageRepositoryImpl implements CustomImageRepository {
                     VALUES (:createdAt, :modifiedAt, :itemId, :name, :status)
                 """;
         namedParameterJdbcTemplate.batchUpdate(sql, getImageToSqlParameterSources(images));
+    }
+
+    @Override
+    public void deleteAll(final List<Image> images) {
+        final String sql = """
+                    DELETE FROM image WHERE id IN (:imageIds)
+                """;
+        namedParameterJdbcTemplate.update(sql, getDeletedImageIdsSqlParameterSources(images));
+    }
+
+    private SqlParameterSource getDeletedImageIdsSqlParameterSources(final List<Image> images) {
+        final List<Long> imageIds = images.stream()
+                .map(Image::getId)
+                .toList();
+        return new MapSqlParameterSource("imageIds", imageIds);
     }
 
     private MapSqlParameterSource[] getImageToSqlParameterSources(final List<Image> images) {

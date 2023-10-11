@@ -6,4 +6,6 @@ import java.util.List;
 public interface CustomImageRepository {
 
     void saveAll(final List<Image> images);
+
+    void deleteAll(final List<Image> images);
 }
