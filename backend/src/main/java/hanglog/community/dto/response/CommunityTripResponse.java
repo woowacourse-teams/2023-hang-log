@@ -5,7 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityResponse;
-import hanglog.share.dto.response.WriterResponse;
+import hanglog.member.dto.response.WriterResponse;
 import hanglog.trip.domain.Trip;
 import java.time.LocalDate;
 import java.util.List;

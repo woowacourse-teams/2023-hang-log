@@ -3,6 +3,9 @@ package hanglog.auth.domain.repository;
 import hanglog.auth.domain.RefreshToken;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, String> {
 
@@ -10,5 +13,10 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Stri
 
     boolean existsByToken(final String token);
 
-    void deleteByMemberId(final Long memberId);
+    @Modifying
+    @Query("""
+            DELETE FROM RefreshToken refreshToken
+            WHERE refreshToken.memberId = :memberId
+            """)
+    void deleteByMemberId(@Param("memberId") final Long memberId);
 }

@@ -1,4 +1,4 @@
-package hanglog.share.domain.type;
+package hanglog.trip.domain.type;
 
 public enum SharedStatusType {
 

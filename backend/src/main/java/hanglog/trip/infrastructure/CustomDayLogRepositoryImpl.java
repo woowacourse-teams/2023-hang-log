@@ -1,6 +1,7 @@
-package hanglog.trip.domain.repository;
+package hanglog.trip.infrastructure;
 
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,19 @@ public class CustomDayLogRepositoryImpl implements CustomDayLogRepository {
         namedParameterJdbcTemplate.batchUpdate(sql, getDayLogToSqlParameterSources(dayLogs));
     }
 
-    private MapSqlParameterSource[] getDayLogToSqlParameterSources(final List<DayLog> dayLogs)  {
+    @Override
+    public List<Long> findDayLogIdsByTripIds(final List<Long> tripIds) {
+        final String sql = """
+                SELECT d.id
+                FROM day_log d
+                WHERE d.trip_id IN (:tripIds)
+                """;
+        final MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("tripIds", tripIds);
+        return namedParameterJdbcTemplate.queryForList(sql, parameters, Long.class);
+    }
+
+    private MapSqlParameterSource[] getDayLogToSqlParameterSources(final List<DayLog> dayLogs) {
         return dayLogs.stream()
                 .map(this::getDayLogToSqlParameterSource)
                 .toArray(MapSqlParameterSource[]::new);
