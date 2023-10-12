@@ -70,7 +70,7 @@ class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("https://hanglog.com/img/imageName.png"),
+                List.of("imageName.png"),
                 placeRequest,
                 expenseRequest
         );
@@ -107,7 +107,7 @@ class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("https://invalid-url/img/imageName.png"),
+                List.of("imageName.png"),
                 placeRequest,
                 expenseRequest
         );
@@ -136,7 +136,7 @@ class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("https://hanglog.com/img/https://hanglog.com/img/imageName.png"),
+                List.of("imageName.png"),
                 placeRequest,
                 expenseRequest
         );
@@ -159,7 +159,7 @@ class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("https://hanglog.com/img/imageName.png"),
+                List.of("imageName.png"),
                 false,
                 null,
                 expenseRequest
@@ -198,7 +198,7 @@ class ItemServiceTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("https://hanglog.com/img/imageName.png"),
+                List.of("imageName.png"),
                 false,
                 placeRequest,
                 expenseRequest

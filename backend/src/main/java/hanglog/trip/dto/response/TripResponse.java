@@ -1,6 +1,5 @@
 package hanglog.trip.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static lombok.AccessLevel.PRIVATE;
 
 import hanglog.city.domain.City;
@@ -21,7 +20,7 @@ public class TripResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String description;
-    private final String imageUrl;
+    private final String imageName;
 
     public static TripResponse of(final Trip trip, final List<City> cities) {
         final List<CityResponse> cityResponses = cities.stream()
@@ -35,7 +34,7 @@ public class TripResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName())
+                trip.getImageName()
         );
     }
 }

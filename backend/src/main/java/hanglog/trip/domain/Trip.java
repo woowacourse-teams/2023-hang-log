@@ -1,13 +1,13 @@
 package hanglog.trip.domain;
 
 import static hanglog.global.type.StatusType.USABLE;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.util.Objects.requireNonNullElse;
 import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
@@ -129,17 +129,14 @@ public class Trip extends BaseEntity {
 
     public void update(final TripUpdateRequest updateRequest) {
         this.title = updateRequest.getTitle();
-        this.imageName = updateImageUrl(updateRequest.getImageUrl());
+        this.imageName = updateImageName(updateRequest.getImageUrl());
         this.startDate = updateRequest.getStartDate();
         this.endDate = updateRequest.getEndDate();
         this.description = updateRequest.getDescription();
     }
 
-    private String updateImageUrl(final String imageUrl) {
-        if (imageUrl == null) {
-            return DEFAULT_IMAGE_NAME;
-        }
-        return convertUrlToName(imageUrl);
+    private String updateImageName(final String imageName) {
+        return requireNonNullElse(imageName, DEFAULT_IMAGE_NAME);
     }
 
     public Optional<String> getSharedCode() {

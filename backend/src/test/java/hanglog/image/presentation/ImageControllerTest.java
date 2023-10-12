@@ -59,10 +59,10 @@ class ImageControllerTest extends ControllerTest {
                                 partWithName("images").description("이미지 파일, 최대 5개, 개당 최대 10MB")
                         ),
                         responseFields(
-                                fieldWithPath("imageUrls")
+                                fieldWithPath("imageNames")
                                         .type(JsonFieldType.ARRAY)
-                                        .description("저장된 이미지 url 배열")
-                                        .attributes(field("constraint", "nginx 주소 + 해싱된 이름"))
+                                        .description("저장된 이미지 name 배열")
+                                        .attributes(field("constraint", "해싱된 이름"))
                         )
                 ));
     }

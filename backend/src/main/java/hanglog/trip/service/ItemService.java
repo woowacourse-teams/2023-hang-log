@@ -4,7 +4,6 @@ import static hanglog.global.exception.ExceptionCode.NOT_ASSOCIATE_DAYLOG_WITH_T
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_DAY_LOG_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ITEM_ID;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
@@ -68,10 +67,9 @@ public class ItemService {
     }
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
-        final List<Image> images = itemRequest.getImageUrls().stream()
-                .map(imageUrl -> new Image(convertUrlToName(imageUrl)))
+        final List<Image> images = itemRequest.getImageNames().stream()
+                .map(Image::new)
                 .toList();
-
         return imageRepository.saveAll(images);
     }
 
@@ -102,7 +100,7 @@ public class ItemService {
                 updatedPlace,
                 dayLog,
                 makeExpense(itemUpdateRequest.getExpense()),
-                makeUpdatedImages(itemUpdateRequest, item.getImages())
+                makeUpdatedImages(itemUpdateRequest.getImageNames(), item.getImages())
         );
 
         itemRepository.save(updatedItem);
@@ -136,17 +134,15 @@ public class ItemService {
         return categories.get(0);
     }
 
-    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final List<Image> originalImages) {
-        final List<Image> updatedImages = itemUpdateRequest.getImageUrls().stream()
-                .map(imageUrl -> makeUpdatedImage(imageUrl, originalImages))
+    private List<Image> makeUpdatedImages(final List<String> updateImageNames, final List<Image> originalImages) {
+        final List<Image> updatedImages = updateImageNames.stream()
+                .map(imageName -> makeUpdatedImage(imageName, originalImages))
                 .toList();
 
         return imageRepository.saveAll(updatedImages);
     }
 
-    private Image makeUpdatedImage(final String imageUrl, final List<Image> originalImages) {
-        final String imageName = convertUrlToName(imageUrl);
-
+    private Image makeUpdatedImage(final String imageName, final List<Image> originalImages) {
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))
                 .findAny()

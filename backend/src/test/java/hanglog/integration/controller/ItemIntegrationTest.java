@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-public class ItemIntegrationTest extends IntegrationTest {
+class ItemIntegrationTest extends IntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -83,7 +83,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageNames(),
                 null,
                 null
         );
@@ -138,7 +138,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageNames(),
                 expectedPlaceResponse,
                 expectedItemExpenseResponse
         );
@@ -215,7 +215,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 true,
                 updatedPlaceRequest,
                 getExpenseRequest()
@@ -253,7 +253,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 false,
                 getPlaceRequest(),
                 getExpenseRequest()
@@ -402,7 +402,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 5.0,
                 "memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 getPlaceRequest(),
                 getExpenseRequest()
         );
@@ -455,7 +455,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 ordinal,
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                itemUpdateRequest.getImageUrls(),
+                itemUpdateRequest.getImageNames(),
                 createMockIdPlaceResponseBy(itemUpdateRequest.getPlace()),
                 createMockIdExpenseResponseBy(itemUpdateRequest.getExpense())
         );

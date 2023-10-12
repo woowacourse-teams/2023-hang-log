@@ -1,6 +1,5 @@
 package hanglog.trip.dto.response;
 
-import static hanglog.image.util.ImageUrlConverter.convertNameToUrl;
 import static hanglog.trip.dto.response.type.TripType.PERSONAL;
 import static hanglog.trip.dto.response.type.TripType.PUBLISHED;
 import static hanglog.trip.dto.response.type.TripType.SHARED;
@@ -31,7 +30,7 @@ public class TripDetailResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String description;
-    private final String imageUrl;
+    private final String imageName;
     private final Boolean isLike;
     private final Long likeCount;
     private final LocalDateTime publishedDate;
@@ -50,7 +49,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 null,
                 null,
                 null,
@@ -71,7 +70,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 null,
                 null,
                 null,
@@ -99,7 +98,7 @@ public class TripDetailResponse {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getDescription(),
-                convertNameToUrl(trip.getImageName()),
+                trip.getImageName(),
                 isLike,
                 likeCount,
                 publishedDate,
