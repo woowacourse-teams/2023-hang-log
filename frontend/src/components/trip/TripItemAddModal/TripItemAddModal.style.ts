@@ -8,7 +8,7 @@ export const wrapperStyling = css({
 
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing4})`,
-    height: `calc(100vh - ${Theme.spacer.spacing9})`,
+    height: `80%`,
   },
 });
 
@@ -16,10 +16,6 @@ export const formStyling = css({
   display: 'flex',
   flexDirection: 'column',
   gap: Theme.spacer.spacing4,
-
-  '& > button': {
-    width: '100%',
-  },
 
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing7})`,
@@ -33,5 +29,15 @@ export const formStyling = css({
       width: 0,
       height: 0,
     },
+  },
+});
+
+export const buttonStyling = css({
+  width: '100%',
+
+  '@media screen and (max-width: 600px)': {
+    position: 'absolute',
+    width: '89%',
+    bottom: Theme.spacer.spacing3,
   },
 });

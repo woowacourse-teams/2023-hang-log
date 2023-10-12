@@ -10,7 +10,8 @@ import {
   boxStyling,
   clickableLikeStyling,
   communityItemInfoStyling,
-  durationAndDescriptionStyling,
+  descriptionStyling,
+  durationStyling,
   imageStyling,
   informationStyling,
   likeCountBoxStyling,
@@ -83,10 +84,10 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
           <Text size="large" css={nameStyling}>
             {title}
           </Text>
-          <Text size="medium" css={durationAndDescriptionStyling}>
+          <Text size="medium" css={durationStyling}>
             {duration}
           </Text>
-          <Text size="small" css={durationAndDescriptionStyling}>
+          <Text size="small" css={descriptionStyling}>
             {description}
           </Text>
         </Box>

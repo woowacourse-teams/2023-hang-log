@@ -1,9 +1,21 @@
-import { Button, Flex, Input, Modal, SupportingText, Textarea } from 'hang-log-design-system';
+import { useMultipleImageUpload } from '@/hooks/common/useMultipleImageUpload';
+
+import { useCallback } from 'react';
+
+import {
+  Button,
+  Flex,
+  ImageUploadInput,
+  Input,
+  Modal,
+  SupportingText,
+  Textarea,
+} from 'hang-log-design-system';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput';
 import {
+  buttonStyling,
   dateInputSupportingText,
   formStyling,
   textareaStyling,
@@ -34,6 +46,23 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateCoverImage,
     handleSubmit,
   } = useTripEditForm(information, onClose);
+
+  const handleImageUrlsChange = useCallback(
+    (imageUrls: string[]) => {
+      updateCoverImage(imageUrls[0]);
+    },
+    [updateCoverImage]
+  );
+
+  const {
+    uploadedImageUrls: uploadedImageUrl,
+    isImageUploading,
+    handleImageUpload,
+    handleImageRemoval,
+  } = useMultipleImageUpload({
+    initialImageUrls: information.imageUrl === null ? [] : [information.imageUrl],
+    onSuccess: handleImageUrlsChange,
+  });
 
   return (
     <Modal
@@ -87,8 +116,22 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           onChange={updateInputValue('description')}
           css={textareaStyling}
         />
-        <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
-        <Button variant="primary">여행 정보 수정하기</Button>
+        <ImageUploadInput
+          id="cover-image-upload"
+          label="대표 이미지 업로드"
+          imageAltText="여행 대표 업로드 이미지"
+          imageUrls={uploadedImageUrl}
+          maxUploadCount={1}
+          onChange={handleImageUpload}
+          onRemove={handleImageRemoval}
+        />
+        <Button
+          variant={isImageUploading ? 'default' : 'primary'}
+          disabled={isImageUploading}
+          css={buttonStyling}
+        >
+          여행 정보 수정하기
+        </Button>
       </form>
     </Modal>
   );

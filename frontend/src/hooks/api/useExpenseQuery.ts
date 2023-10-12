@@ -7,24 +7,31 @@ import { getExpense } from '@api/expense/getExpense';
 import { getSharedExpense } from '@api/expense/getSharedExpense';
 
 import type { ExpenseData } from '@type/expense';
+import type { TripTypeData } from '@type/trip';
 
-export const useExpenseQuery = (
-  tripId: string,
-  { isShared, isPublished }: { isShared: boolean; isPublished: boolean }
-) => {
+import { TRIP_TYPE } from '@constants/trip';
+
+export const useExpenseQuery = (tripId: string, tripType: TripTypeData) => {
   const queryFn = {
     expense: () => getExpense(tripId),
   };
 
-  if (isPublished) {
+  if (tripType === TRIP_TYPE.PUBLISHED) {
     queryFn.expense = () => getCommunityTripExpense(tripId);
   }
 
-  if (isShared && !isPublished) {
+  if (tripType === TRIP_TYPE.SHARED) {
     queryFn.expense = () => getSharedExpense(tripId);
   }
 
-  const { data } = useQuery<ExpenseData, AxiosError>(['expense', tripId], queryFn.expense);
+  const { data } = useQuery<ExpenseData, AxiosError>(
+    [`${tripType}expense`, tripId],
+    queryFn.expense,
+    {
+      cacheTime: 5 * 60 * 1000,
+      staleTime: 60 * 1000,
+    }
+  );
 
   return { expenseData: data! };
 };

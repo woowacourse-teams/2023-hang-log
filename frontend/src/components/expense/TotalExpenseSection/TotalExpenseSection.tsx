@@ -16,23 +16,24 @@ import { mediaQueryMobileState } from '@store/mediaQuery';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
+import type { TripTypeData } from '@type/trip';
+
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 import { EXPENSE_CATEGORY_CHART_SIZE, EXPENSE_CATEGORY_CHART_STROKE_WIDTH } from '@constants/ui';
 
 interface TotalExpenseSectionProps {
   tripId: string;
-  isShared: boolean;
-  isPublished: boolean;
+  tripType: TripTypeData;
 }
 
-const TotalExpenseSection = ({ tripId, isShared, isPublished }: TotalExpenseSectionProps) => {
+const TotalExpenseSection = ({ tripId, tripType }: TotalExpenseSectionProps) => {
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
-  const { expenseData, categoryChartData } = useExpense(tripId);
+  const { expenseData, categoryChartData } = useExpense(tripId, tripType);
 
   return (
     <section css={containerStyling}>
-      <ExpenseInformation tripId={tripId} isShared={isShared} isPublished={isPublished} />
+      <ExpenseInformation tripId={tripId} tripType={tripType} />
       <Heading size={isMobile ? 'xSmall' : 'small'} css={totalAmountStyling}>
         총 경비 :{' '}
         <span>
@@ -52,7 +53,7 @@ const TotalExpenseSection = ({ tripId, isShared, isPublished }: TotalExpenseSect
           strokeWidth={EXPENSE_CATEGORY_CHART_STROKE_WIDTH}
         />
       </Box>
-      <ExpenseCategoryInformation tripId={tripId} />
+      <ExpenseCategoryInformation tripId={tripId} tripType={tripType} />
     </section>
   );
 };

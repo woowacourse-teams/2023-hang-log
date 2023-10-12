@@ -7,15 +7,17 @@ import { useExpense } from '@hooks/expense/useExpense';
 
 import { formatDate, formatMonthDate, formatNumberToMoney } from '@utils/formatter';
 
-import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
+import type { TripTypeData } from '@type/trip';
+
+import { CURRENCY_ICON, DEFAULT_CURRENCY, TRIP_TYPE } from '@constants/trip';
 
 interface ExpenseDatesProps {
   tripId: string;
-  isShared: boolean;
+  tripType: TripTypeData;
 }
 
-const ExpenseDates = ({ tripId, isShared }: ExpenseDatesProps) => {
-  const { expenseData, dates } = useExpense(tripId);
+const ExpenseDates = ({ tripId, tripType }: ExpenseDatesProps) => {
+  const { expenseData, dates } = useExpense(tripId, tripType);
 
   const { selected: selectedDayLogId, handleSelectClick: handleDayLogIdSelectClick } = useSelect(
     expenseData.dayLogs[0].id
@@ -75,7 +77,7 @@ const ExpenseDates = ({ tripId, isShared }: ExpenseDatesProps) => {
           </Flex>
         </>
       ) : (
-        <ExpenseList.Empty tripId={tripId} isShared={isShared} />
+        <ExpenseList.Empty tripId={tripId} isShared={tripType !== TRIP_TYPE.PERSONAL} />
       )}
     </>
   );

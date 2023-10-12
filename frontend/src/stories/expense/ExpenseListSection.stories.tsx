@@ -10,7 +10,7 @@ const meta = {
   },
   args: {
     tripId: '1',
-    isShared: false,
+    tripType: 'PERSONAL',
   },
 } satisfies Meta<typeof ExpenseListSection>;
 
