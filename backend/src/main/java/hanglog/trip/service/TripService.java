@@ -173,10 +173,6 @@ public class TripService {
     }
 
     public void delete(final Long tripId) {
-        if (!tripRepository.existsById(tripId)) {
-            throw new BadRequestException(NOT_FOUND_TRIP_ID);
-        }
-
         publishedTripRepository.deleteByTripId(tripId);
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);

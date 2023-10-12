@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
-import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
-import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
+import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.service.TripService;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
@@ -315,17 +315,5 @@ class TripServiceIntegrationTest extends ServiceIntegrationTest {
 
         // when & then
         assertDoesNotThrow(() -> tripService.delete(tripId));
-    }
-
-    @DisplayName("Trip 삭제 시 유효하지 않은 tripId일 경우, NOT_FOUND_TRIP_ID 예외가 발생한다.")
-    @Test
-    void delete_InvalidTripId() {
-        // given
-        final Long invalidTripId = 1L;
-
-        // when & then
-        assertThatThrownBy(() -> tripService.delete(invalidTripId))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage(NOT_FOUND_TRIP_ID.getMessage());
     }
 }

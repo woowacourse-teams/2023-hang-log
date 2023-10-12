@@ -19,6 +19,7 @@ import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.PublishedTrip;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
@@ -64,6 +65,9 @@ class TripServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private SharedTripRepository sharedTripRepository;
 
     @Mock
     private PublishedTripRepository publishedTripRepository;
@@ -180,21 +184,6 @@ class TripServiceTest {
         // then
         verify(tripRepository).findById(LONDON_TRIP.getId());
         verify(tripRepository).save(any(Trip.class));
-    }
-
-    @DisplayName("유효하지 않은 TripId를 삭제할 시 예외가 발생한다.")
-    @Test
-    void delete_InvalidTripId() {
-        // given
-        final Long invalidTripId = 2L;
-
-        given(tripRepository.existsById(invalidTripId)).willReturn(false);
-
-        // when & then
-        assertThatThrownBy(() -> tripService.delete(invalidTripId))
-                .isInstanceOf(BadRequestException.class)
-                .extracting("code")
-                .isEqualTo(1001);
     }
 
     @DisplayName("비공개인 Trip을 공개로 변경한다.")
