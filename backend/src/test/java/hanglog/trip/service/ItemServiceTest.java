@@ -4,18 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.fixture.CategoryFixture;
+import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
+import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -52,6 +56,12 @@ class ItemServiceTest {
 
     @Mock
     private ImageRepository imageRepository;
+
+    @Mock
+    private PlaceRepository placeRepository;
+
+    @Mock
+    private ExpenseRepository expenseRepository;
 
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
@@ -241,12 +251,13 @@ class ItemServiceTest {
         );
         given(itemRepository.findById(any()))
                 .willReturn(Optional.of(itemForDelete));
+        doNothing().when(expenseRepository).deleteById(anyLong());
 
         // when
         itemService.delete(itemForDelete.getId());
 
         // then
-        verify(itemRepository).delete(any());
+        verify(itemRepository).deleteById(anyLong());
     }
 
     @DisplayName("모든 여행 아이템의 Response를 반환한다.")
