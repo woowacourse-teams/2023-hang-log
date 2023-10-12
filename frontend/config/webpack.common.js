@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { convertToAbsolutePath } = require('./webpackUtil');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
   entry: convertToAbsolutePath('src/index.tsx'),
@@ -11,7 +12,10 @@ module.exports = {
       {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
-        use: ['ts-loader'],
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2021',
+        },
       },
       {
         test: /\.svg$/i,
@@ -67,5 +71,6 @@ module.exports = {
       favicon: convertToAbsolutePath('public/favicon.ico'),
     }),
     new Dotenv(),
+    new ForkTsCheckerWebpackPlugin(),
   ],
 };
