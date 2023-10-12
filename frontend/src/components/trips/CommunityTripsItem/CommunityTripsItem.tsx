@@ -18,6 +18,7 @@ import {
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
+import convertImageName from '@utils/convertImageName';
 import { formatDate } from '@utils/formatter';
 
 import type { CommunityTripsItemData } from '@type/trips';
@@ -37,7 +38,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
 
   const {
     id,
-    imageUrl,
+    imageName,
     title,
     cities,
     startDate,
@@ -48,7 +49,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
     likeCount: initialLikeCount,
   } = trip;
 
-  const coverImage = imageUrl;
+  const coverImage = imageName;
   const duration = `${formatDate(startDate)} - ${formatDate(endDate)}`;
 
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
@@ -73,7 +74,11 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
         likeCount={likeCount}
         css={clickableLikeStyling}
       />
-      <img src={coverImage ?? DefaultThumbnail} css={imageStyling} alt={`${title} 대표 이미지`} />
+      <img
+        src={coverImage ? convertImageName(coverImage) : DefaultThumbnail}
+        css={imageStyling}
+        alt={`${title} 대표 이미지`}
+      />
       <Box css={informationStyling}>
         <Box>
           <Box css={badgeBoxStyling}>
@@ -93,7 +98,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
         </Box>
         <Flex css={communityItemInfoStyling} styles={{ justify: 'space-between', align: 'center' }}>
           <Flex styles={{ align: 'center', gap: Theme.spacer.spacing2 }}>
-            <img alt="작성자 이미지" src={writer.imageUrl} css={writerImageStyling} />
+            <img alt="작성자 이미지" css={writerImageStyling} src={writer.imageUrl} />
             <Text size="small">{writer.nickname}</Text>
           </Flex>
           <Box css={likeCountBoxStyling}>

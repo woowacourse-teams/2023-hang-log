@@ -57,7 +57,7 @@ const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
             <TripsItem
               key={trip.id}
               id={trip.id}
-              coverImage={trip.imageUrl}
+              coverImage={trip.imageName}
               cityTags={trip.cities}
               itemName={trip.title}
               duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}

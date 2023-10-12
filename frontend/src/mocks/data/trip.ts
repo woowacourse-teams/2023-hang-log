@@ -17,8 +17,7 @@ export const trip: TripData = {
   likeCount: null,
   isWriter: null,
   publishedDate: null,
-  imageUrl:
-    'https://a.cdn-hotels.com/gdcs/production153/d1371/e6c1f55e-51ac-41d5-8c63-2d0c63faf59e.jpg',
+  imageName: 'default-image.png',
   cities: [
     {
       id: 1,
@@ -72,12 +71,7 @@ export const trip: TripData = {
               name: '관광',
             },
           },
-          imageUrls: [
-            'https://upload.wikimedia.org/wikipedia/commons/f/f9/Open_Happiness_Piccadilly_Circus_Blue-Pink_Hour_120917-1126-jikatu.jpg',
-            'https://e3.365dm.com/17/10/2048x1152/skynews-piccadilly-piccadilly-circus_4131587.jpg',
-            'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/9e/a5/6f/regent-str.jpg?w=1200&h=-1&s=1',
-            'https://flashbak.com/wp-content/uploads/2017/01/Piccadilly-by-Night-London-1960-by-Elmar-Ludwig.jpg',
-          ],
+          imageNames: ['default-image2.png', 'default-image.png'],
         },
         {
           id: 2,
@@ -97,7 +91,7 @@ export const trip: TripData = {
             },
           },
           expense: null,
-          imageUrls: ['https://pbs.twimg.com/media/D8sOPlgXUAACySN.jpg'],
+          imageNames: ['default-image.png'],
         },
         {
           id: 3,
@@ -116,7 +110,7 @@ export const trip: TripData = {
               name: '교통',
             },
           },
-          imageUrls: [],
+          imageNames: [],
         },
         {
           id: 10,
@@ -144,9 +138,7 @@ export const trip: TripData = {
               name: '음식',
             },
           },
-          imageUrls: [
-            'https://lh3.googleusercontent.com/p/AF1QipOirgDoMN4u1mwho_3Nh_4hS6IehGlewiHtcQLI=s1360-w1360-h1020',
-          ],
+          imageNames: ['default-image.png'],
         },
       ],
     },
@@ -182,9 +174,7 @@ export const trip: TripData = {
               name: '음식',
             },
           },
-          imageUrls: [
-            'https://lh3.googleusercontent.com/p/AF1QipOirgDoMN4u1mwho_3Nh_4hS6IehGlewiHtcQLI=s1360-w1360-h1020',
-          ],
+          imageNames: ['default-image.png'],
         },
         {
           id: 4,
@@ -203,9 +193,7 @@ export const trip: TripData = {
               name: '교통',
             },
           },
-          imageUrls: [
-            'https://www.thetrainline.com/cms/media/4626/southeastern-javelin-train-st-pancras-intl-desktop_1x.jpg',
-          ],
+          imageNames: ['default-image.png'],
         },
       ],
     },
