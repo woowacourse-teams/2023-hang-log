@@ -306,10 +306,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("imageUrl")
+                                fieldWithPath("imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
                                         .description("공유 코드")
@@ -427,10 +427,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("[].imageUrl")
+                                fieldWithPath("[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
