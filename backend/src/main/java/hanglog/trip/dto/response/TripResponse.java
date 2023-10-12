@@ -20,7 +20,7 @@ public class TripResponse {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String description;
-    private final String imageUrl;
+    private final String imageName;
 
     public static TripResponse of(final Trip trip, final List<City> cities) {
         final List<CityResponse> cityResponses = cities.stream()
