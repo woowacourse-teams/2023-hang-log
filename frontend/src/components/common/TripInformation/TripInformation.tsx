@@ -23,6 +23,7 @@ import { useTrip } from '@hooks/trip/useTrip';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
+import convertImageName from '@utils/convertImageName';
 import { formatDate } from '@utils/formatter';
 
 import type { TripData, TripTypeData } from '@type/trip';
@@ -63,7 +64,10 @@ const TripInformation = ({
       <header css={sectionStyling}>
         <Box css={imageWrapperStyling}>
           <div />
-          <img src={tripData.imageUrl ?? DefaultThumbnail} alt="여행 대표 이미지" />
+          <img
+            src={tripData.imageName ? convertImageName(tripData.imageName) : DefaultThumbnail}
+            alt="여행 대표 이미지"
+          />
         </Box>
         <Box tag="section">
           <Box css={badgeWrapperStyling}>

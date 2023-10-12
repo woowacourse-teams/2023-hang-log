@@ -1,5 +1,3 @@
-import { TRIP_TYPE } from '@/constants/trip';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@hooks/common/useToast';
@@ -9,6 +7,7 @@ import type { ErrorResponseData } from '@api/interceptors';
 import { patchTripSharedStatus } from '@api/trip/patchTripShareStatus';
 
 import { ERROR_CODE } from '@constants/api';
+import { TRIP_TYPE } from '@constants/trip';
 
 export const useTripShareStatusMutation = () => {
   const queryClient = useQueryClient();

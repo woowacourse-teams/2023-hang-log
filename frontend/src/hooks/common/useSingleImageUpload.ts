@@ -9,12 +9,12 @@ import { useToast } from '@hooks/common/useToast';
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 
 interface UseSingleImageUploadParams {
-  initialImageUrl: string | null;
+  initialImageName: string | null;
   onSuccess?: CallableFunction;
 }
 
 export const useSingleImageUpload = ({
-  initialImageUrl,
+  initialImageName,
   onSuccess,
 }: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
@@ -22,7 +22,7 @@ export const useSingleImageUpload = ({
 
   const { createToast } = useToast();
 
-  const [uploadedImageUrl, setUploadedImageUrl] = useState(initialImageUrl);
+  const [uploadedImageName, setUploadedImageName] = useState(initialImageName);
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,9 +30,9 @@ export const useSingleImageUpload = ({
 
       if (!originalImageFile) return;
 
-      const prevImageUrl = uploadedImageUrl;
+      const prevImageName = uploadedImageName;
 
-      setUploadedImageUrl(URL.createObjectURL(originalImageFile));
+      setUploadedImageName(URL.createObjectURL(originalImageFile));
 
       let imageFile: File;
 
@@ -58,12 +58,12 @@ export const useSingleImageUpload = ({
       imageMutation.mutate(
         { images: imageUploadFormData },
         {
-          onSuccess: ({ imageUrls }) => {
-            onSuccess?.(imageUrls[0]);
+          onSuccess: ({ imageNames }) => {
+            onSuccess?.(imageNames[0]);
             createToast('이미지 업로드에 성공했습니다', 'success');
           },
           onError: () => {
-            setUploadedImageUrl(prevImageUrl);
+            setUploadedImageName(prevImageName);
           },
         }
       );
@@ -71,13 +71,13 @@ export const useSingleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [createToast, imageMutation, onSuccess, uploadedImageUrl]
+    [createToast, imageMutation, onSuccess, uploadedImageName]
   );
 
   const handleImageRemoval = useCallback(() => {
-    setUploadedImageUrl(null);
+    setUploadedImageName(null);
     onSuccess?.(null);
   }, [onSuccess]);
 
-  return { isImageUploading, uploadedImageUrl, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageName, handleImageUpload, handleImageRemoval };
 };

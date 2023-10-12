@@ -34,7 +34,7 @@ export interface TripItemData {
   memo: string | null;
   place: PlaceData | null;
   expense: ExpenseData | null;
-  imageUrls: string[];
+  imageNames: string[];
 }
 
 export type TripItemCategory = '장소' | '기타';
@@ -57,5 +57,5 @@ export interface TripItemFormData {
     categoryId: number;
   } | null;
   memo: string | null;
-  imageUrls: string[];
+  imageNames: string[];
 }

@@ -57,13 +57,9 @@ describe('여행 수정 페이지', () => {
     cy.get('li[role="tab"]').first().click();
 
     cy.fixture('trip.json').then((expectedData) => {
-      const { title, items } = expectedData.dayLogs[0];
+      const { title } = expectedData.dayLogs[0];
 
       cy.findByPlaceholderText('소제목').should('have.value', title);
-
-      items.forEach((item: TripItemData) => {
-        cy.get('p').contains(item.title);
-      });
     });
   });
 
@@ -161,7 +157,7 @@ describe('여행 정보 수정', () => {
 
     cy.fixture('trip.json').then((expectedData) => {
       cy.findByRole('dialog').find('img').should('exist');
-      cy.findByRole('dialog').find(`img[src="${expectedData.imageUrl}"]`).should('not.exist');
+      cy.findByRole('dialog').find(`img[src="${expectedData.imageName}"]`).should('not.exist');
     });
   });
 

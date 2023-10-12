@@ -9,7 +9,7 @@ export const imageHandlers = [
     return res(
       ctx.status(HTTP_STATUS_CODE.CREATED),
       ctx.delay(2000),
-      ctx.json({ imageUrls: images })
+      ctx.json({ imageNames: images })
     );
   }),
 ];

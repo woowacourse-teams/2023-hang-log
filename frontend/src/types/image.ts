@@ -1,3 +1,3 @@
 export interface ImageData {
-  imageUrls: string[];
+  imageNames: string[];
 }

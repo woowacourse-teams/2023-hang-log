@@ -10,6 +10,8 @@ import {
   nameStyling,
 } from '@components/trips/TripsItem/TripsItem.style';
 
+import convertImageName from '@utils/convertImageName';
+
 import type { CityData } from '@type/city';
 
 import { PATH } from '@constants/path';
@@ -47,7 +49,7 @@ const TripsItem = ({
       onClick={() => navigate(PATH.TRIP(String(id)))}
     >
       <img
-        src={coverImage ?? DefaultThumbnail}
+        src={coverImage ? convertImageName(coverImage) : DefaultThumbnail}
         css={imageStyling}
         alt={`${itemName} 대표 이미지`}
       />
