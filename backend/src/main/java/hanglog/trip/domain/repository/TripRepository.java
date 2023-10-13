@@ -20,19 +20,23 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query("SELECT trip FROM Trip trip LEFT JOIN FETCH trip.sharedTrip WHERE trip.member.id = :memberId")
     List<Trip> findAllByMemberId(@Param("memberId") final Long memberId);
 
-    @Query("SELECT trip FROM Trip trip "
-            + "LEFT JOIN PublishedTrip publishedTrip ON publishedTrip.trip = trip "
-            + "LEFT JOIN FETCH trip.sharedTrip sharedTrip "
-            + "LEFT JOIN FETCH trip.member member "
-            + "WHERE trip.publishedStatus = 'PUBLISHED'")
+    @Query("""
+            SELECT trip FROM Trip trip
+            LEFT JOIN PublishedTrip publishedTrip ON publishedTrip.trip = trip
+            LEFT JOIN FETCH trip.sharedTrip sharedTrip
+            LEFT JOIN FETCH trip.member member
+            WHERE trip.publishedStatus = 'PUBLISHED'
+            """)
     List<Trip> findPublishedTripByPageable(final Pageable pageable);
 
-    @Query("SELECT trip FROM Trip trip "
-            + "LEFT JOIN Likes likes ON likes.tripId = trip.id "
-            + "LEFT JOIN FETCH trip.sharedTrip sharedTrip "
-            + "WHERE trip.publishedStatus = 'PUBLISHED' "
-            + "GROUP BY trip.id "
-            + "ORDER BY COUNT(likes.tripId) DESC")
+    @Query("""
+            SELECT trip FROM Trip trip
+            LEFT JOIN Likes likes ON likes.tripId = trip.id
+            LEFT JOIN FETCH trip.sharedTrip sharedTrip
+            WHERE trip.publishedStatus = 'PUBLISHED'
+            GROUP BY trip.id
+            ORDER BY COUNT(likes.tripId) DESC
+            """)
     List<Trip> findTripsOrderByLikesCount(final Pageable pageable);
 
     Long countTripByPublishedStatus(final PublishedStatusType publishedStatusType);
