@@ -13,6 +13,7 @@ import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
+import hanglog.image.domain.S3ImageEvent;
 import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -29,6 +30,7 @@ import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,7 @@ public class ItemService {
     private final ExpenseRepository expenseRepository;
     private final ImageRepository imageRepository;
     private final CustomImageRepository customImageRepository;
+    private final ApplicationEventPublisher publisher;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         final DayLog dayLog = dayLogRepository.findWithItemsById(itemRequest.getDayLogId())
@@ -200,6 +203,7 @@ public class ItemService {
             return;
         }
         customImageRepository.deleteAll(deletedImages);
+        deletedImages.forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
     }
 
     private Expense makeUpdatedExpense(final ExpenseRequest expenseRequest, final Expense originalExpense) {
