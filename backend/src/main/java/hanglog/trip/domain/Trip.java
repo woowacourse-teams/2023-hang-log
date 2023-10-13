@@ -129,7 +129,7 @@ public class Trip extends BaseEntity {
 
     public void update(final TripUpdateRequest updateRequest) {
         this.title = updateRequest.getTitle();
-        this.imageName = updateImageName(updateRequest.getImageUrl());
+        this.imageName = updateImageName(updateRequest.getImageName());
         this.startDate = updateRequest.getStartDate();
         this.endDate = updateRequest.getEndDate();
         this.description = updateRequest.getDescription();
