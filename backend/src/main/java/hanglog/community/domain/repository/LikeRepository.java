@@ -1,6 +1,6 @@
 package hanglog.community.domain.repository;
 
-import hanglog.community.dto.LikeInfoByTrip;
+import hanglog.community.dto.LikeElement;
 import hanglog.community.domain.Likes;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,11 +16,11 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     Long countLikesByTripId(final Long tripId);
 
     @Query("""
-            SELECT new hanglog.community.dto.LikeInfoByTrip
+            SELECT new hanglog.community.dto.LikeElement
             (l.tripId, COUNT(l.memberId), EXISTS(SELECT 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId))
             FROM Likes l
             WHERE l.tripId in :tripIds
             GROUP BY l.tripId
              """)
-    List<LikeInfoByTrip> findLikeCountAndIsLikeByTripIds(@Param("memberId") final Long memberId, @Param("tripIds") final List<Long> tripIds);
+    List<LikeElement> findLikeCountAndIsLikeByTripIds(@Param("memberId") final Long memberId, @Param("tripIds") final List<Long> tripIds);
 }
