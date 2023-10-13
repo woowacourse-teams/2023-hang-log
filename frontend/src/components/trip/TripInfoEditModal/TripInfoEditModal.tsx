@@ -46,22 +46,18 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     handleSubmit,
   } = useTripEditForm(information, onClose);
 
-  const handleImageNamesChange = useCallback(
+  const handleImageNameChange = useCallback(
     (imageNames: string[]) => {
       updateCoverImage(imageNames[0]);
     },
     [updateCoverImage]
   );
 
-  const {
-    uploadedImageNames: uploadedImageName,
-    isImageUploading,
-    handleImageUpload,
-    handleImageRemoval,
-  } = useMultipleImageUpload({
-    initialImageNames: information.imageName === null ? [] : [information.imageName],
-    onSuccess: handleImageNamesChange,
-  });
+  const { uploadedImageUrls, isImageUploading, handleImageUpload, handleImageRemoval } =
+    useMultipleImageUpload({
+      initialImageNames: information.imageName === null ? [] : [information.imageName],
+      updateFormImage: handleImageNameChange,
+    });
 
   return (
     <Modal
@@ -119,7 +115,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           id="cover-image-upload"
           label="대표 이미지 업로드"
           imageAltText="여행 대표 업로드 이미지"
-          imageUrls={uploadedImageName}
+          imageUrls={uploadedImageUrls}
           maxUploadCount={1}
           onChange={handleImageUpload}
           onRemove={handleImageRemoval}

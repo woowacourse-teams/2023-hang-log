@@ -18,7 +18,7 @@ import {
   nameStyling,
 } from '@components/trips/CommunityTripsItem/CommunityTripsItem.style';
 
-import convertImageName from '@utils/convertImageName';
+import { convertToImageUrl } from '@utils/convertImage';
 import { formatDate } from '@utils/formatter';
 
 import type { CommunityTripsItemData } from '@type/trips';
@@ -75,7 +75,7 @@ const CommunityTripsItem = ({ index, trip }: CommunityTripsItemProps) => {
         css={clickableLikeStyling}
       />
       <img
-        src={coverImage ? convertImageName(coverImage) : DefaultThumbnail}
+        src={coverImage ? convertToImageUrl(coverImage) : DefaultThumbnail}
         css={imageStyling}
         alt={`${title} 대표 이미지`}
       />
