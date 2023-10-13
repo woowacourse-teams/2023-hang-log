@@ -11,9 +11,17 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     @Modifying
     @Query("""
-                UPDATE Place place
-                SET place.status = 'DELETED'
-                WHERE place.id IN :placeIds
+            UPDATE Place place
+            SET place.status = 'DELETED'
+            WHERE place.id = :id
+            """)
+    void deleteById(@Param("id") final Long id);
+
+    @Modifying
+    @Query("""
+            UPDATE Place place
+            SET place.status = 'DELETED'
+            WHERE place.id IN :placeIds
             """)
     void deleteByIds(@Param("placeIds") final List<Long> placeIds);
 }

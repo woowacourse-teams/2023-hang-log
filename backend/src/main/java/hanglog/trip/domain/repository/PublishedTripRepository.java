@@ -10,11 +10,17 @@ import org.springframework.data.repository.query.Param;
 
 public interface PublishedTripRepository extends JpaRepository<PublishedTrip, Long> {
 
-    void deleteByTripId(final Long tripId);
-
     boolean existsByTripId(final Long tripId);
 
     Optional<PublishedTrip> findByTripId(final Long tripId);
+
+    @Modifying
+    @Query("""
+            UPDATE PublishedTrip publishedTrip
+            SET publishedTrip.status = 'DELETED'
+            WHERE publishedTrip.trip.id = :tripId
+            """)
+    void deleteByTripId(@Param("tripId") final Long tripId);
 
     @Modifying
     @Query("""
