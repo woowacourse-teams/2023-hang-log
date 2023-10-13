@@ -17,6 +17,7 @@ import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.repository.CategoryRepository;
@@ -68,11 +69,11 @@ class ExpenseServiceTest {
         final List<City> cities = List.of(LONDON, TOKYO);
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(TRIP_FOR_EXPENSE));
-        when(currencyRepository.findTopByOrderByDateAsc())
+        lenient().when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
         when(cityRepository.findCitiesByTripId(1L))
                 .thenReturn(cities);
-        when(categoryRepository.findExpenseCategory())
+        lenient().when(categoryRepository.findExpenseCategory())
                 .thenReturn(EXPENSE_CATEGORIES);
 
         final Amount day1Amount = getTotalAmount(Arrays.asList(KRW_100_FOOD, EUR_100_SHOPPING));

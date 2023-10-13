@@ -4,10 +4,12 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
+import hanglog.category.domain.DefaultCategories;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.currency.domain.Currency;
+import hanglog.currency.domain.DefaultCurrency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
@@ -42,7 +44,7 @@ public class ExpenseService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
-                .orElseGet(() -> findOldestCurrency());
+                .orElseGet(this::findOldestCurrency);
 
         final Map<DayLog, Amount> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
         final Map<Category, Amount> categoryAmounts = getCategoryAmounts();
@@ -74,8 +76,14 @@ public class ExpenseService {
     }
 
     private Currency findOldestCurrency() {
-        return currencyRepository.findTopByOrderByDateAsc()
+        final Optional<Currency> oldestCurrency = DefaultCurrency.getOldestCurrency();
+        if (oldestCurrency.isPresent()) {
+            return oldestCurrency.get();
+        }
+        final Currency currency = currencyRepository.findTopByOrderByDateAsc()
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
+        DefaultCurrency.setOldestCurrency(currency);
+        return currency;
     }
 
     private void calculateAmounts(
@@ -89,12 +97,11 @@ public class ExpenseService {
 
             if (expense.isPresent()) {
                 final Amount KRWAmount = changeToKRW(expense.get(), currency);
-
                 final Amount dayLogAmount = dayLogAmounts.get(dayLog);
                 dayLogAmounts.put(dayLog, dayLogAmount.add(KRWAmount));
-
-                final Amount categoryAmount = categoryAmounts.get(expense.get().getCategory());
-                categoryAmounts.put(expense.get().getCategory(), categoryAmount.add(KRWAmount));
+                final Category category = expense.get().getCategory();
+                final Amount categoryAmount = categoryAmounts.get(category);
+                categoryAmounts.put(category, categoryAmount.add(KRWAmount));
             }
         }
     }
@@ -119,11 +126,20 @@ public class ExpenseService {
     }
 
     private Map<Category, Amount> getCategoryAmounts() {
-        final List<Category> categories = categoryRepository.findExpenseCategory();
         final Map<Category, Amount> categoryAmounts = new LinkedHashMap<>();
-        for (final Category category : categories) {
+        for (final Category category : findCategories()) {
             categoryAmounts.put(category, Amount.ZERO);
         }
         return categoryAmounts;
+    }
+
+    private List<Category> findCategories() {
+        final Optional<List<Category>> expenseCategories = DefaultCategories.getExpenseCategories();
+        if (expenseCategories.isPresent()) {
+            return expenseCategories.get();
+        }
+        final List<Category> categories = categoryRepository.findExpenseCategory();
+        DefaultCategories.setExpenseCategories(categories);
+        return categories;
     }
 }
