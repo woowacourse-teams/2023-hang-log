@@ -21,8 +21,9 @@ public interface TripCityRepository extends JpaRepository<TripCity, Long> {
     void deleteAllByTripId(@Param("tripId") final Long tripId);
 
     @Query("""
-            SELECT new hanglog.community.dto.CityInfoByTrip
-            (tc.trip.id, tc.city) FROM TripCity tc WHERE tc.trip.id IN :tripIds
+            SELECT new hanglog.community.dto.CityInfoByTrip (tc.trip.id, tc.city) 
+            FROM TripCity tc 
+            WHERE tc.trip.id IN :tripIds
             """)
     List<CityInfoByTrip> findTripIdAndCitiesByTripIds(@Param("tripIds") final List<Long> tripIds);
 }
