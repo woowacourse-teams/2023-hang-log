@@ -107,30 +107,56 @@ public class ItemService {
 
     private Place makeUpdatedPlace(final ItemUpdateRequest itemUpdateRequest, final Item item) {
         final Place originalPlace = item.getPlace();
-        if (!itemUpdateRequest.getIsPlaceUpdated()) {
+        if (isPlaceNotUpdated(itemUpdateRequest, item)) {
             return originalPlace;
         }
-        if (originalPlace != null) {
-            placeRepository.delete(originalPlace);
+        final Place updatedPlace = createPlaceByPlaceRequest(itemUpdateRequest.getPlace());
+        deleteNotUsedPlace(originalPlace);
+        return saveNewlyUpdatedPlace(updatedPlace);
+    }
+
+    boolean isPlaceNotUpdated(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        if (!item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated()) {
+            return true;
         }
-        return makePlace(itemUpdateRequest.getPlace());
+        if (item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated() && itemUpdateRequest.getItemType()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void deleteNotUsedPlace(final Place place) {
+        if (place == null) {
+            return;
+        }
+        placeRepository.delete(place);
+    }
+
+    private Place saveNewlyUpdatedPlace(final Place updatedPlace) {
+        if (updatedPlace == null) {
+            return null;
+        }
+        return placeRepository.save(updatedPlace);
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {
-        if (placeRequest == null) {
+        final Place place = createPlaceByPlaceRequest(placeRequest);
+        if (place == null) {
             return null;
         }
-        return createPlaceByPlaceRequest(placeRequest);
+        return placeRepository.save(place);
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
-        final Place place = new Place(
+        if (placeRequest == null) {
+            return null;
+        }
+        return new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 findCategoryByApiCategory(placeRequest.getApiCategory())
         );
-        return placeRepository.save(place);
     }
 
     private Category findCategoryByApiCategory(final List<String> apiCategory) {
@@ -148,7 +174,7 @@ public class ItemService {
                 .toList();
 
         deleteNotUsedImages(originalImages, updatedImages);
-        saveNewImages(originalImages, updatedImages);
+        saveNewlyUpdatedImages(originalImages, updatedImages);
         return updatedImages;
     }
 
@@ -159,7 +185,7 @@ public class ItemService {
                 .orElseGet(() -> new Image(imageName, item));
     }
 
-    private void saveNewImages(final List<Image> originalImages, final List<Image> updatedImages) {
+    private void saveNewlyUpdatedImages(final List<Image> originalImages, final List<Image> updatedImages) {
         final List<Image> newImages = updatedImages.stream()
                 .filter(image -> !originalImages.contains(image))
                 .toList();
@@ -177,45 +203,58 @@ public class ItemService {
     }
 
     private Expense makeUpdatedExpense(final ExpenseRequest expenseRequest, final Expense originalExpense) {
-        final Expense updatedExpense = makeExpense(expenseRequest);
-        deleteOriginalExpense(originalExpense, updatedExpense);
-        return saveUpdatedExpense(originalExpense, updatedExpense);
+        final Expense updatedExpense = createExpenseByExpenseRequest(expenseRequest);
+        if (isExpenseNotUpdated(updatedExpense, originalExpense)) {
+            return originalExpense;
+        }
+        deleteNotUsedExpense(originalExpense);
+        return saveNewlyUpdatedExpense(updatedExpense);
     }
 
-    private Expense saveUpdatedExpense(final Expense originalExpense, final Expense updatedExpense) {
+    private void deleteNotUsedExpense(final Expense expense) {
+        if (expense == null) {
+            return;
+        }
+        expenseRepository.delete(expense);
+    }
+
+    private boolean isExpenseNotUpdated(final Expense updatedExpense, final Expense originalExpense) {
+        if (updatedExpense == null && originalExpense == null) {
+            return true;
+        }
+        if (updatedExpense != null && updatedExpense.equals(originalExpense)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Expense saveNewlyUpdatedExpense(final Expense updatedExpense) {
         if (updatedExpense == null) {
             return null;
-        }
-        if (updatedExpense.equals(originalExpense)) {
-            return originalExpense;
         }
         return expenseRepository.save(updatedExpense);
     }
 
-    private void deleteOriginalExpense(final Expense originalExpense, final Expense updatedExpense) {
-        if (originalExpense == null || originalExpense.equals(updatedExpense)) {
-            return;
-        }
-        expenseRepository.delete(originalExpense);
-    }
-
     private Expense makeExpense(final ExpenseRequest expenseRequest) {
-        if (expenseRequest == null) {
+        final Expense expense = createExpenseByExpenseRequest(expenseRequest);
+        if (expense == null) {
             return null;
         }
-        return createExpenseByExpenseRequest(expenseRequest);
+        return expenseRepository.save(expense);
     }
 
     private Expense createExpenseByExpenseRequest(final ExpenseRequest expenseRequest) {
+        if (expenseRequest == null) {
+            return null;
+        }
         final Category expenseCategory = categoryRepository.findById(expenseRequest.getCategoryId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
         final String currency = CurrencyType.getMappedCurrencyType(expenseRequest.getCurrency()).getCode();
-        final Expense expense = new Expense(
+        return new Expense(
                 currency,
                 new Amount(expenseRequest.getAmount()),
                 expenseCategory
         );
-        return expenseRepository.save(expense);
     }
 
     private int getNewItemOrdinal(final DayLog dayLog) {
