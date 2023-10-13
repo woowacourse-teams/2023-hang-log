@@ -14,8 +14,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class S3ImageEventListener {
 
-    private static final String CACHE_CONTROL_VALUE = "max-age=3153600";
-
     private final AmazonS3 s3Client;
 
     @Value("${cloud.aws.s3.bucket}")
