@@ -10,6 +10,7 @@ import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.PublishedTrip;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.share.domain.repository.SharedTripRepository;
@@ -120,6 +121,7 @@ public class TripService {
 
         updateTripCities(tripId, cities);
         updateDayLog(updateRequest, trip);
+        updateImage(trip.getImageName(), updateRequest.getImageName());
         trip.update(updateRequest);
         tripRepository.save(trip);
     }
@@ -142,6 +144,13 @@ public class TripService {
         if (currentPeriod != requestPeriod) {
             updateDayLogByPeriod(trip, currentPeriod, requestPeriod);
         }
+    }
+
+    private void updateImage(final String beforeImageName, final String updateImageName) {
+        if (beforeImageName.equals(updateImageName)) {
+            return;
+        }
+        publisher.publishEvent((new S3ImageEvent(beforeImageName)));
     }
 
     private void updateDayLogByPeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {
