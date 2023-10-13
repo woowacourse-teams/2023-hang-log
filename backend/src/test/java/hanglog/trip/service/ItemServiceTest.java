@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import hanglog.category.domain.Category;
@@ -12,11 +13,13 @@ import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.fixture.CategoryFixture;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
+import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ItemRepository;
+import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.type.ItemType;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
@@ -44,6 +47,15 @@ class ItemServiceTest {
 
     @Mock
     private ItemRepository itemRepository;
+
+    @Mock
+    private CustomImageRepository customImageRepository;
+
+    @Mock
+    private PlaceRepository placeRepository;
+
+    @Mock
+    private ExpenseRepository expenseRepository;
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -81,10 +93,11 @@ class ItemServiceTest {
 
         given(itemRepository.save(any()))
                 .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemsById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
         given(categoryRepository.findById(any()))
                 .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+        doNothing().when(customImageRepository).saveAll(any());
 
         // when
         final Long actualId = itemService.save(1L, itemRequest);
@@ -116,7 +129,7 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemsById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when & then
@@ -145,7 +158,7 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(dayLogRepository.findById(any()))
+        given(dayLogRepository.findWithItemsById(any()))
                 .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
 
         // when & then
@@ -168,15 +181,13 @@ class ItemServiceTest {
                 null,
                 expenseRequest
         );
+        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
+        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
 
-        given(itemRepository.save(any()))
-                .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(itemRepository.findById(any()))
-                .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
         given(categoryRepository.findById(any()))
                 .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
-        given(dayLogRepository.findById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(dayLogRepository.findWithItemDetailsById(any()))
+                .willReturn(Optional.of(dayLog));
 
         // when
         itemService.update(1L, 1L, itemUpdateRequest);
@@ -208,14 +219,12 @@ class ItemServiceTest {
                 expenseRequest
         );
 
-        given(itemRepository.save(any()))
-                .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(itemRepository.findById(any()))
-                .willReturn(Optional.of(ItemFixture.LONDON_EYE_ITEM));
+        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
+        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
         given(categoryRepository.findById(any()))
                 .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
-        given(dayLogRepository.findById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+        given(dayLogRepository.findWithItemDetailsById(any()))
+                .willReturn(Optional.of(dayLog));
 
         // when
         itemService.update(1L, 1L, itemUpdateRequest);

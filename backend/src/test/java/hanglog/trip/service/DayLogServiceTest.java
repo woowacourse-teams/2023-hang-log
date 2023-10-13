@@ -4,15 +4,13 @@ import static hanglog.trip.fixture.DayLogFixture.LONDON_DAYLOG_1;
 import static hanglog.trip.fixture.DayLogFixture.UPDATED_LONDON_DAYLOG;
 import static hanglog.trip.fixture.ItemFixture.DAYLOG_FOR_ITEM_FIXTURE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import hanglog.trip.domain.DayLog;
-import hanglog.trip.domain.Item;
+import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.dto.request.DayLogUpdateTitleRequest;
 import hanglog.trip.dto.request.ItemsOrdinalUpdateRequest;
 import hanglog.trip.dto.response.DayLogResponse;
@@ -36,7 +34,7 @@ class DayLogServiceTest {
     private DayLogRepository dayLogRepository;
 
     @Mock
-    private ItemRepository itemRepository;
+    private CustomItemRepository customItemRepository;
 
     @DisplayName("날짜별 여행을 조회할 수 있다.")
     @Test
@@ -65,7 +63,7 @@ class DayLogServiceTest {
         // given
         final DayLogUpdateTitleRequest request = new DayLogUpdateTitleRequest("updated");
 
-        given(dayLogRepository.findById(1L))
+        given(dayLogRepository.findWithItemsById(1L))
                 .willReturn(Optional.of(LONDON_DAYLOG_1));
         given(dayLogRepository.save(any(DayLog.class)))
                 .willReturn(UPDATED_LONDON_DAYLOG);
@@ -74,7 +72,7 @@ class DayLogServiceTest {
         dayLogService.updateTitle(LONDON_DAYLOG_1.getId(), request);
 
         // then
-        verify(dayLogRepository).findById(UPDATED_LONDON_DAYLOG.getId());
+        verify(dayLogRepository).findWithItemsById(UPDATED_LONDON_DAYLOG.getId());
         verify(dayLogRepository).save(any(DayLog.class));
     }
 
@@ -83,27 +81,13 @@ class DayLogServiceTest {
     void updateItemOrdinals() {
         // given
         final ItemsOrdinalUpdateRequest request = new ItemsOrdinalUpdateRequest(List.of(4L, 3L, 2L, 1L));
-        given(dayLogRepository.findById(1L))
+        given(dayLogRepository.findWithItemsById(1L))
                 .willReturn(Optional.of(DAYLOG_FOR_ITEM_FIXTURE));
-        given(itemRepository.findById(1L))
-                .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(0)));
-        given(itemRepository.findById(2L))
-                .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(1)));
-        given(itemRepository.findById(3L))
-                .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(2)));
-        given(itemRepository.findById(4L))
-                .willReturn(Optional.ofNullable(DAYLOG_FOR_ITEM_FIXTURE.getItems().get(3)));
 
         // when
         dayLogService.updateOrdinalOfItems(1L, request);
 
         // then
-        final List<Item> items = DAYLOG_FOR_ITEM_FIXTURE.getItems();
-        assertSoftly(softly -> {
-            softly.assertThat(items.get(0).getOrdinal()).isEqualTo(4);
-            softly.assertThat(items.get(1).getOrdinal()).isEqualTo(3);
-            softly.assertThat(items.get(2).getOrdinal()).isEqualTo(2);
-            softly.assertThat(items.get(3).getOrdinal()).isEqualTo(1);
-        });
+        verify(customItemRepository).updateOrdinals(any());
     }
 }

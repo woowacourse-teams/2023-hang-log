@@ -13,6 +13,7 @@ import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
+import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
@@ -42,24 +43,29 @@ public class ItemService {
     private final PlaceRepository placeRepository;
     private final ExpenseRepository expenseRepository;
     private final ImageRepository imageRepository;
+    private final CustomImageRepository customImageRepository;
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
-        final DayLog dayLog = dayLogRepository.findById(itemRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findWithItemsById(itemRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
 
+        final List<Image> images = makeImages(itemRequest);
         final Item item = new Item(
                 ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
                 itemRequest.getTitle(),
-                getNewItemOrdinal(dayLog.getId()),
+                getNewItemOrdinal(dayLog),
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
                 makePlace(itemRequest.getPlace()),
                 dayLog,
                 makeExpense(itemRequest.getExpense()),
-                makeImages(itemRequest)
+                images
         );
-        return itemRepository.save(item).getId();
+        final Item savedItem = itemRepository.save(item);
+        images.forEach(image -> image.setItem(savedItem));
+        customImageRepository.saveAll(images);
+        return savedItem.getId();
     }
 
     private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {
@@ -70,29 +76,20 @@ public class ItemService {
     }
 
     private List<Image> makeImages(final ItemRequest itemRequest) {
-        final List<Image> images = itemRequest.getImageNames().stream()
+        return itemRequest.getImageNames().stream()
                 .map(Image::new)
                 .toList();
-        return imageRepository.saveAll(images);
     }
 
     public void update(final Long tripId, final Long itemId, final ItemUpdateRequest itemUpdateRequest) {
-        final DayLog dayLog = dayLogRepository.findById(itemUpdateRequest.getDayLogId())
+        final DayLog dayLog = dayLogRepository.findWithItemDetailsById(itemUpdateRequest.getDayLogId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
         validateAssociationTripAndDayLog(tripId, dayLog);
 
-        final Item item = itemRepository.findById(itemId)
+        final Item item = dayLog.getItems().stream()
+                .filter(target -> target.getId().equals(itemId))
+                .findFirst()
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-
-        Place updatedPlace = item.getPlace();
-        if (itemUpdateRequest.getIsPlaceUpdated() || isChangedToSpot(itemUpdateRequest, item)) {
-            updatedPlace = makePlace(itemUpdateRequest.getPlace());
-        }
-
-        if (item.getItemType() == ItemType.SPOT && !itemUpdateRequest.getItemType()) {
-            updatedPlace = null;
-        }
-
         final Item updatedItem = new Item(
                 itemId,
                 ItemType.getItemTypeByIsSpot(itemUpdateRequest.getItemType()),
@@ -100,27 +97,60 @@ public class ItemService {
                 item.getOrdinal(),
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                updatedPlace,
+                makeUpdatedPlace(itemUpdateRequest, item),
                 dayLog,
-                makeExpense(itemUpdateRequest.getExpense()),
-                makeUpdatedImages(itemUpdateRequest.getImageNames(), item.getImages())
+                makeUpdatedExpense(itemUpdateRequest.getExpense(), item.getExpense()),
+                makeUpdatedImages(itemUpdateRequest, item)
         );
-
         itemRepository.save(updatedItem);
     }
 
-    private boolean isChangedToSpot(final ItemUpdateRequest itemUpdateRequest, final Item item) {
-        return item.getItemType().equals(ItemType.NON_SPOT) && itemUpdateRequest.getPlace() != null;
+    private Place makeUpdatedPlace(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        final Place originalPlace = item.getPlace();
+        if (isPlaceNotUpdated(itemUpdateRequest, item)) {
+            return originalPlace;
+        }
+        final Place updatedPlace = createPlaceByPlaceRequest(itemUpdateRequest.getPlace());
+        deleteNotUsedPlace(originalPlace);
+        return saveNewlyUpdatedPlace(updatedPlace);
+    }
+
+    boolean isPlaceNotUpdated(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        if (!item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated()) {
+            return true;
+        }
+        if (item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated() && itemUpdateRequest.getItemType()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void deleteNotUsedPlace(final Place place) {
+        if (place == null) {
+            return;
+        }
+        placeRepository.delete(place);
+    }
+
+    private Place saveNewlyUpdatedPlace(final Place updatedPlace) {
+        if (updatedPlace == null) {
+            return null;
+        }
+        return placeRepository.save(updatedPlace);
     }
 
     private Place makePlace(final PlaceRequest placeRequest) {
-        if (placeRequest == null) {
+        final Place place = createPlaceByPlaceRequest(placeRequest);
+        if (place == null) {
             return null;
         }
-        return createPlaceByPlaceRequest(placeRequest);
+        return placeRepository.save(place);
     }
 
     private Place createPlaceByPlaceRequest(final PlaceRequest placeRequest) {
+        if (placeRequest == null) {
+            return null;
+        }
         return new Place(
                 placeRequest.getName(),
                 placeRequest.getLatitude(),
@@ -137,33 +167,89 @@ public class ItemService {
         return categories.get(0);
     }
 
-    private List<Image> makeUpdatedImages(final List<String> updateImageNames, final List<Image> originalImages) {
-        final List<Image> updatedImages = updateImageNames.stream()
-                .map(imageName -> makeUpdatedImage(imageName, originalImages))
+    private List<Image> makeUpdatedImages(final ItemUpdateRequest itemUpdateRequest, final Item item) {
+        final List<Image> originalImages = item.getImages();
+        final List<Image> updatedImages = itemUpdateRequest.getImageNames().stream()
+                .map(imageName -> makeUpdatedImage(imageName, originalImages, item))
                 .toList();
 
-        return imageRepository.saveAll(updatedImages);
+        deleteNotUsedImages(originalImages, updatedImages);
+        saveNewlyUpdatedImages(originalImages, updatedImages);
+        return updatedImages;
     }
 
-    private Image makeUpdatedImage(final String imageName, final List<Image> originalImages) {
+    private Image makeUpdatedImage(final String imageName, final List<Image> originalImages, final Item item) {
         return originalImages.stream()
                 .filter(originalImage -> originalImage.getName().equals(imageName))
                 .findAny()
-                .orElseGet(() -> new Image(imageName));
+                .orElseGet(() -> new Image(imageName, item));
+    }
+
+    private void saveNewlyUpdatedImages(final List<Image> originalImages, final List<Image> updatedImages) {
+        final List<Image> newImages = updatedImages.stream()
+                .filter(image -> !originalImages.contains(image))
+                .toList();
+        customImageRepository.saveAll(newImages);
+    }
+
+    private void deleteNotUsedImages(final List<Image> originalImages, final List<Image> updatedImages) {
+        final List<Image> deletedImages = originalImages.stream()
+                .filter(image -> !updatedImages.contains(image))
+                .toList();
+        if (deletedImages.isEmpty()) {
+            return;
+        }
+        customImageRepository.deleteAll(deletedImages);
+    }
+
+    private Expense makeUpdatedExpense(final ExpenseRequest expenseRequest, final Expense originalExpense) {
+        final Expense updatedExpense = createExpenseByExpenseRequest(expenseRequest);
+        if (isExpenseNotUpdated(updatedExpense, originalExpense)) {
+            return originalExpense;
+        }
+        deleteNotUsedExpense(originalExpense);
+        return saveNewlyUpdatedExpense(updatedExpense);
+    }
+
+    private void deleteNotUsedExpense(final Expense expense) {
+        if (expense == null) {
+            return;
+        }
+        expenseRepository.delete(expense);
+    }
+
+    private boolean isExpenseNotUpdated(final Expense updatedExpense, final Expense originalExpense) {
+        if (updatedExpense == null && originalExpense == null) {
+            return true;
+        }
+        if (updatedExpense != null && updatedExpense.equals(originalExpense)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Expense saveNewlyUpdatedExpense(final Expense updatedExpense) {
+        if (updatedExpense == null) {
+            return null;
+        }
+        return expenseRepository.save(updatedExpense);
     }
 
     private Expense makeExpense(final ExpenseRequest expenseRequest) {
-        if (expenseRequest == null) {
+        final Expense expense = createExpenseByExpenseRequest(expenseRequest);
+        if (expense == null) {
             return null;
         }
-        return createExpenseByExpenseRequest(expenseRequest);
+        return expenseRepository.save(expense);
     }
 
     private Expense createExpenseByExpenseRequest(final ExpenseRequest expenseRequest) {
+        if (expenseRequest == null) {
+            return null;
+        }
         final Category expenseCategory = categoryRepository.findById(expenseRequest.getCategoryId())
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
         final String currency = CurrencyType.getMappedCurrencyType(expenseRequest.getCurrency()).getCode();
-
         return new Expense(
                 currency,
                 new Amount(expenseRequest.getAmount()),
@@ -171,11 +257,8 @@ public class ItemService {
         );
     }
 
-    private int getNewItemOrdinal(final Long dayLogId) {
-        return dayLogRepository.findById(dayLogId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID))
-                .getItems()
-                .size() + 1;
+    private int getNewItemOrdinal(final DayLog dayLog) {
+        return dayLog.getItems().size() + 1;
     }
 
     public void delete(final Long itemId) {
