@@ -6,6 +6,7 @@ import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
@@ -42,6 +43,7 @@ public class CommunityService {
     private final LikeRepository likeRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
+    private final CityRepository cityRepository;
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
@@ -106,7 +108,7 @@ public class CommunityService {
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = getCitiesByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();

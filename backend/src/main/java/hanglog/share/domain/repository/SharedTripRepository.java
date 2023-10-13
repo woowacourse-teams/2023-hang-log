@@ -10,6 +10,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface SharedTripRepository extends JpaRepository<SharedTrip, Long> {
 
+    @Query("""
+            SELECT sharedTrip
+            FROM SharedTrip sharedTrip
+            LEFT JOIN FETCH sharedTrip.trip trip
+            WHERE sharedTrip.sharedCode = :sharedCode
+            """)
     Optional<SharedTrip> findBySharedCode(final String sharedCode);
 
     @Modifying

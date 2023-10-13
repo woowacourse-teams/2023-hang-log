@@ -42,7 +42,7 @@ public class ExpenseService {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
-                .orElseGet(this::findOldestCurrency);
+                .orElseGet(() -> findOldestCurrency());
 
         final Map<DayLog, Amount> dayLogAmounts = getDayLogAmounts(trip.getDayLogs());
         final Map<Category, Amount> categoryAmounts = getCategoryAmounts();
