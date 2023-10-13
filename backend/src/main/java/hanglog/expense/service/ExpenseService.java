@@ -4,12 +4,12 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.category.domain.Category;
-import hanglog.category.domain.DefaultCategories;
+import hanglog.category.domain.ExpenseCategories;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.currency.domain.Currency;
-import hanglog.currency.domain.DefaultCurrency;
+import hanglog.currency.domain.OldestCurrency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.domain.Amount;
@@ -75,13 +75,13 @@ public class ExpenseService {
     }
 
     private Currency findOldestCurrency() {
-        final Optional<Currency> oldestCurrency = DefaultCurrency.getOldestCurrency();
+        final Optional<Currency> oldestCurrency = OldestCurrency.get();
         if (oldestCurrency.isPresent()) {
             return oldestCurrency.get();
         }
         final Currency currency = currencyRepository.findTopByOrderByDateAsc()
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
-        DefaultCurrency.setOldestCurrency(currency);
+        OldestCurrency.init(currency);
         return currency;
     }
 
@@ -132,12 +132,12 @@ public class ExpenseService {
     }
 
     private List<Category> findCategories() {
-        final Optional<List<Category>> expenseCategories = DefaultCategories.getExpenseCategories();
+        final Optional<List<Category>> expenseCategories = ExpenseCategories.get();
         if (expenseCategories.isPresent()) {
             return expenseCategories.get();
         }
         final List<Category> categories = categoryRepository.findExpenseCategory();
-        DefaultCategories.setExpenseCategories(categories);
+        ExpenseCategories.init(categories);
         return categories;
     }
 }
