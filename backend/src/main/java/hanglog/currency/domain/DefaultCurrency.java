@@ -13,7 +13,7 @@ public class DefaultCurrency {
         return Optional.ofNullable(oldestCurrency);
     }
 
-    public static void setOldestCurrency(Currency oldestCurrency) {
+    public static void setOldestCurrency(final Currency oldestCurrency) {
         DefaultCurrency.oldestCurrency = oldestCurrency;
     }
 }

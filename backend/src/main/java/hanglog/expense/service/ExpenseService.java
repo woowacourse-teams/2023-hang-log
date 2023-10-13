@@ -19,7 +19,6 @@ import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
-import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripRepository;
 import java.util.LinkedHashMap;
@@ -92,18 +91,17 @@ public class ExpenseService {
             final Map<DayLog, Amount> dayLogAmounts,
             final Map<Category, Amount> categoryAmounts
     ) {
-        for (final Item item : dayLog.getItems()) {
-            final Optional<Expense> expense = Optional.ofNullable(item.getExpense());
-
-            if (expense.isPresent()) {
-                final Amount KRWAmount = changeToKRW(expense.get(), currency);
-                final Amount dayLogAmount = dayLogAmounts.get(dayLog);
-                dayLogAmounts.put(dayLog, dayLogAmount.add(KRWAmount));
-                final Category category = expense.get().getCategory();
-                final Amount categoryAmount = categoryAmounts.get(category);
-                categoryAmounts.put(category, categoryAmount.add(KRWAmount));
-            }
-        }
+        dayLog.getItems().stream()
+                .map(item -> Optional.ofNullable(item.getExpense()))
+                .filter(Optional::isPresent)
+                .forEach(expense -> {
+                    final Amount KRWAmount = changeToKRW(expense.get(), currency);
+                    final Amount dayLogAmount = dayLogAmounts.get(dayLog);
+                    dayLogAmounts.put(dayLog, dayLogAmount.add(KRWAmount));
+                    final Category category = expense.get().getCategory();
+                    final Amount categoryAmount = categoryAmounts.get(category);
+                    categoryAmounts.put(category, categoryAmount.add(KRWAmount));
+                });
     }
 
     private Amount changeToKRW(final Expense expense, final Currency currency) {

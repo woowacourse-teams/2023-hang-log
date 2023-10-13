@@ -14,7 +14,7 @@ public class DefaultCategories {
         return Optional.ofNullable(expenseCategories);
     }
 
-    public static void setExpenseCategories(List<Category> expenseCategories) {
+    public static void setExpenseCategories(final List<Category> expenseCategories) {
         DefaultCategories.expenseCategories = expenseCategories;
     }
 }
