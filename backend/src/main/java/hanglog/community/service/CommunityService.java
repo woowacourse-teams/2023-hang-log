@@ -9,6 +9,11 @@ import hanglog.city.domain.City;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
+import hanglog.community.dto.CityElement;
+import hanglog.community.dto.CityElements;
+import hanglog.community.domain.LikeInfo;
+import hanglog.community.dto.LikeElement;
+import hanglog.community.dto.LikeElements;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
@@ -21,6 +26,7 @@ import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -39,51 +45,62 @@ public class CommunityService {
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
-    public CommunityTripListResponse getTripsByPage(final Accessor accessor, final Pageable pageable) {
+    public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
-        final List<CommunityTripResponse> communityTripResponse = trips.stream()
-                .map(trip -> getTripResponse(accessor, trip))
-                .toList();
+        final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
         final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
-
-        return new CommunityTripListResponse(communityTripResponse, lastPageIndex);
-    }
-
-    private CommunityTripResponse getTripResponse(final Accessor accessor, final Trip trip) {
-        final List<City> cities = getCitiesByTripId(trip.getId());
-        final Long likeCount = likeRepository.countLikesByTripId(trip.getId());
-        if (accessor.isMember()) {
-            final boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), trip.getId());
-            return CommunityTripResponse.of(trip, cities, isLike, likeCount);
-        }
-        return CommunityTripResponse.of(trip, cities, false, likeCount);
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
-    }
-
-    private Long getLastPageIndex(final int pageSize) {
-        final Long totalTripCount = tripRepository.countTripByPublishedStatus(PUBLISHED);
-        final Long lastPageIndex = totalTripCount / pageSize;
-        if (totalTripCount % pageSize == 0) {
-            return lastPageIndex;
-        }
-        return lastPageIndex + 1;
+        return new CommunityTripListResponse(communityTripResponses, lastPageIndex);
     }
 
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
         final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
         final List<Trip> trips = recommendStrategy.recommend(pageable);
-
-        final List<CommunityTripResponse> communityTripResponses = trips.stream()
-                .map(trip -> getTripResponse(accessor, trip))
-                .toList();
-
+        final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
         return new RecommendTripListResponse(recommendStrategy.getTitle(), communityTripResponses);
+    }
+
+    private List<CommunityTripResponse> getCommunityTripResponses(final Accessor accessor, final List<Trip> trips) {
+        final List<Long> tripIds = trips.stream().map(Trip::getId).toList();
+
+        final List<CityElement> cityElements = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
+        final Map<Long, List<City>> citiesByTrip = CityElements.toCityMap(cityElements);
+
+        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(accessor.getMemberId(), tripIds);
+        final Map<Long, LikeInfo> likeInfoByTrip = LikeElements.toLikeMap(likeElements);
+
+        return trips.stream()
+                .map(trip -> CommunityTripResponse.of(
+                        trip,
+                        citiesByTrip.get(trip.getId()),
+                        isLike(likeInfoByTrip, trip.getId()),
+                        getLikeCount(likeInfoByTrip, trip.getId())
+                )).toList();
+    }
+
+    private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
+        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
+        if (likeInfo == null) {
+            return false;
+        }
+        return likeInfo.isLike();
+    }
+
+    private Long getLikeCount(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
+        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
+        if (likeInfo == null) {
+            return 0L;
+        }
+        return likeInfo.getLikeCount();
+    }
+
+    private Long getLastPageIndex(final int pageSize) {
+        final Long totalTripCount = tripRepository.countTripByPublishedStatus(PUBLISHED);
+        final long lastPageIndex = totalTripCount / pageSize;
+        if (totalTripCount % pageSize == 0) {
+            return lastPageIndex;
+        }
+        return lastPageIndex + 1;
     }
 
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
@@ -114,5 +131,11 @@ public class CommunityService {
                 likeCount,
                 publishedDate
         );
+    }
+
+    private List<City> getCitiesByTripId(final Long tripId) {
+        return tripCityRepository.findByTripId(tripId).stream()
+                .map(TripCity::getCity)
+                .toList();
     }
 }

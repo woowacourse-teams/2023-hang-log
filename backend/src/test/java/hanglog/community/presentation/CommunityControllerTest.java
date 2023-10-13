@@ -113,7 +113,7 @@ class CommunityControllerTest extends ControllerTest {
     @Test
     void getTripsByPage() throws Exception {
         // given
-        when(communityService.getTripsByPage(any(), any()))
+        when(communityService.getCommunityTripsByPage(any(), any()))
                 .thenReturn(new CommunityTripListResponse(
                         List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
                         1L
