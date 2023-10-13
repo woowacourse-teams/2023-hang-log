@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.fixture.CategoryFixture;
+import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -52,6 +53,9 @@ class ItemServiceTest {
 
     @Mock
     private ImageRepository imageRepository;
+
+    @Mock
+    private ExpenseRepository expenseRepository;
 
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
@@ -246,7 +250,7 @@ class ItemServiceTest {
         itemService.delete(itemForDelete.getId());
 
         // then
-        verify(itemRepository).delete(any());
+        verify(itemRepository).deleteById(any());
     }
 
     @DisplayName("모든 여행 아이템의 Response를 반환한다.")
