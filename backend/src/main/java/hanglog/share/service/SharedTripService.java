@@ -5,14 +5,13 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_SHARED_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.share.domain.SharedTrip;
 import hanglog.share.domain.repository.SharedTripRepository;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.util.List;
@@ -27,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SharedTripService {
 
     private final SharedTripRepository sharedTripRepository;
-    private final TripCityRepository tripCityRepository;
     private final TripRepository tripRepository;
+    private final CityRepository cityRepository;
 
     @Transactional(readOnly = true)
     public Long getTripId(final String sharedCode) {
@@ -45,14 +44,8 @@ public class SharedTripService {
     public TripDetailResponse getSharedTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = getCitiesByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
         return TripDetailResponse.sharedTrip(trip, cities);
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
     }
 
     public SharedTripCodeResponse updateSharedTripStatus(

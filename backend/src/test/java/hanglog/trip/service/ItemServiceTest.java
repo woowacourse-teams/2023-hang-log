@@ -66,9 +66,6 @@ class ItemServiceTest {
     @Mock
     private ImageRepository imageRepository;
 
-    @Mock
-    private ExpenseRepository expenseRepository;
-
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
     void save() {

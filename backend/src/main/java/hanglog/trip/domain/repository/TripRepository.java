@@ -44,6 +44,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query("""
             SELECT trip
             FROM Trip trip
+            LEFT JOIN FETCH trip.member member
             LEFT JOIN FETCH trip.sharedTrip sharedTrip
             LEFT JOIN FETCH trip.dayLogs dayLogs
             LEFT JOIN FETCH dayLogs.items items

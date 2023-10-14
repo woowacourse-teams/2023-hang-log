@@ -11,7 +11,6 @@ import static hanglog.share.fixture.ShareFixture.TRIP_SHARE;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
-import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,7 +39,6 @@ import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
 import hanglog.share.service.SharedTripService;
-import hanglog.trip.domain.TripCity;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.fixture.CityFixture;
 import hanglog.trip.service.TripService;
@@ -287,7 +285,7 @@ class SharedTripControllerTest extends ControllerTest {
         final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
                 LONDON_TO_JAPAN,
                 AMOUNT_20000,
-                List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, CityFixture.TOKYO)),
+                List.of(LONDON, CityFixture.TOKYO),
                 List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), AMOUNT_20000, AMOUNT_20000)),
                 DEFAULT_CURRENCY,
                 List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))

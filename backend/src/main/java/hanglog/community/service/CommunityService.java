@@ -6,12 +6,13 @@ import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
+import hanglog.community.domain.LikeInfo;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.domain.repository.LikeRepository;
 import hanglog.community.dto.CityElement;
 import hanglog.community.dto.CityElements;
-import hanglog.community.domain.LikeInfo;
 import hanglog.community.dto.LikeElement;
 import hanglog.community.dto.LikeElements;
 import hanglog.community.dto.response.CommunityTripListResponse;
@@ -19,7 +20,6 @@ import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -42,6 +42,7 @@ public class CommunityService {
     private final LikeRepository likeRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
+    private final CityRepository cityRepository;
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
@@ -66,7 +67,10 @@ public class CommunityService {
         final List<CityElement> cityElements = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
         final Map<Long, List<City>> citiesByTrip = CityElements.toCityMap(cityElements);
 
-        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(accessor.getMemberId(), tripIds);
+        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(
+                accessor.getMemberId(),
+                tripIds
+        );
         final Map<Long, LikeInfo> likeInfoByTrip = LikeElements.toLikeMap(likeElements);
 
         return trips.stream()
@@ -106,36 +110,24 @@ public class CommunityService {
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = getCitiesByTripId(tripId);
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
-        final Long likeCount = likeRepository.countLikesByTripId(tripId);
-        if (!accessor.isMember()) {
-            return TripDetailResponse.publishedTrip(
-                    trip,
-                    cities,
-                    false,
-                    false,
-                    likeCount,
-                    publishedDate
-            );
-        }
+        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(
+                accessor.getMemberId(),
+                List.of(tripId)
+        );
+        final Map<Long, LikeInfo> likeInfoByTrip = LikeElements.toLikeMap(likeElements);
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
-        final Boolean isLike = likeRepository.existsByMemberIdAndTripId(accessor.getMemberId(), tripId);
+
         return TripDetailResponse.publishedTrip(
                 trip,
                 cities,
                 isWriter,
-                isLike,
-                likeCount,
+                isLike(likeInfoByTrip, tripId),
+                getLikeCount(likeInfoByTrip, tripId),
                 publishedDate
         );
-    }
-
-    private List<City> getCitiesByTripId(final Long tripId) {
-        return tripCityRepository.findByTripId(tripId).stream()
-                .map(TripCity::getCity)
-                .toList();
     }
 }

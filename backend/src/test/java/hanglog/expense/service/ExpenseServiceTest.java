@@ -17,17 +17,18 @@ import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.fixture.ExchangeableExpenseFixture.ExchangeableExpense;
-import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ class ExpenseServiceTest {
     private CurrencyRepository currencyRepository;
 
     @Mock
-    private TripCityRepository tripCityRepository;
+    private CityRepository cityRepository;
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -65,17 +66,14 @@ class ExpenseServiceTest {
     @Test
     void getAllExpenses() {
         // given
-        final List<TripCity> tripCities = List.of(
-                new TripCity(TRIP_FOR_EXPENSE, LONDON),
-                new TripCity(TRIP_FOR_EXPENSE, TOKYO)
-        );
+        final List<City> cities = List.of(LONDON, TOKYO);
         when(tripRepository.findById(1L))
                 .thenReturn(Optional.of(TRIP_FOR_EXPENSE));
-        when(currencyRepository.findTopByOrderByDateAsc())
+        lenient().when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
-        when(tripCityRepository.findByTripId(1L))
-                .thenReturn(tripCities);
-        when(categoryRepository.findExpenseCategory())
+        when(cityRepository.findCitiesByTripId(1L))
+                .thenReturn(cities);
+        lenient().when(categoryRepository.findExpenseCategory())
                 .thenReturn(EXPENSE_CATEGORIES);
 
         final Amount day1Amount = getTotalAmount(Arrays.asList(KRW_100_FOOD, EUR_100_SHOPPING));
@@ -89,7 +87,7 @@ class ExpenseServiceTest {
         final TripExpenseResponse expected = TripExpenseResponse.of(
                 TRIP_FOR_EXPENSE,
                 totalAmount,
-                tripCities,
+                cities,
                 List.of(
                         new CategoryExpense(
                                 SHOPPING,
@@ -153,7 +151,7 @@ class ExpenseServiceTest {
                 .thenReturn(Optional.of(LONDON_TRIP));
         when(currencyRepository.findTopByOrderByDateAsc())
                 .thenReturn(Optional.of(DEFAULT_CURRENCY));
-        when(tripCityRepository.findByTripId(1L))
+        when(cityRepository.findCitiesByTripId(1L))
                 .thenReturn(List.of());
         when(categoryRepository.findExpenseCategory())
                 .thenReturn(EXPENSE_CATEGORIES);
