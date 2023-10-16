@@ -48,7 +48,6 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
 
   const handleImageNamesChange = useCallback(
     (imageNames: string[]) => {
-      console.log(imageNames);
       updateCoverImage(imageNames[0]);
     },
     [updateCoverImage]

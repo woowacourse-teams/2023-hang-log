@@ -4,6 +4,7 @@ import type { ChangeEvent, FormEvent } from 'react';
 import { useTripEditMutation } from '@hooks/api/useTripEditMutation';
 import { useCityDateForm } from '@hooks/common/useCityDateForm';
 
+import { convertImageURLToName } from '@utils/convertImageURLToName';
 import { isEmptyString } from '@utils/validator';
 
 import type { TripData } from '@type/trip';
@@ -89,7 +90,7 @@ export const useTripEditForm = (
     tripEditMutation.mutate(
       {
         ...tripInfo,
-        imageName: tripInfo.imageName,
+        imageName: convertImageURLToName(tripInfo.imageName),
         tripId: String(tripId),
         startDate: tripInfo.startDate!,
         endDate: tripInfo.endDate!,
