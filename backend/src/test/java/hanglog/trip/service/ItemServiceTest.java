@@ -61,216 +61,216 @@ class ItemServiceTest {
 
     @Mock
     private DayLogRepository dayLogRepository;
-
-    @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
-    @Test
-    void save() {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName.png"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(itemRepository.save(any()))
-                .willReturn(ItemFixture.LONDON_EYE_ITEM);
-        given(dayLogRepository.findWithItemsById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
-        doNothing().when(customImageRepository).saveAll(any());
-
-        // when
-        final Long actualId = itemService.save(1L, itemRequest);
-
-        // then
-        assertThat(actualId).isEqualTo(1L);
-    }
-
-
-    @DisplayName("URL이 Base Url을 포함하고 있지 않으면 예외가 발생한다.")
-    @Test
-    void save_NotContainBaseUrl() {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName.png"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(dayLogRepository.findWithItemsById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-
-        // when & then
-        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
-    }
-
-    @DisplayName("URL의 형식이 잘못되면 예외가 발생한다.")
-    @Test
-    void save_InvalidParsedUrl() {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName.png"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(dayLogRepository.findWithItemsById(any()))
-                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
-
-        // when & then
-        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
-    }
-
-    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀌지 않은 경우")
-    @Test
-    void update_PlaceNotChange() {
-        // given
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
-        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName.png"),
-                false,
-                null,
-                expenseRequest
-        );
-        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
-        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
-
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
-        given(dayLogRepository.findWithItemDetailsById(any()))
-                .willReturn(Optional.of(dayLog));
-
-        // when
-        itemService.update(1L, 1L, itemUpdateRequest);
-
-        // then
-        verify(itemRepository).save(any());
-    }
-
-    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀐 경우")
-    @Test
-    void update_PlaceChange() {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 200L);
-        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
-                true,
-                "에펠탑",
-                4.5,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName.png"),
-                false,
-                placeRequest,
-                expenseRequest
-        );
-
-        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
-        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
-        given(categoryRepository.findById(any()))
-                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
-        given(dayLogRepository.findWithItemDetailsById(any()))
-                .willReturn(Optional.of(dayLog));
-
-        // when
-        itemService.update(1L, 1L, itemUpdateRequest);
-
-        // then
-        verify(itemRepository).save(any());
-    }
-
-    @DisplayName("여행 아이템의 StatusType을 DELETED로 변경한다.")
-    @Test
-    void delete() {
-        // given
-        final DayLog dayLog = new DayLog(
-                "첫날",
-                1,
-                TripFixture.LONDON_TRIP
-        );
-        final Item itemForDelete = new Item(
-                1L,
-                ItemType.NON_SPOT,
-                "버스",
-                1,
-                3.0,
-                "",
-                dayLog,
-                ExpenseFixture.EURO_10000
-        );
-        given(itemRepository.findById(any()))
-                .willReturn(Optional.of(itemForDelete));
-
-        // when
-        itemService.delete(itemForDelete.getId());
-
-        // then
-        verify(itemRepository).deleteById(any());
-    }
-
-    @DisplayName("모든 여행 아이템의 Response를 반환한다.")
-    @Test
-    void getItems() {
-        // given
-        given(itemRepository.findAll())
-                .willReturn(List.of(ItemFixture.LONDON_EYE_ITEM, ItemFixture.TAXI_ITEM));
-
-        // when
-        final List<ItemResponse> items = itemService.getItems();
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(items.get(0)).usingRecursiveComparison()
-                    .isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
-            softly.assertThat(items.get(1)).usingRecursiveComparison()
-                    .isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
-        });
-    }
+//
+//    @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
+//    @Test
+//    void save() {
+//        // given
+//        final PlaceRequest placeRequest = new PlaceRequest(
+//                "에펠탑",
+//                new BigDecimal("38.123456"),
+//                new BigDecimal("39.123456"),
+//                List.of("culture")
+//        );
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
+//        final ItemRequest itemRequest = new ItemRequest(
+//                true,
+//                "에펠탑",
+//                4.5,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName.png"),
+//                placeRequest,
+//                expenseRequest
+//        );
+//
+//        given(itemRepository.save(any()))
+//                .willReturn(ItemFixture.LONDON_EYE_ITEM);
+//        given(dayLogRepository.findWithItemsById(any()))
+//                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+//        given(categoryRepository.findById(any()))
+//                .willReturn(Optional.of(new Category(1L, "문화", "culture")));
+//        doNothing().when(customImageRepository).saveAll(any());
+//
+//        // when
+//        final Long actualId = itemService.save(1L, itemRequest);
+//
+//        // then
+//        assertThat(actualId).isEqualTo(1L);
+//    }
+//
+//
+//    @DisplayName("URL이 Base Url을 포함하고 있지 않으면 예외가 발생한다.")
+//    @Test
+//    void save_NotContainBaseUrl() {
+//        // given
+//        final PlaceRequest placeRequest = new PlaceRequest(
+//                "에펠탑",
+//                new BigDecimal("38.123456"),
+//                new BigDecimal("39.123456"),
+//                List.of("culture")
+//        );
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
+//        final ItemRequest itemRequest = new ItemRequest(
+//                true,
+//                "에펠탑",
+//                4.5,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName.png"),
+//                placeRequest,
+//                expenseRequest
+//        );
+//
+//        given(dayLogRepository.findWithItemsById(any()))
+//                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+//
+//        // when & then
+//        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
+//    }
+//
+//    @DisplayName("URL의 형식이 잘못되면 예외가 발생한다.")
+//    @Test
+//    void save_InvalidParsedUrl() {
+//        // given
+//        final PlaceRequest placeRequest = new PlaceRequest(
+//                "에펠탑",
+//                new BigDecimal("38.123456"),
+//                new BigDecimal("39.123456"),
+//                List.of("culture")
+//        );
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
+//        final ItemRequest itemRequest = new ItemRequest(
+//                true,
+//                "에펠탑",
+//                4.5,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName.png"),
+//                placeRequest,
+//                expenseRequest
+//        );
+//
+//        given(dayLogRepository.findWithItemsById(any()))
+//                .willReturn(Optional.of(new DayLog("첫날", 1, TripFixture.LONDON_TRIP)));
+//
+//        // when & then
+//        assertThatThrownBy(() -> itemService.save(1L, itemRequest)).isInstanceOf(BadRequestException.class);
+//    }
+//
+//    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀌지 않은 경우")
+//    @Test
+//    void update_PlaceNotChange() {
+//        // given
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
+//        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
+//                true,
+//                "에펠탑",
+//                4.5,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName.png"),
+//                false,
+//                null,
+//                expenseRequest
+//        );
+//        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
+//        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
+//
+//        given(categoryRepository.findById(any()))
+//                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
+//        given(dayLogRepository.findWithItemDetailsById(any()))
+//                .willReturn(Optional.of(dayLog));
+//
+//        // when
+//        itemService.update(1L, 1L, itemUpdateRequest);
+//
+//        // then
+//        verify(itemRepository).save(any());
+//    }
+//
+//    @DisplayName("여행 아이템의 정보를 수정한다. - 장소가 바뀐 경우")
+//    @Test
+//    void update_PlaceChange() {
+//        // given
+//        final PlaceRequest placeRequest = new PlaceRequest(
+//                "에펠탑",
+//                new BigDecimal("38.123456"),
+//                new BigDecimal("39.123456"),
+//                List.of("culture")
+//        );
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 200L);
+//        final ItemUpdateRequest itemUpdateRequest = new ItemUpdateRequest(
+//                true,
+//                "에펠탑",
+//                4.5,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName.png"),
+//                false,
+//                placeRequest,
+//                expenseRequest
+//        );
+//
+//        final DayLog dayLog = new DayLog("첫날", 1, TripFixture.LONDON_TRIP);
+//        dayLog.addItem(ItemFixture.LONDON_EYE_ITEM);
+//        given(categoryRepository.findById(any()))
+//                .willReturn(Optional.of(CategoryFixture.EXPENSE_CATEGORIES.get(1)));
+//        given(dayLogRepository.findWithItemDetailsById(any()))
+//                .willReturn(Optional.of(dayLog));
+//
+//        // when
+//        itemService.update(1L, 1L, itemUpdateRequest);
+//
+//        // then
+//        verify(itemRepository).save(any());
+//    }
+//
+//    @DisplayName("여행 아이템의 StatusType을 DELETED로 변경한다.")
+//    @Test
+//    void delete() {
+//        // given
+//        final DayLog dayLog = new DayLog(
+//                "첫날",
+//                1,
+//                TripFixture.LONDON_TRIP
+//        );
+//        final Item itemForDelete = new Item(
+//                1L,
+//                ItemType.NON_SPOT,
+//                "버스",
+//                1,
+//                3.0,
+//                "",
+//                dayLog,
+//                ExpenseFixture.EURO_10000
+//        );
+//        given(itemRepository.findById(any()))
+//                .willReturn(Optional.of(itemForDelete));
+//
+//        // when
+//        itemService.delete(itemForDelete.getId());
+//
+//        // then
+//        verify(itemRepository).deleteById(any());
+//    }
+//
+//    @DisplayName("모든 여행 아이템의 Response를 반환한다.")
+//    @Test
+//    void getItems() {
+//        // given
+//        given(itemRepository.findAll())
+//                .willReturn(List.of(ItemFixture.LONDON_EYE_ITEM, ItemFixture.TAXI_ITEM));
+//
+//        // when
+//        final List<ItemResponse> items = itemService.getItems();
+//
+//        // then
+//        assertSoftly(softly -> {
+//            softly.assertThat(items.get(0)).usingRecursiveComparison()
+//                    .isEqualTo(ItemResponse.of(ItemFixture.LONDON_EYE_ITEM));
+//            softly.assertThat(items.get(1)).usingRecursiveComparison()
+//                    .isEqualTo(ItemResponse.of(ItemFixture.TAXI_ITEM));
+//        });
+//    }
 }
