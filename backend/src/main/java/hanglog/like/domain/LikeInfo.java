@@ -1,13 +1,12 @@
-package hanglog.community.dto;
+package hanglog.like.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LikeElement {
+public class LikeInfo {
 
-    private final Long tripId;
     private final long likeCount;
     private final boolean isLike;
 }

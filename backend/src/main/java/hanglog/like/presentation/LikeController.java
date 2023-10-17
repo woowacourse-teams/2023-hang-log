@@ -1,10 +1,10 @@
-package hanglog.community.presentation;
+package hanglog.like.presentation;
 
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
-import hanglog.community.dto.request.LikeRequest;
-import hanglog.community.service.LikeService;
+import hanglog.like.dto.request.LikeRequest;
+import hanglog.like.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

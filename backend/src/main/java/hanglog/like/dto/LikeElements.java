@@ -1,6 +1,6 @@
-package hanglog.community.dto;
+package hanglog.like.dto;
 
-import hanglog.community.domain.LikeInfo;
+import hanglog.like.domain.LikeInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package hanglog.community.service;
+package hanglog.like.service;
 
-import hanglog.community.domain.Likes;
-import hanglog.community.domain.repository.LikeRepository;
-import hanglog.community.dto.request.LikeRequest;
+import hanglog.like.domain.Likes;
+import hanglog.like.repository.LikeRepository;
+import hanglog.like.dto.request.LikeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

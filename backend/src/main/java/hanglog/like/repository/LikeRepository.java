@@ -1,7 +1,7 @@
-package hanglog.community.domain.repository;
+package hanglog.like.repository;
 
-import hanglog.community.dto.LikeElement;
-import hanglog.community.domain.Likes;
+import hanglog.like.dto.LikeElement;
+import hanglog.like.domain.Likes;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

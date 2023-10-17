@@ -1,4 +1,4 @@
-package hanglog.community.domain;
+package hanglog.like.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;

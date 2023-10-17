@@ -1,4 +1,4 @@
-package hanglog.community.dto.request;
+package hanglog.like.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
