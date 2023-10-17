@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
 
@@ -28,7 +28,12 @@ export const useMultipleImageUpload = ({
 
   const initialImageUrls = convertToImageUrls([...initialImageNames]);
 
-  const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
+  const [imageUrls, setImageUrls] = useState(initialImageUrls);
+  const [imageNames, setImageNames] = useState(initialImageNames);
+
+  useEffect(() => {
+    updateFormImage?.(imageNames);
+  }, [imageNames, updateFormImage]);
 
   const compressImages = useCallback(async (originalImageFiles: FileList): Promise<File[]> => {
     const imageFiles: File[] = [];
@@ -73,21 +78,20 @@ export const useMultipleImageUpload = ({
         {
           onSuccess: ({ imageNames }) => {
             if (maxUploadCount === 1) {
-              updateFormImage?.([...imageNames]);
+              setImageNames([...imageNames]);
 
               return;
             }
 
-            const prevImageNames = convertToImageNames(uploadedImageUrls);
-            updateFormImage?.([...prevImageNames, ...imageNames]);
+            setImageNames((prev) => [...prev, ...imageNames]);
           },
           onError: () => {
-            setUploadedImageUrls(initialImageUrls);
+            setImageUrls(initialImageUrls);
           },
         }
       );
     },
-    [imageMutation, maxUploadCount, uploadedImageUrls, updateFormImage, initialImageUrls]
+    [imageMutation, maxUploadCount, initialImageUrls]
   );
 
   const handleImageUpload = useCallback(
@@ -96,14 +100,14 @@ export const useMultipleImageUpload = ({
 
       if (!originalImageFiles) return;
 
-      if (originalImageFiles.length + uploadedImageUrls.length > maxUploadCount) {
+      if (originalImageFiles.length + imageUrls.length > maxUploadCount) {
         onError?.();
 
         return;
       }
 
       // 화면에 보여지는 이미지 url로 변경 + 업데이트
-      setUploadedImageUrls((prevImageUrls) => {
+      setImageUrls((prevImageUrls) => {
         const newImageUrls = [...originalImageFiles].map((file) => URL.createObjectURL(file));
 
         return [...prevImageUrls, ...newImageUrls];
@@ -115,12 +119,12 @@ export const useMultipleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [uploadedImageUrls, maxUploadCount, convertToImageFormData, postImageNames, onError]
+    [imageUrls, maxUploadCount, convertToImageFormData, postImageNames, onError]
   );
 
   const handleImageRemoval = useCallback(
     (selectedImageUrl: string) => () => {
-      setUploadedImageUrls((prevImageUrls) => {
+      setImageUrls((prevImageUrls) => {
         const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
         // form에 들어가는 imageName 변경
         const imageNames = convertToImageNames(updatedImageUrls);
@@ -133,5 +137,5 @@ export const useMultipleImageUpload = ({
     [updateFormImage]
   );
 
-  return { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, imageUrls, handleImageUpload, handleImageRemoval };
 };

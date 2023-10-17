@@ -53,7 +53,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     [updateCoverImage]
   );
 
-  const { uploadedImageUrls, isImageUploading, handleImageUpload, handleImageRemoval } =
+  const { imageUrls, isImageUploading, handleImageUpload, handleImageRemoval } =
     useMultipleImageUpload({
       initialImageNames: information.imageName === null ? [] : [information.imageName],
       updateFormImage: handleImageNameChange,
@@ -116,7 +116,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           id="cover-image-upload"
           label="대표 이미지 업로드"
           imageAltText="여행 대표 업로드 이미지"
-          imageUrls={uploadedImageUrls}
+          imageUrls={imageUrls}
           maxUploadCount={1}
           onChange={handleImageUpload}
           onRemove={handleImageRemoval}
