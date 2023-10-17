@@ -1,5 +1,3 @@
-import { convertToImageUrl, convertToImageUrls } from '@/utils/convertImage';
-
 import type { ForwardedRef } from 'react';
 import { useEffect, useRef } from 'react';
 
@@ -28,6 +26,7 @@ import useResizeImage from '@hooks/trip/useResizeImage';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
+import { convertToImageUrl, convertToImageUrls } from '@utils/convertImage';
 import { formatNumberToMoney } from '@utils/formatter';
 
 import type { TripItemData } from '@type/tripItem';

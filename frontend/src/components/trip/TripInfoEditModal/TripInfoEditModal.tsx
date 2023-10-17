@@ -57,6 +57,7 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     useMultipleImageUpload({
       initialImageNames: information.imageName === null ? [] : [information.imageName],
       updateFormImage: handleImageNameChange,
+      maxUploadCount: 1,
     });
 
   return (

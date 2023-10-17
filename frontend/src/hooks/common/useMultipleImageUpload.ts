@@ -1,11 +1,11 @@
-import { convertToImageNames, convertToImageUrls } from '@/utils/convertImage';
-
 import type { ChangeEvent } from 'react';
 import { useCallback, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
+
+import { convertToImageNames, convertToImageUrls } from '@utils/convertImage';
 
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
@@ -77,7 +77,6 @@ export const useMultipleImageUpload = ({
 
               return;
             }
-
             updateFormImage?.([...initialImageNames, ...imageNames]);
           },
           onError: () => {
@@ -106,9 +105,8 @@ export const useMultipleImageUpload = ({
 
         return [...prevImageUrls, ...newImageUrls];
       });
-      console.log(originalImageFiles);
+
       const imageFormData = await convertToImageFormData(originalImageFiles);
-      console.log(imageFormData);
       postImageNames(imageFormData);
 
       // eslint-disable-next-line no-param-reassign
