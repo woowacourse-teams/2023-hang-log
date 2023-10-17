@@ -25,14 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
-import hanglog.expense.domain.DayLogExpense;
 import hanglog.global.ControllerTest;
-import hanglog.trip.service.SharedTripService;
+import hanglog.trip.domain.DayLogExpense;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.fixture.CityFixture;
 import hanglog.trip.presentation.SharedTripController;
 import hanglog.trip.service.LedgerService;
+import hanglog.trip.service.SharedTripService;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import java.util.List;

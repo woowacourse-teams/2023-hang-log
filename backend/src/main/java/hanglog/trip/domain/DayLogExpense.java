@@ -1,6 +1,6 @@
-package hanglog.expense.domain;
+package hanglog.trip.domain;
 
-import hanglog.trip.domain.DayLog;
+import hanglog.expense.domain.Amount;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

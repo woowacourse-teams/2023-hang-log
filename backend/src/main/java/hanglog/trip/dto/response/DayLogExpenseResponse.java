@@ -1,6 +1,6 @@
 package hanglog.trip.dto.response;
 
-import hanglog.expense.domain.DayLogExpense;
+import hanglog.trip.domain.DayLogExpense;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
