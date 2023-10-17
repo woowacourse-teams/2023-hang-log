@@ -39,8 +39,8 @@ public class ImageUploader {
 
     private String uploadImage(final ImageFile imageFile) {
         final String path = folder + imageFile.getHashedName();
-        for (int i = 1; i <= 10; i++) {
-            final String testPath = path + i;
+        for (int i = 1; i <= 100; i++) {
+            final String testPath = i + path;
             final ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(imageFile.getContentType());
             metadata.setContentLength(imageFile.getSize());
