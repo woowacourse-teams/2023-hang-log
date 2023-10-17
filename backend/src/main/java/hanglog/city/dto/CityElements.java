@@ -1,4 +1,4 @@
-package hanglog.community.dto;
+package hanglog.city.dto;
 
 import hanglog.city.domain.City;
 import java.util.ArrayList;
