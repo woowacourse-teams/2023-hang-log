@@ -37,11 +37,12 @@ public class S3ImageEventListener {
     public void deleteImageFileInS3(final S3ImageEvent event) {
         final String imageName = event.getImageName();
         final long startTime = System.currentTimeMillis(); // Start time measurement
+        final long threadId = Thread.currentThread().getId(); // Get the current thread ID
         s3Client.deleteObject(bucket, folder + imageName);
         final long endTime = System.currentTimeMillis(); // End time measurement
         final long executionTime = endTime - startTime;
 
-        log.info("original 실행 시간 : " + executionTime);
+        log.info("[" + threadId+ "] original 실행 시간 : " + executionTime);
     }
 
     @Async
