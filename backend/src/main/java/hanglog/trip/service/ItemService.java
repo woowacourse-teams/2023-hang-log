@@ -279,6 +279,7 @@ public class ItemService {
             expenseRepository.deleteById(item.getExpense().getId());
         }
         itemRepository.deleteById(itemId);
+        item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
     }
 
     public List<ItemResponse> getItems() {
