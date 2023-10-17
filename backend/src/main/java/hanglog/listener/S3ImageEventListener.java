@@ -49,6 +49,7 @@ public class S3ImageEventListener {
                 .map(imageName -> CompletableFuture.runAsync(() -> s3Client.deleteObject(bucket, folder + imageName)))
                 .toList();
 
+        final long startTime1 = System.currentTimeMillis(); // Start time measurement
         final CompletableFuture<Void> allOf = CompletableFuture.allOf(deleteFutures.toArray(new CompletableFuture[0]));
 
         final long startTime = System.currentTimeMillis(); // Start time measurement
@@ -62,6 +63,8 @@ public class S3ImageEventListener {
 
         final long endTime = System.currentTimeMillis(); // End time measurement
         final long executionTime = endTime - startTime;
+        final long executionTime1 = endTime - startTime1;
+        log.info("CompletableFuture 실행 시간1 : " + executionTime1);
         log.info("CompletableFuture 실행 시간 : " + executionTime);
         // imageNames.forEach(imageName -> CompletableFuture.runAsync(() -> s3Client.deleteObject(bucket, folder + imageName)));
     }
