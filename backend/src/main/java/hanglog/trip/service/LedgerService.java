@@ -1,4 +1,4 @@
-package hanglog.expense.service;
+package hanglog.trip.service;
 
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CURRENCY_DATA;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ExpenseService {
+public class LedgerService {
 
     private final TripRepository tripRepository;
     private final CurrencyRepository currencyRepository;

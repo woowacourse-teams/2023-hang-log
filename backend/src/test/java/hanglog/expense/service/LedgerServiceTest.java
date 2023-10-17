@@ -30,6 +30,7 @@ import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
 import hanglog.expense.fixture.ExchangeableExpenseFixture.ExchangeableExpense;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.service.LedgerService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -45,10 +46,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
-class ExpenseServiceTest {
+class LedgerServiceTest {
 
     @InjectMocks
-    private ExpenseService expenseService;
+    private LedgerService ledgerService;
 
     @Mock
     private TripRepository tripRepository;
@@ -116,7 +117,7 @@ class ExpenseServiceTest {
                 .toList();
 
         // when
-        final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
+        final TripExpenseResponse actual = ledgerService.getAllExpenses(1L);
         final List<String> actualCategories = actual.getCategories().stream()
                 .filter(categoryExpenseResponse -> !categoryExpenseResponse.getAmount().equals(BigDecimal.ZERO))
                 .map(categoryExpenseResponse -> categoryExpenseResponse.getCategory().getName())
@@ -157,7 +158,7 @@ class ExpenseServiceTest {
                 .thenReturn(EXPENSE_CATEGORIES);
 
         // when
-        final TripExpenseResponse actual = expenseService.getAllExpenses(1L);
+        final TripExpenseResponse actual = ledgerService.getAllExpenses(1L);
 
         // then
         assertThat(actual).extracting("categories").asList().hasSize(6);

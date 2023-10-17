@@ -34,7 +34,7 @@ import hanglog.auth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
-import hanglog.expense.service.ExpenseService;
+import hanglog.trip.service.LedgerService;
 import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
 import hanglog.share.dto.response.SharedTripCodeResponse;
@@ -71,7 +71,7 @@ class SharedTripControllerTest extends ControllerTest {
     private TripService tripService;
 
     @MockBean
-    private ExpenseService expenseService;
+    private LedgerService ledgerService;
 
     @DisplayName("ShareCode로 단일 여행을 조회한다.")
     @Test
@@ -292,7 +292,7 @@ class SharedTripControllerTest extends ControllerTest {
         );
 
         // when
-        when(expenseService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
+        when(ledgerService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
 
         // then
         mockMvc.perform(get("/shared-trips/{sharedCode}/expense", "xxxxxx").contentType(APPLICATION_JSON))

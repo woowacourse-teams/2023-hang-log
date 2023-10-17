@@ -88,6 +88,15 @@ include::{snippets}/trip-controller-test/delete-trip/path-parameters.adoc[]
 ==== 응답
 include::{snippets}/trip-controller-test/delete-trip/http-response.adoc[]
 
+=== 가계부 조회 (GET /trips/:tripId/expense)
+
+==== 요청
+include::{snippets}/trip-controller-test/get-ledger/http-request.adoc[]
+include::{snippets}/trip-controller-test/get-ledger/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/get-ledger/http-response.adoc[]
+include::{snippets}/trip-controller-test/get-ledger/response-fields.adoc[]
 
 === 공개 상태 수정 (PATCH /trips/:tripId/publish)
 
@@ -209,18 +218,6 @@ include::{snippets}/category-controller-test/get-expense-categories/http-request
 ==== 응답
 include::{snippets}/category-controller-test/get-expense-categories/http-response.adoc[]
 include::{snippets}/category-controller-test/get-expense-categories/response-fields.adoc[]
-
-== 경비 API
-
-=== 경비 조회 (GET /trips/:tripId/expense)
-
-==== 요청
-include::{snippets}/expense-controller-test/get-expenses/http-request.adoc[]
-include::{snippets}/expense-controller-test/get-expenses/path-parameters.adoc[]
-
-==== 응답
-include::{snippets}/expense-controller-test/get-expenses/http-response.adoc[]
-include::{snippets}/expense-controller-test/get-expenses/response-fields.adoc[]
 
 == 멤버 API
 

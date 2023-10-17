@@ -34,7 +34,7 @@ import hanglog.community.service.CommunityService;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.dto.response.TripExpenseResponse;
-import hanglog.expense.service.ExpenseService;
+import hanglog.trip.service.LedgerService;
 import hanglog.global.ControllerTest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import jakarta.servlet.http.Cookie;
@@ -69,7 +69,7 @@ class CommunityControllerTest extends ControllerTest {
     private CommunityService communityService;
 
     @MockBean
-    private ExpenseService expenseService;
+    private LedgerService ledgerService;
 
     @BeforeEach
     void setUp() {
@@ -456,7 +456,7 @@ class CommunityControllerTest extends ControllerTest {
     @Test
     void getExpenses() throws Exception {
         // given
-        when(expenseService.getAllExpenses(any())).thenReturn(
+        when(ledgerService.getAllExpenses(any())).thenReturn(
                 TripExpenseResponse.of(
                         LONDON_TO_JAPAN,
                         AMOUNT_20000,

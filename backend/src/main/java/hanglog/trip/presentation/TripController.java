@@ -3,6 +3,8 @@ package hanglog.trip.presentation;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
+import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.trip.service.LedgerService;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TripController {
 
     private final TripService tripService;
+    private final LedgerService ledgerService;
 
     @PostMapping
     @MemberOnly
@@ -74,6 +77,17 @@ public class TripController {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.delete(tripId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{tripId}/expense")
+    @MemberOnly
+    public ResponseEntity<TripExpenseResponse> getExpenses(
+            @Auth final Accessor accessor,
+            @PathVariable final Long tripId
+    ) {
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
+        final TripExpenseResponse tripExpenseResponse = ledgerService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(tripExpenseResponse);
     }
 
     @PatchMapping("/{tripId}/publish")
