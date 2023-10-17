@@ -15,6 +15,7 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.Image;
 import hanglog.image.domain.S3ImageEvent;
 import hanglog.image.domain.S3ImagesEvent;
+import hanglog.image.domain.S3ImagesEventForDeleteObjects;
 import hanglog.image.domain.repository.CustomImageRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
@@ -322,7 +323,7 @@ public class ItemService {
 
         List<String> testImageNames = new ArrayList<>();
         item.getImages().forEach(image -> testImageNames.addAll(getTestImageNames(image.getName())));
-        publisher.publishEvent(new S3ImagesEvent(testImageNames));
+        publisher.publishEvent(new S3ImagesEventForDeleteObjects(testImageNames));
     }
 
     private List<String> getTestImageNames(String imageName) {
