@@ -9,7 +9,7 @@ import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.dto.response.TripLedgerResponse;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
@@ -83,13 +83,13 @@ public class TripController {
 
     @GetMapping("/{tripId}/expense")
     @MemberOnly
-    public ResponseEntity<TripLedgerResponse> getExpenses(
+    public ResponseEntity<LedgerResponse> getExpenses(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId
     ) {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
-        final TripLedgerResponse tripLedgerResponse = ledgerService.getAllExpenses(tripId);
-        return ResponseEntity.ok().body(tripLedgerResponse);
+        final LedgerResponse ledgerResponse = ledgerService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(ledgerResponse);
     }
 
     @PatchMapping("/{tripId}/share")

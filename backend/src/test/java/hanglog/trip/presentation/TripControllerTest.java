@@ -49,7 +49,7 @@ import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.dto.response.TripLedgerResponse;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.dto.response.TripResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
@@ -839,7 +839,7 @@ class TripControllerTest extends ControllerTest {
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
 
-        final TripLedgerResponse tripLedgerResponse = TripLedgerResponse.of(
+        final LedgerResponse ledgerResponse = LedgerResponse.of(
                 LONDON_TO_JAPAN,
                 AMOUNT_20000,
                 List.of(LONDON, TOKYO),
@@ -848,7 +848,7 @@ class TripControllerTest extends ControllerTest {
                 List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
         );
 
-        when(ledgerService.getAllExpenses(1L)).thenReturn(tripLedgerResponse);
+        when(ledgerService.getAllExpenses(1L)).thenReturn(ledgerResponse);
 
         // when
         final ResultActions resultActions = performGetLedgerRequest(1);

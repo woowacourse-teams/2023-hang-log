@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TripLedgerResponse {
+public class LedgerResponse {
 
     private final Long id;
     private final String title;
@@ -30,7 +30,7 @@ public class TripLedgerResponse {
     private final ExchangeRateResponse exchangeRate;
     private final List<DayLogExpenseResponse> dayLogs;
 
-    public static TripLedgerResponse of(
+    public static LedgerResponse of(
             final Trip trip,
             final Amount totalAmount,
             final List<City> cities,
@@ -50,7 +50,7 @@ public class TripLedgerResponse {
                 .map(DayLogExpenseResponse::of)
                 .toList();
 
-        return new TripLedgerResponse(
+        return new LedgerResponse(
                 trip.getId(),
                 trip.getTitle(),
                 trip.getStartDate(),

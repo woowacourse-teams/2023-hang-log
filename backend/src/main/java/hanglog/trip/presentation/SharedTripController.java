@@ -1,7 +1,7 @@
 package hanglog.trip.presentation;
 
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.dto.response.TripLedgerResponse;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.SharedTripService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,9 @@ public class SharedTripController {
     }
 
     @GetMapping("/shared-trips/{sharedCode}/expense")
-    public ResponseEntity<TripLedgerResponse> getSharedExpenses(@PathVariable final String sharedCode) {
+    public ResponseEntity<LedgerResponse> getSharedExpenses(@PathVariable final String sharedCode) {
         final Long tripId = sharedTripService.getTripId(sharedCode);
-        final TripLedgerResponse tripLedgerResponse = ledgerService.getAllExpenses(tripId);
-        return ResponseEntity.ok().body(tripLedgerResponse);
+        final LedgerResponse ledgerResponse = ledgerService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(ledgerResponse);
     }
 }

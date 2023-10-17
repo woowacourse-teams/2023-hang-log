@@ -29,7 +29,7 @@ import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.fixture.ExchangeableExpenseFixture.ExchangeableExpense;
 import hanglog.trip.domain.DayLogExpense;
 import hanglog.trip.domain.repository.TripRepository;
-import hanglog.trip.dto.response.TripLedgerResponse;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.service.LedgerService;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -85,7 +85,7 @@ class LedgerServiceTest {
                 USD_100_ACCOMMODATION
         ));
 
-        final TripLedgerResponse expected = TripLedgerResponse.of(
+        final LedgerResponse expected = LedgerResponse.of(
                 TRIP_FOR_EXPENSE,
                 totalAmount,
                 cities,
@@ -117,7 +117,7 @@ class LedgerServiceTest {
                 .toList();
 
         // when
-        final TripLedgerResponse actual = ledgerService.getAllExpenses(1L);
+        final LedgerResponse actual = ledgerService.getAllExpenses(1L);
         final List<String> actualCategories = actual.getCategories().stream()
                 .filter(categoryExpenseResponse -> !categoryExpenseResponse.getAmount().equals(BigDecimal.ZERO))
                 .map(categoryExpenseResponse -> categoryExpenseResponse.getCategory().getName())
@@ -158,7 +158,7 @@ class LedgerServiceTest {
                 .thenReturn(EXPENSE_CATEGORIES);
 
         // when
-        final TripLedgerResponse actual = ledgerService.getAllExpenses(1L);
+        final LedgerResponse actual = ledgerService.getAllExpenses(1L);
 
         // then
         assertThat(actual).extracting("categories").asList().hasSize(6);

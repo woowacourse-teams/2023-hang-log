@@ -35,7 +35,7 @@ import hanglog.global.ControllerTest;
 import hanglog.oauth.domain.MemberTokens;
 import hanglog.trip.domain.DayLogExpense;
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.dto.response.TripLedgerResponse;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.service.LedgerService;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
@@ -457,7 +457,7 @@ class CommunityControllerTest extends ControllerTest {
     void getExpenses() throws Exception {
         // given
         when(ledgerService.getAllExpenses(any())).thenReturn(
-                TripLedgerResponse.of(
+                LedgerResponse.of(
                         LONDON_TO_JAPAN,
                         AMOUNT_20000,
                         List.of(LONDON, TOKYO),
