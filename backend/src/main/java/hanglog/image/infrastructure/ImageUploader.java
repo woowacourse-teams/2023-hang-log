@@ -38,9 +38,8 @@ public class ImageUploader {
     }
 
     private String uploadImage(final ImageFile imageFile) {
-        final String path = folder + imageFile.getHashedName();
         for (int i = 1; i <= 100; i++) {
-            final String testPath = i + path;
+            final String testPath = folder + i + imageFile.getHashedName();
             final ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(imageFile.getContentType());
             metadata.setContentLength(imageFile.getSize());
@@ -55,6 +54,7 @@ public class ImageUploader {
                 throw new ImageException(INVALID_IMAGE);
             }
         }
+        final String path = folder + imageFile.getHashedName();
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(imageFile.getContentType());
         metadata.setContentLength(imageFile.getSize());
