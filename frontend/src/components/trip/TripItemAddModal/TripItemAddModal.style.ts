@@ -19,6 +19,7 @@ export const formStyling = css({
 
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing7})`,
+    marginBottom: Theme.spacer.spacing6,
 
     overflowY: 'auto',
     '-ms-overflow-style': 'none',
