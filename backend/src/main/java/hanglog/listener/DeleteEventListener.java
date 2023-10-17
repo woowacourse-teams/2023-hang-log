@@ -1,5 +1,7 @@
 package hanglog.listener;
 
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
+
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
@@ -17,7 +19,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -37,7 +38,7 @@ public class DeleteEventListener {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = REQUIRES_NEW)
     @TransactionalEventListener(fallbackExecution = true)
     public void deleteMember(final MemberDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
@@ -51,9 +52,9 @@ public class DeleteEventListener {
         tripRepository.deleteByMemberId(event.getMemberId());
         refreshTokenRepository.deleteByMemberId(event.getMemberId());
     }
-    
+
     @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = REQUIRES_NEW)
     @TransactionalEventListener(fallbackExecution = true)
     public void deleteTrip(final TripDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripId(event.getTripId());

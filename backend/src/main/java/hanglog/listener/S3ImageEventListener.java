@@ -1,12 +1,13 @@
 package hanglog.listener;
 
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
+
 import com.amazonaws.services.s3.AmazonS3;
 import hanglog.image.domain.S3ImageEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -23,7 +24,7 @@ public class S3ImageEventListener {
     private String folder;
 
     @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = REQUIRES_NEW)
     @TransactionalEventListener(fallbackExecution = true)
     public void deleteImageFileInS3(final S3ImageEvent event) {
         final String imageName = event.getImageName();
