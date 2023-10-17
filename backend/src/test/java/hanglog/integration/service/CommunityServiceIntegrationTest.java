@@ -56,8 +56,10 @@ class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     void getTripsByPage() {
         // when
         final Pageable pageable = PageRequest.of(1, 10, DESC, "publishedTrip.id");
-        final CommunityTripListResponse response = communityService.getCommunityTripsByPage(Accessor.member(1L),
-                pageable);
+        final CommunityTripListResponse response = communityService.getCommunityTripsByPage(
+                Accessor.member(1L),
+                pageable
+        );
         final List<CommunityTripResponse> tripResponses = response.getTrips();
 
         // then
