@@ -3,11 +3,11 @@ export const convertToImageUrl = (imageName: string | null) => {
 };
 
 export const convertToImageUrls = (imageNames: string[]) => {
-  return imageNames?.map((imageName) => `${process.env.IMAGE_BASEURL}${imageName}`);
+  return [...imageNames]?.map((imageName) => `${process.env.IMAGE_BASEURL}${imageName}`);
 };
 
-export const convertToImageNames = (imageUrls: string[] | null) => {
-  return imageUrls?.map((imageUrl) =>
-    imageUrl.replace(`${process.env.IMAGE_BASEURL}`, '').replace('blob:', '')
+export const convertToImageNames = (imageUrls: string[]) => {
+  return [...imageUrls]?.map((imageUrl) =>
+    imageUrl.replace('blob:', '').replace(`${process.env.IMAGE_BASEURL}`, '')
   );
 };

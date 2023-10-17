@@ -26,7 +26,7 @@ export const useMultipleImageUpload = ({
   const imageMutation = useImageMutation();
   const isImageUploading = imageMutation.isLoading;
 
-  const initialImageUrls = convertToImageUrls(initialImageNames);
+  const initialImageUrls = convertToImageUrls([...initialImageNames]);
 
   const [uploadedImageUrls, setUploadedImageUrls] = useState(initialImageUrls);
 
@@ -77,7 +77,9 @@ export const useMultipleImageUpload = ({
 
               return;
             }
-            updateFormImage?.([...initialImageNames, ...imageNames]);
+
+            const prevImageNames = convertToImageNames(uploadedImageUrls);
+            updateFormImage?.([...prevImageNames, ...imageNames]);
           },
           onError: () => {
             setUploadedImageUrls(initialImageUrls);
@@ -85,7 +87,7 @@ export const useMultipleImageUpload = ({
         }
       );
     },
-    [imageMutation, maxUploadCount, updateFormImage, initialImageNames, initialImageUrls]
+    [imageMutation, maxUploadCount, uploadedImageUrls, updateFormImage, initialImageUrls]
   );
 
   const handleImageUpload = useCallback(
@@ -100,6 +102,7 @@ export const useMultipleImageUpload = ({
         return;
       }
 
+      // 화면에 보여지는 이미지 url로 변경 + 업데이트
       setUploadedImageUrls((prevImageUrls) => {
         const newImageUrls = [...originalImageFiles].map((file) => URL.createObjectURL(file));
 
@@ -119,10 +122,11 @@ export const useMultipleImageUpload = ({
     (selectedImageUrl: string) => () => {
       setUploadedImageUrls((prevImageUrls) => {
         const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
-
+        // form에 들어가는 imageName 변경
         const imageNames = convertToImageNames(updatedImageUrls);
         updateFormImage?.(imageNames);
 
+        // 화면에 보여지는 imageUrl 변경
         return updatedImageUrls;
       });
     },
