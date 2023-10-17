@@ -305,7 +305,7 @@ public class ItemService {
     private List<String> getTestImageNames(String imageName) {
         List<String> result = new ArrayList<>();
         result.add(imageName);
-        for (int i = 1; i<=500; i++) {
+        for (int i = 1; i<=10; i++) {
             String testImageName = imageName + i;
             result.add(testImageName);
         }
