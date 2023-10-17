@@ -23,10 +23,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.global.ControllerTest;
 import hanglog.oauth.domain.MemberTokens;
 import hanglog.oauth.dto.AccessTokenResponse;
 import hanglog.oauth.dto.LoginRequest;
-import hanglog.global.ControllerTest;
 import hanglog.oauth.presentation.OauthController;
 import hanglog.oauth.service.OauthService;
 import jakarta.servlet.http.Cookie;

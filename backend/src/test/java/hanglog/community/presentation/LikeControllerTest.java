@@ -14,11 +14,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.oauth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
 import hanglog.like.dto.request.LikeRequest;
 import hanglog.like.presentation.LikeController;
 import hanglog.like.service.LikeService;
+import hanglog.oauth.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

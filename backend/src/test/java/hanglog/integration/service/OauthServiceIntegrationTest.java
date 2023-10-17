@@ -3,11 +3,11 @@ package hanglog.integration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import hanglog.oauth.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.oauth.domain.BearerAuthorizationExtractor;
 import hanglog.oauth.domain.JwtProvider;
 import hanglog.oauth.domain.oauthprovider.OauthProviders;
+import hanglog.oauth.domain.repository.RefreshTokenRepository;
 import hanglog.oauth.service.OauthService;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
