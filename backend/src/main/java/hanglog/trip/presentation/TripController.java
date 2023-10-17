@@ -3,7 +3,7 @@ package hanglog.trip.presentation;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
-import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -81,13 +81,13 @@ public class TripController {
 
     @GetMapping("/{tripId}/expense")
     @MemberOnly
-    public ResponseEntity<TripExpenseResponse> getExpenses(
+    public ResponseEntity<TripLedgerResponse> getExpenses(
             @Auth final Accessor accessor,
             @PathVariable final Long tripId
     ) {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
-        final TripExpenseResponse tripExpenseResponse = ledgerService.getAllExpenses(tripId);
-        return ResponseEntity.ok().body(tripExpenseResponse);
+        final TripLedgerResponse tripLedgerResponse = ledgerService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(tripLedgerResponse);
     }
 
     @PatchMapping("/{tripId}/publish")

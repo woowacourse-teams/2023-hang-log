@@ -1,4 +1,4 @@
-package hanglog.expense.dto.response;
+package hanglog.trip.dto.response;
 
 import hanglog.expense.domain.DayLogExpense;
 import java.math.BigDecimal;

@@ -1,5 +1,6 @@
-package hanglog.expense.dto.response;
+package hanglog.trip.dto.response;
 
+import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.trip.domain.Item;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

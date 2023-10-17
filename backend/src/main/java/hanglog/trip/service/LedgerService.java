@@ -16,7 +16,7 @@ import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
 import hanglog.expense.domain.Expense;
-import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
@@ -39,7 +39,7 @@ public class LedgerService {
     private final CityRepository cityRepository;
     private final CategoryRepository categoryRepository;
 
-    public TripExpenseResponse getAllExpenses(final Long tripId) {
+    public TripLedgerResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
         final Currency currency = currencyRepository.findTopByDateLessThanEqualOrderByDateDesc(trip.getStartDate())
@@ -64,7 +64,7 @@ public class LedgerService {
                 .map(entry -> new DayLogExpense(entry.getKey(), entry.getValue()))
                 .toList();
 
-        return TripExpenseResponse.of(
+        return TripLedgerResponse.of(
                 trip,
                 totalAmount,
                 cities,

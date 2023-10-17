@@ -1,4 +1,4 @@
-package hanglog.expense.dto.response;
+package hanglog.trip.dto.response;
 
 
 import hanglog.city.domain.City;
@@ -7,6 +7,8 @@ import hanglog.currency.domain.Currency;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
+import hanglog.expense.dto.response.CategoryExpenseResponse;
+import hanglog.expense.dto.response.ExchangeRateResponse;
 import hanglog.trip.domain.Trip;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TripExpenseResponse {
+public class TripLedgerResponse {
 
     private final Long id;
     private final String title;
@@ -28,7 +30,7 @@ public class TripExpenseResponse {
     private final ExchangeRateResponse exchangeRate;
     private final List<DayLogExpenseResponse> dayLogs;
 
-    public static TripExpenseResponse of(
+    public static TripLedgerResponse of(
             final Trip trip,
             final Amount totalAmount,
             final List<City> cities,
@@ -48,7 +50,7 @@ public class TripExpenseResponse {
                 .map(DayLogExpenseResponse::of)
                 .toList();
 
-        return new TripExpenseResponse(
+        return new TripLedgerResponse(
                 trip.getId(),
                 trip.getTitle(),
                 trip.getStartDate(),

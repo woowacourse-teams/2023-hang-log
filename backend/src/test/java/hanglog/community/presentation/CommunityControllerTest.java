@@ -33,7 +33,7 @@ import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.global.ControllerTest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -457,7 +457,7 @@ class CommunityControllerTest extends ControllerTest {
     void getExpenses() throws Exception {
         // given
         when(ledgerService.getAllExpenses(any())).thenReturn(
-                TripExpenseResponse.of(
+                TripLedgerResponse.of(
                         LONDON_TO_JAPAN,
                         AMOUNT_20000,
                         List.of(LONDON, TOKYO),

@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.dto.response.TripExpenseResponse;
+import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.global.ControllerTest;
 import hanglog.share.dto.request.SharedTripStatusRequest;
@@ -282,7 +282,7 @@ class SharedTripControllerTest extends ControllerTest {
         when(sharedTripService.getTripId(anyString()))
                 .thenReturn(1L);
 
-        final TripExpenseResponse tripExpenseResponse = TripExpenseResponse.of(
+        final TripLedgerResponse tripLedgerResponse = TripLedgerResponse.of(
                 LONDON_TO_JAPAN,
                 AMOUNT_20000,
                 List.of(LONDON, CityFixture.TOKYO),
@@ -292,7 +292,7 @@ class SharedTripControllerTest extends ControllerTest {
         );
 
         // when
-        when(ledgerService.getAllExpenses(1L)).thenReturn(tripExpenseResponse);
+        when(ledgerService.getAllExpenses(1L)).thenReturn(tripLedgerResponse);
 
         // then
         mockMvc.perform(get("/shared-trips/{sharedCode}/expense", "xxxxxx").contentType(APPLICATION_JSON))
