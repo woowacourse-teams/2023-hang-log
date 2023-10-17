@@ -16,7 +16,7 @@ import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.CustomTripRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import java.util.List;

@@ -3,6 +3,8 @@ package hanglog.trip.presentation;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
+import hanglog.trip.dto.request.SharedStatusRequest;
+import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.service.LedgerService;
 import hanglog.trip.dto.request.PublishedStatusRequest;
@@ -88,6 +90,20 @@ public class TripController {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         final TripLedgerResponse tripLedgerResponse = ledgerService.getAllExpenses(tripId);
         return ResponseEntity.ok().body(tripLedgerResponse);
+    }
+
+    @PatchMapping("/{tripId}/share")
+    public ResponseEntity<SharedCodeResponse> updateSharedStatus(
+            @Auth final Accessor accessor,
+            @PathVariable final Long tripId,
+            @RequestBody @Valid final SharedStatusRequest sharedStatusRequest
+    ) {
+        tripService.validateTripByMember(accessor.getMemberId(), tripId);
+        final SharedCodeResponse sharedCodeResponse = tripService.updateSharedTripStatus(
+                tripId,
+                sharedStatusRequest
+        );
+        return ResponseEntity.ok().body(sharedCodeResponse);
     }
 
     @PatchMapping("/{tripId}/publish")

@@ -13,7 +13,10 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.trip.domain.SharedTrip;
+import hanglog.trip.domain.repository.SharedTripRepository;
+import hanglog.trip.dto.request.SharedStatusRequest;
+import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripDeleteEvent;
@@ -30,6 +33,7 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -194,6 +198,26 @@ public class TripService {
 
     private String generateInitialTitle(final List<City> cites) {
         return cites.get(0).getName() + TITLE_POSTFIX;
+    }
+
+    public SharedCodeResponse updateSharedTripStatus(
+            final Long tripId,
+            final SharedStatusRequest sharedStatusRequest
+    ) {
+        final Trip trip = tripRepository.findTripById(tripId)
+                .orElse(findTripWithNoFetch(tripId));
+
+        final SharedTrip sharedTrip = Optional.ofNullable(trip.getSharedTrip())
+                .orElseGet(() -> SharedTrip.createdBy(trip));
+
+        sharedTrip.changeSharedStatus(sharedStatusRequest.getSharedStatus());
+        sharedTripRepository.save(sharedTrip);
+        return SharedCodeResponse.of(sharedTrip);
+    }
+
+    private Trip findTripWithNoFetch(final Long tripId) {
+        return tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
     }
 
     public void updatePublishedStatus(final Long tripId, final PublishedStatusRequest publishedStatusRequest) {

@@ -11,36 +11,28 @@ import static hanglog.share.fixture.ShareFixture.TRIP_SHARE;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.auth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.expense.domain.DayLogExpense;
-import hanglog.trip.dto.response.TripLedgerResponse;
-import hanglog.trip.service.LedgerService;
 import hanglog.global.ControllerTest;
-import hanglog.share.dto.request.SharedTripStatusRequest;
-import hanglog.share.dto.response.SharedTripCodeResponse;
-import hanglog.share.service.SharedTripService;
+import hanglog.trip.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
+import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.fixture.CityFixture;
+import hanglog.trip.presentation.SharedTripController;
+import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
@@ -207,72 +199,6 @@ class SharedTripControllerTest extends ControllerTest {
                         )
                 ))
                 .andReturn();
-    }
-
-    @DisplayName("공유 상태를 변경한다")
-    @Test
-    void updateSharedStatus() throws Exception {
-        // given
-        final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(true);
-        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("sharedCode");
-        when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
-                .thenReturn(sharedCodeResponse);
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
-        doNothing().when(jwtProvider).validateTokens(any());
-        given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
-
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/share", 1)
-                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
-                        .cookie(COOKIE)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(sharedStatusRequest)))
-                .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                                pathParameters(
-                                        parameterWithName("tripId")
-                                                .description("여행 ID")
-                                ),
-                                requestFields(
-                                        fieldWithPath("sharedStatus")
-                                                .type(JsonFieldType.BOOLEAN)
-                                                .description("공유 유무")
-                                                .attributes(field("constraint", "공유시: true, 비공유시: false"))
-                                ),
-                                responseFields(
-                                        fieldWithPath("sharedCode")
-                                                .type(JsonFieldType.STRING)
-                                                .description("공유 코드")
-                                                .attributes(field("constraint", "공유시: 문자열 비공유시: null"))
-                                                .optional()
-                                )
-                        )
-                )
-                .andReturn();
-    }
-
-    @DisplayName("공유 상태가 없는 공유 수정 요청은 예외처리한다.")
-    @Test
-    void getSharedTrip_NullSharedStatus() throws Exception {
-        // given
-        final SharedTripStatusRequest sharedStatusRequest = new SharedTripStatusRequest(null);
-        final SharedTripCodeResponse sharedCodeResponse = new SharedTripCodeResponse("xxxxxx");
-        when(sharedTripService.updateSharedTripStatus(anyLong(), any(SharedTripStatusRequest.class)))
-                .thenReturn(sharedCodeResponse);
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
-        doNothing().when(jwtProvider).validateTokens(any());
-        given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
-
-        // when & then
-        mockMvc.perform(patch("/trips/{tripId}/share", 1)
-                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
-                        .cookie(COOKIE)
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(sharedStatusRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("공유 상태를 선택해주세요."));
     }
 
     @DisplayName("ShareCode로 여행에 대한 가계부를 조회한다.")

@@ -98,6 +98,18 @@ include::{snippets}/trip-controller-test/get-ledger/path-parameters.adoc[]
 include::{snippets}/trip-controller-test/get-ledger/http-response.adoc[]
 include::{snippets}/trip-controller-test/get-ledger/response-fields.adoc[]
 
+=== 공유 상태 수정 (PATCH /trips/:tripId/share)
+
+==== 요청
+include::{snippets}/trip-controller-test/update-shared-status/http-request.adoc[]
+include::{snippets}/trip-controller-test/update-shared-status/path-parameters.adoc[]
+include::{snippets}/trip-controller-test/update-shared-status/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/trip-controller-test/update-shared-status/http-response.adoc[]
+include::{snippets}/trip-controller-test/update-shared-status/path-parameters.adoc[]
+
+
 === 공개 상태 수정 (PATCH /trips/:tripId/publish)
 
 ==== 요청
@@ -294,17 +306,6 @@ include::{snippets}/shared-trip-controller-test/get-shared-trip/path-parameters.
 ==== 응답
 include::{snippets}/shared-trip-controller-test/get-shared-trip/http-response.adoc[]
 include::{snippets}/shared-trip-controller-test/get-shared-trip/response-fields.adoc[]
-
-=== 공유 상태 수정 (PATCH /trips/:tripId/share)
-
-==== 요청
-include::{snippets}/shared-trip-controller-test/update-shared-status/http-request.adoc[]
-include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
-include::{snippets}/shared-trip-controller-test/update-shared-status/request-fields.adoc[]
-
-==== 응답
-include::{snippets}/shared-trip-controller-test/update-shared-status/http-response.adoc[]
-include::{snippets}/shared-trip-controller-test/update-shared-status/path-parameters.adoc[]
 
 === 공유된 여행 경비 조회 (GET /shared-trips/:shareCode/expense)
 

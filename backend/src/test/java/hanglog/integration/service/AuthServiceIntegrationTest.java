@@ -9,7 +9,7 @@ import hanglog.auth.domain.oauthprovider.OauthProviders;
 import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.auth.service.AuthService;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.share.domain.repository.SharedTripRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.infrastructure.CustomTripRepositoryImpl;
@@ -56,7 +56,7 @@ class AuthServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     void deleteAccount() {
         // when & then
-        assertThat(memberRepository.findById(member.getId()).isPresent()).isTrue();
+        assertThat(memberRepository.findById(member.getId())).isPresent();
         assertDoesNotThrow(() -> authService.deleteAccount(member.getId()));
         entityManager.flush();
         entityManager.clear();

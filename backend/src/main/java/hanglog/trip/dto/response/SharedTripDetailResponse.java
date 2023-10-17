@@ -1,4 +1,4 @@
-package hanglog.share.dto.response;
+package hanglog.trip.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -6,7 +6,6 @@ import hanglog.city.domain.City;
 import hanglog.city.dto.response.CityWithPositionResponse;
 import hanglog.member.dto.response.WriterResponse;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.dto.response.DayLogResponse;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;

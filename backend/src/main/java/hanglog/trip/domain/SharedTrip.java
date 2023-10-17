@@ -1,4 +1,4 @@
-package hanglog.share.domain;
+package hanglog.trip.domain;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_SHARE_CODE_HASH;
 import static jakarta.persistence.FetchType.LAZY;
@@ -7,7 +7,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
 import hanglog.global.exception.InvalidDomainException;
-import hanglog.trip.domain.Trip;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
