@@ -9,11 +9,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LikeElements {
 
-    private final List<LikeElement> likeElements;
+    private final List<LikeElement> elements;
 
-    public static Map<Long, LikeInfo> toLikeMap(final List<LikeElement> likeElements) {
+    public Map<Long, LikeInfo> toLikeMap() {
         final Map<Long, LikeInfo> map = new HashMap<>();
-        for (final LikeElement likeElement : likeElements) {
+        for (final LikeElement likeElement : elements) {
             final LikeInfo likeInfo = new LikeInfo(likeElement.getLikeCount(), likeElement.isLike());
             map.put(likeElement.getTripId(), likeInfo);
         }

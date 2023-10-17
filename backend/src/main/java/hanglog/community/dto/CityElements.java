@@ -10,11 +10,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CityElements {
 
-    private final List<CityElement> cityElements;
+    private final List<CityElement> elements;
 
-    public static Map<Long, List<City>> toCityMap(final List<CityElement> cityElements) {
+    public Map<Long, List<City>> toCityMap() {
         final Map<Long, List<City>> map = new HashMap<>();
-        for (final CityElement cityElement : cityElements) {
+        for (final CityElement cityElement : elements) {
             final Long tripId = cityElement.getTripId();
             final City city = cityElement.getCity();
             map.computeIfAbsent(tripId, k -> new ArrayList<>()).add(city);

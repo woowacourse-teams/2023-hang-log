@@ -9,14 +9,12 @@ import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
-import hanglog.community.dto.CityElement;
 import hanglog.community.dto.CityElements;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.like.domain.LikeInfo;
-import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
 import hanglog.like.repository.LikeRepository;
 import hanglog.trip.domain.Trip;
@@ -64,14 +62,14 @@ public class CommunityService {
     private List<CommunityTripResponse> getCommunityTripResponses(final Accessor accessor, final List<Trip> trips) {
         final List<Long> tripIds = trips.stream().map(Trip::getId).toList();
 
-        final List<CityElement> cityElements = tripCityRepository.findTripIdAndCitiesByTripIds(tripIds);
-        final Map<Long, List<City>> citiesByTrip = CityElements.toCityMap(cityElements);
+        final CityElements cityElements = new CityElements(tripCityRepository.findTripIdAndCitiesByTripIds(tripIds));
+        final Map<Long, List<City>> citiesByTrip = cityElements.toCityMap();
 
-        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(
+        final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(
                 accessor.getMemberId(),
                 tripIds
-        );
-        final Map<Long, LikeInfo> likeInfoByTrip = LikeElements.toLikeMap(likeElements);
+        ));
+        final Map<Long, LikeInfo> likeInfoByTrip = likeElements.toLikeMap();
 
         return trips.stream()
                 .map(trip -> CommunityTripResponse.of(
@@ -114,11 +112,11 @@ public class CommunityService {
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
-        final List<LikeElement> likeElements = likeRepository.findLikeCountAndIsLikeByTripIds(
+        final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(
                 accessor.getMemberId(),
                 List.of(tripId)
-        );
-        final Map<Long, LikeInfo> likeInfoByTrip = LikeElements.toLikeMap(likeElements);
+        ));
+        final Map<Long, LikeInfo> likeInfoByTrip = likeElements.toLikeMap();
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
 
         return TripDetailResponse.publishedTrip(
