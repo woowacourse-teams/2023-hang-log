@@ -1,6 +1,5 @@
-package hanglog.global.config;
+package hanglog.auth;
 
-import hanglog.auth.AuthArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-public class ResolverConfig implements WebMvcConfigurer {
+public class AuthResolverConfig implements WebMvcConfigurer {
 
     private final AuthArgumentResolver authArgumentResolver;
 
