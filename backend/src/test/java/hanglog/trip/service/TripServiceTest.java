@@ -298,7 +298,7 @@ class TripServiceTest {
             final Trip updatedTrip = new Trip(
                     trip.getId(),
                     MEMBER,
-                    updateRequest.getImageUrl(),
+                    updateRequest.getImageName(),
                     updateRequest.getTitle(),
                     updateRequest.getStartDate(),
                     updateRequest.getEndDate(),

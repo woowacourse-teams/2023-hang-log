@@ -14,7 +14,6 @@ import hanglog.category.fixture.CategoryFixture;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.repository.CustomImageRepository;
-import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.DayLogRepository;
@@ -62,9 +61,6 @@ class ItemServiceTest {
 
     @Mock
     private DayLogRepository dayLogRepository;
-
-    @Mock
-    private ImageRepository imageRepository;
 
     @DisplayName("새롭게 생성한 여행 아이템의 id를 반환한다.")
     @Test
