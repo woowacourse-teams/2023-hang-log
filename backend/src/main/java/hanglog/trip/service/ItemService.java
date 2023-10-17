@@ -30,6 +30,7 @@ import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ItemService {
 
     private final ItemRepository itemRepository;
@@ -203,7 +205,14 @@ public class ItemService {
             return;
         }
         customImageRepository.deleteAll(deletedImages);
+
+        long startTime = System.currentTimeMillis(); // 시작 시간 측정
+
         deletedImages.forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
+
+        long endTime = System.currentTimeMillis(); // 종료 시간 측정
+        long executionTime = endTime - startTime;
+        log.info("original 실행 시간 : " + executionTime);
     }
 
     private Expense makeUpdatedExpense(final ExpenseRequest expenseRequest, final Expense originalExpense) {
@@ -279,7 +288,13 @@ public class ItemService {
             expenseRepository.deleteById(item.getExpense().getId());
         }
         itemRepository.deleteById(itemId);
+        long startTime = System.currentTimeMillis(); // 시작 시간 측정
+
         item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
+
+        long endTime = System.currentTimeMillis(); // 종료 시간 측정
+        long executionTime = endTime - startTime;
+        log.info("original 실행 시간 : " + executionTime);
     }
 
     public List<ItemResponse> getItems() {
