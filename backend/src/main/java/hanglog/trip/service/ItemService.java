@@ -28,6 +28,7 @@ import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -290,11 +291,25 @@ public class ItemService {
         itemRepository.deleteById(itemId);
         long startTime = System.currentTimeMillis(); // 시작 시간 측정
 
-        item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
+        // item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
+
+        List<String> testImageNames = new ArrayList<>();
+        item.getImages().forEach(image -> testImageNames.addAll(getTestImageNames(image.getName())));
+        testImageNames.forEach(imageName -> publisher.publishEvent(new S3ImageEvent(imageName)));
 
         long endTime = System.currentTimeMillis(); // 종료 시간 측정
         long executionTime = endTime - startTime;
         log.info("original 실행 시간 : " + executionTime);
+    }
+
+    private List<String> getTestImageNames(String imageName) {
+        List<String> result = new ArrayList<>();
+        result.add(imageName);
+        for (int i = 1; i<=500; i++) {
+            String testImageName = imageName + i;
+            result.add(testImageName);
+        }
+        return result;
     }
 
     public List<ItemResponse> getItems() {
