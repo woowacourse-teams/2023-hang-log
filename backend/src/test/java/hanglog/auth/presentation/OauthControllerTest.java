@@ -23,11 +23,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenResponse;
-import hanglog.auth.dto.LoginRequest;
-import hanglog.auth.service.AuthService;
+import hanglog.oauth.domain.MemberTokens;
+import hanglog.oauth.dto.AccessTokenResponse;
+import hanglog.oauth.dto.LoginRequest;
 import hanglog.global.ControllerTest;
+import hanglog.oauth.presentation.OauthController;
+import hanglog.oauth.service.OauthService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,10 +43,10 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(AuthController.class)
+@WebMvcTest(OauthController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-class AuthControllerTest extends ControllerTest {
+class OauthControllerTest extends ControllerTest {
 
     private final static String GOOGLE_PROVIDER = "google";
     private final static String REFRESH_TOKEN = "refreshToken";
@@ -56,7 +57,7 @@ class AuthControllerTest extends ControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private AuthService authService;
+    private OauthService oauthService;
 
     @DisplayName("로그인을 할 수 있다.")
     @Test
@@ -65,7 +66,7 @@ class AuthControllerTest extends ControllerTest {
         final LoginRequest loginRequest = new LoginRequest("code");
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, ACCESS_TOKEN);
 
-        when(authService.login(anyString(), anyString()))
+        when(oauthService.login(anyString(), anyString()))
                 .thenReturn(memberTokens);
 
         final ResultActions resultActions = mockMvc.perform(post("/login/{provider}", GOOGLE_PROVIDER)
@@ -113,7 +114,7 @@ class AuthControllerTest extends ControllerTest {
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
 
-        when(authService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
+        when(oauthService.renewalAccessToken(REFRESH_TOKEN, ACCESS_TOKEN))
                 .thenReturn(RENEW_ACCESS_TOKEN);
 
         // when
@@ -161,7 +162,7 @@ class AuthControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(authService).removeRefreshToken(anyString());
+        doNothing().when(oauthService).removeRefreshToken(anyString());
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
@@ -186,7 +187,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
 
         // then
-        verify(authService).removeRefreshToken(anyString());
+        verify(oauthService).removeRefreshToken(anyString());
     }
 
 
@@ -197,7 +198,7 @@ class AuthControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsByToken(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        doNothing().when(authService).deleteAccount(anyLong());
+        doNothing().when(oauthService).deleteAccount(anyLong());
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
@@ -222,6 +223,6 @@ class AuthControllerTest extends ControllerTest {
                 ));
 
         // then
-        verify(authService).deleteAccount(anyLong());
+        verify(oauthService).deleteAccount(anyLong());
     }
 }

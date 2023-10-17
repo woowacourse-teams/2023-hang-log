@@ -1,4 +1,4 @@
-package hanglog.auth.dto;
+package hanglog.oauth.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
-public class LoginRequest {
+public class AccessTokenResponse {
 
-    private String code;
+    private String accessToken;
 }

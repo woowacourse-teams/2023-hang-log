@@ -3,14 +3,14 @@ package hanglog.integration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import hanglog.auth.domain.BearerAuthorizationExtractor;
-import hanglog.auth.domain.JwtProvider;
-import hanglog.auth.domain.oauthprovider.OauthProviders;
-import hanglog.auth.domain.repository.RefreshTokenRepository;
-import hanglog.auth.service.AuthService;
+import hanglog.oauth.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.trip.domain.repository.SharedTripRepository;
+import hanglog.oauth.domain.BearerAuthorizationExtractor;
+import hanglog.oauth.domain.JwtProvider;
+import hanglog.oauth.domain.oauthprovider.OauthProviders;
+import hanglog.oauth.service.OauthService;
 import hanglog.trip.domain.repository.PublishedTripRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.infrastructure.CustomTripRepositoryImpl;
 import jakarta.persistence.EntityManager;
@@ -21,13 +21,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
 
 @Import({
-        AuthService.class,
+        OauthService.class,
         OauthProviders.class,
         JwtProvider.class,
         BearerAuthorizationExtractor.class,
         CustomTripRepositoryImpl.class
 })
-class AuthServiceIntegrationTest extends ServiceIntegrationTest {
+class OauthServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private OauthProviders oauthProviders;
@@ -40,7 +40,7 @@ class AuthServiceIntegrationTest extends ServiceIntegrationTest {
     @Autowired
     private BearerAuthorizationExtractor bearerExtractor;
     @Autowired
-    private AuthService authService;
+    private OauthService oauthService;
     @Autowired
     private PublishedTripRepository publishedTripRepository;
     @Autowired
@@ -57,7 +57,7 @@ class AuthServiceIntegrationTest extends ServiceIntegrationTest {
     void deleteAccount() {
         // when & then
         assertThat(memberRepository.findById(member.getId())).isPresent();
-        assertDoesNotThrow(() -> authService.deleteAccount(member.getId()));
+        assertDoesNotThrow(() -> oauthService.deleteAccount(member.getId()));
         entityManager.flush();
         entityManager.clear();
 

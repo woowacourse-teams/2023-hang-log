@@ -1,4 +1,4 @@
-package hanglog.auth.domain.oauthprovider;
+package hanglog.oauth.domain.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 

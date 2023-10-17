@@ -1,4 +1,4 @@
-package hanglog.auth.domain;
+package hanglog.oauth.domain;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_ACCESS_TOKEN;
 

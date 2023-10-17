@@ -1,4 +1,4 @@
-package hanglog.auth.presentation;
+package hanglog.oauth.presentation;
 
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -6,10 +6,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
-import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.dto.AccessTokenResponse;
-import hanglog.auth.dto.LoginRequest;
-import hanglog.auth.service.AuthService;
+import hanglog.oauth.domain.MemberTokens;
+import hanglog.oauth.dto.AccessTokenResponse;
+import hanglog.oauth.dto.LoginRequest;
+import hanglog.oauth.service.OauthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class OauthController {
 
     public static final int COOKIE_AGE_SECONDS = 604800;
 
-    private final AuthService authService;
+    private final OauthService oauthService;
 
     @PostMapping("/login/{provider}")
     public ResponseEntity<AccessTokenResponse> login(
@@ -36,7 +36,7 @@ public class AuthController {
             @RequestBody final LoginRequest loginRequest,
             final HttpServletResponse response
     ) {
-        final MemberTokens memberTokens = authService.login(provider, loginRequest.getCode());
+        final MemberTokens memberTokens = oauthService.login(provider, loginRequest.getCode());
         final ResponseCookie cookie = ResponseCookie.from("refresh-token", memberTokens.getRefreshToken())
                 .maxAge(COOKIE_AGE_SECONDS)
                 .sameSite("None")
@@ -53,7 +53,7 @@ public class AuthController {
             @CookieValue("refresh-token") final String refreshToken,
             @RequestHeader("Authorization") final String authorizationHeader
     ) {
-        final String renewalRefreshToken = authService.renewalAccessToken(refreshToken, authorizationHeader);
+        final String renewalRefreshToken = oauthService.renewalAccessToken(refreshToken, authorizationHeader);
         return ResponseEntity.status(CREATED).body(new AccessTokenResponse(renewalRefreshToken));
     }
 
@@ -62,14 +62,14 @@ public class AuthController {
     public ResponseEntity<Void> logout(
             @Auth final Accessor accessor,
             @CookieValue("refresh-token") final String refreshToken) {
-        authService.removeRefreshToken(refreshToken);
+        oauthService.removeRefreshToken(refreshToken);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/account")
     @MemberOnly
     public ResponseEntity<Void> deleteAccount(@Auth final Accessor accessor) {
-        authService.deleteAccount(accessor.getMemberId());
+        oauthService.deleteAccount(accessor.getMemberId());
         return ResponseEntity.noContent().build();
     }
 }

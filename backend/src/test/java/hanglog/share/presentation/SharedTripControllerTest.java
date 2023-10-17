@@ -23,7 +23,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
+import hanglog.oauth.domain.MemberTokens;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.global.ControllerTest;
 import hanglog.trip.domain.DayLogExpense;

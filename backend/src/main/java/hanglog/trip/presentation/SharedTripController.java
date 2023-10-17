@@ -1,9 +1,9 @@
 package hanglog.trip.presentation;
 
-import hanglog.trip.service.SharedTripService;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripLedgerResponse;
 import hanglog.trip.service.LedgerService;
+import hanglog.trip.service.SharedTripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

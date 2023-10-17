@@ -1,4 +1,4 @@
-package hanglog.auth.domain;
+package hanglog.oauth.domain;
 
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN;
 import static hanglog.global.exception.ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKEN;

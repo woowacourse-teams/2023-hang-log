@@ -1,4 +1,4 @@
-package hanglog.auth.domain;
+package hanglog.oauth.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

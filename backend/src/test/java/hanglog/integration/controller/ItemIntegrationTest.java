@@ -11,7 +11,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import hanglog.auth.domain.MemberTokens;
+import hanglog.oauth.domain.MemberTokens;
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;

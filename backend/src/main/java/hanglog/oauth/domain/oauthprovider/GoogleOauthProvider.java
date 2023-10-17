@@ -1,12 +1,12 @@
-package hanglog.auth.domain.oauthprovider;
+package hanglog.oauth.domain.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
 
-import hanglog.auth.domain.OauthAccessToken;
-import hanglog.auth.domain.oauthuserinfo.KakaoUserInfo;
 import hanglog.global.exception.AuthException;
-import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
+import hanglog.oauth.domain.OauthAccessToken;
+import hanglog.oauth.domain.oauthuserinfo.GoogleUserInfo;
+import hanglog.oauth.domain.oauthuserinfo.OauthUserInfo;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,10 +19,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @Component
-public class KakaoOauthProvider implements OauthProvider {
+public class GoogleOauthProvider implements OauthProvider {
 
-    private static final String PROPERTIES_PATH = "${oauth2.provider.kakao.";
-    private static final String PROVIDER_NAME = "kakao";
+    private static final String PROPERTIES_PATH = "${oauth2.provider.google.";
+    private static final String PROVIDER_NAME = "google";
 
     protected final String clientId;
     protected final String clientSecret;
@@ -30,7 +30,7 @@ public class KakaoOauthProvider implements OauthProvider {
     protected final String tokenUri;
     protected final String userUri;
 
-    public KakaoOauthProvider(
+    public GoogleOauthProvider(
             @Value(PROPERTIES_PATH + "client-id}") final String clientId,
             @Value(PROPERTIES_PATH + "client-secret}") final String clientSecret,
             @Value(PROPERTIES_PATH + "redirect-uri}") final String redirectUri,
@@ -56,11 +56,11 @@ public class KakaoOauthProvider implements OauthProvider {
         headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
 
-        final ResponseEntity<KakaoUserInfo> response = restTemplate.exchange(
+        final ResponseEntity<GoogleUserInfo> response = restTemplate.exchange(
                 userUri,
                 HttpMethod.GET,
                 userInfoRequestEntity,
-                KakaoUserInfo.class
+                GoogleUserInfo.class
         );
 
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -70,16 +70,18 @@ public class KakaoOauthProvider implements OauthProvider {
     }
 
     private String requestAccessToken(final String code) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBasicAuth(clientId, clientSecret);
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
         params.add("code", code);
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
         params.add("grant_type", "authorization_code");
-        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, headers);
 
+        final HttpEntity<MultiValueMap<String, String>> accessTokenRequestEntity = new HttpEntity<>(params, httpHeaders);
         final ResponseEntity<OauthAccessToken> accessTokenResponse = restTemplate.exchange(
                 tokenUri,
                 HttpMethod.POST,

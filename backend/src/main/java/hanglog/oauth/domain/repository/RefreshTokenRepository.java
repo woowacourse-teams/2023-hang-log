@@ -1,6 +1,6 @@
-package hanglog.auth.domain.repository;
+package hanglog.oauth.domain.repository;
 
-import hanglog.auth.domain.RefreshToken;
+import hanglog.oauth.domain.RefreshToken;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

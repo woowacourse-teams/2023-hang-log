@@ -1,4 +1,4 @@
-package hanglog.auth.domain.oauthuserinfo;
+package hanglog.oauth.domain.oauthuserinfo;
 
 public interface OauthUserInfo {
     String getSocialLoginId();

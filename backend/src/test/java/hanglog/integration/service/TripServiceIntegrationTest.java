@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.BadRequestException;
-import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
-import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
+import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.service.TripService;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;

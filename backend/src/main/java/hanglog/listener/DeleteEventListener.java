@@ -2,7 +2,7 @@ package hanglog.listener;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
-import hanglog.auth.domain.repository.RefreshTokenRepository;
+import hanglog.oauth.domain.repository.RefreshTokenRepository;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.member.domain.MemberDeleteEvent;

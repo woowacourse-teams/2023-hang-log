@@ -1,7 +1,6 @@
 package hanglog.image.domain;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_IMAGE_NAME_HASH;
-import static hanglog.global.exception.ExceptionCode.INVALID_IMAGE_PATH;
 import static hanglog.global.exception.ExceptionCode.NULL_IMAGE;
 import static org.springframework.util.StringUtils.getFilenameExtension;
 
@@ -9,7 +8,6 @@ import hanglog.global.exception.ImageException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;

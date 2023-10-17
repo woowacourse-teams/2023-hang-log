@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import hanglog.auth.domain.MemberTokens;
+import hanglog.oauth.domain.MemberTokens;
 import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import io.restassured.RestAssured;

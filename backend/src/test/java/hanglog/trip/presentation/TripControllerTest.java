@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
+import hanglog.oauth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.expense.domain.CategoryExpense;
 import hanglog.global.ControllerTest;

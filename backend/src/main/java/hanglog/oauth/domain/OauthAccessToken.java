@@ -1,4 +1,4 @@
-package hanglog.auth.domain;
+package hanglog.oauth.domain;
 
 import static lombok.AccessLevel.PRIVATE;
 

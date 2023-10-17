@@ -3,8 +3,8 @@ package hanglog.share.fixture;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 
 import hanglog.city.domain.City;
-import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.domain.type.SharedStatusType;

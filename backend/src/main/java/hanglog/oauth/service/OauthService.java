@@ -1,24 +1,24 @@
-package hanglog.auth.service;
+package hanglog.oauth.service;
 
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_GENERATE_RANDOM_NICKNAME;
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
 import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
-import hanglog.auth.domain.BearerAuthorizationExtractor;
-import hanglog.auth.domain.JwtProvider;
-import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.domain.RefreshToken;
-import hanglog.auth.domain.oauthprovider.OauthProvider;
-import hanglog.auth.domain.oauthprovider.OauthProviders;
-import hanglog.auth.domain.oauthuserinfo.OauthUserInfo;
-import hanglog.auth.domain.repository.RefreshTokenRepository;
+import hanglog.oauth.domain.MemberTokens;
+import hanglog.oauth.domain.RefreshToken;
+import hanglog.oauth.domain.repository.RefreshTokenRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.trip.domain.repository.SharedTripRepository;
+import hanglog.oauth.domain.BearerAuthorizationExtractor;
+import hanglog.oauth.domain.JwtProvider;
+import hanglog.oauth.domain.oauthprovider.OauthProvider;
+import hanglog.oauth.domain.oauthprovider.OauthProviders;
+import hanglog.oauth.domain.oauthuserinfo.OauthUserInfo;
 import hanglog.trip.domain.repository.CustomTripRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthService {
+public class OauthService {
 
     private static final int MAX_TRY_COUNT = 5;
     private static final int FOUR_DIGIT_RANGE = 10000;
