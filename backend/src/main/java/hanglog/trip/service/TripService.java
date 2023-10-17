@@ -146,11 +146,11 @@ public class TripService {
         }
     }
 
-    private void updateImage(final String beforeImageName, final String updateImageName) {
-        if (beforeImageName.equals(updateImageName)) {
+    private void updateImage(final String originalImageName, final String updateImageName) {
+        if (originalImageName.equals(updateImageName)) {
             return;
         }
-        publisher.publishEvent(new S3ImageEvent(beforeImageName));
+        publisher.publishEvent(new S3ImageEvent(originalImageName));
     }
 
     private void updateDayLogByPeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {

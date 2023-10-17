@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MemberService {
 
-    private static final String HANG_LOG_HOST = "image.hanglog.com";
+    private static final String IMAGE_URL_HOST = "image.hanglog.com";
 
     private final MemberRepository memberRepository;
     private final ApplicationEventPublisher publisher;
@@ -47,7 +47,7 @@ public class MemberService {
                 myPageRequest.getNickname(),
                 myPageRequest.getImageUrl()
         );
-        deletePreviousImage(member.getImageUrl(), updateMember.getImageUrl());
+        deleteOriginalImage(member.getImageUrl(), updateMember.getImageUrl());
         memberRepository.save(updateMember);
     }
 
@@ -57,14 +57,14 @@ public class MemberService {
         }
     }
 
-    private void deletePreviousImage(final String previousUrl, final String updatedUrl) {
-        if (previousUrl.equals(updatedUrl)) {
+    private void deleteOriginalImage(final String originalUrl, final String updatedUrl) {
+        if (originalUrl.equals(updatedUrl)) {
             return;
         }
         try {
-            final URL targetUrl = new URL(previousUrl);
-            if (targetUrl.getHost().equals(HANG_LOG_HOST)) {
-                final String targetName = previousUrl.substring(previousUrl.lastIndexOf("/") + 1);
+            final URL targetUrl = new URL(originalUrl);
+            if (targetUrl.getHost().equals(IMAGE_URL_HOST)) {
+                final String targetName = originalUrl.substring(originalUrl.lastIndexOf("/") + 1);
                 publisher.publishEvent(new S3ImageEvent(targetName));
             }
         } catch (final MalformedURLException e) {
