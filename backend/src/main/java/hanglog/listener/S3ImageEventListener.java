@@ -36,7 +36,12 @@ public class S3ImageEventListener {
     @TransactionalEventListener(fallbackExecution = true)
     public void deleteImageFileInS3(final S3ImageEvent event) {
         final String imageName = event.getImageName();
+        final long startTime = System.currentTimeMillis(); // Start time measurement
         s3Client.deleteObject(bucket, folder + imageName);
+        final long endTime = System.currentTimeMillis(); // End time measurement
+        final long executionTime = endTime - startTime;
+
+        log.info("original 실행 시간 : " + executionTime);
     }
 
     @Async

@@ -277,33 +277,6 @@ public class ItemService {
         return dayLog.getItems().size() + 1;
     }
 
-//    public void delete(final Long itemId) {
-//        final Item item = itemRepository.findById(itemId)
-//                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
-//
-//        if (!item.getImages().isEmpty()) {
-//            imageRepository.deleteByItemId(itemId);
-//        }
-//        if (item.getPlace() != null) {
-//            placeRepository.deleteById(item.getPlace().getId());
-//        }
-//        if (item.getExpense() != null) {
-//            expenseRepository.deleteById(item.getExpense().getId());
-//        }
-//        itemRepository.deleteById(itemId);
-//        long startTime = System.currentTimeMillis(); // 시작 시간 측정
-//
-//        // item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
-//
-//        List<String> testImageNames = new ArrayList<>();
-//        item.getImages().forEach(image -> testImageNames.addAll(getTestImageNames(image.getName())));
-//        testImageNames.forEach(imageName -> publisher.publishEvent(new S3ImageEvent(imageName)));
-//
-//        long endTime = System.currentTimeMillis(); // 종료 시간 측정
-//        long executionTime = endTime - startTime;
-//        log.info("original 실행 시간 : " + executionTime);
-//    }
-
     public void delete(final Long itemId) {
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
@@ -318,13 +291,40 @@ public class ItemService {
             expenseRepository.deleteById(item.getExpense().getId());
         }
         itemRepository.deleteById(itemId);
+//        long startTime = System.currentTimeMillis(); // 시작 시간 측정
 
         // item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
 
         List<String> testImageNames = new ArrayList<>();
         item.getImages().forEach(image -> testImageNames.addAll(getTestImageNames(image.getName())));
-        publisher.publishEvent(new S3ImagesEventForDeleteObjects(testImageNames));
+        testImageNames.forEach(imageName -> publisher.publishEvent(new S3ImageEvent(imageName)));
+
+//        long endTime = System.currentTimeMillis(); // 종료 시간 측정
+//        long executionTime = endTime - startTime;
+//        log.info("original 실행 시간 : " + executionTime);
     }
+
+//    public void delete(final Long itemId) {
+//        final Item item = itemRepository.findById(itemId)
+//                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ITEM_ID));
+//
+//        if (!item.getImages().isEmpty()) {
+//            imageRepository.deleteByItemId(itemId);
+//        }
+//        if (item.getPlace() != null) {
+//            placeRepository.deleteById(item.getPlace().getId());
+//        }
+//        if (item.getExpense() != null) {
+//            expenseRepository.deleteById(item.getExpense().getId());
+//        }
+//        itemRepository.deleteById(itemId);
+//
+//        // item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
+//
+//        List<String> testImageNames = new ArrayList<>();
+//        item.getImages().forEach(image -> testImageNames.addAll(getTestImageNames(image.getName())));
+//        publisher.publishEvent(new S3ImagesEventForDeleteObjects(testImageNames));
+//    }
 
     private List<String> getTestImageNames(String imageName) {
         List<String> result = new ArrayList<>();
