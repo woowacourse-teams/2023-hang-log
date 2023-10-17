@@ -58,19 +58,19 @@ public class MemberService {
         }
     }
 
-    private void deleteBeforeImage(final String beforeUrl, final String updatedUrl) {
-        if (beforeUrl.equals(updatedUrl)) {
+    private void deleteBeforeImage(final String oldUrl, final String updatedUrl) {
+        if (oldUrl.equals(updatedUrl)) {
             return;
         }
         try {
-            final URL targetUrl = new URL(beforeUrl);
+            final URL targetUrl = new URL(oldUrl);
             if (targetUrl.getHost().equals(KAKAO_HOST) || targetUrl.getHost().equals(GOOGLE_HOST)) {
                 return;
             }
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             throw new BadRequestException(FAIL_IMAGE_NAME_HASH);
         }
-        final String targetName = beforeUrl.substring(beforeUrl.lastIndexOf("/") + 1);
+        final String targetName = oldUrl.substring(oldUrl.lastIndexOf("/") + 1);
         publisher.publishEvent(new S3ImageEvent(targetName));
     }
 }

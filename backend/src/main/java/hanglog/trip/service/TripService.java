@@ -150,7 +150,7 @@ public class TripService {
         if (beforeImageName.equals(updateImageName)) {
             return;
         }
-        publisher.publishEvent((new S3ImageEvent(beforeImageName)));
+        publisher.publishEvent(new S3ImageEvent(beforeImageName));
     }
 
     private void updateDayLogByPeriod(final Trip trip, final int currentPeriod, final int requestPeriod) {
