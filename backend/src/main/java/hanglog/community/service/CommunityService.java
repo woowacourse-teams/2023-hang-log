@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +48,6 @@ public class CommunityService {
 
     @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
-        final boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-        log.info("[TRANSACTION TEST] : isReadOnly = " + isReadOnly);
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
         final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
         final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
