@@ -2,6 +2,35 @@
 
 <img src="https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/cfddda8a-e416-4f03-bc53-edd6eb0c4595" width="30%">
 
+<br>
+<br>
+<br>
+<br>
+
+![image1](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/184d3569-b1c6-4f4d-bef0-fb532cc554f3)
+
+<br>
+<br>
+
+![image2](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/2981c210-cda3-4644-887f-45ee14268767)
+
+![image](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/c2fc4007-d9ba-4f6b-9f64-04c29fc46078)
+
+![image4](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/29c24162-8702-4b47-87f6-0b703b4060fb)
+
+![image5](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/1205a54a-58c1-4b63-8062-c89274658f9d)
+
+![image6](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/6c4ab178-b9ca-4141-a904-f493a68ca082)
+
+![image7](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/a23a6212-96a8-4922-b761-3b2549b51308)
+
+
+<br>
+<br>
+<br>
+<br>
+
+---
 # [행록](https://hanglog.com)
 
 여행에서 느꼈던 설렘과 추억을 **장소 기반**🗺️으로 기록해보세요!
