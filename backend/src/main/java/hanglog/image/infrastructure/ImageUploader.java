@@ -8,13 +8,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
-import hanglog.image.domain.S3ImageEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +22,6 @@ public class ImageUploader {
     private static final String CACHE_CONTROL_VALUE = "max-age=3153600";
 
     private final AmazonS3 s3Client;
-    private final ApplicationEventPublisher publisher;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -33,14 +30,9 @@ public class ImageUploader {
     private String folder;
 
     public List<String> uploadImages(final List<ImageFile> imageFiles) {
-        try {
-            return imageFiles.stream()
-                    .map(this::uploadImage)
-                    .toList();
-        } catch (final ImageException e) {
-            imageFiles.forEach(imageFile -> publisher.publishEvent(new S3ImageEvent(imageFile.getHashedName())));
-            throw e;
-        }
+        return imageFiles.stream()
+                .map(this::uploadImage)
+                .toList();
     }
 
     private String uploadImage(final ImageFile imageFile) {
