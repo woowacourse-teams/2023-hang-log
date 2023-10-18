@@ -27,7 +27,6 @@ import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.dto.AccessTokenResponse;
 import hanglog.login.dto.LoginRequest;
-import hanglog.login.presentation.LoginController;
 import hanglog.login.service.LoginService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
