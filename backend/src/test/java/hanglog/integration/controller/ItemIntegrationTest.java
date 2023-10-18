@@ -11,13 +11,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import hanglog.auth.domain.MemberTokens;
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.global.exception.BadRequestException;
+import hanglog.login.domain.MemberTokens;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;

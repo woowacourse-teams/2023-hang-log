@@ -25,18 +25,18 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.domain.CategoryExpense;
-import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.dto.response.TripExpenseResponse;
-import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
+import hanglog.login.domain.MemberTokens;
+import hanglog.trip.domain.DayLogExpense;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
+import hanglog.trip.service.LedgerService;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,7 +69,7 @@ class CommunityControllerTest extends ControllerTest {
     private CommunityService communityService;
 
     @MockBean
-    private ExpenseService expenseService;
+    private LedgerService ledgerService;
 
     @BeforeEach
     void setUp() {
@@ -456,8 +456,8 @@ class CommunityControllerTest extends ControllerTest {
     @Test
     void getExpenses() throws Exception {
         // given
-        when(expenseService.getAllExpenses(any())).thenReturn(
-                TripExpenseResponse.of(
+        when(ledgerService.getAllExpenses(any())).thenReturn(
+                LedgerResponse.of(
                         LONDON_TO_JAPAN,
                         AMOUNT_20000,
                         List.of(LONDON, TOKYO),

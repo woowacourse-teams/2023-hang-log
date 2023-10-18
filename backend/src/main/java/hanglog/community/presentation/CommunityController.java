@@ -7,9 +7,9 @@ import hanglog.auth.domain.Accessor;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
-import hanglog.expense.dto.response.TripExpenseResponse;
-import hanglog.expense.service.ExpenseService;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
+import hanglog.trip.service.LedgerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommunityController {
 
     private final CommunityService communityService;
-    private final ExpenseService expenseService;
+    private final LedgerService ledgerService;
 
     @GetMapping("/trips")
     public ResponseEntity<CommunityTripListResponse> getTrips(
@@ -55,8 +55,8 @@ public class CommunityController {
     }
 
     @GetMapping("/trips/{tripId}/expense")
-    public ResponseEntity<TripExpenseResponse> getExpenses(@PathVariable final Long tripId) {
-        final TripExpenseResponse tripExpenseResponse = expenseService.getAllExpenses(tripId);
-        return ResponseEntity.ok().body(tripExpenseResponse);
+    public ResponseEntity<LedgerResponse> getExpenses(@PathVariable final Long tripId) {
+        final LedgerResponse ledgerResponse = ledgerService.getAllExpenses(tripId);
+        return ResponseEntity.ok().body(ledgerResponse);
     }
 }

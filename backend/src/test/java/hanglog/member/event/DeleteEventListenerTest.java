@@ -7,10 +7,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import hanglog.auth.domain.repository.RefreshTokenRepository;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.listener.DeleteEventListener;
+import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;

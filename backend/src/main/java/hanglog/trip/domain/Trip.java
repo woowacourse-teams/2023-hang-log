@@ -12,7 +12,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.global.BaseEntity;
 import hanglog.member.domain.Member;
-import hanglog.share.domain.SharedTrip;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.dto.request.TripUpdateRequest;

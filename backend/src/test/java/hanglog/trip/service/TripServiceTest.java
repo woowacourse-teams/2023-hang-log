@@ -4,6 +4,8 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.trip.fixture.ShareFixture.SHARED_TRIP;
+import static hanglog.trip.fixture.ShareFixture.TRIP_HAS_SHARED_TRIP;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,13 +26,16 @@ import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.PublishedTripRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.dto.request.PublishedStatusRequest;
+import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,6 +60,9 @@ class TripServiceTest {
 
     @Mock
     private TripRepository tripRepository;
+
+    @Mock
+    private SharedTripRepository sharedTripRepository;
 
     @Mock
     private CityRepository cityRepository;
@@ -195,6 +203,50 @@ class TripServiceTest {
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);
+    }
+
+    @DisplayName("여행의 공유 허용상태로 변경한다.")
+    @Test
+    void updateSharedStatus() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+        given(tripRepository.findById(anyLong()))
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
+
+        // when
+        final SharedCodeResponse actual = tripService.updateSharedTripStatus(1L, sharedStatusRequest);
+
+        //then
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(new SharedCodeResponse(SHARED_TRIP.getSharedCode()));
+    }
+
+    @DisplayName("공유 허용을 처음 할 경우 새로운 공유 code를 생성한다.")
+    @Test
+    void updateSharedStatus_CreateSharedTrip() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+        given(tripRepository.findById(anyLong()))
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
+
+        // when
+        final SharedCodeResponse actual = tripService.updateSharedTripStatus(1L, sharedStatusRequest);
+
+        //then
+        assertThat(actual.getSharedCode()).isNotNull();
+    }
+
+    @DisplayName("존재하지 않는 여행의 공유 상태 변경은 예외처리한다.")
+    @Test
+    void updateSharedStatus_NotExistTripFail() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+
+        // when & then
+        assertThatThrownBy(() -> tripService.updateSharedTripStatus(1L, sharedStatusRequest))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(NOT_FOUND_TRIP_ID.getCode());
     }
 
     @DisplayName("비공개인 Trip을 공개로 변경한다.")
