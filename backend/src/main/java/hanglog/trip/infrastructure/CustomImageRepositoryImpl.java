@@ -1,7 +1,7 @@
-package hanglog.image.infrastructure;
+package hanglog.trip.infrastructure;
 
-import hanglog.image.domain.Image;
-import hanglog.image.domain.repository.CustomImageRepository;
+import hanglog.trip.domain.Image;
+import hanglog.trip.domain.repository.CustomImageRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

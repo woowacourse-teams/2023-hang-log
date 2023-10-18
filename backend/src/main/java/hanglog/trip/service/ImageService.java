@@ -1,12 +1,12 @@
-package hanglog.image.service;
+package hanglog.trip.service;
 
 import static hanglog.global.exception.ExceptionCode.EMPTY_IMAGE_LIST;
 import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_LIST_SIZE;
 
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
-import hanglog.image.dto.ImagesResponse;
 import hanglog.image.infrastructure.ImageUploader;
+import hanglog.trip.dto.response.ImagesResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

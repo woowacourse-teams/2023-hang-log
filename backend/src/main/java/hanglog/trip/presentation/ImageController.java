@@ -1,7 +1,7 @@
-package hanglog.image.presentation;
+package hanglog.trip.presentation;
 
-import hanglog.image.dto.ImagesResponse;
-import hanglog.image.service.ImageService;
+import hanglog.trip.dto.response.ImagesResponse;
+import hanglog.trip.service.ImageService;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

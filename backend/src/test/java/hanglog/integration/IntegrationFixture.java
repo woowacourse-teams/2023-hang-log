@@ -6,9 +6,9 @@ import hanglog.category.domain.Category;
 import hanglog.city.domain.City;
 import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
-import hanglog.image.domain.Image;
 import hanglog.member.domain.Member;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.Trip;
@@ -149,7 +149,7 @@ public class IntegrationFixture {
     );
 
     static {
-        addDayLogsToTrip(LAHGON_TRIP, Arrays.asList(DAY_LOG_1));
+        addDayLogsToTrip(LAHGON_TRIP, List.of(DAY_LOG_1));
     }
 
     private static void addDayLogsToTrip(final Trip trip, final List<DayLog> dayLogs) {
