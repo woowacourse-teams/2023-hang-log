@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class LedgerService {
 
     private final TripRepository tripRepository;
@@ -39,6 +39,7 @@ public class LedgerService {
     private final CityRepository cityRepository;
     private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     public LedgerResponse getAllExpenses(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));

@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     public List<CategoryResponse> getExpenseCategories() {
         final List<Category> expenseCategories = categoryRepository.findExpenseCategory();
         return expenseCategories.stream()

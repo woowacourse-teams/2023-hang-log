@@ -38,6 +38,7 @@ public class SharedTripService {
         return sharedTrip.getTrip().getId();
     }
 
+    @Transactional(readOnly = true)
     public TripDetailResponse getSharedTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));

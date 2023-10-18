@@ -15,6 +15,7 @@ public class CityService {
 
     private final CityRepository cityRepository;
 
+    @Transactional(readOnly = true)
     public List<CityResponse> getAllCities() {
         final List<City> cities = cityRepository.findAll();
         return cities.stream()

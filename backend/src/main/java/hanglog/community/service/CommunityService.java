@@ -34,7 +34,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Slf4j
 public class CommunityService {
 
@@ -47,6 +47,7 @@ public class CommunityService {
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
+    @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
         final boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         log.info("[TRANSACTION TEST] : isReadOnly = " + isReadOnly);
@@ -56,6 +57,7 @@ public class CommunityService {
         return new CommunityTripListResponse(communityTripResponses, lastPageIndex);
     }
 
+    @Transactional(readOnly = true)
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
         final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
@@ -112,6 +114,7 @@ public class CommunityService {
         return lastPageIndex + 1;
     }
 
+    @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));

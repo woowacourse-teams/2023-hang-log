@@ -74,7 +74,7 @@ public class LoginService {
         throw new AuthException(FAIL_TO_GENERATE_RANDOM_NICKNAME);
     }
 
-    public String generateRandomFourDigitCode() {
+    private String generateRandomFourDigitCode() {
         final int randomNumber = (int) (Math.random() * FOUR_DIGIT_RANGE);
         return String.format("%04d", randomNumber);
     }
