@@ -1,6 +1,6 @@
 package hanglog.trip.domain.repository;
 
-import hanglog.city.dto.CityElement;
+import hanglog.trip.dto.TripCityElement;
 import hanglog.trip.domain.TripCity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,9 +19,9 @@ public interface TripCityRepository extends JpaRepository<TripCity, Long> {
     void deleteAllByTripId(@Param("tripId") final Long tripId);
 
     @Query("""
-            SELECT new hanglog.city.dto.CityElement (tc.trip.id, tc.city) 
+            SELECT new hanglog.trip.dto.TripCityElement (tc.trip.id, tc.city) 
             FROM TripCity tc 
             WHERE tc.trip.id IN :tripIds
             """)
-    List<CityElement> findTripIdAndCitiesByTripIds(@Param("tripIds") final List<Long> tripIds);
+    List<TripCityElement> findTripIdAndCitiesByTripIds(@Param("tripIds") final List<Long> tripIds);
 }

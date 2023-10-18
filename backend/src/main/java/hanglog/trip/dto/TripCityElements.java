@@ -1,4 +1,4 @@
-package hanglog.city.dto;
+package hanglog.trip.dto;
 
 import hanglog.city.domain.City;
 import java.util.ArrayList;
@@ -8,15 +8,15 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CityElements {
+public class TripCityElements {
 
-    private final List<CityElement> elements;
+    private final List<TripCityElement> elements;
 
     public Map<Long, List<City>> toCityMap() {
         final Map<Long, List<City>> map = new HashMap<>();
-        for (final CityElement cityElement : elements) {
-            final Long tripId = cityElement.getTripId();
-            final City city = cityElement.getCity();
+        for (final TripCityElement tripCityElement : elements) {
+            final Long tripId = tripCityElement.getTripId();
+            final City city = tripCityElement.getCity();
             map.computeIfAbsent(tripId, k -> new ArrayList<>()).add(city);
         }
         return map;

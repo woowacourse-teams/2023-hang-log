@@ -7,7 +7,7 @@ import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
-import hanglog.city.dto.CityElements;
+import hanglog.trip.dto.TripCityElements;
 import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.domain.recommendstrategy.RecommendStrategy;
 import hanglog.community.dto.response.CommunityTripListResponse;
@@ -62,8 +62,8 @@ public class CommunityService {
     private List<CommunityTripResponse> getCommunityTripResponses(final Accessor accessor, final List<Trip> trips) {
         final List<Long> tripIds = trips.stream().map(Trip::getId).toList();
 
-        final CityElements cityElements = new CityElements(tripCityRepository.findTripIdAndCitiesByTripIds(tripIds));
-        final Map<Long, List<City>> citiesByTrip = cityElements.toCityMap();
+        final TripCityElements tripCityElements = new TripCityElements(tripCityRepository.findTripIdAndCitiesByTripIds(tripIds));
+        final Map<Long, List<City>> citiesByTrip = tripCityElements.toCityMap();
 
         final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(
                 accessor.getMemberId(),
