@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class DayLogExpenseResponse {
+public class DayLogLedgerResponse {
 
     private final Long id;
     private final Integer ordinal;
@@ -17,13 +17,13 @@ public class DayLogExpenseResponse {
     private final BigDecimal totalAmount;
     private final List<ItemDetailResponse> items;
 
-    public static DayLogExpenseResponse of(final DayLogExpense dayLogExpense) {
+    public static DayLogLedgerResponse of(final DayLogExpense dayLogExpense) {
         final List<ItemDetailResponse> itemResponses = dayLogExpense.getDayLog().getItems().stream()
                 .filter(dayLog -> dayLog.getExpense() != null)
                 .map(ItemDetailResponse::of)
                 .toList();
 
-        return new DayLogExpenseResponse(
+        return new DayLogLedgerResponse(
                 dayLogExpense.getDayLog().getId(),
                 dayLogExpense.getDayLog().getOrdinal(),
                 dayLogExpense.getDayLog().calculateDate(),

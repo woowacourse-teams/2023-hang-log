@@ -28,7 +28,7 @@ public class LedgerResponse {
     private final BigDecimal totalAmount;
     private final List<CategoryExpenseResponse> categories;
     private final ExchangeRateResponse exchangeRate;
-    private final List<DayLogExpenseResponse> dayLogs;
+    private final List<DayLogLedgerResponse> dayLogs;
 
     public static LedgerResponse of(
             final Trip trip,
@@ -46,8 +46,8 @@ public class LedgerResponse {
                 .map(CategoryExpenseResponse::of)
                 .toList();
 
-        final List<DayLogExpenseResponse> dayLogExpenseResponses = dayLogExpenses.stream()
-                .map(DayLogExpenseResponse::of)
+        final List<DayLogLedgerResponse> dayLogLedgerRespons = dayLogExpenses.stream()
+                .map(DayLogLedgerResponse::of)
                 .toList();
 
         return new LedgerResponse(
@@ -59,7 +59,7 @@ public class LedgerResponse {
                 totalAmount.getValue(),
                 categoryExpenseResponses,
                 ExchangeRateResponse.of(currency),
-                dayLogExpenseResponses
+                dayLogLedgerRespons
         );
     }
 }
