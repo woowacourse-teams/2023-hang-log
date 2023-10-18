@@ -1,41 +1,50 @@
-<div align='center'>
+<div align="center">
 
-![Group 2695 (1)](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/cfddda8a-e416-4f03-bc53-edd6eb0c4595)
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/cfddda8a-e416-4f03-bc53-edd6eb0c4595" width="30%">
 
 # [행록](https://hanglog.com)
 
 여행에서 느꼈던 설렘과 추억을 **장소 기반**🗺️으로 기록해보세요!
 
+</div>
+
 <br>
 
 ## 프로젝트 소개
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/4b537348-3886-41c0-b74f-f4b43de848a1" width="600" height="270"  style="border: 1px solid gray;">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/4b537348-3886-41c0-b74f-f4b43de848a1" width="80%" style="border: 1px solid gray;">
 
-**커뮤니티**
-<br>다른 사람들이 만든 여행 기록을 구경하고 좋아요🥰를 누를 수 있어요.
+### 커뮤니티
+
+다른 사람들이 만든 여행 기록을 구경하고 좋아요🥰를 누를 수 있어요.
 <br>
 <br>
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/1ac7de7e-8836-490d-b068-accb1d3527f2" width="600" height="270" style="border: 2px solid gray;">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/1ac7de7e-8836-490d-b068-accb1d3527f2" width="80%" style="border: 2px solid gray;">
 
-**경비**<br> 여행에서 사용한 경비💸를 카테고리 별로 한 눈에 볼 수 있어요
+### 경비
+
+여행에서 사용한 경비💸를 카테고리 별로 한 눈에 볼 수 있어요
 <br>
 <br>
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/3ef49d35-b118-419b-825e-6e7e2bcac1dc" width="600" height="270" style="border: 2px solid gray;">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/3ef49d35-b118-419b-825e-6e7e2bcac1dc" width="100%" height="100%" style="border: 2px solid gray;">
 
-**여행기록** <br>템플릿을 사용해 간편하게 여행을 기록📝할 수 있어요
+### 여행기록
+
+템플릿을 사용해 간편하게 여행을 기록📝할 수 있어요
 <br>
 <br>
 
 <div>
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/1ba2e813-25ae-4de1-a368-e2384522380e" width="200" height='400' style="border: 2px solid gray;" >
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/b2e82b7f-81dc-4e1e-86e5-efe77ed13a67" width="200" height='400' style="border: 2px solid gray;">
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/a95a7848-986b-4d12-bddc-81cebe805f36" width="200" height='400' style="border: 2px solid gray;">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/1ba2e813-25ae-4de1-a368-e2384522380e" width="30%" height="100%" style="border: 2px solid gray;" >
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/b2e82b7f-81dc-4e1e-86e5-efe77ed13a67" width="30%" height="100%" style="border: 2px solid gray;">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/a95a7848-986b-4d12-bddc-81cebe805f36" width="30%" height="100%" style="border: 2px solid gray;">
 </div>
 
-**모바일** <br>모바일 버전📱도 지원합니다.
+### 모바일
+
+모바일 버전📱도 지원합니다.
 <br>
 <br>
 
@@ -43,15 +52,16 @@
 
 ### 프론트엔드
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/043ca822-32c1-4587-8269-1915192b48a9" width="600">
+<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 31" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/db073e79-a6cc-4bda-844b-58ac17d95e90">
 
 ### 백엔드
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/defb44e6-1991-4fa9-9203-81e7d2538667" width="600" >
+<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 13" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/9cb02663-f540-4659-8d35-6fbde5c3cf2d">
 
 ### 인프라
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/c702bd1f-2910-48ec-8016-b7d695008c55" width="600" >
+<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 49" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/15309fe5-bda5-4793-8e65-af52e7b4a4e9">
+
 <br>
 
 ## 멤버
@@ -70,18 +80,16 @@
 
 ## [행록 디자인 시스템](https://github.com/hang-log-design-system/design-system)
 
-<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/a0d6d304-1402-43df-8537-1f7ea2793014" width="600">
+<img src="https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/a0d6d304-1402-43df-8537-1f7ea2793014" width="90%">
 
 ## 서비스 요청 흐름도
 
-![‎README 인프라 구조 ‎008](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/eb0d792c-9699-4010-95b4-a29e5ab76687)
+![README 인프라 구조 008](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/eb0d792c-9699-4010-95b4-a29e5ab76687)
 
 ## CI/CD
 
-![‎README 인프라 구조 ‎007](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/e9e38e63-ad72-45cc-80f8-883ae68aa29e)
+![README 인프라 구조 007](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/e9e38e63-ad72-45cc-80f8-883ae68aa29e)
 
 ## 이미지 요청 흐름도
 
-![‎README 인프라 구조 ‎001](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/1e73f647-7774-450e-863c-7dbc906f5e4d)
-
-</div>
+![README 인프라 구조 001](https://github.com/woowacourse-teams/2023-hang-log/assets/77482065/1e73f647-7774-450e-863c-7dbc906f5e4d)
