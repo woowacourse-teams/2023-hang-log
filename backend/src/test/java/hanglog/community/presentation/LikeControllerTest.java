@@ -18,7 +18,7 @@ import hanglog.global.ControllerTest;
 import hanglog.like.dto.request.LikeRequest;
 import hanglog.like.presentation.LikeController;
 import hanglog.like.service.LikeService;
-import hanglog.oauth.domain.MemberTokens;
+import hanglog.login.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

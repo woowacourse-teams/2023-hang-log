@@ -3,10 +3,10 @@ package hanglog.global;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
 import hanglog.global.restdocs.RestDocsConfiguration;
-import hanglog.oauth.OauthArgumentResolver;
-import hanglog.oauth.domain.BearerAuthorizationExtractor;
-import hanglog.oauth.domain.JwtProvider;
-import hanglog.oauth.domain.repository.RefreshTokenRepository;
+import hanglog.login.LoginArgumentResolver;
+import hanglog.login.infrastructure.BearerAuthorizationExtractor;
+import hanglog.login.infrastructure.JwtProvider;
+import hanglog.login.domain.repository.RefreshTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public abstract class ControllerTest {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected OauthArgumentResolver oauthArgumentResolver;
+    protected LoginArgumentResolver loginArgumentResolver;
 
     @MockBean
     protected JwtProvider jwtProvider;

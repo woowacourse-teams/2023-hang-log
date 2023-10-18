@@ -17,7 +17,7 @@ import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.global.exception.BadRequestException;
-import hanglog.oauth.domain.MemberTokens;
+import hanglog.login.domain.MemberTokens;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;

@@ -27,7 +27,7 @@ import hanglog.member.dto.request.MyPageRequest;
 import hanglog.member.dto.response.MyPageResponse;
 import hanglog.member.presentation.MemberController;
 import hanglog.member.service.MemberService;
-import hanglog.oauth.domain.MemberTokens;
+import hanglog.login.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

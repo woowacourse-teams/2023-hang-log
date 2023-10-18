@@ -5,7 +5,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.image.domain.repository.ImageRepository;
 import hanglog.member.domain.MemberDeleteEvent;
-import hanglog.oauth.domain.repository.RefreshTokenRepository;
+import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;

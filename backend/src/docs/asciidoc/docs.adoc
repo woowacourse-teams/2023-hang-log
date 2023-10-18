@@ -236,51 +236,51 @@ include::{snippets}/category-controller-test/get-expense-categories/response-fie
 === 로그인 (POST /login/:provider)
 
 ==== 요청
-include::{snippets}/oauth-controller-test/login/http-request.adoc[]
-include::{snippets}/oauth-controller-test/login/path-parameters.adoc[]
-include::{snippets}/oauth-controller-test/login/request-fields.adoc[]
+include::{snippets}/login-controller-test/login/http-request.adoc[]
+include::{snippets}/login-controller-test/login/path-parameters.adoc[]
+include::{snippets}/login-controller-test/login/request-fields.adoc[]
 
 ==== 응답
-include::{snippets}/oauth-controller-test/login/http-response.adoc[]
+include::{snippets}/login-controller-test/login/http-response.adoc[]
 응답 쿠키
-include::{snippets}/oauth-controller-test/login/response-cookies.adoc[]
-include::{snippets}/oauth-controller-test/login/response-fields.adoc[]
+include::{snippets}/login-controller-test/login/response-cookies.adoc[]
+include::{snippets}/login-controller-test/login/response-fields.adoc[]
 
 === 토큰 재발급 (POST /token)
 
 ==== 요청
-include::{snippets}/oauth-controller-test/extend-login/http-request.adoc[]
+include::{snippets}/login-controller-test/extend-login/http-request.adoc[]
 요청 쿠키
-include::{snippets}/oauth-controller-test/extend-login/request-cookies.adoc[]
-include::{snippets}/oauth-controller-test/extend-login/request-fields.adoc[]
+include::{snippets}/login-controller-test/extend-login/request-cookies.adoc[]
+include::{snippets}/login-controller-test/extend-login/request-fields.adoc[]
 
 ==== 응답
-include::{snippets}/oauth-controller-test/extend-login/http-response.adoc[]
-include::{snippets}/oauth-controller-test/extend-login/response-fields.adoc[]
+include::{snippets}/login-controller-test/extend-login/http-response.adoc[]
+include::{snippets}/login-controller-test/extend-login/response-fields.adoc[]
 
 === 로그아웃 (POST /logout)
 
 ==== 요청
-include::{snippets}/oauth-controller-test/logout/http-request.adoc[]
+include::{snippets}/login-controller-test/logout/http-request.adoc[]
 요청 헤더
-include::{snippets}/oauth-controller-test/logout/request-headers.adoc[]
+include::{snippets}/login-controller-test/logout/request-headers.adoc[]
 요청 쿠키
-include::{snippets}/oauth-controller-test/logout/request-cookies.adoc[]
+include::{snippets}/login-controller-test/logout/request-cookies.adoc[]
 
 ==== 응답
-include::{snippets}/oauth-controller-test/logout/http-response.adoc[]
+include::{snippets}/login-controller-test/logout/http-response.adoc[]
 
 === 회원 탈퇴 (DELETE /account)
 
 ==== 요청
-include::{snippets}/oauth-controller-test/delete-account/http-request.adoc[]
+include::{snippets}/login-controller-test/delete-account/http-request.adoc[]
 요청 헤더
-include::{snippets}/oauth-controller-test/delete-account/request-headers.adoc[]
+include::{snippets}/login-controller-test/delete-account/request-headers.adoc[]
 요청 쿠키
-include::{snippets}/oauth-controller-test/delete-account/request-cookies.adoc[]
+include::{snippets}/login-controller-test/delete-account/request-cookies.adoc[]
 
 ==== 응답
-include::{snippets}/oauth-controller-test/delete-account/http-response.adoc[]
+include::{snippets}/login-controller-test/delete-account/http-response.adoc[]
 
 
 === 마이 페이지 조회 (GET /mypage)
