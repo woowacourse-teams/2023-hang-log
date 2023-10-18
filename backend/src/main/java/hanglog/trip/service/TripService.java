@@ -246,7 +246,7 @@ public class TripService {
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
         if (!publishedTripRepository.existsByTripId(trip.getId())) {
-            final PublishedTrip publishedTrip = new PublishedTrip(trip);
+            final PublishedTrip publishedTrip = new PublishedTrip(trip.getId());
             publishedTripRepository.save(publishedTrip);
         }
     }

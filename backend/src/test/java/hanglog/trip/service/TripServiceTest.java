@@ -273,7 +273,7 @@ class TripServiceTest {
     void updatePublishedStatus_NotFirstPublished() {
         // given
         LONDON_TRIP.changePublishedStatus(false);
-        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP.getId());
         publishedTrip.changeStatusToDeleted();
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
