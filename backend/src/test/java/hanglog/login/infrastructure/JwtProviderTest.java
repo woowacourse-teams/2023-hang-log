@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.ExpiredPeriodJwtException;
 import hanglog.global.exception.InvalidJwtException;
-import hanglog.login.infrastructure.JwtProvider;
 import hanglog.login.domain.MemberTokens;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

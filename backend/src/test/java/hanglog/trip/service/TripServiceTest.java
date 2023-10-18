@@ -2,10 +2,10 @@ package hanglog.trip.service;
 
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.integration.IntegrationFixture.MEMBER;
-import static hanglog.trip.fixture.ShareFixture.SHARED_TRIP;
-import static hanglog.trip.fixture.ShareFixture.TRIP_HAS_SHARED_TRIP;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.trip.fixture.ShareFixture.SHARED_TRIP;
+import static hanglog.trip.fixture.ShareFixture.TRIP_HAS_SHARED_TRIP;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -1,11 +1,11 @@
 package hanglog.integration.controller;
 
-import hanglog.member.domain.Member;
-import hanglog.member.domain.repository.MemberRepository;
-import hanglog.login.infrastructure.JwtProvider;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.domain.RefreshToken;
 import hanglog.login.domain.repository.RefreshTokenRepository;
+import hanglog.login.infrastructure.JwtProvider;
+import hanglog.member.domain.Member;
+import hanglog.member.domain.repository.MemberRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

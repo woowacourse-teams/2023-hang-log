@@ -1,7 +1,7 @@
 package hanglog.trip.domain.repository;
 
-import hanglog.trip.dto.TripCityElement;
 import hanglog.trip.domain.TripCity;
+import hanglog.trip.dto.TripCityElement;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

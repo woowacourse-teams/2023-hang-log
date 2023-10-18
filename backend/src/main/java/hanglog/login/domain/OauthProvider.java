@@ -1,6 +1,5 @@
 package hanglog.login.domain;
 
-import hanglog.login.domain.OauthUserInfo;
 import org.springframework.web.client.RestTemplate;
 
 public interface OauthProvider {

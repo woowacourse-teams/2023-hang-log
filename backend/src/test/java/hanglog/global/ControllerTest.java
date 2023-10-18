@@ -4,9 +4,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 
 import hanglog.global.restdocs.RestDocsConfiguration;
 import hanglog.login.LoginArgumentResolver;
+import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.login.infrastructure.BearerAuthorizationExtractor;
 import hanglog.login.infrastructure.JwtProvider;
-import hanglog.login.domain.repository.RefreshTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
