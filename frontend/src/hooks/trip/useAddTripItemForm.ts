@@ -107,7 +107,6 @@ export const useAddTripItemForm = ({
 
       return;
     }
-
     if (!itemId) {
       addTripItemMutation.mutate(
         {

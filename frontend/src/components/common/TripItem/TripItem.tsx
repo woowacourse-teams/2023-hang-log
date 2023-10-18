@@ -26,8 +26,7 @@ import useResizeImage from '@hooks/trip/useResizeImage';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
-import convertImageName from '@utils/convertImageName';
-import convertImageNames from '@utils/convertImageNames';
+import { convertToImageUrl, convertToImageUrls } from '@utils/convertImage';
 import { formatNumberToMoney } from '@utils/formatter';
 
 import type { TripItemData } from '@type/tripItem';
@@ -101,7 +100,7 @@ const TripItem = ({
                 showNavigationOnHover={!isMobile}
                 showArrows={information.imageNames.length > 1}
                 showDots={information.imageNames.length > 1}
-                images={convertImageNames(information.imageNames)}
+                images={convertToImageUrls(information.imageNames)}
               />
             </div>
           )}
@@ -147,11 +146,11 @@ const TripItem = ({
             showNavigationOnHover={!isMobile}
             showArrows={information.imageNames.length > 1}
             showDots={information.imageNames.length > 1}
-            images={convertImageNames(information.imageNames)}
+            images={convertToImageUrls(information.imageNames)}
           >
             {information.imageNames.map((imageName) => (
               <div css={expandedImageContainer}>
-                <img src={convertImageName(imageName)} alt="이미지" css={expandedImage} />
+                <img src={convertToImageUrl(imageName)} alt="이미지" css={expandedImage} />
               </div>
             ))}
           </Carousel>

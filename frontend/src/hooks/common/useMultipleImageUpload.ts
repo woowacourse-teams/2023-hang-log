@@ -1,12 +1,11 @@
 import type { ChangeEvent } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
-import { useToast } from '@hooks/common/useToast';
 
-import convertImageNames from '@utils/convertImageNames';
+import { convertToImageNames, convertToImageUrls } from '@utils/convertImage';
 
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
@@ -14,24 +13,86 @@ import { TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT } from '@constants/ui';
 interface UseMultipleImageUploadParams {
   initialImageNames: string[];
   maxUploadCount?: number;
-  handleInitialImage?: (images: string[]) => void;
-  onSuccess?: CallableFunction;
+  updateFormImage?: CallableFunction;
   onError?: CallableFunction;
 }
 
 export const useMultipleImageUpload = ({
   initialImageNames,
   maxUploadCount = TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT,
-  onSuccess,
+  updateFormImage,
   onError,
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
   const isImageUploading = imageMutation.isLoading;
 
-  const convertedImageNames = convertImageNames(initialImageNames);
+  const initialImageUrls = convertToImageUrls([...initialImageNames]);
 
-  const { createToast } = useToast();
-  const [uploadedImageNames, setUploadedImageNames] = useState(convertedImageNames);
+  const [imageUrls, setImageUrls] = useState(initialImageUrls);
+  const [imageNames, setImageNames] = useState(initialImageNames);
+
+  useEffect(() => {
+    updateFormImage?.(imageNames);
+  }, [imageNames, updateFormImage]);
+
+  const compressImages = useCallback(async (originalImageFiles: FileList): Promise<File[]> => {
+    const imageFiles: File[] = [];
+
+    try {
+      await Promise.all(
+        [...originalImageFiles].map(async (file) => {
+          const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
+
+          const fileName = file.name;
+          const fileType = compressedImageFile.type;
+          const convertedFile = new File([compressedImageFile], fileName, { type: fileType });
+
+          imageFiles.push(convertedFile);
+        })
+      );
+    } catch (e) {
+      imageFiles.push(...originalImageFiles);
+    }
+
+    return imageFiles;
+  }, []);
+
+  const convertToImageFormData = useCallback(
+    async (imageFiles: FileList) => {
+      const compressedImages = await compressImages(imageFiles);
+      const imageFormData = new FormData();
+
+      compressedImages.forEach((file) => {
+        imageFormData.append('images', file);
+      });
+
+      return imageFormData;
+    },
+    [compressImages]
+  );
+
+  const postImageNames = useCallback(
+    async (images: FormData) => {
+      imageMutation.mutate(
+        { images },
+        {
+          onSuccess: ({ imageNames }) => {
+            if (maxUploadCount === 1) {
+              setImageNames([...imageNames]);
+
+              return;
+            }
+
+            setImageNames((prev) => [...prev, ...imageNames]);
+          },
+          onError: () => {
+            setImageUrls(initialImageUrls);
+          },
+        }
+      );
+    },
+    [imageMutation, maxUploadCount, initialImageUrls]
+  );
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,92 +100,42 @@ export const useMultipleImageUpload = ({
 
       if (!originalImageFiles) return;
 
-      if (originalImageFiles.length + uploadedImageNames.length > maxUploadCount) {
+      if (originalImageFiles.length + imageUrls.length > maxUploadCount) {
         onError?.();
 
         return;
       }
 
-      const prevImageNames = uploadedImageNames;
+      // 화면에 보여지는 이미지 url로 변경 + 업데이트
+      setImageUrls((prevImageUrls) => {
+        const newImageUrls = [...originalImageFiles].map((file) => URL.createObjectURL(file));
 
-      setUploadedImageNames((prevImageNames) => {
-        const newImageNames = [...originalImageFiles].map((file) => URL.createObjectURL(file));
-
-        return [...prevImageNames, ...newImageNames];
+        return [...prevImageUrls, ...newImageUrls];
       });
 
-      const imageFiles: File[] = [];
-
-      try {
-        await Promise.all(
-          [...originalImageFiles].map(async (file) => {
-            const compressedImageFile = await imageCompression(file, IMAGE_COMPRESSION_OPTIONS);
-
-            const fileName = file.name;
-            const fileType = compressedImageFile.type;
-            const convertedFile = new File([compressedImageFile], fileName, { type: fileType });
-
-            imageFiles.push(convertedFile);
-          })
-        );
-      } catch (e) {
-        imageFiles.push(...originalImageFiles);
-      }
-
-      const imageUploadFormData = new FormData();
-
-      [...imageFiles].forEach((file) => {
-        imageUploadFormData.append('images', file);
-      });
-
-      imageMutation.mutate(
-        { images: imageUploadFormData },
-        {
-          onSuccess: ({ imageNames }) => {
-            if (maxUploadCount === 1) {
-              onSuccess?.([...imageNames]);
-              createToast('이미지 업로드에 성공했습니다', 'success');
-
-              return;
-            }
-
-            onSuccess?.([...convertedImageNames, ...imageNames]);
-            createToast('이미지 업로드에 성공했습니다', 'success');
-          },
-          onError: () => {
-            setUploadedImageNames(prevImageNames);
-          },
-        }
-      );
+      const imageFormData = await convertToImageFormData(originalImageFiles);
+      postImageNames(imageFormData);
 
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [
-      createToast,
-      imageMutation,
-      convertedImageNames,
-      maxUploadCount,
-      onError,
-      onSuccess,
-      uploadedImageNames,
-    ]
+    [imageUrls, maxUploadCount, convertToImageFormData, postImageNames, onError]
   );
 
   const handleImageRemoval = useCallback(
-    (selectedImageName: string) => () => {
-      setUploadedImageNames((prevImageNames) => {
-        const updatedImageNames = prevImageNames.filter(
-          (imageName) => imageName !== selectedImageName
-        );
+    (selectedImageUrl: string) => () => {
+      setImageUrls((prevImageUrls) => {
+        const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
+        // form에 들어가는 imageName 변경
+        const imageNames = convertToImageNames(updatedImageUrls);
+        updateFormImage?.(imageNames);
 
-        onSuccess?.(updatedImageNames);
-
-        return updatedImageNames;
+        // 화면에 보여지는 imageUrl 변경
+        return updatedImageUrls;
       });
     },
-    [onSuccess]
+    [updateFormImage]
   );
 
-  return { isImageUploading, uploadedImageNames, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, imageUrls, handleImageUpload, handleImageRemoval };
 };

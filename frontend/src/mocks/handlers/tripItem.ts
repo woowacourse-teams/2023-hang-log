@@ -39,7 +39,7 @@ export const tripItemHandlers = [
             },
           }
         : null,
-      imageNames: [],
+      imageNames: response.imageNames,
     };
 
     trip.dayLogs[0].items.push(newTripItem);
