@@ -7,7 +7,7 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
-import hanglog.community.domain.PublishedTrip;
+import hanglog.community.domain.PublishedEvent;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
@@ -245,9 +245,6 @@ public class TripService {
 
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
-        if (!publishedTripRepository.existsByTripId(trip.getId())) {
-            final PublishedTrip publishedTrip = new PublishedTrip(trip.getId());
-            publishedTripRepository.save(publishedTrip);
-        }
+        publisher.publishEvent(new PublishedEvent(trip.getId()));
     }
 }
