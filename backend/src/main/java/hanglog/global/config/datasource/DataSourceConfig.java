@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
-@Profile(value = "dev")
+@Profile({"dev"})
 @Configuration
 public class DataSourceConfig {
 
@@ -22,16 +22,14 @@ public class DataSourceConfig {
     @Qualifier(SOURCE_SERVER)
     @ConfigurationProperties(prefix = "spring.datasource.source")
     public DataSource sourceDataSource() {
-        return DataSourceBuilder.create()
-                .build();
+        return DataSourceBuilder.create().build();
     }
 
     @Bean
     @Qualifier(REPLICA_SERVER)
     @ConfigurationProperties(prefix = "spring.datasource.replica")
     public DataSource replicaDataSource() {
-        return DataSourceBuilder.create()
-                .build();
+        return DataSourceBuilder.create().build();
     }
 
     @Bean
