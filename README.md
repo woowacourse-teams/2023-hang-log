@@ -22,7 +22,7 @@
 
 ![image6](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/6c4ab178-b9ca-4141-a904-f493a68ca082)
 
-![image7](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/a23a6212-96a8-4922-b761-3b2549b51308)
+![image7](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/b3829bde-7870-4836-adab-3d1add7b42a1)
 
 
 <br>
