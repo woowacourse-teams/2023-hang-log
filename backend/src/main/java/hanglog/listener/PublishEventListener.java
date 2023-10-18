@@ -1,8 +1,9 @@
 package hanglog.listener;
 
-import hanglog.community.domain.PublishedEvent;
 import hanglog.community.domain.PublishedTrip;
-import hanglog.trip.domain.repository.PublishedTripRepository;
+import hanglog.community.domain.repository.PublishedTripRepository;
+import hanglog.trip.domain.PublishedDeleteEvent;
+import hanglog.trip.domain.PublishedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -21,5 +22,10 @@ public class PublishEventListener {
             final PublishedTrip publishedTrip = new PublishedTrip(tripId);
             publishedTripRepository.save(publishedTrip);
         }
+    }
+
+    @EventListener
+    public void publishDeleteTrip(final PublishedDeleteEvent publishedDeleteEvent) {
+        publishedTripRepository.deleteByTripId(publishedDeleteEvent.getTripId());
     }
 }

@@ -1,4 +1,4 @@
-package hanglog.trip.domain.repository;
+package hanglog.community.domain.repository;
 
 import hanglog.community.domain.PublishedTrip;
 import java.util.List;
