@@ -57,15 +57,19 @@
 
 ## 인프라 구조도
 
-![CICD](https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/656caaa3-125d-48ed-b996-e2858be4d36c)
+![인프라 구조도](https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/656caaa3-125d-48ed-b996-e2858be4d36c)
 
 ## CI/CD
 
-![CICD](https://github.com/woowacourse/frontend-rendering/assets/102305630/b20e1818-d73a-4803-b77d-8239470e0bee)
+![CICD](https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/a55b3a1c-ce12-49d2-b4da-5b394c4de6c1)
+
+## 모니터링 구조도
+
+![모니터링 구조도](https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/26da0064-7caf-42a7-b341-4e1f9db99865)
 
 ## 이미지 요청 흐름도
 
-![README 인프라 구조 001](https://github.com/woowacourse/frontend-rendering/assets/102305630/c048d3c3-238d-427a-918a-53bff92ebe64)
+![이미지 요청 흐름도](https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/65cdfaea-e546-43ab-80b3-2c57c9336544)
 
 ## [행록 디자인 시스템](https://github.com/hang-log-design-system/design-system)
 
