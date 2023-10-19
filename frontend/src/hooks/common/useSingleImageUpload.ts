@@ -64,7 +64,6 @@ export const useSingleImageUpload = ({
 
       const prevImageName = uploadedImageUrl;
 
-      // 화면에 보여주는 url업로드
       setUploadedImageUrl(URL.createObjectURL(originalImageFile));
 
       const images = await convertToImageFormData(originalImageFile);

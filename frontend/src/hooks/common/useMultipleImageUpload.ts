@@ -126,15 +126,20 @@ export const useMultipleImageUpload = ({
     (selectedImageUrl: string) => () => {
       setImageUrls((prevImageUrls) => {
         const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
-        // form에 들어가는 imageName 변경
+
+        if (maxUploadCount === 1) {
+          updateFormImage?.([]);
+
+          return updatedImageUrls;
+        }
+
         const imageNames = convertToImageNames(updatedImageUrls);
         updateFormImage?.(imageNames);
 
-        // 화면에 보여지는 imageUrl 변경
         return updatedImageUrls;
       });
     },
-    [updateFormImage]
+    [maxUploadCount, updateFormImage]
   );
 
   return { isImageUploading, imageUrls, handleImageUpload, handleImageRemoval };
