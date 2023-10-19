@@ -9,7 +9,7 @@ import TripsItemList from '@components/trips/TripsItemList/TripsItemList';
 
 import { useTripsQuery } from '@hooks/api/useTripsQuery';
 
-import { sortByStartDate } from '@utils/sort';
+import { sortByNewest, sortByStartDate } from '@utils/sort';
 
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
@@ -21,7 +21,9 @@ const TripsPage = () => {
     useSelect(ORDER_BY_REGISTRATION);
 
   const sortedTrips =
-    sortSelected === ORDER_BY_DATE ? tripsData?.slice().sort(sortByStartDate) : tripsData;
+    sortSelected === ORDER_BY_DATE
+      ? tripsData?.slice().sort(sortByStartDate)
+      : tripsData?.slice().sort(sortByNewest);
 
   return (
     <>

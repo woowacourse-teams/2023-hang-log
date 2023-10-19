@@ -1,8 +1,8 @@
 package hanglog.city.service;
 
-import hanglog.city.dto.response.CityResponse;
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.city.dto.response.CityResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ public class CityService {
 
     private final CityRepository cityRepository;
 
+    @Transactional(readOnly = true)
     public List<CityResponse> getAllCities() {
         final List<City> cities = cityRepository.findAll();
         return cities.stream()

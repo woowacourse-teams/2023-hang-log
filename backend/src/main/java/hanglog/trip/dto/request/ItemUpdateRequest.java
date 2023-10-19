@@ -35,8 +35,8 @@ public class ItemUpdateRequest {
     @NotNull(message = "여행 아이템이 속한 데이 로그를 입력해주세요.")
     private final Long dayLogId;
 
-    @Size(max = 10, message = "여행 아이템의 이미지는 최대 10개까지 첨부할 수 있습니다.")
-    private final List<String> imageUrls;
+    @Size(max = 5, message = "여행 아이템의 이미지는 최대 5개까지 첨부할 수 있습니다.")
+    private final List<String> imageNames;
 
     @NotNull(message = "장소의 업데이트 여부를 입력해 주세요.")
     private final Boolean isPlaceUpdated;
@@ -53,7 +53,7 @@ public class ItemUpdateRequest {
             final Double rating,
             final String memo,
             final Long dayLogId,
-            final List<String> imageUrls,
+            final List<String> imageNames,
             final Boolean isPlaceUpdated,
             final PlaceRequest place,
             final ExpenseRequest expense
@@ -67,7 +67,7 @@ public class ItemUpdateRequest {
         this.rating = rating;
         this.memo = memo;
         this.dayLogId = dayLogId;
-        this.imageUrls = imageUrls;
+        this.imageNames = imageNames;
         this.isPlaceUpdated = isPlaceUpdated;
         this.place = place;
         this.expense = expense;

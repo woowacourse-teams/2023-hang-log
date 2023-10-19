@@ -4,7 +4,6 @@ import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_OVER_MAX;
 import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_UNDER_MIN;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
-import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -18,7 +17,6 @@ import hanglog.global.BaseEntity;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
-import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -68,19 +66,19 @@ public class Item extends BaseEntity {
 
     private String memo;
 
-    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
+    @OneToOne(fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne(fetch = LAZY, cascade = {PERSIST})
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
-    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
+    @OneToOne(fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = REMOVE)
     private List<Image> images = new ArrayList<>();
 
     public Item(
@@ -197,5 +195,9 @@ public class Item extends BaseEntity {
 
     public void changeOrdinal(final int ordinal) {
         this.ordinal = ordinal;
+    }
+
+    public boolean isSpot() {
+        return itemType.isSpot();
     }
 }

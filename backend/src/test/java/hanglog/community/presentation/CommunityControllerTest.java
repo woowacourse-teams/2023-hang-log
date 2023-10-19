@@ -6,6 +6,7 @@ import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
 import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
 import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
@@ -24,20 +25,18 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.community.service.CommunityService;
 import hanglog.expense.domain.CategoryExpense;
-import hanglog.expense.domain.DayLogExpense;
-import hanglog.expense.dto.response.TripExpenseResponse;
-import hanglog.expense.service.ExpenseService;
 import hanglog.global.ControllerTest;
-import hanglog.trip.domain.TripCity;
+import hanglog.login.domain.MemberTokens;
+import hanglog.trip.domain.DayLogExpense;
+import hanglog.trip.dto.response.LedgerResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
-import hanglog.trip.fixture.CityFixture;
+import hanglog.trip.service.LedgerService;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,7 +69,7 @@ class CommunityControllerTest extends ControllerTest {
     private CommunityService communityService;
 
     @MockBean
-    private ExpenseService expenseService;
+    private LedgerService ledgerService;
 
     @BeforeEach
     void setUp() {
@@ -113,7 +112,7 @@ class CommunityControllerTest extends ControllerTest {
     @Test
     void getTripsByPage() throws Exception {
         // given
-        when(communityService.getTripsByPage(any(), any()))
+        when(communityService.getCommunityTripsByPage(any(), any()))
                 .thenReturn(new CommunityTripListResponse(
                         List.of(CommunityTripResponse.of(LONDON_TRIP, CITIES, true, 1L)),
                         1L
@@ -169,10 +168,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 유무")
                                         .attributes(field("constraint", "boolean (true : 좋아요)")),
-                                fieldWithPath("trips[].imageUrl")
+                                fieldWithPath("trips[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("trips[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -268,10 +267,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 유무")
                                         .attributes(field("constraint", "boolean (true : 좋아요)")),
-                                fieldWithPath("trips[].imageUrl")
+                                fieldWithPath("trips[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("trips[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -363,10 +362,10 @@ class CommunityControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("imageUrl")
+                                fieldWithPath("imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
                                         .description("공유 코드")
@@ -457,11 +456,11 @@ class CommunityControllerTest extends ControllerTest {
     @Test
     void getExpenses() throws Exception {
         // given
-        when(expenseService.getAllExpenses(any())).thenReturn(
-                TripExpenseResponse.of(
+        when(ledgerService.getAllExpenses(any())).thenReturn(
+                LedgerResponse.of(
                         LONDON_TO_JAPAN,
                         AMOUNT_20000,
-                        List.of(new TripCity(LONDON_TRIP, LONDON), new TripCity(LONDON_TRIP, CityFixture.TOKYO)),
+                        List.of(LONDON, TOKYO),
                         List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), AMOUNT_20000, AMOUNT_20000)),
                         DEFAULT_CURRENCY,
                         List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))

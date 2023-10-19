@@ -1,15 +1,26 @@
-import { Button, Flex, Input, Modal, SupportingText, Textarea } from 'hang-log-design-system';
+import { useCallback } from 'react';
+
+import {
+  Button,
+  Flex,
+  ImageUploadInput,
+  Input,
+  Modal,
+  SupportingText,
+  Textarea,
+} from 'hang-log-design-system';
 
 import CitySearchBar from '@components/common/CitySearchBar/CitySearchBar';
 import DateInput from '@components/common/DateInput/DateInput';
-import ImageInput from '@components/trip/TripInfoEditModal/ImageInput/ImageInput';
 import {
+  buttonStyling,
   dateInputSupportingText,
   formStyling,
   textareaStyling,
   wrapperStyling,
 } from '@components/trip/TripInfoEditModal/TripInfoEditModal.style';
 
+import { useMultipleImageUpload } from '@hooks/common/useMultipleImageUpload';
 import { useTripEditForm } from '@hooks/trip/useTripEditForm';
 
 import type { TripData } from '@type/trip';
@@ -34,6 +45,25 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
     updateCoverImage,
     handleSubmit,
   } = useTripEditForm(information, onClose);
+
+  const handleImageNameChange = useCallback(
+    (imageNames: string[]) => {
+      if (imageNames.length === 0) {
+        updateCoverImage(null);
+        return;
+      }
+
+      updateCoverImage(imageNames[0]);
+    },
+    [updateCoverImage]
+  );
+
+  const { imageUrls, isImageUploading, handleImageUpload, handleImageRemoval } =
+    useMultipleImageUpload({
+      initialImageNames: information.imageName === null ? [] : [information.imageName],
+      updateFormImage: handleImageNameChange,
+      maxUploadCount: 1,
+    });
 
   return (
     <Modal
@@ -87,8 +117,22 @@ const TripInfoEditModal = ({ isOpen, onClose, ...information }: TripInfoEditModa
           onChange={updateInputValue('description')}
           css={textareaStyling}
         />
-        <ImageInput initialImage={tripInfo.imageUrl} updateCoverImage={updateCoverImage} />
-        <Button variant="primary">여행 정보 수정하기</Button>
+        <ImageUploadInput
+          id="cover-image-upload"
+          label="대표 이미지 업로드"
+          imageAltText="여행 대표 업로드 이미지"
+          imageUrls={imageUrls}
+          maxUploadCount={1}
+          onChange={handleImageUpload}
+          onRemove={handleImageRemoval}
+        />
+        <Button
+          variant={isImageUploading ? 'default' : 'primary'}
+          disabled={isImageUploading}
+          css={buttonStyling}
+        >
+          여행 정보 수정하기
+        </Button>
       </form>
     </Modal>
   );

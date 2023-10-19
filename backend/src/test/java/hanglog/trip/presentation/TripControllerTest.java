@@ -1,8 +1,14 @@
 package hanglog.trip.presentation;
 
+import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
+import static hanglog.expense.fixture.AmountFixture.AMOUNT_20000;
+import static hanglog.expense.fixture.CurrencyFixture.DEFAULT_CURRENCY;
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.trip.fixture.CityFixture.TOKYO;
+import static hanglog.trip.fixture.DayLogFixture.EXPENSE_LONDON_DAYLOG;
+import static hanglog.trip.fixture.TripFixture.LONDON_TO_JAPAN;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,14 +38,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
 import hanglog.city.domain.City;
+import hanglog.expense.domain.CategoryExpense;
 import hanglog.global.ControllerTest;
+import hanglog.login.domain.MemberTokens;
+import hanglog.trip.domain.DayLogExpense;
 import hanglog.trip.dto.request.PublishedStatusRequest;
+import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.LedgerResponse;
+import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
+import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDate;
@@ -71,6 +83,9 @@ class TripControllerTest extends ControllerTest {
 
     @MockBean
     private TripService tripService;
+
+    @MockBean
+    private LedgerService ledgerService;
 
     @BeforeEach
     void setUp() {
@@ -127,6 +142,14 @@ class TripControllerTest extends ControllerTest {
                 .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
                 .cookie(COOKIE)
                 .contentType(APPLICATION_JSON));
+    }
+
+    private ResultActions performGetLedgerRequest(final int tripId) throws Exception {
+        return mockMvc.perform(
+                get("/trips/{tripId}/expense", tripId)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON));
     }
 
     @DisplayName("단일 여행을 생성할 수 있다.")
@@ -306,10 +329,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("imageUrl")
+                                fieldWithPath("imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("sharedCode")
                                         .type(JsonFieldType.STRING)
                                         .description("공유 코드")
@@ -427,10 +450,10 @@ class TripControllerTest extends ControllerTest {
                                         .type(JsonFieldType.STRING)
                                         .description("여행 요약")
                                         .attributes(field("constraint", "200자 이하의 문자열")),
-                                fieldWithPath("[].imageUrl")
+                                fieldWithPath("[].imageName")
                                         .type(JsonFieldType.STRING)
                                         .description("여행 대표 이미지")
-                                        .attributes(field("constraint", "이미지 URL")),
+                                        .attributes(field("constraint", "이미지 이름")),
                                 fieldWithPath("[].cities")
                                         .type(JsonFieldType.ARRAY)
                                         .description("여행 도시 배열")
@@ -465,7 +488,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -490,10 +513,10 @@ class TripControllerTest extends ControllerTest {
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 제목")
                                                 .attributes(field("constraint", "50자 이하의 문자열")),
-                                        fieldWithPath("imageUrl")
+                                        fieldWithPath("imageName")
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 이미지")
-                                                .attributes(field("constraint", "이미지 URL")),
+                                                .attributes(field("constraint", "이미지 이름")),
                                         fieldWithPath("startDate")
                                                 .type(JsonFieldType.STRING)
                                                 .description("여행 시작 날짜")
@@ -524,7 +547,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 null,
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -550,7 +573,7 @@ class TripControllerTest extends ControllerTest {
         final String updatedTitle = "1" + "1234567890".repeat(5);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 updatedTitle,
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -576,7 +599,7 @@ class TripControllerTest extends ControllerTest {
         final String updateDescription = "1" + "1234567890".repeat(20);
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "updatedTitle",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 7),
                 updateDescription,
@@ -600,7 +623,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 null,
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -624,7 +647,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 null,
                 "추가된 여행 설명",
@@ -648,7 +671,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -672,7 +695,7 @@ class TripControllerTest extends ControllerTest {
 
         final TripUpdateRequest badRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 1),
                 LocalDate.of(2023, 7, 7),
                 "추가된 여행 설명",
@@ -709,6 +732,72 @@ class TripControllerTest extends ControllerTest {
                 ));
     }
 
+    @DisplayName("공유 상태를 변경한다")
+    @Test
+    void updateSharedStatus() throws Exception {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+        final SharedCodeResponse sharedCodeResponse = new SharedCodeResponse("sharedCode");
+        when(tripService.updateSharedTripStatus(anyLong(), any(SharedStatusRequest.class)))
+                .thenReturn(sharedCodeResponse);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/share", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sharedStatusRequest)))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
+                                requestFields(
+                                        fieldWithPath("sharedStatus")
+                                                .type(JsonFieldType.BOOLEAN)
+                                                .description("공유 유무")
+                                                .attributes(field("constraint", "공유시: true, 비공유시: false"))
+                                ),
+                                responseFields(
+                                        fieldWithPath("sharedCode")
+                                                .type(JsonFieldType.STRING)
+                                                .description("공유 코드")
+                                                .attributes(field("constraint", "공유시: 문자열 비공유시: null"))
+                                                .optional()
+                                )
+                        )
+                )
+                .andReturn();
+    }
+
+    @DisplayName("공유 상태가 없는 공유 수정 요청은 예외처리한다.")
+    @Test
+    void getSharedTrip_NullSharedStatus() throws Exception {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(null);
+        final SharedCodeResponse sharedCodeResponse = new SharedCodeResponse("xxxxxx");
+        when(tripService.updateSharedTripStatus(anyLong(), any(SharedStatusRequest.class)))
+                .thenReturn(sharedCodeResponse);
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
+        // when & then
+        mockMvc.perform(patch("/trips/{tripId}/share", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sharedStatusRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("공유 상태를 선택해주세요."));
+    }
+
     @DisplayName("커뮤니티 공개 상태를 변경한다")
     @Test
     void updatePublishedStatus() throws Exception {
@@ -739,5 +828,182 @@ class TripControllerTest extends ControllerTest {
                         )
                 )
                 .andReturn();
+    }
+
+    @DisplayName("특정 여행의 가계부를 가져온다.")
+    @Test
+    void getLedger() throws Exception {
+        // given
+        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        doNothing().when(jwtProvider).validateTokens(any());
+        given(jwtProvider.getSubject(any())).willReturn("1");
+        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+
+        final LedgerResponse ledgerResponse = LedgerResponse.of(
+                LONDON_TO_JAPAN,
+                AMOUNT_20000,
+                List.of(LONDON, TOKYO),
+                List.of(new CategoryExpense(EXPENSE_CATEGORIES.get(1), AMOUNT_20000, AMOUNT_20000)),
+                DEFAULT_CURRENCY,
+                List.of(new DayLogExpense(EXPENSE_LONDON_DAYLOG, AMOUNT_20000))
+        );
+
+        when(ledgerService.getAllExpenses(1L)).thenReturn(ledgerResponse);
+
+        // when
+        final ResultActions resultActions = performGetLedgerRequest(1);
+
+        // then
+        resultActions.andDo(
+                        restDocs.document(
+                                pathParameters(
+                                        parameterWithName("tripId")
+                                                .description("여행 ID")
+                                ),
+                                responseFields(
+                                        fieldWithPath("id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("여행 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("title")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 제목")
+                                                .attributes(field("constraint", "50자 이하의 문자열")),
+                                        fieldWithPath("startDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 시작 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("endDate")
+                                                .type(JsonFieldType.STRING)
+                                                .description("여행 종료 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("cities")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("도시 목록")
+                                                .attributes(field("constraint", "1개 이상의 city")),
+                                        fieldWithPath("cities[].id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("도시 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("cities[].name")
+                                                .type(JsonFieldType.STRING)
+                                                .description("도시 명")
+                                                .attributes(field("constraint", "20자 이하의 문자열")),
+                                        fieldWithPath("totalAmount")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("총 경비")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("categories")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("카테고리별 경비 목록")
+                                                .attributes(field("constraint", "카테고리 배열")),
+                                        fieldWithPath("categories[].category")
+                                                .type(JsonFieldType.OBJECT)
+                                                .description("카테고리")
+                                                .attributes(field("constraint", "카테고리")),
+                                        fieldWithPath("categories[].category.id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("카테고리 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("categories[].category.name")
+                                                .type(JsonFieldType.STRING)
+                                                .description("카테고리 명")
+                                                .attributes(field("constraint", "2자의 문자열")),
+                                        fieldWithPath("categories[].amount")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("카테고리 경비")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("categories[].percentage")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("카테고리 백분율")
+                                                .attributes(field("constraint", "100이하의 백분율")),
+                                        fieldWithPath("exchangeRate")
+                                                .type(JsonFieldType.OBJECT)
+                                                .description("적용된 환율")
+                                                .attributes(field("constraint", "적용된 환율")),
+                                        fieldWithPath("exchangeRate.date")
+                                                .type(JsonFieldType.STRING)
+                                                .description("환율 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("exchangeRate.currencyRates")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("통화별 환율")
+                                                .attributes(field("constraint", "currency")),
+                                        fieldWithPath("exchangeRate.currencyRates[].currency")
+                                                .type(JsonFieldType.STRING)
+                                                .description("통화")
+                                                .attributes(field("constraint", "3자의 문자열")),
+                                        fieldWithPath("exchangeRate.currencyRates[].rate")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("환율")
+                                                .attributes(field("constraint", "양의 유리수")),
+                                        fieldWithPath("dayLogs")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("날짜별 여행 기록 배열")
+                                                .attributes(field("constraint", "2개 이상의 데이 로그")),
+                                        fieldWithPath("dayLogs[].id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("날짜별 기록 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].ordinal")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("여행에서의 날짜 순서")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].date")
+                                                .type(JsonFieldType.STRING)
+                                                .description("실제 날짜")
+                                                .attributes(field("constraint", "yyyy-MM-dd")),
+                                        fieldWithPath("dayLogs[].totalAmount")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("날짜별 총 경비")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].items")
+                                                .type(JsonFieldType.ARRAY)
+                                                .description("아이템 목록")
+                                                .attributes(field("constraint", "배열")),
+                                        fieldWithPath("dayLogs[].items[].id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("아이템 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].items[].title")
+                                                .type(JsonFieldType.STRING)
+                                                .description("아이템 제목")
+                                                .attributes(field("constraint", "50자 이하의 문자열")),
+                                        fieldWithPath("dayLogs[].items[].ordinal")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("아이템의 배치 순서")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].items[].expense")
+                                                .type(JsonFieldType.OBJECT)
+                                                .description("아이템 경비")
+                                                .attributes(field("constraint", "아이템 경비")),
+                                        fieldWithPath("dayLogs[].items[].expense.id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("경비 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].items[].expense.currency")
+                                                .type(JsonFieldType.STRING)
+                                                .description("경비 통화")
+                                                .attributes(field("constraint", "3자의 문자열")),
+                                        fieldWithPath("dayLogs[].items[].expense.amount")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("경비")
+                                                .attributes(field("constraint", "양의 유리수")),
+                                        fieldWithPath("dayLogs[].items[].expense.category")
+                                                .type(JsonFieldType.OBJECT)
+                                                .description("경비 카테고리")
+                                                .attributes(field("constraint", "id와 이름")),
+                                        fieldWithPath("dayLogs[].items[].expense.category.id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("카테고리 ID")
+                                                .attributes(field("constraint", "양의 정수")),
+                                        fieldWithPath("dayLogs[].items[].expense.category.name")
+                                                .type(JsonFieldType.STRING)
+                                                .description("카테고리 명")
+                                                .attributes(field("constraint", "2자 문자열"))
+                                )
+                        )
+                )
+                .andExpect(status().isOk());
     }
 }

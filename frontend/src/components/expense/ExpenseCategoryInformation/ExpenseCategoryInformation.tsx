@@ -11,14 +11,17 @@ import { useExpense } from '@hooks/expense/useExpense';
 
 import { formatNumberToMoney } from '@utils/formatter';
 
+import type { TripTypeData } from '@type/trip';
+
 import { CURRENCY_ICON, DEFAULT_CURRENCY } from '@constants/trip';
 
 interface ExpenseCategoryInformationProps {
   tripId: string;
+  tripType: TripTypeData;
 }
 
-const ExpenseCategoryInformation = ({ tripId }: ExpenseCategoryInformationProps) => {
-  const { expenseData } = useExpense(tripId);
+const ExpenseCategoryInformation = ({ tripId, tripType }: ExpenseCategoryInformationProps) => {
+  const { expenseData } = useExpense(tripId, tripType);
 
   return (
     <ul css={containerStyling}>

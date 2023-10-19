@@ -6,6 +6,7 @@ import hanglog.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,21 @@ public class Category extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String korName;
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Category category)) {
+            return false;
+        }
+        return Objects.equals(id, category.id) && Objects.equals(engName, category.engName)
+                && Objects.equals(korName, category.korName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, engName, korName);
+    }
 }

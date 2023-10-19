@@ -8,10 +8,13 @@ import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.service.CommunityService;
-import hanglog.expense.service.ExpenseService;
+import hanglog.global.config.EventListenerTestConfig;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
+import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
+import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
+import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,13 +29,17 @@ import org.springframework.data.domain.Pageable;
 @Import({
         TripService.class,
         CommunityService.class,
-        ExpenseService.class,
-        RecommendStrategies.class
+        LedgerService.class,
+        RecommendStrategies.class,
+        CustomDayLogRepositoryImpl.class,
+        CustomTripCityRepositoryImpl.class,
+        EventListenerTestConfig.class
 })
-public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
+class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private TripService tripService;
+
     @Autowired
     private CommunityService communityService;
 
@@ -51,7 +58,10 @@ public class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     void getTripsByPage() {
         // when
         final Pageable pageable = PageRequest.of(1, 10, DESC, "publishedTrip.id");
-        final CommunityTripListResponse response = communityService.getTripsByPage(Accessor.member(1L), pageable);
+        final CommunityTripListResponse response = communityService.getCommunityTripsByPage(
+                Accessor.member(1L),
+                pageable
+        );
         final List<CommunityTripResponse> tripResponses = response.getTrips();
 
         // then

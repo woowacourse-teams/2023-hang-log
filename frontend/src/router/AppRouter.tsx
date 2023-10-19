@@ -118,7 +118,7 @@ const AppRouter = () => {
           path: PATH.SHARE_EXPENSE(':tripId'),
           element: (
             <Suspense fallback={<ExpensePageSkeleton />}>
-              <Lazy.ExpensePage isShared />
+              <Lazy.ExpensePage tripType={TRIP_TYPE.SHARED as TripTypeData} />
             </Suspense>
           ),
         },
@@ -138,7 +138,7 @@ const AppRouter = () => {
           path: PATH.COMMUNITY_EXPENSE(':tripId'),
           element: (
             <Suspense fallback={<ExpensePageSkeleton />}>
-              <Lazy.ExpensePage isShared isPublished />
+              <Lazy.ExpensePage tripType={TRIP_TYPE.PUBLISHED as TripTypeData} />
             </Suspense>
           ),
         },

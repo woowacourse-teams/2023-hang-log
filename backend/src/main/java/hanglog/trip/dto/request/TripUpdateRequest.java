@@ -17,7 +17,7 @@ public class TripUpdateRequest {
     @Size(max = 50, message = "여행 제목은 50자를 넘을 수 없습니다.")
     private final String title;
 
-    private final String imageUrl;
+    private final String imageName;
 
     @NotNull(message = "여행 시작 날짜를 입력해 주세요.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -12,31 +12,33 @@ import {
 import TripShareButton from '@components/common/TripInformation/TripShareButton/TripShareButton';
 
 import { useDeleteTripMutation } from '@hooks/api/useDeleteTripMutation';
+import { useTrip } from '@hooks/trip/useTrip';
 
-import type { TripData } from '@type/trip';
+import type { TripData, TripTypeData } from '@type/trip';
 
 import { PATH } from '@constants/path';
+import { TRIP_TYPE } from '@constants/trip';
 
 import BinIcon from '@assets/svg/bin-icon.svg';
 import EditIcon from '@assets/svg/edit-icon.svg';
 
 interface TripButtonsProps {
+  tripType: TripTypeData;
   tripId: string;
   sharedCode: TripData['sharedCode'];
-  isShared: boolean;
-  isPublished?: boolean;
   publishState: boolean;
 }
 
-export const TripButtons = ({
-  tripId,
-  sharedCode,
-  isShared,
-  isPublished = false,
-  publishState,
-}: TripButtonsProps) => {
+export const TripButtons = ({ tripType, tripId, sharedCode, publishState }: TripButtonsProps) => {
+  const isPersonal = tripType === TRIP_TYPE.PERSONAL;
+  const isPublished = tripType === TRIP_TYPE.PUBLISHED;
+
   const navigate = useNavigate();
   const deleteTripMutation = useDeleteTripMutation();
+
+  const {
+    tripData: { isWriter },
+  } = useTrip(tripType, tripId);
 
   const {
     isOpen: isDeleteModalOpen,
@@ -49,12 +51,12 @@ export const TripButtons = ({
   };
 
   const goToExpensePage = () => {
-    if (isPublished) {
+    if (tripType === TRIP_TYPE.PUBLISHED) {
       navigate(PATH.COMMUNITY_EXPENSE(tripId));
       return;
     }
 
-    if (isShared) {
+    if (tripType === TRIP_TYPE.SHARED) {
       navigate(PATH.SHARE_EXPENSE(tripId));
       return;
     }
@@ -66,7 +68,7 @@ export const TripButtons = ({
     deleteTripMutation.mutate(
       { tripId },
       {
-        onSuccess: () => navigate(PATH.ROOT),
+        onSuccess: () => navigate(PATH.MY_TRIPS),
       }
     );
   };
@@ -76,7 +78,7 @@ export const TripButtons = ({
       <Button type="button" variant="primary" size="small" onClick={goToExpensePage}>
         가계부
       </Button>
-      {!isShared && (
+      {isPersonal && (
         <>
           <TripShareButton tripId={tripId} sharedCode={sharedCode} publishState={publishState} />
           <EditIcon css={[svgButtonStyling, editIconStyling]} onClick={goToEditPage} />
@@ -96,6 +98,11 @@ export const TripButtons = ({
             </Box>
           </Modal>
         </>
+      )}
+      {isPublished && isWriter && (
+        <Button type="button" variant="primary" size="small" onClick={goToEditPage}>
+          수정하기
+        </Button>
       )}
     </>
   );

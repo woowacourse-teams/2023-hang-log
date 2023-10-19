@@ -9,8 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import hanglog.auth.domain.MemberTokens;
-import hanglog.share.dto.request.SharedTripStatusRequest;
+import hanglog.login.domain.MemberTokens;
+import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -39,7 +39,7 @@ class SharedTripIntegrationTest extends IntegrationTest {
                 .header(HttpHeaders.AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
-                .body(new SharedTripStatusRequest(status))
+                .body(new SharedStatusRequest(status))
                 .contentType(JSON)
                 .when().patch("/trips/{tripId}/share", tripId)
                 .then().log().all()

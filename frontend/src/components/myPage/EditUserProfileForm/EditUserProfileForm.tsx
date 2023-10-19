@@ -1,5 +1,3 @@
-import { useSingleImageUpload } from '@/hooks/common/useSingleImageUpload';
-
 import { useCallback, useRef } from 'react';
 
 import { Box, Button, Flex, Heading, Modal, Text, useOverlay } from 'hang-log-design-system';
@@ -18,6 +16,7 @@ import {
 import NicknameInput from '@components/myPage/EditUserProfileForm/NicknameInput/NicknameInput';
 
 import { useDeleteAccountMutation } from '@hooks/api/useDeleteAccountMutation';
+import { useSingleImageUpload } from '@hooks/common/useSingleImageUpload';
 import { useEditUserProfileForm } from '@hooks/member/useEditUserProfileForm';
 
 import type { UserData } from '@type/member';
@@ -48,7 +47,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
     inputRef.current?.click();
   };
 
-  const handleImageUrlsChange = useCallback(
+  const handleImageUrlChange = useCallback(
     (imageUrl: string) => {
       updateInputValue('imageUrl', imageUrl);
     },
@@ -57,7 +56,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileForm) => {
 
   const { isImageUploading, uploadedImageUrl, handleImageUpload } = useSingleImageUpload({
     initialImageUrl: initialData.imageUrl,
-    onSuccess: handleImageUrlsChange,
+    updateFormImage: handleImageUrlChange,
   });
 
   return (

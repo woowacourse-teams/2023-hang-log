@@ -11,13 +11,13 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import hanglog.auth.domain.MemberTokens;
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
 import hanglog.category.dto.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.global.exception.BadRequestException;
+import hanglog.login.domain.MemberTokens;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-public class ItemIntegrationTest extends IntegrationTest {
+class ItemIntegrationTest extends IntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -83,7 +83,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageNames(),
                 null,
                 null
         );
@@ -138,7 +138,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 1,
                 itemRequest.getRating(),
                 itemRequest.getMemo(),
-                itemRequest.getImageUrls(),
+                itemRequest.getImageNames(),
                 expectedPlaceResponse,
                 expectedItemExpenseResponse
         );
@@ -156,9 +156,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("NonSpot인 아이템을 Spot으로 수정한다.")
+    @DisplayName("Spot인 아이템을 NonSpot으로 수정한다.")
     @Test
-    void updateItem_NonSpotToSpot() {
+    void updateItem_SpotToNonSpot() {
         // when
         final ItemRequest itemRequest = getSpotItemRequest();
         final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
@@ -215,7 +215,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 true,
                 updatedPlaceRequest,
                 getExpenseRequest()
@@ -239,9 +239,9 @@ public class ItemIntegrationTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("Spot에서 NonSpot으로 수정한다.")
+    @DisplayName("NonSpot에서 Spot으로 수정한다.")
     @Test
-    void updateItem_SpotToNonSpot() {
+    void updateItem_NonSpotToSpot() {
         // when
         final ItemRequest itemRequest = getNonSpotItemRequest();
         final ExtractableResponse<Response> createResponse = requestCreateItem(memberTokens, tripId, itemRequest);
@@ -253,8 +253,8 @@ public class ItemIntegrationTest extends IntegrationTest {
                 4.5,
                 "updated memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
-                false,
+                List.of("test1.png", "test2.png"),
+                true,
                 getPlaceRequest(),
                 getExpenseRequest()
         );
@@ -402,7 +402,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 5.0,
                 "memo",
                 dayLogId,
-                List.of("https://hanglog.com/img/test1.png", "https://hanglog.com/img/test2.png"),
+                List.of("test1.png", "test2.png"),
                 getPlaceRequest(),
                 getExpenseRequest()
         );
@@ -455,7 +455,7 @@ public class ItemIntegrationTest extends IntegrationTest {
                 ordinal,
                 itemUpdateRequest.getRating(),
                 itemUpdateRequest.getMemo(),
-                itemUpdateRequest.getImageUrls(),
+                itemUpdateRequest.getImageNames(),
                 createMockIdPlaceResponseBy(itemUpdateRequest.getPlace()),
                 createMockIdExpenseResponseBy(itemUpdateRequest.getExpense())
         );

@@ -4,30 +4,38 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 import static hanglog.integration.IntegrationFixture.MEMBER;
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
+import static hanglog.trip.fixture.ShareFixture.SHARED_TRIP;
+import static hanglog.trip.fixture.ShareFixture.TRIP_HAS_SHARED_TRIP;
 import static hanglog.trip.fixture.TripFixture.LONDON_TRIP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.PublishedTrip;
-import hanglog.community.domain.type.PublishedStatusType;
+import hanglog.community.domain.repository.PublishedTripRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
-import hanglog.share.domain.type.SharedStatusType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripCity;
-import hanglog.trip.domain.repository.PublishedTripRepository;
+import hanglog.trip.domain.repository.CustomDayLogRepository;
+import hanglog.trip.domain.repository.CustomTripCityRepository;
+import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
+import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.dto.request.PublishedStatusRequest;
+import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.request.TripUpdateRequest;
+import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,6 +49,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,6 +63,9 @@ class TripServiceTest {
     private TripRepository tripRepository;
 
     @Mock
+    private SharedTripRepository sharedTripRepository;
+
+    @Mock
     private CityRepository cityRepository;
 
     @Mock
@@ -64,6 +76,15 @@ class TripServiceTest {
 
     @Mock
     private PublishedTripRepository publishedTripRepository;
+
+    @Mock
+    private CustomDayLogRepository customDayLogRepository;
+
+    @Mock
+    private CustomTripCityRepository customTripCityRepository;
+
+    @Mock
+    private ApplicationEventPublisher publisher;
 
     @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
     @Test
@@ -88,14 +109,13 @@ class TripServiceTest {
                 List.of(1L, 2L)
         );
 
-        given(cityRepository.findById(1L))
-                .willReturn(Optional.of(LONDON));
-        given(cityRepository.findById(2L))
-                .willReturn(Optional.of(PARIS));
-        given(tripRepository.save(any(Trip.class)))
-                .willReturn(LONDON_TRIP);
         given(memberRepository.findById(anyLong()))
                 .willReturn(Optional.of(MEMBER));
+        given(tripRepository.save(any(Trip.class)))
+                .willReturn(LONDON_TRIP);
+        given(cityRepository.findCitiesByIds(anyList()))
+                .willReturn(List.of(PARIS, LONDON));
+        doNothing().when(customDayLogRepository).saveAll(any());
 
         // when
         final Long actualId = tripService.save(MEMBER.getId(), tripCreateRequest);
@@ -115,12 +135,10 @@ class TripServiceTest {
                 invalidCities
         );
 
-        given(cityRepository.findById(1L))
-                .willReturn(Optional.of(LONDON));
-        given(cityRepository.findById(3L))
-                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
         given(memberRepository.findById(anyLong()))
                 .willReturn(Optional.of(MEMBER));
+        given(cityRepository.findCitiesByIds(anyList()))
+                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
 
         // when & then
         assertThatThrownBy(() -> tripService.save(MEMBER.getId(), tripCreateRequest))
@@ -136,8 +154,8 @@ class TripServiceTest {
         given(tripRepository.findById(1L))
                 .willReturn(Optional.of(LONDON_TRIP));
 
-        given(tripCityRepository.findByTripId(1L))
-                .willReturn(List.of(new TripCity(LONDON_TRIP, PARIS), new TripCity(LONDON_TRIP, LONDON)));
+        given(cityRepository.findCitiesByTripId(anyLong()))
+                .willReturn(List.of(PARIS, LONDON));
 
         // when
         final TripDetailResponse actual = tripService.getTripDetail(1L);
@@ -153,7 +171,7 @@ class TripServiceTest {
         // given
         final TripUpdateRequest updateRequest = new TripUpdateRequest(
                 "변경된 타이틀",
-                "https://hanglog.com/img/default-image.png",
+                "default-image.png",
                 LocalDate.of(2023, 7, 2),
                 LocalDate.of(2023, 7, 5),
                 "추가된 여행 설명",
@@ -166,6 +184,7 @@ class TripServiceTest {
                 .willReturn(Optional.of(PARIS));
         given(cityRepository.findById(2L))
                 .willReturn(Optional.of(LONDON));
+        doNothing().when(customTripCityRepository).saveAll(any(), anyLong());
 
         // when
         tripService.update(LONDON_TRIP.getId(), updateRequest);
@@ -181,14 +200,57 @@ class TripServiceTest {
         // given
         final Long invalidTripId = 2L;
 
-        given(tripRepository.findById(invalidTripId))
-                .willThrow(new BadRequestException(NOT_FOUND_TRIP_ID));
+        given(tripRepository.existsById(invalidTripId)).willReturn(false);
 
         // when & then
         assertThatThrownBy(() -> tripService.delete(invalidTripId))
                 .isInstanceOf(BadRequestException.class)
                 .extracting("code")
                 .isEqualTo(1001);
+    }
+
+    @DisplayName("여행의 공유 허용상태로 변경한다.")
+    @Test
+    void updateSharedStatus() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+        given(tripRepository.findById(anyLong()))
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
+
+        // when
+        final SharedCodeResponse actual = tripService.updateSharedTripStatus(1L, sharedStatusRequest);
+
+        //then
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(new SharedCodeResponse(SHARED_TRIP.getSharedCode()));
+    }
+
+    @DisplayName("공유 허용을 처음 할 경우 새로운 공유 code를 생성한다.")
+    @Test
+    void updateSharedStatus_CreateSharedTrip() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+        given(tripRepository.findById(anyLong()))
+                .willReturn(Optional.of(TRIP_HAS_SHARED_TRIP));
+
+        // when
+        final SharedCodeResponse actual = tripService.updateSharedTripStatus(1L, sharedStatusRequest);
+
+        //then
+        assertThat(actual.getSharedCode()).isNotNull();
+    }
+
+    @DisplayName("존재하지 않는 여행의 공유 상태 변경은 예외처리한다.")
+    @Test
+    void updateSharedStatus_NotExistTripFail() {
+        // given
+        final SharedStatusRequest sharedStatusRequest = new SharedStatusRequest(true);
+
+        // when & then
+        assertThatThrownBy(() -> tripService.updateSharedTripStatus(1L, sharedStatusRequest))
+                .isInstanceOf(BadRequestException.class)
+                .extracting("code")
+                .isEqualTo(NOT_FOUND_TRIP_ID.getCode());
     }
 
     @DisplayName("비공개인 Trip을 공개로 변경한다.")
@@ -198,15 +260,13 @@ class TripServiceTest {
         LONDON_TRIP.changePublishedStatus(false);
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
-        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
-                .willReturn(false);
+
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
 
         // when
         tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
 
         // then
-        verify(publishedTripRepository).save(any(PublishedTrip.class));
         assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.PUBLISHED);
     }
 
@@ -215,12 +275,10 @@ class TripServiceTest {
     void updatePublishedStatus_NotFirstPublished() {
         // given
         LONDON_TRIP.changePublishedStatus(false);
-        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP.getId());
         publishedTrip.changeStatusToDeleted();
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
-        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
-                .willReturn(true);
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
 
         // when
@@ -268,7 +326,7 @@ class TripServiceTest {
                     2L,
                     MEMBER,
                     "파리 여행",
-                    "https://hanglog.com/img/default-image.png",
+                    "default-image.png",
                     LocalDate.of(2023, 7, 1),
                     LocalDate.of(2023, 7, 3),
                     "",
@@ -282,7 +340,7 @@ class TripServiceTest {
         void changeDate(final int startDay, final int endDay) {
             updateRequest = new TripUpdateRequest(
                     "변경된 타이틀",
-                    "https://hanglog.com/img/default-image.png",
+                    "default-image.png",
                     LocalDate.of(2023, 7, startDay),
                     LocalDate.of(2023, 7, endDay),
                     "추가된 여행 설명",
@@ -292,7 +350,7 @@ class TripServiceTest {
             final Trip updatedTrip = new Trip(
                     trip.getId(),
                     MEMBER,
-                    updateRequest.getImageUrl(),
+                    updateRequest.getImageName(),
                     updateRequest.getTitle(),
                     updateRequest.getStartDate(),
                     updateRequest.getEndDate(),
@@ -326,7 +384,10 @@ class TripServiceTest {
             assertSoftly(
                     softly -> {
                         softly.assertThat(trip.getDayLogs().size()).isEqualTo(4);
-                        softly.assertThat(trip.getDayLogs()).containsExactly(dayLog1, dayLog2, dayLog3, extraDayLog);
+                        softly.assertThat(trip.getDayLogs())
+                                .usingRecursiveComparison()
+                                .ignoringCollectionOrder()
+                                .isEqualTo(List.of(dayLog1, dayLog2, dayLog3, extraDayLog));
                     }
             );
         }
@@ -365,7 +426,10 @@ class TripServiceTest {
             assertSoftly(
                     softly -> {
                         softly.assertThat(actualDayLogs.size()).isEqualTo(3);
-                        softly.assertThat(actualDayLogs).containsExactly(dayLog1, dayLog2, extraDayLog);
+                        softly.assertThat(actualDayLogs)
+                                .usingRecursiveComparison()
+                                .ignoringCollectionOrder()
+                                .isEqualTo(List.of(dayLog1, dayLog2, extraDayLog));
                     }
             );
         }
@@ -410,6 +474,7 @@ class TripServiceTest {
                         softly.assertThat(actualDayLogs)
                                 .usingRecursiveComparison()
                                 .ignoringFields("trip")
+                                .ignoringCollectionOrder()
                                 .isEqualTo(List.of(
                                         dayLog1,
                                         dayLog2,

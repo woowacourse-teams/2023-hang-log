@@ -14,7 +14,7 @@ const meta = {
     index: 0,
     itemName: trips[0].title,
     cityTags: trips[0].cities,
-    coverImage: trips[0].imageUrl,
+    coverImage: trips[0].imageName,
     duration: `${formatDate(trips[0].startDate)} - ${formatDate(trips[0].endDate)}`,
     description: trips[0].description,
   },

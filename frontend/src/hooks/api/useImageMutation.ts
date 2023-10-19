@@ -14,6 +14,9 @@ export const useImageMutation = () => {
 
   const imageMutation = useMutation({
     mutationFn: postImage,
+    onSuccess: () => {
+      createToast('이미지 업로드에 성공했습니다', 'success');
+    },
     onError: (error: ErrorResponseData) => {
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
         handleTokenError();

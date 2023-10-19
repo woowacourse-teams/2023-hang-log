@@ -13,6 +13,7 @@ import PlaceInput from '@components/trip/TripItemAddModal/PlaceInput/PlaceInput'
 import StarRatingInput from '@components/trip/TripItemAddModal/StarRatingInput/StarRatingInput';
 import TitleInput from '@components/trip/TripItemAddModal/TitleInput/TitleInput';
 import {
+  buttonStyling,
   formStyling,
   wrapperStyling,
 } from '@components/trip/TripItemAddModal/TripItemAddModal.style';
@@ -59,9 +60,9 @@ const TripItemAddModal = ({
       onSuccess: onClose,
     });
 
-  const handleImageUrlsChange = useCallback(
-    (imageUrls: string[]) => {
-      updateInputValue('imageUrls', imageUrls);
+  const handleImageNamesChange = useCallback(
+    (imageNames: string[]) => {
+      updateInputValue('imageNames', imageNames);
     },
     [updateInputValue]
   );
@@ -70,22 +71,34 @@ const TripItemAddModal = ({
     createToast('이미지는 최대 5개 업로드할 수 있습니다.');
   };
 
-  const { isImageUploading, uploadedImageUrls, handleImageUpload, handleImageRemoval } =
+  const { isImageUploading, imageUrls, handleImageUpload, handleImageRemoval } =
     useMultipleImageUpload({
-      initialImageUrls: tripItemInformation.imageUrls,
-      onSuccess: handleImageUrlsChange,
+      initialImageNames: tripItemInformation.imageNames,
+      updateFormImage: handleImageNamesChange,
       onError: handleImageUploadError,
     });
 
   return (
-    <Modal css={wrapperStyling} isOpen={isOpen} closeModal={onClose} hasCloseButton>
+    <Modal
+      css={wrapperStyling}
+      isOpen={isOpen}
+      closeModal={onClose}
+      isBackdropClosable={false}
+      hasCloseButton
+    >
       <GoogleMapWrapper>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
-          <Flex styles={{ gap: Theme.spacer.spacing4, direction: isMobile ? 'column' : 'row' }}>
+          <Flex
+            styles={{
+              gap: Theme.spacer.spacing4,
+              direction: isMobile ? 'column' : 'row',
+              marginBottom: Theme.spacer.spacing4,
+            }}
+          >
             <Flex
               styles={{
                 direction: 'column',
-                gap: '16px',
+                gap: Theme.spacer.spacing3,
                 width: isMobile ? '100%' : '312px',
                 align: 'stretch',
               }}
@@ -139,7 +152,7 @@ const TripItemAddModal = ({
               <ImageUploadInput
                 id="image-upload"
                 label="이미지 업로드"
-                imageUrls={uploadedImageUrls}
+                imageUrls={imageUrls}
                 imageAltText="여행 일정 업로드 이미지"
                 supportingText="사진은 최대 5장 올릴 수 있어요."
                 maxUploadCount={TRIP_ITEM_ADD_MAX_IMAGE_UPLOAD_COUNT}
@@ -149,7 +162,11 @@ const TripItemAddModal = ({
               />
             </Flex>
           </Flex>
-          <Button variant={isImageUploading ? 'default' : 'primary'} disabled={isImageUploading}>
+          <Button
+            variant={isImageUploading ? 'default' : 'primary'}
+            disabled={isImageUploading}
+            css={buttonStyling}
+          >
             일정 기록 {itemId ? '수정하기' : '추가하기'}
           </Button>
         </form>

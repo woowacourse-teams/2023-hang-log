@@ -1,9 +1,9 @@
 package hanglog.integration.controller;
 
-import hanglog.auth.domain.JwtProvider;
-import hanglog.auth.domain.MemberTokens;
-import hanglog.auth.domain.RefreshToken;
-import hanglog.auth.domain.repository.RefreshTokenRepository;
+import hanglog.login.domain.MemberTokens;
+import hanglog.login.domain.RefreshToken;
+import hanglog.login.domain.repository.RefreshTokenRepository;
+import hanglog.login.infrastructure.JwtProvider;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import io.restassured.RestAssured;

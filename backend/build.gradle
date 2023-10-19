@@ -28,7 +28,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.528'
 
@@ -90,7 +89,7 @@ processResources.dependsOn('copySecret')
 
 tasks.register('copySecret', Copy) {
     from './backend-submodule'
-    include 'application.yml'
+    include 'application*.yml'
     into './src/main/resources'
 }
 

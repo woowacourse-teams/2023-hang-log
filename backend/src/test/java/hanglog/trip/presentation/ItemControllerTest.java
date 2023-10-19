@@ -21,8 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.auth.domain.MemberTokens;
 import hanglog.global.ControllerTest;
+import hanglog.login.domain.MemberTokens;
 import hanglog.trip.dto.request.ExpenseRequest;
 import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
@@ -109,7 +109,7 @@ class ItemControllerTest extends ControllerTest {
                 5.0,
                 "에펠탑을 방문",
                 1L,
-                List.of("imageUrl"),
+                List.of("imageName"),
                 placeRequest,
                 expenseRequest
         );
@@ -150,9 +150,9 @@ class ItemControllerTest extends ControllerTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
-                                        fieldWithPath("imageUrls")
+                                        fieldWithPath("imageNames")
                                                 .type(JsonFieldType.ARRAY)
-                                                .description("여행 아이템 이미지 URL 배열")
+                                                .description("여행 아이템 이미지 이름 배열")
                                                 .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("place.name")
                                                 .type(JsonFieldType.STRING)
@@ -209,7 +209,7 @@ class ItemControllerTest extends ControllerTest {
                 4.5,
                 "에펠탑을 방문",
                 1L,
-                List.of("imageUrl"),
+                List.of("imageName"),
                 true,
                 placeRequest,
                 expenseRequest
@@ -251,9 +251,9 @@ class ItemControllerTest extends ControllerTest {
                                                 .type(JsonFieldType.NUMBER)
                                                 .description("날짜 ID")
                                                 .attributes(field("constraint", "양의 정수")),
-                                        fieldWithPath("imageUrls")
+                                        fieldWithPath("imageNames")
                                                 .type(JsonFieldType.ARRAY)
-                                                .description("여행 아이템 이미지 URL 배열")
+                                                .description("여행 아이템 이미지 이름 배열")
                                                 .attributes(field("constraint", "URL 배열")),
                                         fieldWithPath("isPlaceUpdated")
                                                 .type(JsonFieldType.BOOLEAN)

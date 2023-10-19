@@ -3,9 +3,11 @@ package hanglog.integration.service;
 import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import hanglog.community.domain.repository.LikeRepository;
-import hanglog.community.dto.request.LikeRequest;
-import hanglog.community.service.LikeService;
+import hanglog.like.dto.request.LikeRequest;
+import hanglog.like.repository.LikeRepository;
+import hanglog.like.service.LikeService;
+import hanglog.trip.infrastructure.CustomDayLogRepositoryImpl;
+import hanglog.trip.infrastructure.CustomTripCityRepositoryImpl;
 import hanglog.trip.service.TripService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,9 @@ import org.springframework.context.annotation.Import;
 
 @Import({
         TripService.class,
-        LikeService.class
+        LikeService.class,
+        CustomDayLogRepositoryImpl.class,
+        CustomTripCityRepositoryImpl.class
 })
 class LikeServiceIntegrationTest extends ServiceIntegrationTest {
 

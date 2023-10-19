@@ -23,8 +23,6 @@ import { formatMonthDate } from '@utils/formatter';
 
 import type { TripTypeData } from '@type/trip';
 
-import { TRIP_TYPE } from '@constants/trip';
-
 const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   const [isDaylogShown, setIsDaylogShown] = useState(true);
   const { tripId } = useParams();
@@ -40,13 +38,7 @@ const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   return (
     <Flex styles={{ direction: 'column' }}>
       <section css={containerStyling}>
-        <TripInformation
-          tripType={tripType}
-          tripId={tripId}
-          isEditable={false}
-          isShared={tripType === TRIP_TYPE.SHARED}
-          isPublished={tripType === TRIP_TYPE.PUBLISHED}
-        />
+        <TripInformation tripType={tripType} tripId={tripId} isEditable={false} />
         <section css={contentStyling}>
           <Tabs>
             {dates.map((date, index) => {

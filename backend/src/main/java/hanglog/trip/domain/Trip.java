@@ -1,20 +1,19 @@
 package hanglog.trip.domain;
 
 import static hanglog.global.type.StatusType.USABLE;
-import static hanglog.image.util.ImageUrlConverter.convertUrlToName;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.util.Objects.requireNonNullElse;
 import static lombok.AccessLevel.PROTECTED;
 
-import hanglog.community.domain.type.PublishedStatusType;
 import hanglog.global.BaseEntity;
 import hanglog.member.domain.Member;
-import hanglog.share.domain.SharedTrip;
-import hanglog.share.domain.type.SharedStatusType;
+import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.domain.type.SharedStatusType;
 import hanglog.trip.dto.request.TripUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,8 +27,10 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -77,7 +78,7 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     @OrderBy(value = "ordinal ASC")
-    private List<DayLog> dayLogs = new ArrayList<>();
+    private Set<DayLog> dayLogs = new HashSet<>();
 
     @OneToOne(mappedBy = "trip", cascade = {PERSIST, REMOVE, MERGE}, orphanRemoval = true)
     private SharedTrip sharedTrip;
@@ -104,7 +105,7 @@ public class Trip extends BaseEntity {
         this.endDate = endDate;
         this.description = description;
         this.sharedTrip = sharedTrip;
-        this.dayLogs = dayLogs;
+        this.dayLogs = new HashSet<>(dayLogs);
         this.sharedStatus = sharedStatus;
         this.publishedStatus = publishedStatus;
     }
@@ -127,17 +128,14 @@ public class Trip extends BaseEntity {
 
     public void update(final TripUpdateRequest updateRequest) {
         this.title = updateRequest.getTitle();
-        this.imageName = updateImageUrl(updateRequest.getImageUrl());
+        this.imageName = updateImageName(updateRequest.getImageName());
         this.startDate = updateRequest.getStartDate();
         this.endDate = updateRequest.getEndDate();
         this.description = updateRequest.getDescription();
     }
 
-    private String updateImageUrl(final String imageUrl) {
-        if (imageUrl == null) {
-            return DEFAULT_IMAGE_NAME;
-        }
-        return convertUrlToName(imageUrl);
+    private String updateImageName(final String imageName) {
+        return requireNonNullElse(imageName, DEFAULT_IMAGE_NAME);
     }
 
     public Optional<String> getSharedCode() {
@@ -168,5 +166,17 @@ public class Trip extends BaseEntity {
 
     public Boolean isWriter(final Long memberId) {
         return this.member.getId().equals(memberId);
+    }
+
+    public void addDayLog(final DayLog dayLog) {
+        dayLogs.add(dayLog);
+    }
+
+    public void removeDayLog(final DayLog dayLog) {
+        dayLogs.remove(dayLog);
+    }
+
+    public List<DayLog> getDayLogs() {
+        return new ArrayList<>(dayLogs);
     }
 }

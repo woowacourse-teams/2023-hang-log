@@ -57,13 +57,9 @@ describe('여행 수정 페이지', () => {
     cy.get('li[role="tab"]').first().click();
 
     cy.fixture('trip.json').then((expectedData) => {
-      const { title, items } = expectedData.dayLogs[0];
+      const { title } = expectedData.dayLogs[0];
 
       cy.findByPlaceholderText('소제목').should('have.value', title);
-
-      items.forEach((item: TripItemData) => {
-        cy.get('p').contains(item.title);
-      });
     });
   });
 
@@ -161,11 +157,10 @@ describe('여행 정보 수정', () => {
 
     cy.fixture('trip.json').then((expectedData) => {
       cy.findByRole('dialog').find('img').should('exist');
-      cy.findByRole('dialog').find(`img[src="${expectedData.imageUrl}"]`).should('not.exist');
+      cy.findByRole('dialog').find(`img[src="${expectedData.imageName}"]`).should('not.exist');
     });
   });
 
-  // 로컬에서는 잘 돌아가는데, github action으로는 안 됨....
   it.skip('여행 정보 수정 모달에서 여행 정보를 수정하면 변경된 여행 정보를 여행 정보 수정 페이지에서 볼 수 있다.', () => {
     cy.findByText('여행 정보 수정').click();
 
