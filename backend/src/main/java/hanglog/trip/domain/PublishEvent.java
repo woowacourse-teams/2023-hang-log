@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PublishedDeleteEvent {
+public class PublishEvent {
 
     private final Long tripId;
 }

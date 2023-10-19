@@ -63,7 +63,8 @@ public class CommunityService {
         final List<Long> tripIds = trips.stream().map(Trip::getId).toList();
 
         final TripCityElements tripCityElements = new TripCityElements(
-                tripCityRepository.findTripIdAndCitiesByTripIds(tripIds));
+                tripCityRepository.findTripIdAndCitiesByTripIds(tripIds)
+        );
         final Map<Long, List<City>> citiesByTrip = tripCityElements.toCityMap();
 
         final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(

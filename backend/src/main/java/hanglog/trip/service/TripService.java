@@ -13,8 +13,8 @@ import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
-import hanglog.trip.domain.PublishedDeleteEvent;
-import hanglog.trip.domain.PublishedEvent;
+import hanglog.trip.domain.PublishDeleteEvent;
+import hanglog.trip.domain.PublishEvent;
 import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripDeleteEvent;
@@ -189,7 +189,7 @@ public class TripService {
             throw new BadRequestException(NOT_FOUND_TRIP_ID);
         }
 
-        publisher.publishEvent(new PublishedDeleteEvent(tripId));
+        publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
         publisher.publishEvent(new TripDeleteEvent(tripId));
@@ -244,6 +244,6 @@ public class TripService {
 
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
-        publisher.publishEvent(new PublishedEvent(trip.getId()));
+        publisher.publishEvent(new PublishEvent(trip.getId()));
     }
 }
