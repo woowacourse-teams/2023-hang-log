@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
 
@@ -29,11 +29,7 @@ export const useMultipleImageUpload = ({
   const initialImageUrls = convertToImageUrls([...initialImageNames]);
 
   const [imageUrls, setImageUrls] = useState(initialImageUrls);
-  const [imageNames, setImageNames] = useState(initialImageNames);
-
-  useEffect(() => {
-    updateFormImage?.(imageNames);
-  }, [imageNames, updateFormImage]);
+  const uploadedImageNames = useMemo(() => [...initialImageNames], [initialImageNames]);
 
   const compressImages = useCallback(async (originalImageFiles: FileList): Promise<File[]> => {
     const imageFiles: File[] = [];
@@ -78,12 +74,14 @@ export const useMultipleImageUpload = ({
         {
           onSuccess: ({ imageNames }) => {
             if (maxUploadCount === 1) {
-              setImageNames([...imageNames]);
+              updateFormImage?.([...imageNames]);
 
               return;
             }
 
-            setImageNames((prev) => [...prev, ...imageNames]);
+            uploadedImageNames.push(...imageNames);
+
+            updateFormImage?.(uploadedImageNames);
           },
           onError: () => {
             setImageUrls(initialImageUrls);
@@ -91,7 +89,7 @@ export const useMultipleImageUpload = ({
         }
       );
     },
-    [imageMutation, maxUploadCount, initialImageUrls]
+    [imageMutation, maxUploadCount, uploadedImageNames, updateFormImage, initialImageUrls]
   );
 
   const handleImageUpload = useCallback(
@@ -127,19 +125,13 @@ export const useMultipleImageUpload = ({
       setImageUrls((prevImageUrls) => {
         const updatedImageUrls = prevImageUrls.filter((imageUrl) => imageUrl !== selectedImageUrl);
 
-        if (maxUploadCount === 1) {
-          updateFormImage?.([]);
-
-          return updatedImageUrls;
-        }
-
         const imageNames = convertToImageNames(updatedImageUrls);
         updateFormImage?.(imageNames);
 
         return updatedImageUrls;
       });
     },
-    [maxUploadCount, updateFormImage]
+    [updateFormImage]
   );
 
   return { isImageUploading, imageUrls, handleImageUpload, handleImageRemoval };
