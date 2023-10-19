@@ -6,3 +6,10 @@ export const sortByStartDate = (a: TripsData, b: TripsData) => {
 
   return dateB.getTime() - dateA.getTime();
 };
+
+export const sortByNewest = (a: TripsData, b: TripsData) => {
+  const tripA = a.id;
+  const tripB = b.id;
+
+  return tripB - tripA;
+};
