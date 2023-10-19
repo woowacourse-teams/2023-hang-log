@@ -6,7 +6,6 @@ import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_LIST_SIZE;
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
 import hanglog.image.domain.S3ImageEvent;
-import hanglog.image.dto.ImagesResponse;
 import hanglog.image.infrastructure.ImageUploader;
 import hanglog.trip.dto.response.ImagesResponse;
 import java.util.List;
