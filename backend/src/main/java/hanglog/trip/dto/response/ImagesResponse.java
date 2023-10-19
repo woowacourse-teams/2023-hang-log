@@ -1,6 +1,6 @@
-package hanglog.image.dto;
+package hanglog.trip.dto.response;
 
-import hanglog.image.domain.Image;
+import hanglog.trip.domain.Image;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

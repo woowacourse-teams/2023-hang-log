@@ -1,4 +1,4 @@
-package hanglog.image.service;
+package hanglog.trip.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

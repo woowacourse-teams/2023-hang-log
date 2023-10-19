@@ -1,4 +1,4 @@
-package hanglog.image.presentation;
+package hanglog.trip.presentation;
 
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import hanglog.global.ControllerTest;
-import hanglog.image.dto.ImagesResponse;
-import hanglog.image.service.ImageService;
+import hanglog.trip.dto.response.ImagesResponse;
+import hanglog.trip.service.ImageService;
 import java.io.FileInputStream;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

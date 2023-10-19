@@ -3,13 +3,13 @@ package hanglog.listener;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 import hanglog.expense.domain.repository.ExpenseRepository;
-import hanglog.image.domain.repository.ImageRepository;
 import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
+import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.repository.TripCityRepository;

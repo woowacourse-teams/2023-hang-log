@@ -17,7 +17,6 @@ import hanglog.global.BaseEntity;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidDomainException;
 import hanglog.global.type.StatusType;
-import hanglog.image.domain.Image;
 import hanglog.trip.domain.type.ItemType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

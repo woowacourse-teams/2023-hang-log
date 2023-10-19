@@ -1,6 +1,6 @@
-package hanglog.image.domain.repository;
+package hanglog.trip.domain.repository;
 
-import hanglog.image.domain.Image;
+import hanglog.trip.domain.Image;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

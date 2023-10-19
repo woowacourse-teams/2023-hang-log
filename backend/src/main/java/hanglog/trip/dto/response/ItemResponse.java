@@ -2,7 +2,7 @@ package hanglog.trip.dto.response;
 
 import hanglog.expense.domain.Expense;
 import hanglog.expense.dto.response.ItemExpenseResponse;
-import hanglog.image.domain.Image;
+import hanglog.trip.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import java.util.List;

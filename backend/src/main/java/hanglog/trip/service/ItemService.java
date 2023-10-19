@@ -12,14 +12,14 @@ import hanglog.expense.domain.Amount;
 import hanglog.expense.domain.Expense;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.global.exception.BadRequestException;
-import hanglog.image.domain.Image;
 import hanglog.image.domain.S3ImageEvent;
-import hanglog.image.domain.repository.CustomImageRepository;
-import hanglog.image.domain.repository.ImageRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
+import hanglog.trip.domain.repository.CustomImageRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
+import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.type.ItemType;
@@ -122,10 +122,7 @@ public class ItemService {
         if (!item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated()) {
             return true;
         }
-        if (item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated() && itemUpdateRequest.getItemType()) {
-            return true;
-        }
-        return false;
+        return item.isSpot() && !itemUpdateRequest.getIsPlaceUpdated() && itemUpdateRequest.getItemType();
     }
 
     private void deleteNotUsedPlace(final Place place) {
@@ -226,10 +223,7 @@ public class ItemService {
         if (updatedExpense == null && originalExpense == null) {
             return true;
         }
-        if (updatedExpense != null && updatedExpense.equals(originalExpense)) {
-            return true;
-        }
-        return false;
+        return updatedExpense != null && updatedExpense.equals(originalExpense);
     }
 
     private Expense saveNewlyUpdatedExpense(final Expense updatedExpense) {
