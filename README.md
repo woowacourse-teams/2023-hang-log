@@ -73,7 +73,8 @@
 
 ## [행록 디자인 시스템](https://github.com/hang-log-design-system/design-system)
 
-![행록디자인시스템](https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/a0d6d304-1402-43df-8537-1f7ea2793014)
+![행록디자인시스템](https://github.com/woowacourse-teams/2023-hang-log/assets/49433615/23457a14-fb21-498c-9b65-a6c92826a0c3)
+
 <br>
 
 ## 멤버
