@@ -25,7 +25,7 @@ public class PublishEventListener {
     }
 
     @EventListener
-    public void publishDeleteTrip(final PublishDeleteEvent publishDeleteEvent) {
+    public void deletePublishedTrip(final PublishDeleteEvent publishDeleteEvent) {
         publishedTripRepository.deleteByTripId(publishDeleteEvent.getTripId());
     }
 }
