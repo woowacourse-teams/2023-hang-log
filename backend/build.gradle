@@ -89,7 +89,7 @@ processResources.dependsOn('copySecret')
 
 tasks.register('copySecret', Copy) {
     from './backend-submodule'
-    include 'application.yml'
+    include 'application*.yml'
     into './src/main/resources'
 }
 
