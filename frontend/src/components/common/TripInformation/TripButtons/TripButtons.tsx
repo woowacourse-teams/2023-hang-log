@@ -68,7 +68,7 @@ export const TripButtons = ({ tripType, tripId, sharedCode, publishState }: Trip
     deleteTripMutation.mutate(
       { tripId },
       {
-        onSuccess: () => navigate(PATH.ROOT),
+        onSuccess: () => navigate(PATH.MY_TRIPS),
       }
     );
   };
