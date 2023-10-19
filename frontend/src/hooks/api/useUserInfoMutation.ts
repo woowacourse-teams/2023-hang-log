@@ -22,6 +22,12 @@ export const useUserInfoMutation = () => {
       createToast('정보를 성공적으로 수정했습니다!', 'success');
     },
     onError: (error: ErrorResponseData) => {
+      if (error.code && error.code === ERROR_CODE.DUPLICATED_NICKNAME) {
+        createToast('중복된 닉네임이 존재합니다.', 'default');
+
+        return;
+      }
+
       if (error.code && error.code > ERROR_CODE.TOKEN_ERROR_RANGE) {
         handleTokenError();
 
