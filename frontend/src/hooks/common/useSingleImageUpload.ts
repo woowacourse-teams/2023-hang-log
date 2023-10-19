@@ -4,25 +4,57 @@ import { useCallback, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 
 import { useImageMutation } from '@hooks/api/useImageMutation';
-import { useToast } from '@hooks/common/useToast';
+
+import { convertToImageUrl } from '@utils/convertImage';
 
 import { IMAGE_COMPRESSION_OPTIONS } from '@constants/image';
 
 interface UseSingleImageUploadParams {
-  initialImageName: string | null;
-  onSuccess?: CallableFunction;
+  initialImageUrl: string | null;
+  updateFormImage?: CallableFunction;
 }
 
 export const useSingleImageUpload = ({
-  initialImageName,
-  onSuccess,
+  initialImageUrl,
+  updateFormImage,
 }: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
   const isImageUploading = imageMutation.isLoading;
 
-  const { createToast } = useToast();
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(initialImageUrl);
 
-  const [uploadedImageName, setUploadedImageName] = useState(initialImageName);
+  const compressImage = useCallback(async (originalImageFile: File) => {
+    let imageFile: File;
+
+    try {
+      const compressedImageFile = await imageCompression(
+        originalImageFile,
+        IMAGE_COMPRESSION_OPTIONS
+      );
+
+      const fileName = originalImageFile.name;
+
+      const fileType = compressedImageFile.type;
+
+      imageFile = new File([compressedImageFile], fileName, { type: fileType });
+    } catch (e) {
+      imageFile = originalImageFile;
+    }
+
+    return imageFile;
+  }, []);
+
+  const convertToImageFormData = useCallback(
+    async (imageFile: File) => {
+      const compressedImage = await compressImage(imageFile);
+
+      const imageUploadFormData = new FormData();
+      imageUploadFormData.append('images', compressedImage);
+
+      return imageUploadFormData;
+    },
+    [compressImage]
+  );
 
   const handleImageUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,40 +62,21 @@ export const useSingleImageUpload = ({
 
       if (!originalImageFile) return;
 
-      const prevImageName = uploadedImageName;
+      const prevImageName = uploadedImageUrl;
 
-      setUploadedImageName(URL.createObjectURL(originalImageFile));
+      setUploadedImageUrl(URL.createObjectURL(originalImageFile));
 
-      let imageFile: File;
-
-      try {
-        const compressedImageFile = await imageCompression(
-          originalImageFile,
-
-          IMAGE_COMPRESSION_OPTIONS
-        );
-
-        const fileName = originalImageFile.name;
-
-        const fileType = compressedImageFile.type;
-
-        imageFile = new File([compressedImageFile], fileName, { type: fileType });
-      } catch (e) {
-        imageFile = originalImageFile;
-      }
-
-      const imageUploadFormData = new FormData();
-      imageUploadFormData.append('images', imageFile);
+      const images = await convertToImageFormData(originalImageFile);
 
       imageMutation.mutate(
-        { images: imageUploadFormData },
+        { images },
         {
           onSuccess: ({ imageNames }) => {
-            onSuccess?.(imageNames[0]);
-            createToast('이미지 업로드에 성공했습니다', 'success');
+            const imageUrl = convertToImageUrl(imageNames[0]);
+            updateFormImage?.(imageUrl);
           },
           onError: () => {
-            setUploadedImageName(prevImageName);
+            setUploadedImageUrl(prevImageName);
           },
         }
       );
@@ -71,13 +84,13 @@ export const useSingleImageUpload = ({
       // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     },
-    [createToast, imageMutation, onSuccess, uploadedImageName]
+    [convertToImageFormData, imageMutation, updateFormImage, uploadedImageUrl]
   );
 
   const handleImageRemoval = useCallback(() => {
-    setUploadedImageName(null);
-    onSuccess?.(null);
-  }, [onSuccess]);
+    setUploadedImageUrl(null);
+    updateFormImage?.(null);
+  }, [updateFormImage]);
 
-  return { isImageUploading, uploadedImageName, handleImageUpload, handleImageRemoval };
+  return { isImageUploading, uploadedImageUrl, handleImageUpload, handleImageRemoval };
 };

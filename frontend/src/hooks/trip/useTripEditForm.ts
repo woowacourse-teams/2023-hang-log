@@ -55,7 +55,7 @@ export const useTripEditForm = (
       });
     };
 
-  const updateCoverImage = (imageName: string) => {
+  const updateCoverImage = (imageName: string | null) => {
     setTripInfo((prevTripInfo) => {
       return { ...prevTripInfo, imageName };
     });
