@@ -72,5 +72,5 @@ export const handleAPIError = (error: AxiosError<ErrorResponseData>) => {
     throw new HTTPError(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR, data.message);
   }
 
-  throw new HTTPError(status, data.message);
+  throw new HTTPError(status, data.message, data.code);
 };
