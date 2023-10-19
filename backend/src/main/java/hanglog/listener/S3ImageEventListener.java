@@ -28,6 +28,9 @@ public class S3ImageEventListener {
     @TransactionalEventListener(fallbackExecution = true)
     public void deleteImageFileInS3(final S3ImageEvent event) {
         final String imageName = event.getImageName();
+        if (imageName.equals("default-image.png")) {
+            return;
+        }
         s3Client.deleteObject(bucket, folder + imageName);
     }
 }
