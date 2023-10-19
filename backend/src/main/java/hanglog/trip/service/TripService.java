@@ -95,6 +95,7 @@ public class TripService {
         customDayLogRepository.saveAll(dayLogs);
     }
 
+    @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips(final Long memberId) {
         final List<Trip> trips = tripRepository.findAllByMemberId(memberId);
         return trips.stream()
@@ -106,7 +107,8 @@ public class TripService {
         final List<City> cities = cityRepository.findCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
-
+    
+    @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));

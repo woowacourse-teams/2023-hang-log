@@ -26,13 +26,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
+@Slf4j
 public class CommunityService {
 
     private static final int RECOMMEND_AMOUNT = 5;
@@ -44,6 +46,7 @@ public class CommunityService {
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
 
+    @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
         final List<Trip> trips = tripRepository.findPublishedTripByPageable(pageable.previousOrFirst());
         final List<CommunityTripResponse> communityTripResponses = getCommunityTripResponses(accessor, trips);
@@ -51,6 +54,7 @@ public class CommunityService {
         return new CommunityTripListResponse(communityTripResponses, lastPageIndex);
     }
 
+    @Transactional(readOnly = true)
     public RecommendTripListResponse getRecommendTrips(final Accessor accessor) {
         final RecommendStrategy recommendStrategy = recommendStrategies.mapByRecommendType(LIKE);
         final Pageable pageable = Pageable.ofSize(RECOMMEND_AMOUNT);
@@ -107,6 +111,7 @@ public class CommunityService {
         return lastPageIndex + 1;
     }
 
+    @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));

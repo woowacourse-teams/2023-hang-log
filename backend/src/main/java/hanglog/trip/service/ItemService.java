@@ -276,6 +276,7 @@ public class ItemService {
         item.getImages().forEach(image -> publisher.publishEvent(new S3ImageEvent(image.getName())));
     }
 
+    @Transactional(readOnly = true)
     public List<ItemResponse> getItems() {
         return itemRepository.findAll().stream()
                 .map(ItemResponse::of)
