@@ -43,7 +43,6 @@ class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
     @Autowired
     private CommunityService communityService;
 
-
     @BeforeEach
     void setTrips() {
         for (long i = 1; i < 21; i++) {
