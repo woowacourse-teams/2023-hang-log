@@ -1,5 +1,8 @@
 package hanglog.global.config.datasource;
 
+import static hanglog.global.config.datasource.DataSourceType.REPLICA;
+import static hanglog.global.config.datasource.DataSourceType.SOURCE;
+
 import java.util.HashMap;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,8 +43,8 @@ public class DataSourceConfig {
         final RoutingDataSource routingDataSource = new RoutingDataSource();
 
         final HashMap<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("source", sourceDataSource);
-        dataSourceMap.put("replica", replicaDataSource);
+        dataSourceMap.put(SOURCE, sourceDataSource);
+        dataSourceMap.put(REPLICA, replicaDataSource);
 
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(sourceDataSource);
