@@ -7,19 +7,19 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
-import hanglog.community.domain.PublishedTrip;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
+import hanglog.trip.domain.PublishDeleteEvent;
+import hanglog.trip.domain.PublishEvent;
 import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
-import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -52,7 +52,6 @@ public class TripService {
     private final CityRepository cityRepository;
     private final TripCityRepository tripCityRepository;
     private final MemberRepository memberRepository;
-    private final PublishedTripRepository publishedTripRepository;
     private final SharedTripRepository sharedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
@@ -190,7 +189,7 @@ public class TripService {
             throw new BadRequestException(NOT_FOUND_TRIP_ID);
         }
 
-        publishedTripRepository.deleteByTripId(tripId);
+        publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
         publisher.publishEvent(new TripDeleteEvent(tripId));
@@ -245,9 +244,6 @@ public class TripService {
 
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
-        if (!publishedTripRepository.existsByTripId(trip.getId())) {
-            final PublishedTrip publishedTrip = new PublishedTrip(trip);
-            publishedTripRepository.save(publishedTrip);
-        }
+        publisher.publishEvent(new PublishEvent(trip.getId()));
     }
 }

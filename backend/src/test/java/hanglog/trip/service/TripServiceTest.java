@@ -19,13 +19,13 @@ import static org.mockito.Mockito.verify;
 
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.community.domain.PublishedTrip;
+import hanglog.community.domain.repository.PublishedTripRepository;
 import hanglog.global.exception.BadRequestException;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
-import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -49,6 +49,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,6 +82,9 @@ class TripServiceTest {
 
     @Mock
     private CustomTripCityRepository customTripCityRepository;
+
+    @Mock
+    private ApplicationEventPublisher publisher;
 
     @DisplayName("MemberId와 TripId로 여행이 존재하는지 검증한다.")
     @Test
@@ -256,15 +260,13 @@ class TripServiceTest {
         LONDON_TRIP.changePublishedStatus(false);
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
-        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
-                .willReturn(false);
+
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
 
         // when
         tripService.updatePublishedStatus(LONDON_TRIP.getId(), publishedStatusRequest);
 
         // then
-        verify(publishedTripRepository).save(any(PublishedTrip.class));
         assertThat(LONDON_TRIP.getPublishedStatus()).isEqualTo(PublishedStatusType.PUBLISHED);
     }
 
@@ -273,12 +275,10 @@ class TripServiceTest {
     void updatePublishedStatus_NotFirstPublished() {
         // given
         LONDON_TRIP.changePublishedStatus(false);
-        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP);
+        final PublishedTrip publishedTrip = new PublishedTrip(1L, LONDON_TRIP.getId());
         publishedTrip.changeStatusToDeleted();
         given(tripRepository.findById(LONDON_TRIP.getId()))
                 .willReturn(Optional.of(LONDON_TRIP));
-        given(publishedTripRepository.existsByTripId(LONDON_TRIP.getId()))
-                .willReturn(true);
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
 
         // when

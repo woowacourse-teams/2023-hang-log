@@ -8,6 +8,7 @@ import hanglog.community.domain.recommendstrategy.RecommendStrategies;
 import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.service.CommunityService;
+import hanglog.global.config.EventListenerTestConfig;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
 import hanglog.trip.dto.response.TripDetailResponse;
@@ -31,7 +32,8 @@ import org.springframework.data.domain.Pageable;
         LedgerService.class,
         RecommendStrategies.class,
         CustomDayLogRepositoryImpl.class,
-        CustomTripCityRepositoryImpl.class
+        CustomTripCityRepositoryImpl.class,
+        EventListenerTestConfig.class
 })
 class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
 

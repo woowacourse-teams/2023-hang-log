@@ -4,6 +4,7 @@ import static hanglog.global.exception.ExceptionCode.FAIL_TO_GENERATE_RANDOM_NIC
 import static hanglog.global.exception.ExceptionCode.FAIL_TO_VALIDATE_TOKEN;
 import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 
+import hanglog.community.domain.repository.PublishedTripRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.domain.OauthProvider;
@@ -17,7 +18,6 @@ import hanglog.member.domain.Member;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.member.domain.repository.MemberRepository;
 import hanglog.trip.domain.repository.CustomTripRepository;
-import hanglog.trip.domain.repository.PublishedTripRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

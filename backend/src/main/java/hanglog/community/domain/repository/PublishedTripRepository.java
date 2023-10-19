@@ -1,4 +1,4 @@
-package hanglog.trip.domain.repository;
+package hanglog.community.domain.repository;
 
 import hanglog.community.domain.PublishedTrip;
 import java.util.List;
@@ -18,7 +18,7 @@ public interface PublishedTripRepository extends JpaRepository<PublishedTrip, Lo
     @Query("""
             UPDATE PublishedTrip publishedTrip
             SET publishedTrip.status = 'DELETED'
-            WHERE publishedTrip.trip.id = :tripId
+            WHERE publishedTrip.tripId = :tripId
             """)
     void deleteByTripId(@Param("tripId") final Long tripId);
 
@@ -26,7 +26,7 @@ public interface PublishedTripRepository extends JpaRepository<PublishedTrip, Lo
     @Query("""
             UPDATE PublishedTrip publishedTrip
             SET publishedTrip.status = 'DELETED'
-            WHERE publishedTrip.trip.id IN :tripIds
+            WHERE publishedTrip.tripId IN :tripIds
             """)
     void deleteByTripIds(@Param("tripIds") final List<Long> tripIds);
 }
