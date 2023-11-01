@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class MdcLoggingFilter implements Filter {
 
-    public static final String REQUEST_ID = "REQUEST_ID";
+    private static final String REQUEST_ID = "REQUEST_ID";
 
     @Override
     public void doFilter(
