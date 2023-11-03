@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.528'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
