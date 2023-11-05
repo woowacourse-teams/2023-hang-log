@@ -4,7 +4,6 @@ import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_OVER_MAX;
 import static hanglog.global.exception.ExceptionCode.INVALID_EXPENSE_UNDER_MIN;
 import static hanglog.global.exception.ExceptionCode.INVALID_RATING;
 import static hanglog.global.type.StatusType.USABLE;
-import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
@@ -70,7 +69,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne(fetch = LAZY, cascade = PERSIST)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "day_log_id", nullable = false)
     private DayLog dayLog;
 
@@ -78,7 +77,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    @OneToMany(mappedBy = "item", fetch = LAZY, cascade = REMOVE)
+    @OneToMany(mappedBy = "item", cascade = REMOVE)
     private List<Image> images = new ArrayList<>();
 
     public Item(
