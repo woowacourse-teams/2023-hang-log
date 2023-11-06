@@ -10,6 +10,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface TripCityRepository extends JpaRepository<TripCity, Long> {
 
+    @Query("""
+            SELECT new hanglog.trip.dto.TripCityElement (tc.trip.id, tc.city) 
+            FROM TripCity tc 
+            WHERE tc.trip.id IN :tripIds
+            """)
+    List<TripCityElement> findTripIdAndCitiesByTripIds(@Param("tripIds") final List<Long> tripIds);
+
     @Modifying
     @Query("""
             UPDATE TripCity tripCity
@@ -18,10 +25,11 @@ public interface TripCityRepository extends JpaRepository<TripCity, Long> {
             """)
     void deleteAllByTripId(@Param("tripId") final Long tripId);
 
+    @Modifying
     @Query("""
-            SELECT new hanglog.trip.dto.TripCityElement (tc.trip.id, tc.city) 
-            FROM TripCity tc 
-            WHERE tc.trip.id IN :tripIds
+            UPDATE TripCity tripCity
+            SET tripCity.status = 'DELETED'
+            WHERE tripCity.trip.id IN :tripIds
             """)
-    List<TripCityElement> findTripIdAndCitiesByTripIds(@Param("tripIds") final List<Long> tripIds);
+    void deleteAllByTripIds(@Param("tripId") final List<Long> tripIds);
 }

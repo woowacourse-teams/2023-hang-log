@@ -7,19 +7,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import hanglog.expense.domain.repository.ExpenseRepository;
+import hanglog.listener.AsyncDeleteProcessor;
 import hanglog.listener.DeleteEventListener;
-import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
-import hanglog.trip.domain.repository.DayLogRepository;
-import hanglog.trip.domain.repository.ImageRepository;
-import hanglog.trip.domain.repository.ItemRepository;
-import hanglog.trip.domain.repository.PlaceRepository;
-import hanglog.trip.domain.repository.TripCityRepository;
-import hanglog.trip.domain.repository.TripRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -36,22 +29,10 @@ class DeleteEventListenerTest {
     private CustomDayLogRepository customDayLogRepository;
     @Mock
     private CustomItemRepository customItemRepository;
+
     @Mock
-    private PlaceRepository placeRepository;
-    @Mock
-    private ExpenseRepository expenseRepository;
-    @Mock
-    private ImageRepository imageRepository;
-    @Mock
-    private ItemRepository itemRepository;
-    @Mock
-    private DayLogRepository dayLogRepository;
-    @Mock
-    private TripRepository tripRepository;
-    @Mock
-    private RefreshTokenRepository refreshTokenRepository;
-    @Mock
-    private TripCityRepository tripCityRepository;
+    private AsyncDeleteProcessor asyncDeleteProcessor;
+
     @InjectMocks
     private DeleteEventListener listener;
 
@@ -62,28 +43,32 @@ class DeleteEventListenerTest {
         final MemberDeleteEvent event = new MemberDeleteEvent(List.of(1L, 2L, 3L), 1L);
 
         when(customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds())).thenReturn(new ArrayList<>());
+        doNothing().when(asyncDeleteProcessor).deleteRefreshTokens(anyLong());
+        doNothing().when(asyncDeleteProcessor).deleteTrips(anyLong());
+        doNothing().when(asyncDeleteProcessor).deleteTripCitesByTripIds(anyList());
+
         when(customItemRepository.findItemIdsByDayLogIds(anyList())).thenReturn(new ArrayList<>());
-        doNothing().when(placeRepository).deleteByIds(anyList());
-        doNothing().when(expenseRepository).deleteByIds(anyList());
-        doNothing().when(imageRepository).deleteByItemIds(anyList());
-        doNothing().when(itemRepository).deleteByIds(anyList());
-        doNothing().when(dayLogRepository).deleteByIds(anyList());
-        doNothing().when(tripRepository).deleteByMemberId(anyLong());
-        doNothing().when(refreshTokenRepository).deleteByMemberId(anyLong());
+        doNothing().when(asyncDeleteProcessor).deleteDayLogs(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteItems(anyList());
+        doNothing().when(asyncDeleteProcessor).deletePlaces(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteExpenses(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteImages(anyList());
 
         // when
         listener.deleteMember(event);
 
         // then
         verify(customDayLogRepository, times(1)).findDayLogIdsByTripIds(event.getTripIds());
+        verify(asyncDeleteProcessor, times(1)).deleteRefreshTokens(anyLong());
+        verify(asyncDeleteProcessor, times(1)).deleteTrips(anyLong());
+        verify(asyncDeleteProcessor, times(1)).deleteTripCitesByTripIds(anyList());
+
         verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
-        verify(placeRepository, times(1)).deleteByIds(anyList());
-        verify(expenseRepository, times(1)).deleteByIds(anyList());
-        verify(imageRepository, times(1)).deleteByItemIds(anyList());
-        verify(itemRepository, times(1)).deleteByIds(anyList());
-        verify(dayLogRepository, times(1)).deleteByIds(anyList());
-        verify(tripRepository, times(1)).deleteByMemberId(anyLong());
-        verify(refreshTokenRepository, times(1)).deleteByMemberId(anyLong());
+        verify(asyncDeleteProcessor, times(1)).deletePlaces(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteExpenses(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteItems(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteImages(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteDayLogs(anyList());
     }
 
     @DisplayName("deleteTrip 메서드에서 올바르게 레포지토리의 메서드를 호출한다.")
@@ -93,13 +78,14 @@ class DeleteEventListenerTest {
         final TripDeleteEvent event = new TripDeleteEvent(1L);
 
         when(customDayLogRepository.findDayLogIdsByTripId(event.getTripId())).thenReturn(new ArrayList<>());
+        doNothing().when(asyncDeleteProcessor).deleteTripCitesByTripId(anyLong());
+
         when(customItemRepository.findItemIdsByDayLogIds(anyList())).thenReturn(new ArrayList<>());
-        doNothing().when(placeRepository).deleteByIds(anyList());
-        doNothing().when(expenseRepository).deleteByIds(anyList());
-        doNothing().when(imageRepository).deleteByItemIds(anyList());
-        doNothing().when(itemRepository).deleteByIds(anyList());
-        doNothing().when(dayLogRepository).deleteByIds(anyList());
-        doNothing().when(tripCityRepository).deleteAllByTripId(anyLong());
+        doNothing().when(asyncDeleteProcessor).deleteDayLogs(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteItems(anyList());
+        doNothing().when(asyncDeleteProcessor).deletePlaces(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteExpenses(anyList());
+        doNothing().when(asyncDeleteProcessor).deleteImages(anyList());
 
         // when
         listener.deleteTrip(event);
@@ -107,11 +93,12 @@ class DeleteEventListenerTest {
         // then
         verify(customDayLogRepository, times(1)).findDayLogIdsByTripId(event.getTripId());
         verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
-        verify(placeRepository, times(1)).deleteByIds(anyList());
-        verify(expenseRepository, times(1)).deleteByIds(anyList());
-        verify(imageRepository, times(1)).deleteByItemIds(anyList());
-        verify(itemRepository, times(1)).deleteByIds(anyList());
-        verify(dayLogRepository, times(1)).deleteByIds(anyList());
-        verify(tripCityRepository, times(1)).deleteAllByTripId(anyLong());
+
+        verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
+        verify(asyncDeleteProcessor, times(1)).deletePlaces(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteExpenses(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteItems(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteImages(anyList());
+        verify(asyncDeleteProcessor, times(1)).deleteDayLogs(anyList());
     }
 }
