@@ -34,6 +34,9 @@
 | 서버 에러
 |===
 
+=== Exception codes
+[[exception-codes]]
+include::{snippets}/exception-code-controller-test/get-exception-codes/exception-response-fields.adoc[]
 
 == 여행 API
 
