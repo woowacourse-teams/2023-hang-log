@@ -11,6 +11,7 @@ import hanglog.global.ControllerTest;
 import hanglog.global.exception.ExceptionCode;
 import hanglog.global.exception.ExceptionResponse;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,17 +34,17 @@ public class ExceptionCodeControllerTest extends ControllerTest {
 
     @DisplayName("작성된 커스텀 예외 코드를 반환한다.")
     @Test
-    void errorCodeDocumentation() throws Exception {
+    void getExceptionCodes() throws Exception {
         // when & then
         final MvcResult mvcResult = mockMvc.perform(RestDocumentationRequestBuilders.get("/errors"))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        exceptionResponseFields(
+                        new ExceptionResponseFieldsSnippet(
                                 "exception-response",
-                                enumConvertFieldDescriptor(ExceptionCode.values())
+                                convertExceptionCodesToFieldDescriptors(ExceptionCode.values()),
+                                true
                         )
-                ))
-                .andReturn();
+                )).andReturn();
 
         final Map<String, ExceptionResponse> exceptionResponses = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(),
@@ -54,23 +55,12 @@ public class ExceptionCodeControllerTest extends ControllerTest {
         assertThat(exceptionResponses.size()).isEqualTo(ExceptionCode.values().length);
     }
 
-    private FieldDescriptor[] enumConvertFieldDescriptor(final ExceptionCode[] exceptionCodes) {
-        return Arrays.stream(exceptionCodes)
+    private List<FieldDescriptor> convertExceptionCodesToFieldDescriptors(final ExceptionCode[] exceptionCodes) {
+        return Arrays.stream(Arrays.stream(exceptionCodes)
                 .map(code -> fieldWithPath(code.name()).description(code.getMessage())
                         .attributes(
                                 key("code").value(code.getCode()),
                                 key("message").value(code.getMessage()))
-                ).toArray(FieldDescriptor[]::new);
-    }
-
-    public static ExceptionResponseFieldsSnippet exceptionResponseFields(
-            final String type,
-            final FieldDescriptor... descriptors
-    ) {
-        return new ExceptionResponseFieldsSnippet(
-                type,
-                Arrays.asList(descriptors),
-                true
-        );
+                ).toArray(FieldDescriptor[]::new)).toList();
     }
 }
