@@ -2,6 +2,7 @@ package hanglog.global.detector;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -36,8 +37,9 @@ public class ConnectionProxyHandler implements MethodInterceptor {
             return false;
         }
         final Class<?> targetClass = targetObject.getClass();
+        final Method targetMethod = invocation.getMethod();
         return targetClass.getName().contains(HIKARI_CONNECTION_NAME) &&
-                invocation.getMethod().getName().equals(JDBC_PREPARE_STATEMENT_METHOD_NAME);
+                targetMethod.getName().equals(JDBC_PREPARE_STATEMENT_METHOD_NAME);
     }
 
     private boolean hasConnection(final Object result) {
