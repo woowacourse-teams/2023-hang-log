@@ -11,12 +11,14 @@ import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class AsyncDeleteProcessor {
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public class TransactionalDeleteProcessor {
 
     private final PlaceRepository placeRepository;
     private final ExpenseRepository expenseRepository;
@@ -27,27 +29,22 @@ public class AsyncDeleteProcessor {
     private final TripRepository tripRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Async
     public void deleteTrips(final Long memberId) {
         tripRepository.deleteByMemberId(memberId);
     }
 
-    @Async
     public void deleteTripCitesByTripId(final Long tripId) {
         tripCityRepository.deleteAllByTripId(tripId);
     }
 
-    @Async
     public void deleteTripCitesByTripIds(final List<Long> tripIds) {
         tripCityRepository.deleteAllByTripIds(tripIds);
     }
 
-    @Async
     public void deleteDayLogs(final List<Long> dayLogIds) {
         dayLogRepository.deleteByIds(dayLogIds);
     }
 
-    @Async
     public void deletePlaces(final List<ItemElement> itemElements) {
         final List<Long> placeIds = itemElements.stream()
                 .map(ItemElement::getPlaceId)
@@ -55,7 +52,6 @@ public class AsyncDeleteProcessor {
         placeRepository.deleteByIds(placeIds);
     }
 
-    @Async
     public void deleteExpenses(final List<ItemElement> itemElements) {
         final List<Long> expenseIds = itemElements.stream()
                 .map(ItemElement::getExpenseId)
@@ -63,17 +59,14 @@ public class AsyncDeleteProcessor {
         expenseRepository.deleteByIds(expenseIds);
     }
 
-    @Async
     public void deleteItems(final List<Long> itemIds) {
         itemRepository.deleteByIds(itemIds);
     }
 
-    @Async
     public void deleteImages(final List<Long> itemIds) {
         imageRepository.deleteByItemIds(itemIds);
     }
 
-    @Async
     public void deleteRefreshTokens(final Long memberId) {
         refreshTokenRepository.deleteByMemberId(memberId);
     }

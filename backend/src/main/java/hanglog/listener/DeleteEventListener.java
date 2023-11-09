@@ -18,16 +18,16 @@ public class DeleteEventListener {
 
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomItemRepository customItemRepository;
-    private final AsyncDeleteProcessor asyncDeleteProcessor;
+    private final TransactionalDeleteProcessor transactionalDeleteProcessor;
 
     @Async
     @Transactional
     @TransactionalEventListener
     public void deleteMember(final MemberDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
-        asyncDeleteProcessor.deleteRefreshTokens(event.getMemberId());
-        asyncDeleteProcessor.deleteTrips(event.getMemberId());
-        asyncDeleteProcessor.deleteTripCitesByTripIds(event.getTripIds());
+        transactionalDeleteProcessor.deleteRefreshTokens(event.getMemberId());
+        transactionalDeleteProcessor.deleteTrips(event.getMemberId());
+        transactionalDeleteProcessor.deleteTripCitesByTripIds(event.getTripIds());
         deleteTripElements(dayLogIds);
     }
 
@@ -36,7 +36,7 @@ public class DeleteEventListener {
     @TransactionalEventListener
     public void deleteTrip(final TripDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripId(event.getTripId());
-        asyncDeleteProcessor.deleteTripCitesByTripId(event.getTripId());
+        transactionalDeleteProcessor.deleteTripCitesByTripId(event.getTripId());
         deleteTripElements(dayLogIds);
     }
 
@@ -46,10 +46,10 @@ public class DeleteEventListener {
                 .map(ItemElement::getItemId)
                 .toList();
 
-        asyncDeleteProcessor.deleteDayLogs(dayLogIds);
-        asyncDeleteProcessor.deleteItems(itemIds);
-        asyncDeleteProcessor.deletePlaces(itemElements);
-        asyncDeleteProcessor.deleteExpenses(itemElements);
-        asyncDeleteProcessor.deleteImages(itemIds);
+        transactionalDeleteProcessor.deleteDayLogs(dayLogIds);
+        transactionalDeleteProcessor.deleteItems(itemIds);
+        transactionalDeleteProcessor.deletePlaces(itemElements);
+        transactionalDeleteProcessor.deleteExpenses(itemElements);
+        transactionalDeleteProcessor.deleteImages(itemIds);
     }
 }

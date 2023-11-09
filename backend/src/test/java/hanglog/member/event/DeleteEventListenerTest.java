@@ -7,7 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import hanglog.listener.AsyncDeleteProcessor;
+import hanglog.listener.TransactionalDeleteProcessor;
 import hanglog.listener.DeleteEventListener;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.TripDeleteEvent;
@@ -31,7 +31,7 @@ class DeleteEventListenerTest {
     private CustomItemRepository customItemRepository;
 
     @Mock
-    private AsyncDeleteProcessor asyncDeleteProcessor;
+    private TransactionalDeleteProcessor transactionalDeleteProcessor;
 
     @InjectMocks
     private DeleteEventListener listener;
@@ -43,32 +43,32 @@ class DeleteEventListenerTest {
         final MemberDeleteEvent event = new MemberDeleteEvent(List.of(1L, 2L, 3L), 1L);
 
         when(customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds())).thenReturn(new ArrayList<>());
-        doNothing().when(asyncDeleteProcessor).deleteRefreshTokens(anyLong());
-        doNothing().when(asyncDeleteProcessor).deleteTrips(anyLong());
-        doNothing().when(asyncDeleteProcessor).deleteTripCitesByTripIds(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteRefreshTokens(anyLong());
+        doNothing().when(transactionalDeleteProcessor).deleteTrips(anyLong());
+        doNothing().when(transactionalDeleteProcessor).deleteTripCitesByTripIds(anyList());
 
         when(customItemRepository.findItemIdsByDayLogIds(anyList())).thenReturn(new ArrayList<>());
-        doNothing().when(asyncDeleteProcessor).deleteDayLogs(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteItems(anyList());
-        doNothing().when(asyncDeleteProcessor).deletePlaces(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteExpenses(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteImages(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteDayLogs(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteItems(anyList());
+        doNothing().when(transactionalDeleteProcessor).deletePlaces(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteExpenses(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteImages(anyList());
 
         // when
         listener.deleteMember(event);
 
         // then
         verify(customDayLogRepository, times(1)).findDayLogIdsByTripIds(event.getTripIds());
-        verify(asyncDeleteProcessor, times(1)).deleteRefreshTokens(anyLong());
-        verify(asyncDeleteProcessor, times(1)).deleteTrips(anyLong());
-        verify(asyncDeleteProcessor, times(1)).deleteTripCitesByTripIds(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteRefreshTokens(anyLong());
+        verify(transactionalDeleteProcessor, times(1)).deleteTrips(anyLong());
+        verify(transactionalDeleteProcessor, times(1)).deleteTripCitesByTripIds(anyList());
 
         verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
-        verify(asyncDeleteProcessor, times(1)).deletePlaces(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteExpenses(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteItems(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteImages(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteDayLogs(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deletePlaces(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteExpenses(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteItems(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteImages(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteDayLogs(anyList());
     }
 
     @DisplayName("deleteTrip 메서드에서 올바르게 레포지토리의 메서드를 호출한다.")
@@ -78,14 +78,14 @@ class DeleteEventListenerTest {
         final TripDeleteEvent event = new TripDeleteEvent(1L);
 
         when(customDayLogRepository.findDayLogIdsByTripId(event.getTripId())).thenReturn(new ArrayList<>());
-        doNothing().when(asyncDeleteProcessor).deleteTripCitesByTripId(anyLong());
+        doNothing().when(transactionalDeleteProcessor).deleteTripCitesByTripId(anyLong());
 
         when(customItemRepository.findItemIdsByDayLogIds(anyList())).thenReturn(new ArrayList<>());
-        doNothing().when(asyncDeleteProcessor).deleteDayLogs(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteItems(anyList());
-        doNothing().when(asyncDeleteProcessor).deletePlaces(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteExpenses(anyList());
-        doNothing().when(asyncDeleteProcessor).deleteImages(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteDayLogs(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteItems(anyList());
+        doNothing().when(transactionalDeleteProcessor).deletePlaces(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteExpenses(anyList());
+        doNothing().when(transactionalDeleteProcessor).deleteImages(anyList());
 
         // when
         listener.deleteTrip(event);
@@ -95,10 +95,10 @@ class DeleteEventListenerTest {
         verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
 
         verify(customItemRepository, times(1)).findItemIdsByDayLogIds(anyList());
-        verify(asyncDeleteProcessor, times(1)).deletePlaces(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteExpenses(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteItems(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteImages(anyList());
-        verify(asyncDeleteProcessor, times(1)).deleteDayLogs(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deletePlaces(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteExpenses(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteItems(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteImages(anyList());
+        verify(transactionalDeleteProcessor, times(1)).deleteDayLogs(anyList());
     }
 }
