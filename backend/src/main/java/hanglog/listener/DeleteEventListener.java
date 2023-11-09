@@ -1,7 +1,5 @@
 package hanglog.listener;
 
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
-
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
@@ -23,7 +21,7 @@ public class DeleteEventListener {
     private final AsyncDeleteProcessor asyncDeleteProcessor;
 
     @Async
-    @Transactional(propagation = REQUIRES_NEW)
+    @Transactional
     @TransactionalEventListener
     public void deleteMember(final MemberDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripIds(event.getTripIds());
@@ -34,7 +32,7 @@ public class DeleteEventListener {
     }
 
     @Async
-    @Transactional(propagation = REQUIRES_NEW)
+    @Transactional
     @TransactionalEventListener
     public void deleteTrip(final TripDeleteEvent event) {
         final List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripId(event.getTripId());
