@@ -10,7 +10,9 @@ public class MdcTaskDecorator implements TaskDecorator {
     public Runnable decorate(final Runnable runnable) {
         final Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
         return () -> {
-            MDC.setContextMap(copyOfContextMap);
+            if (copyOfContextMap != null) {
+                MDC.setContextMap(copyOfContextMap);
+            }
             runnable.run();
         };
     }
