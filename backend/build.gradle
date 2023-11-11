@@ -47,7 +47,8 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
-
+    implementation 'com.slack.api:slack-api-client:1.27.2'
+    implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
