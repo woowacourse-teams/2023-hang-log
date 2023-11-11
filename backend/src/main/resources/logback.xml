@@ -14,5 +14,6 @@
         <appender-ref ref="FILE-INFO"/>
         <appender-ref ref="FILE-ERROR"/>
         <appender-ref ref="FILE-WARN"/>
+        <appender-ref ref="ASYNC-SLACK"/>
     </root>
 </configuration>
