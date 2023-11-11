@@ -172,17 +172,14 @@ public class TripIntegrationTest extends IntegrationTest {
     }
 
     public static ExtractableResponse<Response> requestCreateTrip(final MemberTokens memberTokens,
-                                                                  final TripCreateRequest TRIP_CREATE_REQUEST) {
-        System.out.println("memberTokens.getAccessToken = " + memberTokens.getAccessToken());
-        System.out.println("memberTokens.getRefreshToken = " + memberTokens.getRefreshToken());
-
+                                                                  final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
-                .body(TRIP_CREATE_REQUEST)
+                .body(tripCreateRequest)
                 .when().post("/trips")
                 .then().log().all()
                 .extract();
