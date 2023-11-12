@@ -1,31 +1,29 @@
 <included>
-    <springProfile name="local">
-        <springProperty name = "SLACK_WEBHOOK_URL" source="logging.slack.webhook.url"/>
-        <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
-            <webhookUri>${SLACK_WEBHOOK_URL}</webhookUri>
-            <layout class="ch.qos.logback.classic.PatternLayout">
-                <Pattern>
+    <springProperty name="SLACK_WEBHOOK_URL" source="logging.slack.webhook.url"/>
+    <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
+        <webhookUri>${SLACK_WEBHOOK_URL}</webhookUri>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
 ${PID:-} --- [%15.15thread] %-40.40logger{36} %msg%n%n
 [REQUEST_ID] : %X{REQUEST_ID:-NO REQUEST ID}%n
 [REQUEST_METHOD] : %X{REQUEST_METHOD:-NO REQUEST METHOD}%n
 [REQUEST_URI] : %X{REQUEST_URI:-NO REQUEST URI}%n
 [REQUEST_TIME] : %d{yyyy-MM-dd HH:mm:ss.SSS}%n
 [REQUEST_IP] : %X{REQUEST_IP:-NO REQUEST IP}%n
-                </Pattern>
-                <charset>utf8</charset>
-            </layout>
-            <colorCoding>true</colorCoding>
-        </appender>
+            </Pattern>
+            <charset>utf8</charset>
+        </layout>
+        <colorCoding>true</colorCoding>
+    </appender>
 
-        <appender name="ASYNC-SLACK" class="ch.qos.logback.classic.AsyncAppender">
-            <appender-ref ref="SLACK"/>
-            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                <level>ERROR</level>
-                <onMatch>ACCEPT</onMatch>
-                <onMismatch>DENY</onMismatch>
-            </filter>
-        </appender>
-    </springProfile>
+    <appender name="ASYNC-SLACK" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SLACK"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
 
     <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>../logs/error/${BY_DATE}.log</file>
@@ -35,7 +33,9 @@ ${PID:-} --- [%15.15thread] %-40.40logger{36} %msg%n%n
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%X{REQUEST_ID:-NO REQUEST ID}] ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%X{REQUEST_ID:-NO REQUEST ID}] ${PID:-} --- [%15.15thread]
+                %-40.40logger{36} : %msg%n%n
+            </pattern>
             <charset>utf8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
