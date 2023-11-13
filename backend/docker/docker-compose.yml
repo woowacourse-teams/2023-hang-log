@@ -16,3 +16,14 @@ services:
       - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/config:/etc/mysql/conf.d
       - ./db/mysql/init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:alpine
+    command: redis-server --port 6379
+    container_name: hanglog_redis
+    hostname: root
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 16379:6379
