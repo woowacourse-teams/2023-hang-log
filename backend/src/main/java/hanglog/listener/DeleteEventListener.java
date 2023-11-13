@@ -50,7 +50,6 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripRepository.deleteByMemberId(event.getMemberId());
-        refreshTokenRepository.deleteByMemberId(event.getMemberId());
     }
 
     @Async
