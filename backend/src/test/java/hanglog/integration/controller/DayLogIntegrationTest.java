@@ -23,7 +23,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class DayLogIntegrationTest extends IntegrationTest {
+class DayLogIntegrationTest extends IntegrationTest {
 
     private Long tripId;
     private Long dayLogId;
@@ -32,6 +32,8 @@ public class DayLogIntegrationTest extends IntegrationTest {
     void setUp() {
         final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(memberTokens,
                 TRIP_CREATE_REQUEST);
+        System.out.println("tripCreateResponse = " + tripCreateResponse);
+        System.out.println("tripCreateResponse.header(\"Location\") = " + tripCreateResponse.header("Location"));
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
 
         final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(memberTokens, tripId);

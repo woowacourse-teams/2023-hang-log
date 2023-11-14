@@ -82,7 +82,7 @@ public class LoginService {
     public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
         final String accessToken = bearerExtractor.extractAccessToken(authorizationHeader);
         if (jwtProvider.isValidRefreshAndInvalidAccess(refreshTokenRequest, accessToken)) {
-            final RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest)
+            final RefreshToken refreshToken = refreshTokenRepository.findById(refreshTokenRequest)
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
             return jwtProvider.regenerateAccessToken(refreshToken.getMemberId().toString());
         }

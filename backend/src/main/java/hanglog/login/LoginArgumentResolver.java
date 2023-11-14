@@ -77,8 +77,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     private boolean isValidRefreshToken(final Cookie cookie) {
-        // TODO: refreshToken 만료 기한 검사 필요
         return REFRESH_TOKEN.equals(cookie.getName()) &&
-                refreshTokenRepository.existsByToken(cookie.getValue());
+                refreshTokenRepository.existsById(cookie.getValue());
     }
 }
