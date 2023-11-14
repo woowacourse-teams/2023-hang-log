@@ -18,6 +18,10 @@ on:
         description: ‘Environment to run tests against’
         type: environment
         required: true
+env:        
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  
 defaults:
   run:
     working-directory: backend
@@ -69,9 +73,3 @@ jobs:
         min-coverage-overall: 80
         min-coverage-changed-files: 80
         update-comment: true
-
-      env:
-          # The hostname used to communicate with the Redis service container
-          REDIS_HOST: redis
-          # The default Redis port
-          REDIS_PORT: 6379
