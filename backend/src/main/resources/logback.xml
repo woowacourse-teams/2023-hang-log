@@ -14,5 +14,8 @@
         <appender-ref ref="FILE-INFO"/>
         <appender-ref ref="FILE-ERROR"/>
         <appender-ref ref="FILE-WARN"/>
+        <springProfile name="prod">
+            <appender-ref ref="ASYNC-SLACK"/>
+        </springProfile>
     </root>
 </configuration>
