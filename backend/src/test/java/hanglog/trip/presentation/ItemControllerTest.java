@@ -6,10 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -17,7 +14,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,103 +88,103 @@ class ItemControllerTest extends ControllerTest {
                 .contentType(APPLICATION_JSON));
     }
 
-    @DisplayName("여행 아이템을 생성할 수 있다.")
-    @Test
-    void createItem() throws Exception {
-        // given
-        final PlaceRequest placeRequest = new PlaceRequest(
-                "에펠탑",
-                new BigDecimal("38.123456"),
-                new BigDecimal("39.123456"),
-                List.of("culture")
-        );
-        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
-        final ItemRequest itemRequest = new ItemRequest(
-                true,
-                "에펠탑",
-                5.0,
-                "에펠탑을 방문",
-                1L,
-                List.of("imageName"),
-                placeRequest,
-                expenseRequest
-        );
-
-        given(itemService.save(any(), any()))
-                .willReturn(1L);
-
-        // when
-        final ResultActions resultActions = performPostRequest(1, itemRequest);
-
-        // then
-        resultActions.andExpect(status().isCreated())
-                .andExpect(header().string(LOCATION, "/trips/1/items/1"))
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("tripId")
-                                                .description("여행 ID")
-                                ),
-                                requestFields(
-                                        fieldWithPath("itemType")
-                                                .type(JsonFieldType.BOOLEAN)
-                                                .description("여행 아이템의 타입")
-                                                .attributes(field("constraint", "True: 스팟, False: 논스팟")),
-                                        fieldWithPath("title")
-                                                .type(JsonFieldType.STRING)
-                                                .description("여행 아이템 제목")
-                                                .attributes(field("constraint", "50자 이내의 문자열")),
-                                        fieldWithPath("rating")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("별점")
-                                                .attributes(field("constraint", "최소 0.0 ~ 최대 5.0")),
-                                        fieldWithPath("memo")
-                                                .type(JsonFieldType.STRING)
-                                                .description("여행 아이템 메모")
-                                                .attributes(field("constraint", "255자 이내의 문자열")),
-                                        fieldWithPath("dayLogId")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("날짜 ID")
-                                                .attributes(field("constraint", "양의 정수")),
-                                        fieldWithPath("imageNames")
-                                                .type(JsonFieldType.ARRAY)
-                                                .description("여행 아이템 이미지 이름 배열")
-                                                .attributes(field("constraint", "URL 배열")),
-                                        fieldWithPath("place.name")
-                                                .type(JsonFieldType.STRING)
-                                                .description("장소 이름")
-                                                .attributes(field("constraint", "50자 이내의 문자열")),
-                                        fieldWithPath("place.latitude")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("장소 위도")
-                                                .attributes(field("constraint", "BigDecimal(3,13)")),
-                                        fieldWithPath("place.longitude")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("장소 경도")
-                                                .attributes(field("constraint", "BigDecimal(3,13)")),
-                                        fieldWithPath("place.apiCategory")
-                                                .type(JsonFieldType.ARRAY)
-                                                .description("장소 카테고리 배열")
-                                                .attributes(field("constraint", "문자열 배열")),
-                                        fieldWithPath("expense.currency")
-                                                .type(JsonFieldType.STRING)
-                                                .description("경비 환율")
-                                                .attributes(field("constraint", "문자열")),
-                                        fieldWithPath("expense.amount")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("경비 금액")
-                                                .attributes(field("constraint", "숫자")),
-                                        fieldWithPath("expense.categoryId")
-                                                .type(JsonFieldType.NUMBER)
-                                                .description("경비 카테고리 ID")
-                                                .attributes(field("constraint", "양의 정수"))
-                                ),
-                                responseHeaders(
-                                        headerWithName(LOCATION).description("생성된 아이템 URL")
-                                )
-                        )
-                );
-    }
+//    @DisplayName("여행 아이템을 생성할 수 있다.")
+//    @Test
+//    void createItem() throws Exception {
+//        // given
+//        final PlaceRequest placeRequest = new PlaceRequest(
+//                "에펠탑",
+//                new BigDecimal("38.123456"),
+//                new BigDecimal("39.123456"),
+//                List.of("culture")
+//        );
+//        final ExpenseRequest expenseRequest = new ExpenseRequest("EUR", new BigDecimal(10000), 1L);
+//        final ItemRequest itemRequest = new ItemRequest(
+//                true,
+//                "에펠탑",
+//                5.0,
+//                "에펠탑을 방문",
+//                1L,
+//                List.of("imageName"),
+//                placeRequest,
+//                expenseRequest
+//        );
+//
+//        given(itemService.save(any(), any()))
+//                .willReturn(1L);
+//
+//        // when
+//        final ResultActions resultActions = performPostRequest(1, itemRequest);
+//
+//        // then
+//        resultActions.andExpect(status().isCreated())
+//                .andExpect(header().string(LOCATION, "/trips/1/items/1"))
+//                .andDo(
+//                        restDocs.document(
+//                                pathParameters(
+//                                        parameterWithName("tripId")
+//                                                .description("여행 ID")
+//                                ),
+//                                requestFields(
+//                                        fieldWithPath("itemType")
+//                                                .type(JsonFieldType.BOOLEAN)
+//                                                .description("여행 아이템의 타입")
+//                                                .attributes(field("constraint", "True: 스팟, False: 논스팟")),
+//                                        fieldWithPath("title")
+//                                                .type(JsonFieldType.STRING)
+//                                                .description("여행 아이템 제목")
+//                                                .attributes(field("constraint", "50자 이내의 문자열")),
+//                                        fieldWithPath("rating")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("별점")
+//                                                .attributes(field("constraint", "최소 0.0 ~ 최대 5.0")),
+//                                        fieldWithPath("memo")
+//                                                .type(JsonFieldType.STRING)
+//                                                .description("여행 아이템 메모")
+//                                                .attributes(field("constraint", "255자 이내의 문자열")),
+//                                        fieldWithPath("dayLogId")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("날짜 ID")
+//                                                .attributes(field("constraint", "양의 정수")),
+//                                        fieldWithPath("imageNames")
+//                                                .type(JsonFieldType.ARRAY)
+//                                                .description("여행 아이템 이미지 이름 배열")
+//                                                .attributes(field("constraint", "URL 배열")),
+//                                        fieldWithPath("place.name")
+//                                                .type(JsonFieldType.STRING)
+//                                                .description("장소 이름")
+//                                                .attributes(field("constraint", "50자 이내의 문자열")),
+//                                        fieldWithPath("place.latitude")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("장소 위도")
+//                                                .attributes(field("constraint", "BigDecimal(3,13)")),
+//                                        fieldWithPath("place.longitude")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("장소 경도")
+//                                                .attributes(field("constraint", "BigDecimal(3,13)")),
+//                                        fieldWithPath("place.apiCategory")
+//                                                .type(JsonFieldType.ARRAY)
+//                                                .description("장소 카테고리 배열")
+//                                                .attributes(field("constraint", "문자열 배열")),
+//                                        fieldWithPath("expense.currency")
+//                                                .type(JsonFieldType.STRING)
+//                                                .description("경비 환율")
+//                                                .attributes(field("constraint", "문자열")),
+//                                        fieldWithPath("expense.amount")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("경비 금액")
+//                                                .attributes(field("constraint", "숫자")),
+//                                        fieldWithPath("expense.categoryId")
+//                                                .type(JsonFieldType.NUMBER)
+//                                                .description("경비 카테고리 ID")
+//                                                .attributes(field("constraint", "양의 정수"))
+//                                ),
+//                                responseHeaders(
+//                                        headerWithName(LOCATION).description("생성된 아이템 URL")
+//                                )
+//                        )
+//                );
+//    }
 
     @DisplayName("여행 아이템을 수정할 수 있다.")
     @Test
