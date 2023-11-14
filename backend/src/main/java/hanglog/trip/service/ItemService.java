@@ -28,6 +28,7 @@ import hanglog.trip.dto.request.ItemRequest;
 import hanglog.trip.dto.request.ItemUpdateRequest;
 import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.response.ItemResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,6 +48,7 @@ public class ItemService {
     private final ImageRepository imageRepository;
     private final CustomImageRepository customImageRepository;
     private final ApplicationEventPublisher publisher;
+
 
     public Long save(final Long tripId, final ItemRequest itemRequest) {
         final DayLog dayLog = dayLogRepository.findWithItemsById(itemRequest.getDayLogId())
@@ -69,6 +71,38 @@ public class ItemService {
         images.forEach(image -> image.setItem(savedItem));
         customImageRepository.saveAll(images);
         return savedItem.getId();
+    }
+
+    public Long save(final Long tripId, final List<ItemRequest> itemRequests) {
+        List<Image> imageList = new ArrayList<>();
+
+        List<Item> items = itemRequests.stream().map(itemRequest -> {
+            final DayLog dayLog = dayLogRepository.findWithItemsById(itemRequest.getDayLogId())
+                    .orElseThrow(() -> new BadRequestException(NOT_FOUND_DAY_LOG_ID));
+            validateAssociationTripAndDayLog(tripId, dayLog);
+
+            final List<Image> images = makeImages(itemRequest);
+            final Item item = new Item(
+                    ItemType.getItemTypeByIsSpot(itemRequest.getItemType()),
+                    itemRequest.getTitle(),
+                    getNewItemOrdinal(dayLog),
+                    itemRequest.getRating(),
+                    itemRequest.getMemo(),
+                    makePlace(itemRequest.getPlace()),
+                    dayLog,
+                    makeExpense(itemRequest.getExpense()),
+                    images
+            );
+            images.forEach(image -> {
+                image.setItem(item);
+                imageList.add(image);
+            });
+            return item;
+        }).toList();
+
+        List<Item> savedItems = itemRepository.saveAll(items);
+        customImageRepository.saveAll(imageList);
+        return savedItems.get(0).getId();
     }
 
     private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {

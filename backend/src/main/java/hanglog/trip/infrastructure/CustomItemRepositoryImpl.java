@@ -1,7 +1,9 @@
 package hanglog.trip.infrastructure;
 
+import hanglog.trip.domain.Item;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.dto.ItemElement;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,5 +58,36 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
             sqlParameterSources[i] = new MapSqlParameterSource(sqlParameterSource);
         }
         return sqlParameterSources;
+    }
+
+    @Override
+    public void saveAll(final List<Item> items) {
+        final String sql = """
+                INSERT INTO item (created_at, modified_at, ordinal, rating, day_log_id, expense_id, place_id, item_type, memo, title, status) 
+                VALUES (:createdAt, :modifiedAt, :ordinal, :rating, :day_log_id, :expense_id, :place_id, :item_type, :memo, :title, :status)
+            """;
+        namedParameterJdbcTemplate.batchUpdate(sql, getItemToSqlParameterSources(items));
+    }
+
+    private MapSqlParameterSource[] getItemToSqlParameterSources(final List<Item> items) {
+        return items.stream()
+                .map(this::getItemToSqlParameterSource)
+                .toArray(MapSqlParameterSource[]::new);
+    }
+
+    private MapSqlParameterSource getItemToSqlParameterSource(final Item item) {
+        final LocalDateTime now = LocalDateTime.now();
+        return new MapSqlParameterSource()
+                .addValue("createdAt", now)
+                .addValue("modifiedAt", now)
+                .addValue("ordinal", item.getOrdinal())
+                .addValue("rating", item.getRating())
+                .addValue("day_log_id", item.getDayLog().getId())
+                .addValue("expense_id", item.getExpense().getId())
+                .addValue("place_id", item.getPlace().getId())
+                .addValue("item_type", item.getItemType().name())
+                .addValue("memo", item.getMemo())
+                .addValue("title", item.getTitle())
+                .addValue("status", item.getStatus().name());
     }
 }

@@ -36,6 +36,7 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -258,8 +259,8 @@ public class TripService {
     @Transactional
     public void createLegendItems(final Long tripId) {
         List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripId(tripId);
-
         for (long dayLogId : dayLogIds) {
+            List<ItemRequest> itemRequests = new ArrayList<>();
             for(int i = 0; i<20; i++) {
                 ItemRequest itemRequest = new ItemRequest(
                         true,
@@ -271,8 +272,9 @@ public class TripService {
                         new PlaceRequest("place", BigDecimal.ONE, BigDecimal.ONE, List.of("food")),
                         new ExpenseRequest("krw", BigDecimal.TEN, 100L)
                 );
-                itemService.save(tripId, itemRequest);
+                itemRequests.add(itemRequest);
             }
+            itemService.save(tripId, itemRequests);
         }
     }
 }
