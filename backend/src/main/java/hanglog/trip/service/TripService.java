@@ -24,6 +24,9 @@ import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
+import hanglog.trip.dto.request.ExpenseRequest;
+import hanglog.trip.dto.request.ItemRequest;
+import hanglog.trip.dto.request.PlaceRequest;
 import hanglog.trip.dto.request.PublishedStatusRequest;
 import hanglog.trip.dto.request.SharedStatusRequest;
 import hanglog.trip.dto.request.TripCreateRequest;
@@ -31,6 +34,7 @@ import hanglog.trip.dto.request.TripUpdateRequest;
 import hanglog.trip.dto.response.SharedCodeResponse;
 import hanglog.trip.dto.response.TripDetailResponse;
 import hanglog.trip.dto.response.TripResponse;
+import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -247,5 +251,28 @@ public class TripService {
     private void publishTrip(final Trip trip) {
         trip.changePublishedStatus(true);
         publisher.publishEvent(new PublishEvent(trip.getId()));
+    }
+
+    private final ItemService itemService;
+
+    @Transactional
+    public void createLegendItems(final Long tripId) {
+        List<Long> dayLogIds = customDayLogRepository.findDayLogIdsByTripId(tripId);
+
+        for (long dayLogId : dayLogIds) {
+            for(int i = 0; i<20; i++) {
+                ItemRequest itemRequest = new ItemRequest(
+                        true,
+                        "title",
+                        5.0,
+                        "memo",
+                        dayLogId,
+                        List.of("image1"+dayLogId+i+i, "image2"+dayLogId+i+i, "image3"+dayLogId+i+i, "image4"+dayLogId+i+i, "image5"+dayLogId+i+i),
+                        new PlaceRequest("place", BigDecimal.ONE, BigDecimal.ONE, List.of("food")),
+                        new ExpenseRequest("krw", BigDecimal.TEN, 100L)
+                );
+                itemService.save(tripId, itemRequest);
+            }
+        }
     }
 }

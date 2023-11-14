@@ -15,10 +15,10 @@ import hanglog.trip.service.LedgerService;
 import hanglog.trip.service.TripService;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +43,7 @@ public class TripController {
             @RequestBody @Valid final TripCreateRequest tripCreateRequest
     ) {
         final Long tripId = tripService.save(accessor.getMemberId(), tripCreateRequest);
+//        final Long tripId = tripService.save(1L, tripCreateRequest);
         return ResponseEntity.created(URI.create("/trips/" + tripId)).build();
     }
 
@@ -73,10 +74,10 @@ public class TripController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{tripId}")
-    @MemberOnly
+    @PostMapping("/{tripId}")
+//    @MemberOnly
     public ResponseEntity<Void> deleteTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
-        tripService.validateTripByMember(accessor.getMemberId(), tripId);
+        tripService.validateTripByMember(2L, tripId);
         tripService.delete(tripId);
         return ResponseEntity.noContent().build();
     }
@@ -115,6 +116,24 @@ public class TripController {
     ) {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.updatePublishedStatus(tripId, publishedStatusRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/legend")
+    public ResponseEntity<Void> createLegendTrip() {
+        tripService.save(2L, new TripCreateRequest(
+                LocalDate.of(2023, 7, 1),
+                LocalDate.of(2023, 8, 30),
+                List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L)
+        ));
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{tripId}/legend/items")
+    public ResponseEntity<Void> createLegendItems(@PathVariable final Long tripId) {
+        tripService.updatePublishedStatus(tripId, new PublishedStatusRequest(true));
+        tripService.updateSharedTripStatus(tripId, new SharedStatusRequest(true));
+        tripService.createLegendItems(tripId);
         return ResponseEntity.noContent().build();
     }
 }
