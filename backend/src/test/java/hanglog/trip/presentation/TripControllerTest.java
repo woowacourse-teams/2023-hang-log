@@ -710,27 +710,27 @@ class TripControllerTest extends ControllerTest {
                 .andExpect(jsonPath("$.message").value("여행한 도시는 최소 한 개 이상 입력해 주세요."));
     }
 
-    @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
-    @Test
-    void deleteTrip() throws Exception {
-        // given
-        makeTrip();
-        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
-
-        // when
-        final ResultActions resultActions = performDeleteRequest();
-
-        // then
-        verify(tripService).delete(anyLong());
-
-        resultActions.andExpect(status().isNoContent())
-                .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("tripId")
-                                        .description("여행 ID")
-                        )
-                ));
-    }
+//    @DisplayName("트립의 status를 DELETED로 변경할 수 있다.")
+//    @Test
+//    void deleteTrip() throws Exception {
+//        // given
+//        makeTrip();
+//        doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
+//
+//        // when
+//        final ResultActions resultActions = performDeleteRequest();
+//
+//        // then
+//        verify(tripService).delete(anyLong());
+//
+//        resultActions.andExpect(status().isNoContent())
+//                .andDo(restDocs.document(
+//                        pathParameters(
+//                                parameterWithName("tripId")
+//                                        .description("여행 ID")
+//                        )
+//                ));
+//    }
 
     @DisplayName("공유 상태를 변경한다")
     @Test

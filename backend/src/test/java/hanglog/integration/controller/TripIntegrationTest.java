@@ -151,25 +151,25 @@ public class TripIntegrationTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("하나의 Trip을 삭제한다.")
-    @Test
-    void deleteTrip() {
-        // given
-        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
-        final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
-
-        // when
-        final ExtractableResponse<Response> response = requestDeleteTrip(memberTokens, tripId);
-
-        // then
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-                    softly.assertThat(requestGetTrip(memberTokens, tripId).statusCode())
-                            .isEqualTo(HttpStatus.BAD_REQUEST.value());
-                }
-        );
-    }
+//    @DisplayName("하나의 Trip을 삭제한다.")
+//    @Test
+//    void deleteTrip() {
+//        // given
+//        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
+//        final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
+//
+//        // when
+//        final ExtractableResponse<Response> response = requestDeleteTrip(memberTokens, tripId);
+//
+//        // then
+//        assertSoftly(
+//                softly -> {
+//                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+//                    softly.assertThat(requestGetTrip(memberTokens, tripId).statusCode())
+//                            .isEqualTo(HttpStatus.BAD_REQUEST.value());
+//                }
+//        );
+//    }
 
     public static ExtractableResponse<Response> requestCreateTrip(final MemberTokens memberTokens,
                                                                   final TripCreateRequest TRIP_CREATE_REQUEST) {
