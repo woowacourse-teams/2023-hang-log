@@ -3,25 +3,7 @@ name: Java CI with Gradle
 on:
   pull_request:
     branches: [ main, develop ]
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: ‘Log level’
-        required: true
-        default: ‘info’
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      environment:
-        description: ‘Environment to run tests against’
-        type: environment
-        required: true
-env:        
-  REDIS_HOST: redis
-  REDIS_PORT: 6379
-  
+
 defaults:
   run:
     working-directory: backend
@@ -35,14 +17,6 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       pull-requests: write
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
     - name: 레포지토리 체크아웃
