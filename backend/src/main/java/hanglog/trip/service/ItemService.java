@@ -18,6 +18,7 @@ import hanglog.trip.domain.Image;
 import hanglog.trip.domain.Item;
 import hanglog.trip.domain.Place;
 import hanglog.trip.domain.repository.CustomImageRepository;
+import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;
 import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
@@ -41,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final CustomItemRepository customItemRepository;
     private final CategoryRepository categoryRepository;
     private final DayLogRepository dayLogRepository;
     private final PlaceRepository placeRepository;
@@ -100,9 +102,9 @@ public class ItemService {
             return item;
         }).toList();
 
-        List<Item> savedItems = itemRepository.saveAll(items);
+        customItemRepository.saveAll(items);
         customImageRepository.saveAll(imageList);
-        return savedItems.get(0).getId();
+        return 1L;
     }
 
     private void validateAssociationTripAndDayLog(final Long tripId, final DayLog dayLog) {
