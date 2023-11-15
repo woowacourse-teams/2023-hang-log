@@ -32,10 +32,7 @@ class DayLogIntegrationTest extends IntegrationTest {
     void setUp() {
         final ExtractableResponse<Response> tripCreateResponse = TripIntegrationTest.requestCreateTrip(memberTokens,
                 TRIP_CREATE_REQUEST);
-        System.out.println("tripCreateResponse = " + tripCreateResponse);
-        System.out.println("tripCreateResponse.header(\"Location\") = " + tripCreateResponse.header("Location"));
         tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
-
         final ExtractableResponse<Response> tripGetResponse = TripIntegrationTest.requestGetTrip(memberTokens, tripId);
         final TripDetailResponse tripDetailResponse = tripGetResponse.as(TripDetailResponse.class);
         dayLogId = tripDetailResponse.getDayLogs().get(0).getId();
