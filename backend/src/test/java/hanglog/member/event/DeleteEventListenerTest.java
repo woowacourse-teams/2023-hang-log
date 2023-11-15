@@ -69,7 +69,6 @@ class DeleteEventListenerTest {
         doNothing().when(itemRepository).deleteByIds(anyList());
         doNothing().when(dayLogRepository).deleteByIds(anyList());
         doNothing().when(tripRepository).deleteByMemberId(anyLong());
-        doNothing().when(refreshTokenRepository).deleteByMemberId(anyLong());
 
         // when
         listener.deleteMember(event);
@@ -83,7 +82,6 @@ class DeleteEventListenerTest {
         verify(itemRepository, times(1)).deleteByIds(anyList());
         verify(dayLogRepository, times(1)).deleteByIds(anyList());
         verify(tripRepository, times(1)).deleteByMemberId(anyLong());
-        verify(refreshTokenRepository, times(1)).deleteByMemberId(anyLong());
     }
 
     @DisplayName("deleteTrip 메서드에서 올바르게 레포지토리의 메서드를 호출한다.")

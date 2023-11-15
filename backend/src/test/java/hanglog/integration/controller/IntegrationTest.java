@@ -1,5 +1,7 @@
 package hanglog.integration.controller;
 
+import hanglog.global.config.RedisConfig;
+import hanglog.global.config.RedisTestConfig;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.domain.RefreshToken;
 import hanglog.login.domain.repository.RefreshTokenRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -21,6 +24,7 @@ import org.springframework.test.context.jdbc.Sql;
         "classpath:data/cities.sql",
         "classpath:data/categories.sql"
 })
+@Import(RedisTestConfig.class)
 public abstract class IntegrationTest {
 
     @LocalServerPort

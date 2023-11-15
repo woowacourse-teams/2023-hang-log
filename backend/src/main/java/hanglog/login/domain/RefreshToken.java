@@ -1,26 +1,17 @@
 package hanglog.login.domain;
 
-import static lombok.AccessLevel.PROTECTED;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
+@RedisHash(value = "refreshToken", timeToLive = 604800)
 public class RefreshToken {
 
     @Id
     private String token;
 
-    @Column(nullable = false)
     private Long memberId;
-
-    public RefreshToken(final String token, final Long memberId) {
-        this.token = token;
-        this.memberId = memberId;
-    }
 }

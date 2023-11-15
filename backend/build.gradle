@@ -31,6 +31,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.528'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -44,9 +45,13 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
+    testImplementation "org.testcontainers:testcontainers:1.17.6"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
     implementation 'com.github.maricn:logback-slack-appender:1.6.1'
 
     implementation 'org.flywaydb:flyway-core'
