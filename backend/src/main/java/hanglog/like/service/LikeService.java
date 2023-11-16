@@ -51,14 +51,6 @@ public class LikeService {
         likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() - 1)));
     }
 
-    public boolean check(final Long memberId, final Long tripId) {
-        Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
-        if (memberLike.isPresent()) {
-            return memberLike.get().getTripLikeStatusMap().get(tripId);
-        }
-        return false;
-    }
-
     @Scheduled(cron = "0 0 * * * *")
     public void writeBackMemberLikeCache() {
         final List<Likes> likes = memberRepository.findAll().stream()

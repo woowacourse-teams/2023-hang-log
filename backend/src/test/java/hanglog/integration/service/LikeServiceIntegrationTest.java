@@ -4,6 +4,7 @@ import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.like.dto.request.LikeRequest;
+import hanglog.like.repository.MemberLikeRepository;
 import hanglog.like.service.LikeService;
 import hanglog.trip.service.TripService;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,9 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private MemberLikeRepository memberLikeRepository;
+
     @DisplayName("해당 게시물의 좋아요 여부를 변경할 수 있다.")
     @Test
     void update() {
@@ -29,11 +33,21 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
 
         // when & then
         assertSoftly(softly -> {
-            softly.assertThat(likeService.check(member.getId(), tripId)).isFalse();
+            softly.assertThat(memberLikeRepository.findById(member.getId())).isEmpty();
+
             likeService.update(member.getId(), tripId, likeTrueRequest);
-            softly.assertThat(likeService.check(member.getId(), tripId)).isTrue();
+            softly.assertThat(memberLikeRepository.findById(member.getId())).isPresent();
+            softly.assertThat(memberLikeRepository.findById(member.getId())
+                    .get()
+                    .getTripLikeStatusMap()
+                    .get(tripId)).isTrue();
+
             likeService.update(member.getId(), tripId, likeFalseRequest);
-            softly.assertThat(likeService.check(member.getId(), tripId)).isFalse();
+            softly.assertThat(memberLikeRepository.findById(member.getId())).isPresent();
+            softly.assertThat(memberLikeRepository.findById(member.getId())
+                    .get()
+                    .getTripLikeStatusMap()
+                    .get(tripId)).isFalse();
         });
     }
 }
