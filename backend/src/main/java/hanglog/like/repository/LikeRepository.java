@@ -10,10 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface LikeRepository extends JpaRepository<Likes, Long> {
 
-    boolean existsByMemberIdAndTripId(final Long memberId, final Long tripId);
-
-    void deleteByMemberIdAndTripId(final Long memberId, final Long tripId);
-
     @Query("""
             SELECT new hanglog.like.dto.LikeElement
             (l.tripId, COUNT(l.memberId), EXISTS(SELECT 1 FROM Likes l_1 WHERE l_1.memberId = :memberId AND l_1.tripId = l.tripId))

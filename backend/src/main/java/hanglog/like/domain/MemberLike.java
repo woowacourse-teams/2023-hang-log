@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @AllArgsConstructor
-@RedisHash(value = "memberLike")
+@RedisHash(value = "memberLike", timeToLive = 5400)
 public class MemberLike {
 
     @Id
