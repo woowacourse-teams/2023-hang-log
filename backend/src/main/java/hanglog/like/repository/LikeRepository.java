@@ -2,6 +2,7 @@ package hanglog.like.repository;
 
 import hanglog.like.domain.Likes;
 import hanglog.like.dto.LikeElement;
+import hanglog.like.dto.TripLikeCount;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,11 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
              """)
     Optional<LikeElement> findLikeCountAndIsLikeByTripId(@Param("memberId") final Long memberId,
                                                          @Param("tripId") final Long tripId);
+
+    @Query("""
+            SELECT new hanglog.like.dto.TripLikeCount(l.tripId, COUNT(l.memberId))
+            FROM Likes l
+            GROUP BY l.tripId
+             """)
+    List<TripLikeCount> findCountByAllTrips();
 }

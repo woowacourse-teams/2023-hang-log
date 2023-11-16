@@ -14,10 +14,14 @@ import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
+import hanglog.like.domain.LikeCount;
 import hanglog.like.domain.LikeInfo;
+import hanglog.like.domain.MemberLike;
 import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
+import hanglog.like.repository.LikeCountRepository;
 import hanglog.like.repository.LikeRepository;
+import hanglog.like.repository.MemberLikeRepository;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -26,6 +30,7 @@ import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +51,8 @@ public class CommunityService {
     private final CityRepository cityRepository;
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
+    private final LikeCountRepository likeCountRepository;
+    private final MemberLikeRepository memberLikeRepository;
 
     @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
@@ -120,8 +127,8 @@ public class CommunityService {
         final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
-        final LikeElement likeElement = likeRepository.findLikeCountAndIsLikeByTripId(accessor.getMemberId(), tripId)
-                .orElseGet(() -> new LikeElement(tripId, 0, false));
+
+        final LikeElement likeElement = getLikeElement(accessor.getMemberId(), tripId);
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
 
         return TripDetailResponse.publishedTrip(
@@ -132,5 +139,19 @@ public class CommunityService {
                 likeElement.getLikeCount(),
                 publishedDate
         );
+    }
+
+    private LikeElement getLikeElement(final Long memberId, final Long tripId) {
+        final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
+        final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
+        if (likeCount.isPresent() && memberLike.isPresent()) {
+            final Map<Long, Boolean> tripLikeStatusMap = memberLike.get().getTripLikeStatusMap();
+            if (tripLikeStatusMap.containsKey(tripId)) {
+                return new LikeElement(tripId, likeCount.get().getCount(), tripLikeStatusMap.get(tripId));
+            }
+            return new LikeElement(tripId, likeCount.get().getCount(), false);
+        }
+        return likeRepository.findLikeCountAndIsLikeByTripId(memberId, tripId)
+                .orElseGet(() -> new LikeElement(tripId, 0, false));
     }
 }
