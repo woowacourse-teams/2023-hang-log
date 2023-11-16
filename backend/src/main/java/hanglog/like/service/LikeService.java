@@ -39,6 +39,16 @@ public class LikeService {
         }
         tripLikeStatusMap.put(tripId, likeRequest.getIsLike());
         memberLikeRepository.save(new MemberLike(memberId, tripLikeStatusMap));
+        updateLikeCountCache(tripId, likeRequest);
+    }
+
+    private void updateLikeCountCache(final Long tripId, final LikeRequest likeRequest) {
+        final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
+        if (Boolean.TRUE.equals(likeRequest.getIsLike())) {
+            likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() + 1)));
+            return;
+        }
+        likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() - 1)));
     }
 
     public boolean check(final Long memberId, final Long tripId) {
