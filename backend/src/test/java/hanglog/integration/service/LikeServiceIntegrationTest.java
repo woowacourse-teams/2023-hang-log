@@ -4,7 +4,7 @@ import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hanglog.like.dto.request.LikeRequest;
-import hanglog.like.repository.MemberLikeRepository;
+import hanglog.like.domain.repository.MemberLikeRepository;
 import hanglog.like.service.LikeService;
 import hanglog.trip.service.TripService;
 import org.junit.jupiter.api.DisplayName;

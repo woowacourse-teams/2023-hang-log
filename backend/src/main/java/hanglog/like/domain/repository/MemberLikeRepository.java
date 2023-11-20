@@ -1,4 +1,4 @@
-package hanglog.like.repository;
+package hanglog.like.domain.repository;
 
 import hanglog.like.domain.MemberLike;
 import org.springframework.data.repository.CrudRepository;

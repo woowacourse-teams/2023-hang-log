@@ -1,4 +1,4 @@
-package hanglog.like.repository;
+package hanglog.like.domain.repository;
 
 import hanglog.like.domain.Likes;
 import hanglog.like.dto.LikeElement;

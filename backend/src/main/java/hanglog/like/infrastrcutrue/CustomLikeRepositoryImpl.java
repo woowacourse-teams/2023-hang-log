@@ -1,7 +1,7 @@
 package hanglog.like.infrastrcutrue;
 
 import hanglog.like.domain.Likes;
-import hanglog.like.repository.CustomLikeRepository;
+import hanglog.like.domain.repository.CustomLikeRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
