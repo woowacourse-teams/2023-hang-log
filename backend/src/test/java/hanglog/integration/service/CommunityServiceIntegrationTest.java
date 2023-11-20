@@ -26,16 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-@Import({
-        TripService.class,
-        CommunityService.class,
-        LedgerService.class,
-        RecommendStrategies.class,
-        CustomDayLogRepositoryImpl.class,
-        CustomTripCityRepositoryImpl.class,
-        EventListenerTestConfig.class
-})
-class CommunityServiceIntegrationTest extends ServiceIntegrationTest {
+class CommunityServiceIntegrationTest extends RedisServiceIntegrationTest {
 
     @Autowired
     private TripService tripService;
