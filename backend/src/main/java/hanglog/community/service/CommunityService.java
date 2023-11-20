@@ -145,7 +145,7 @@ public class CommunityService {
         final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
         final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
         if (likeCount.isPresent() && memberLike.isPresent()) {
-            final Map<Long, Boolean> tripLikeStatusMap = memberLike.get().getTripLikeStatusMap();
+            final Map<Long, Boolean> tripLikeStatusMap = memberLike.get().getLikeStatusForTrip();
             if (tripLikeStatusMap.containsKey(tripId)) {
                 return new LikeElement(tripId, likeCount.get().getCount(), tripLikeStatusMap.get(tripId));
             }

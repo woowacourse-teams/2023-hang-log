@@ -14,5 +14,5 @@ public class MemberLike {
     @Id
     private Long memberId;
 
-    private Map<Long, Boolean> tripLikeStatusMap;
+    private Map<Long, Boolean> likeStatusForTrip;
 }

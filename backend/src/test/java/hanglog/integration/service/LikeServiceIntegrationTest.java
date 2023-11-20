@@ -39,14 +39,14 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
             softly.assertThat(memberLikeRepository.findById(member.getId())).isPresent();
             softly.assertThat(memberLikeRepository.findById(member.getId())
                     .get()
-                    .getTripLikeStatusMap()
+                    .getLikeStatusForTrip()
                     .get(tripId)).isTrue();
 
             likeService.update(member.getId(), tripId, likeFalseRequest);
             softly.assertThat(memberLikeRepository.findById(member.getId())).isPresent();
             softly.assertThat(memberLikeRepository.findById(member.getId())
                     .get()
-                    .getTripLikeStatusMap()
+                    .getLikeStatusForTrip()
                     .get(tripId)).isFalse();
         });
     }
