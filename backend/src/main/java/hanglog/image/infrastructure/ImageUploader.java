@@ -47,6 +47,7 @@ public class ImageUploader {
     }
 
     private List<String> getUploadedImageNamesFromFutures(List<CompletableFuture<String>> futures) {
+        long startTime = System.currentTimeMillis();
         List<String> fileNames = new ArrayList<>();
         futures.forEach(future -> {
             try {
@@ -54,11 +55,16 @@ public class ImageUploader {
             } catch (final CompletionException ignored) {
             }
         });
+
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        log.info("이미지 업로더 퓨처 조인 경과 시간: " +  elapsedTime / 1000.0);
         return fileNames;
     }
 
     private String uploadImage(final ImageFile imageFile) {
         log.info("imageUploadThread : " + Thread.currentThread().getName());
+        long startTime = System.currentTimeMillis();
         final String path = folder + imageFile.getHashedName();
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(imageFile.getContentType());
@@ -67,6 +73,9 @@ public class ImageUploader {
 
         try (final InputStream inputStream = imageFile.getInputStream()) {
             s3Client.putObject(bucket, path, inputStream, metadata);
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = endTime - startTime;
+            log.info("이미지 한 개 업로드 경과 시간: " +  elapsedTime / 1000.0);
         } catch (final AmazonServiceException e) {
             throw new ImageException(INVALID_IMAGE_PATH);
         } catch (final IOException e) {
