@@ -5,6 +5,12 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import hanglog.event.EventType;
+import hanglog.event.Outbox;
+import hanglog.event.OutboxRepository;
+import hanglog.event.PayloadToEventMapper;
+import hanglog.event.TripDeleteEvent;
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.AuthException;
@@ -17,7 +23,6 @@ import hanglog.trip.domain.PublishDeleteEvent;
 import hanglog.trip.domain.PublishEvent;
 import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
-import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
@@ -56,6 +61,7 @@ public class TripService {
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
     private final ApplicationEventPublisher publisher;
+    private final OutboxRepository outboxRepository;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
         if (!tripRepository.existsByMemberIdAndId(memberId, tripId)) {
@@ -186,7 +192,7 @@ public class TripService {
         return dayLog -> dayLog.getOrdinal() >= requestPeriod + 1 && dayLog.getOrdinal() <= currentPeriod;
     }
 
-    public void delete(final Long tripId) {
+    public void delete(final Long tripId) throws JsonProcessingException {
         if (!tripRepository.existsById(tripId)) {
             throw new BadRequestException(NOT_FOUND_TRIP_ID);
         }
@@ -194,7 +200,9 @@ public class TripService {
         publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
-        publisher.publishEvent(new TripDeleteEvent(tripId));
+
+        final String payload = PayloadToEventMapper.toJson(new TripDeleteEvent(tripId));
+        outboxRepository.save(new Outbox(EventType.TRIP_DELETE, payload));
     }
 
     private String generateInitialTitle(final List<City> cites) {
