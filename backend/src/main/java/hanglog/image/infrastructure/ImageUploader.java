@@ -14,18 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ImageUploader {
 
     private static final String CACHE_CONTROL_VALUE = "max-age=3153600";
 
     private final AmazonS3 s3Client;
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(5);
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -35,7 +41,7 @@ public class ImageUploader {
 
     public List<String> uploadImages(final List<ImageFile> imageFiles) {
         List<CompletableFuture<String>> imageUploadsFuture = imageFiles.stream()
-                .map(imageFile -> CompletableFuture.supplyAsync(() -> uploadImage(imageFile)))
+                .map(imageFile -> CompletableFuture.supplyAsync(() -> uploadImage(imageFile), executorService))
                 .toList();
         return getUploadedImageNamesFromFutures(imageUploadsFuture);
     }
@@ -52,6 +58,7 @@ public class ImageUploader {
     }
 
     private String uploadImage(final ImageFile imageFile) {
+        log.info("imageUploadThread : " + Thread.currentThread().getName());
         final String path = folder + imageFile.getHashedName();
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(imageFile.getContentType());
