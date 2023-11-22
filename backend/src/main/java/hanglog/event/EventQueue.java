@@ -1,52 +1,39 @@
 package hanglog.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class EventQueue {
 
-    private final Queue<Outbox> queue;
+    private final Queue<Outbox> queue = new LinkedList<>();
     private final OutboxRepository outboxRepository;
     private final List<OutboxToEventMapper> mappers;
 
     private final ApplicationEventPublisher publisher;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedRate = 2000)
     public void offerSavedEvent() {
-//        List<Event> events = outboxRepository.findAll().stream().map(outbox -> {
-//            try {
-//                return getEventFromOutbox(outbox);
-//            } catch (JsonProcessingException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }).toList();
-//        queue.addAll(events);
         queue.addAll(outboxRepository.findAll());
     }
 
-//    @Scheduled(cron = "0 0 * * * *")
-//    public void pollEvent() {
-//        final Event event = queue.poll();
-//        publisher.publishEvent(event);
-//    }
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedRate = 2000)
     public void pollEvent() throws JsonProcessingException {
-        Outbox outbox = queue.poll();
-        OutboxToEventMapper mapper1 = mappers.stream().filter(mapper -> mapper.is(outbox.getEventType()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("asdf"));
-        publisher.publishEvent(mapper1.toEvent(outbox));
-    }
+        if (queue.isEmpty()) {
+            return;
+        }
 
-    private Event getEventFromOutbox(final Outbox outbox) throws JsonProcessingException {
-        OutboxToEventMapper mapper1 = mappers.stream().filter(mapper -> mapper.is(outbox.getEventType()))
+        final Outbox outbox = queue.poll();
+        final OutboxToEventMapper outboxToEventMapper = mappers.stream().filter(mapper -> mapper.is(outbox.getEventType()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("asdf"));
-        return mapper1.toEvent(outbox);
+                .orElseThrow(() -> new IllegalArgumentException("이벤트 타입에 해당하는 매퍼가 없어요오"));
+        publisher.publishEvent(outboxToEventMapper.toEvent(outbox));
     }
 }
