@@ -34,6 +34,7 @@ public class Outbox extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = STRING)
     private EventType eventType;
+
     @Type(JsonType.class)
     @Column(name = "payload", columnDefinition = "json")
     private String eventPayload;
