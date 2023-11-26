@@ -18,10 +18,12 @@ import hanglog.trip.domain.PublishEvent;
 import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripDeleteEvent;
+import hanglog.trip.domain.TripOutBox;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
+import hanglog.trip.domain.repository.TripOutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.PublishedStatusRequest;
@@ -55,6 +57,7 @@ public class TripService {
     private final SharedTripRepository sharedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
+    private final TripOutBoxRepository tripOutBoxRepository;
     private final ApplicationEventPublisher publisher;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
@@ -194,6 +197,7 @@ public class TripService {
         publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
+        tripOutBoxRepository.save(new TripOutBox(tripId));
         publisher.publishEvent(new TripDeleteEvent(tripId));
     }
 

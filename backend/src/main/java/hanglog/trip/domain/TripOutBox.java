@@ -26,4 +26,8 @@ public class TripOutBox extends BaseEntity {
 
     @Column(nullable = false)
     private Long tripId;
+
+    public TripOutBox(final Long tripId) {
+        this.tripId = tripId;
+    }
 }
