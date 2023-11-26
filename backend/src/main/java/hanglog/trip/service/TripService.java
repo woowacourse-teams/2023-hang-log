@@ -40,6 +40,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,7 +111,7 @@ public class TripService {
         final List<City> cities = cityRepository.findCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
-    
+
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
@@ -199,6 +200,12 @@ public class TripService {
         tripRepository.deleteById(tripId);
         tripOutBoxRepository.save(new TripOutBox(tripId));
         publisher.publishEvent(new TripDeleteEvent(tripId));
+    }
+
+    @Scheduled(cron = "*/2 * * * * *")
+    public void deleteUnprocessedTrip() {
+        final List<TripOutBox> tripOutBoxes = tripOutBoxRepository.findAll();
+        tripOutBoxes.forEach(tripOutBox -> publisher.publishEvent(new TripDeleteEvent(tripOutBox.getTripId())));
     }
 
     private String generateInitialTitle(final List<City> cites) {
