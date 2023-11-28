@@ -12,18 +12,19 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.outbox.domain.OutBox;
+import hanglog.outbox.domain.type.TargetType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.PublishDeleteEvent;
 import hanglog.trip.domain.PublishEvent;
 import hanglog.trip.domain.SharedTrip;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.TripDeleteEvent;
-import hanglog.trip.domain.TripOutBox;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
-import hanglog.trip.domain.repository.TripOutBoxRepository;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.PublishedStatusRequest;
@@ -40,7 +41,6 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +58,7 @@ public class TripService {
     private final SharedTripRepository sharedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
-    private final TripOutBoxRepository tripOutBoxRepository;
+    private final OutBoxRepository outBoxRepository;
     private final ApplicationEventPublisher publisher;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
@@ -198,14 +198,8 @@ public class TripService {
         publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
-        tripOutBoxRepository.save(new TripOutBox(tripId));
+        outBoxRepository.save(new OutBox(tripId, TargetType.TRIP));
         publisher.publishEvent(new TripDeleteEvent(tripId));
-    }
-
-    @Scheduled(cron = "*/2 * * * * *")
-    public void deleteUnprocessedTrip() {
-        final List<TripOutBox> tripOutBoxes = tripOutBoxRepository.findAll();
-        tripOutBoxes.forEach(tripOutBox -> publisher.publishEvent(new TripDeleteEvent(tripOutBox.getTripId())));
     }
 
     private String generateInitialTitle(final List<City> cites) {

@@ -12,7 +12,7 @@ import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
-import hanglog.trip.domain.repository.TripOutBoxRepository;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
@@ -35,7 +35,7 @@ public class DeleteEventListener {
     private final DayLogRepository dayLogRepository;
     private final TripCityRepository tripCityRepository;
     private final TripRepository tripRepository;
-    private final TripOutBoxRepository tripOutBoxRepository;
+    private final OutBoxRepository outBoxRepository;
 
     @Async
     @Transactional(propagation = REQUIRES_NEW)
@@ -65,7 +65,7 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripCityRepository.deleteAllByTripId(event.getTripId());
-        tripOutBoxRepository.deleteByTripId(event.getTripId());
+        outBoxRepository.deleteByTripId(event.getTripId());
     }
 
     private void deletePlaces(final List<ItemElement> itemElements) {
