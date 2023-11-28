@@ -4,6 +4,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.member.domain.MemberDeleteEvent;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
@@ -12,7 +13,6 @@ import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
-import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.ItemElement;
 import java.util.List;
@@ -50,6 +50,7 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripRepository.deleteByMemberId(event.getMemberId());
+        outBoxRepository.deleteByTargetId(event.getMemberId());
     }
 
     @Async
@@ -65,7 +66,7 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripCityRepository.deleteAllByTripId(event.getTripId());
-        outBoxRepository.deleteByTripId(event.getTripId());
+        outBoxRepository.deleteByTargetId(event.getTripId());
     }
 
     private void deletePlaces(final List<ItemElement> itemElements) {

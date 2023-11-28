@@ -14,5 +14,5 @@ public interface OutBoxRepository extends JpaRepository<OutBox, Long> {
             SET outBox.status = 'DELETED'
             WHERE outBox.targetId = :targetId
             """)
-    void deleteByTripId(@Param("targetId") final Long targetId);
+    void deleteByTargetId(@Param("targetId") final Long targetId);
 }
