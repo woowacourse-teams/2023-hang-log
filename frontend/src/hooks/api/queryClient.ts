@@ -6,9 +6,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: NETWORK.RETRY_COUNT,
-      suspense: true,
-      useErrorBoundary: true,
-      cacheTime: 0,
+      gcTime: 0,
     },
   },
 });

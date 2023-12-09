@@ -19,7 +19,7 @@ export const useSingleImageUpload = ({
   updateFormImage,
 }: UseSingleImageUploadParams) => {
   const imageMutation = useImageMutation();
-  const isImageUploading = imageMutation.isLoading;
+  const isImageUploading = imageMutation.isPending;
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState(initialImageUrl);
 

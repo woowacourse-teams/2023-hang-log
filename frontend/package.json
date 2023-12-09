@@ -65,7 +65,7 @@
     "@storybook/react-webpack5": "^7.2.2",
     "@storybook/testing-library": "^0.2.0",
     "@svgr/webpack": "^8.0.1",
-    "@tanstack/react-query-devtools": "^4.29.23",
+    "@tanstack/react-query-devtools": "^5.13.4",
     "@testing-library/cypress": "^9.0.0",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/google.maps": "^3.53.5",
