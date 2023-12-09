@@ -17,19 +17,19 @@ const SharedTripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 공유코드입니다.');
 
-  const { tripData } = useSharedTripQuery(tripId);
+  const { sharedTripData } = useSharedTripQuery(tripId);
 
   const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
-    tripData.tripType,
+    sharedTripData.tripType,
     tripId
   );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripType={tripData.tripType} tripId={tripId} isEditable={false} />
+        <TripInformation tripType={sharedTripData.tripType} tripId={tripId} isEditable={false} />
         <DayLogList
-          tripType={tripData.tripType}
+          tripType={sharedTripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
@@ -40,8 +40,8 @@ const SharedTripPage = () => {
         <GoogleMapWrapper>
           <TripMap
             places={places}
-            centerLat={tripData.cities[0].latitude}
-            centerLng={tripData.cities[0].longitude}
+            centerLat={sharedTripData.cities[0].latitude}
+            centerLng={sharedTripData.cities[0].longitude}
           />
         </GoogleMapWrapper>
       </section>

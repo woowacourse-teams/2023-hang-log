@@ -17,7 +17,7 @@ export const useUserInfoMutation = () => {
   const userInfoMutation = useMutation({
     mutationFn: putUserInfo,
     onSuccess: () => {
-      queryClient.invalidateQueries(['userInfo']);
+      queryClient.invalidateQueries({ queryKey: ['userInfo'] });
 
       createToast('정보를 성공적으로 수정했습니다!', 'success');
     },

@@ -21,8 +21,8 @@ const CommunityPage = () => {
 
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const { tripsData: recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
-  const { tripsData: communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
+  const { recommendedTripsData } = useRecommendedTripsQuery(isLoggedIn);
+  const { communityTripsData } = useCommunityTripsQuery(page, 10, isLoggedIn);
 
   const { pageIndexDatas, changeNavigationDatas } = useTripPageIndex(
     communityTripsData,

@@ -24,7 +24,7 @@ export const useMultipleImageUpload = ({
   onError,
 }: UseMultipleImageUploadParams) => {
   const imageMutation = useImageMutation();
-  const isImageUploading = imageMutation.isLoading;
+  const isImageUploading = imageMutation.isPending;
 
   const initialImageUrls = convertToImageUrls([...initialImageNames]);
 

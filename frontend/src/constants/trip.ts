@@ -27,4 +27,4 @@ export const TRIP_TYPE = {
   PERSONAL: 'PERSONAL',
   SHARED: 'SHARED',
   PUBLISHED: 'PUBLISHED',
-};
+} as const;

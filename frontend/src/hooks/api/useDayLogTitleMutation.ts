@@ -26,7 +26,7 @@ export const useDayLogTitleMutation = () => {
       createToast('소제목 변경에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     },
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries(['trip', tripId]);
+      queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
     },
   });
 

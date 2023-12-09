@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { match } from 'ts-pattern';
+
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
 
@@ -17,22 +19,15 @@ import { TRIP_TYPE } from '@constants/trip';
 export const useTripQuery = (tripType: TripTypeData, tripId: string) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const queryFn: { trip: () => Promise<TripData> } = {
-    trip: () => getTrip(tripId),
-  };
-
-  if (tripType === TRIP_TYPE.PUBLISHED) {
-    queryFn.trip = () => getCommunityTrip(tripId, isLoggedIn);
-  }
-
-  if (tripType === TRIP_TYPE.SHARED) {
-    queryFn.trip = () => getSharedTrip(tripId);
-  }
-
-  const { data } = useQuery<TripData, AxiosError>([tripType, tripId], queryFn.trip, {
-    cacheTime: 5 * 60 * 1000,
+  const { data: tripData } = useSuspenseQuery<TripData, AxiosError>({
+    queryKey: ['trip', tripType, tripId],
+    queryFn: match(tripType)
+      .with(TRIP_TYPE.PUBLISHED, () => () => getCommunityTrip(tripId, isLoggedIn))
+      .with(TRIP_TYPE.SHARED, () => () => getSharedTrip(tripId))
+      .otherwise(() => () => getTrip(tripId)),
+    gcTime: 5 * 60 * 1000,
     staleTime: 60 * 1000,
   });
 
-  return { tripData: data! };
+  return { tripData };
 };
