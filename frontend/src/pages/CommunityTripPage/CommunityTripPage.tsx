@@ -17,19 +17,19 @@ const CommunityTripPage = () => {
 
   if (!tripId) throw new Error('존재하지 않는 여행입니다.');
 
-  const { tripData } = useCommunityTripQuery(tripId);
+  const { communityTripData } = useCommunityTripQuery(tripId);
 
   const { places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
-    tripData.tripType,
+    communityTripData.tripType,
     tripId
   );
 
   return (
     <Flex>
       <section css={containerStyling}>
-        <TripInformation tripType={tripData.tripType} tripId={tripId} isEditable={false} />
+        <TripInformation tripType={communityTripData.tripType} tripId={tripId} isEditable={false} />
         <DayLogList
-          tripType={tripData.tripType}
+          tripType={communityTripData.tripType}
           tripId={tripId}
           selectedDayLog={selectedDayLog}
           isEditable={false}
@@ -40,8 +40,8 @@ const CommunityTripPage = () => {
         <GoogleMapWrapper>
           <TripMap
             places={places}
-            centerLat={tripData.cities[0].latitude}
-            centerLng={tripData.cities[0].longitude}
+            centerLat={communityTripData.cities[0].latitude}
+            centerLng={communityTripData.cities[0].longitude}
           />
         </GoogleMapWrapper>
       </section>

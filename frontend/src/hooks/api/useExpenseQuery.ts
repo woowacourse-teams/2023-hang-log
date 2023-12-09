@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { match } from 'ts-pattern';
+
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
 
@@ -24,14 +26,15 @@ export const useExpenseQuery = (tripId: string, tripType: TripTypeData) => {
     queryFn.expense = () => getSharedExpense(tripId);
   }
 
-  const { data } = useQuery<ExpenseData, AxiosError>(
-    [`${tripType}expense`, tripId],
-    queryFn.expense,
-    {
-      cacheTime: 5 * 60 * 1000,
-      staleTime: 60 * 1000,
-    }
-  );
+  const { data: expenseData } = useSuspenseQuery<ExpenseData, AxiosError>({
+    queryKey: ['expense', tripType, tripId],
+    queryFn: match(tripType)
+      .with(TRIP_TYPE.PUBLISHED, () => () => getCommunityTripExpense(tripId))
+      .with(TRIP_TYPE.SHARED, () => () => getSharedExpense(tripId))
+      .otherwise(() => () => getExpense(tripId)),
+    gcTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000,
+  });
 
-  return { expenseData: data! };
+  return { expenseData };
 };
