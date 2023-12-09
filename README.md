@@ -55,10 +55,6 @@
 
 ![서비스요청흐름도](https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/dc9c1562-068d-4c73-84ef-d93e9051b679)
 
-## 인프라 구조도
-
-![인프라 구조도](https://github.com/woowacourse-teams/2023-hang-log/assets/102305630/656caaa3-125d-48ed-b996-e2858be4d36c)
-
 ## CI/CD
 
 ![CICD](https://github.com/woowacourse-teams/2023-hang-log/assets/64852591/a55b3a1c-ce12-49d2-b4da-5b394c4de6c1)
