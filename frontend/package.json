@@ -39,6 +39,7 @@
     "@emotion/styled": "^11.11.0",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@tanstack/react-query": "^5.13.4",
+    "assert": "^2.1.0",
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
     "dotenv": "^16.3.1",
@@ -46,7 +47,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "recoil": "^0.7.7"
+    "recoil": "^0.7.7",
+    "ts-pattern": "^5.0.6"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
