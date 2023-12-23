@@ -20,7 +20,7 @@ export const useTripQuery = (tripType: TripTypeData, tripId: string) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
   const { data: tripData } = useSuspenseQuery<TripData, AxiosError>({
-    queryKey: ['trip', tripType, tripId],
+    queryKey: [`${tripType}expense`, tripId],
     queryFn: match(tripType)
       .with(TRIP_TYPE.PUBLISHED, () => () => getCommunityTrip(tripId, isLoggedIn))
       .with(TRIP_TYPE.SHARED, () => () => getSharedTrip(tripId))
