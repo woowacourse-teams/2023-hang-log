@@ -30,6 +30,7 @@ const TripMobilePage = ({ tripType }: { tripType: TripTypeData }) => {
   if (!tripId) throw new Error('존재하지 않는 tripId 입니다');
 
   const { tripData } = useTripQuery(tripType, tripId);
+
   const { dates, places, selectedDayLog, handleDayLogIdSelectClick } = useTripPage(
     tripType,
     tripId
