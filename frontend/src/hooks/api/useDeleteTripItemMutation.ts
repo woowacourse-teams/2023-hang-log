@@ -20,7 +20,7 @@ export const useDeleteTripItemMutation = () => {
   const deleteTripItemMutation = useMutation({
     mutationFn: deleteTripItem,
     onMutate: ({ tripId, itemId }) => {
-      const tripData = queryClient.getQueryData<TripData>([TRIP_TYPE.PERSONAL, tripId]);
+      const tripData = queryClient.getQueryData<TripData>([TRIP_TYPE.PERSONAL, 'trip', tripId]);
 
       queryClient.setQueryData<TripData>([TRIP_TYPE.PERSONAL, tripId], (prevTripData) => {
         if (!prevTripData) return prevTripData;
@@ -50,7 +50,7 @@ export const useDeleteTripItemMutation = () => {
     },
 
     onSettled: (data, error, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, 'trip', tripId] });
     },
   });
 

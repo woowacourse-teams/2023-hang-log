@@ -15,7 +15,7 @@ export const useTripPublishStatusMutation = () => {
     mutationFn: patchTripPublishStatus,
 
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PUBLISHED, tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PUBLISHED, 'trip', tripId] });
     },
 
     onError: () => {

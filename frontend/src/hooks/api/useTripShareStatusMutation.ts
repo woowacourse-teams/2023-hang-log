@@ -17,7 +17,7 @@ export const useTripShareStatusMutation = () => {
   const tripShareStatusMutation = useMutation({
     mutationFn: patchTripSharedStatus,
     onSuccess: (_, { tripId }) => {
-      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, tripId] });
+      queryClient.invalidateQueries({ queryKey: [TRIP_TYPE.PERSONAL, 'trip', tripId] });
     },
     onError: (error: ErrorResponseData) => {
       if (error.code === ERROR_CODE.UNAUTHORIZED && error.message) {
