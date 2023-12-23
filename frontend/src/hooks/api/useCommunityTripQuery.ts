@@ -1,3 +1,5 @@
+import { TRIP_TYPE } from '@/constants/trip';
+
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
@@ -14,7 +16,7 @@ export const useCommunityTripQuery = (tripId: string) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
   const { data: communityTripData } = useSuspenseQuery<TripData, AxiosError>({
-    queryKey: ['published', tripId],
+    queryKey: [TRIP_TYPE.PUBLISHED, tripId],
     queryFn: () => getCommunityTrip(tripId, isLoggedIn),
   });
 
