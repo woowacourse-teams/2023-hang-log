@@ -27,7 +27,7 @@ export const useExpenseQuery = (tripId: string, tripType: TripTypeData) => {
   }
 
   const { data: expenseData } = useSuspenseQuery<ExpenseData, AxiosError>({
-    queryKey: [`${tripType}expense`, tripId],
+    queryKey: [tripType, 'expense', tripId],
     queryFn: match(tripType)
       .with(TRIP_TYPE.PUBLISHED, () => () => getCommunityTripExpense(tripId))
       .with(TRIP_TYPE.SHARED, () => () => getSharedExpense(tripId))

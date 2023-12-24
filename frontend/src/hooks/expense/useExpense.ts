@@ -12,7 +12,7 @@ import { EXPENSE_CHART_COLORS } from '@constants/expense';
 export const useExpense = (tripId: string, tripType: TripTypeData) => {
   const queryClient = useQueryClient();
 
-  const expenseData = queryClient.getQueryData<ExpenseData>([`${tripType}expense`, tripId])!;
+  const expenseData = queryClient.getQueryData<ExpenseData>([tripType, 'expense', tripId])!;
 
   const dates = expenseData.dayLogs.map((data) => ({
     id: data.id,

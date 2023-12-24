@@ -37,7 +37,7 @@ describe('여행 생성 페이지', () => {
     cy.get('span').contains('오클랜드');
 
     cy.get('svg[aria-label="삭제 아이콘"]').last().click();
-    cy.get('span').should('not.contain.text', '오클랜드');
+    cy.get('body').should('not.contain.text', '오클랜드');
   });
 
   it('방문 기간을 클릭해 달력을 열어 방문기간을 입력할 수 있다.', () => {
