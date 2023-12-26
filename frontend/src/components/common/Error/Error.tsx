@@ -1,4 +1,10 @@
+import * as Sentry from '@sentry/react';
+
+import { useEffect } from 'react';
+
 import { useRecoilValue } from 'recoil';
+
+import axios from 'axios';
 
 import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
 
@@ -32,6 +38,17 @@ const Error = ({ statusCode = HTTP_STATUS_CODE.NOT_FOUND, errorCode, resetError 
   const isMobile = useRecoilValue(mediaQueryMobileState);
 
   const { handleTokenError } = useTokenError();
+
+  useEffect(() => {
+    if (statusCode === HTTP_STATUS_CODE.NOT_FOUND) {
+      axios.get('https://geolocation-db.com/json/').then((res) => {
+        Sentry.withScope((scope) => {
+          scope.setLevel('warning');
+          Sentry.captureMessage(`[Warning] ${window.location.href} from ${res.data.IPv4}`);
+        });
+      });
+    }
+  }, [statusCode]);
 
   if (!isHTTPError) return null;
 

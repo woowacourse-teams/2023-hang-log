@@ -1,4 +1,5 @@
 import { Global } from '@emotion/react';
+import * as Sentry from '@sentry/react';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -21,6 +22,8 @@ import { GlobalStyle } from '@styles/index';
 import { worker } from '@mocks/browser';
 
 const main = async () => {
+  const tracePropagationTargets: (RegExp | string)[] = [/^https:\/\/hanglog\.(com|site)/];
+
   if (process.env.NODE_ENV === 'development') {
     await worker.start({
       serviceWorker: {
@@ -29,6 +32,20 @@ const main = async () => {
       onUnhandledRequest: 'bypass',
     });
   }
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      new Sentry.BrowserTracing({
+        tracePropagationTargets,
+      }),
+      new Sentry.Replay(),
+    ],
+
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
 
   const root = createRoot(document.querySelector('#root') as Element);
 

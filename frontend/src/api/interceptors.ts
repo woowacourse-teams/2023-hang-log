@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/react';
+
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 import { HTTPError } from '@api/HTTPError';
@@ -30,6 +32,11 @@ export const checkAndSetToken = (config: InternalAxiosRequestConfig) => {
 };
 
 export const handleTokenError = async (error: AxiosError<ErrorResponseData>) => {
+  Sentry.withScope((scope) => {
+    scope.setLevel('error');
+    Sentry.captureMessage(`[TokenError] ${window.location.href} \n ${error.response?.data}`);
+  });
+
   const originalRequest = error.config;
 
   if (!error.response || !originalRequest) throw new Error('에러가 발생했습니다.');
@@ -64,6 +71,11 @@ export const handleTokenError = async (error: AxiosError<ErrorResponseData>) => 
 };
 
 export const handleAPIError = (error: AxiosError<ErrorResponseData>) => {
+  Sentry.withScope((scope) => {
+    scope.setLevel('error');
+    Sentry.captureMessage(`[APIError] ${window.location.href} \n ${error.response?.data}`);
+  });
+
   if (!error.response) throw error;
 
   const { data, status } = error.response;
