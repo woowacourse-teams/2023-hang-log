@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/react';
+
 import type { ComponentType, PropsWithChildren } from 'react';
 import { Component } from 'react';
 
@@ -25,6 +27,13 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Sta
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error | HTTPError): void {
+    Sentry.withScope((scope) => {
+      scope.setLevel('error');
+      Sentry.captureMessage(`[${error.name}] ${window.location.href}`);
+    });
   }
 
   resetErrorBoundary = () => {
