@@ -2,7 +2,6 @@ package hanglog.login.infrastructure.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
-import static java.lang.Boolean.TRUE;
 
 import hanglog.global.exception.AuthException;
 import hanglog.login.domain.OauthAccessToken;
@@ -61,8 +60,8 @@ public class KakaoOauthProvider implements OauthProvider {
         headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
 
-        final Map<String, Boolean> queryParam = new HashMap<>();
-        queryParam.put(SECURE_RESOURCE, TRUE);
+        final Map<String, String> queryParam = new HashMap<>();
+        queryParam.put(SECURE_RESOURCE, "true");
 
         final ResponseEntity<KakaoUserInfo> response = restTemplate.exchange(
                 userUri,
