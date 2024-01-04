@@ -1,7 +1,6 @@
 package hanglog.trip.service;
 
-import static hanglog.global.exception.ExceptionCode.EMPTY_IMAGE_LIST;
-import static hanglog.global.exception.ExceptionCode.EXCEED_IMAGE_LIST_SIZE;
+import static hanglog.global.exception.ExceptionCode.*;
 
 import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
@@ -35,7 +34,11 @@ public class ImageService {
 
     private List<String> uploadImages(final List<ImageFile> imageFiles) {
         try {
-            return imageUploader.uploadImages(imageFiles);
+            final List<String> uploadedImageNames = imageUploader.uploadImages(imageFiles);
+            if(uploadedImageNames.size() != imageFiles.size()) {
+                throw new ImageException(INVALID_IMAGE_PATH);
+            }
+            return uploadedImageNames;
         } catch (final ImageException e) {
             imageFiles.forEach(imageFile -> publisher.publishEvent(new S3ImageEvent(imageFile.getHashedName())));
             throw e;
