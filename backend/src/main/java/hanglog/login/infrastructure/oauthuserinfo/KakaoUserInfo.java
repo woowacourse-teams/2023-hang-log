@@ -13,8 +13,8 @@ public class KakaoUserInfo implements OauthUserInfo {
 
     @JsonProperty("id")
     private String socialLoginId;
-    @JsonProperty("properties")
-    private Properties properties;
+    @JsonProperty("kakao_account")
+    private KakaoAccount kakaoAccount;
 
     @Override
     public String getSocialLoginId() {
@@ -23,20 +23,28 @@ public class KakaoUserInfo implements OauthUserInfo {
 
     @Override
     public String getNickname() {
-        return properties.name;
+        return kakaoAccount.kakaoProfile.nickname;
     }
 
     @Override
     public String getImageUrl() {
-        return properties.image;
+        return kakaoAccount.kakaoProfile.image;
     }
 
     @NoArgsConstructor(access = PRIVATE)
-    private static class Properties {
+    private static class KakaoAccount {
+
+        @JsonProperty("profile")
+        private KakaoProfile kakaoProfile;
+    }
+
+    @NoArgsConstructor(access = PRIVATE)
+    private static class KakaoProfile {
 
         @JsonProperty("nickname")
-        private String name;
-        @JsonProperty("profile_image")
+        private String nickname;
+
+        @JsonProperty("profile_image_url")
         private String image;
     }
 }
