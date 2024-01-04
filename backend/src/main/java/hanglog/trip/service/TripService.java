@@ -12,6 +12,8 @@ import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.outbox.domain.OutBox;
+import hanglog.outbox.domain.type.TargetType;
 import hanglog.trip.domain.DayLog;
 import hanglog.trip.domain.PublishDeleteEvent;
 import hanglog.trip.domain.PublishEvent;
@@ -22,6 +24,7 @@ import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomTripCityRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.domain.type.PublishedStatusType;
 import hanglog.trip.dto.request.PublishedStatusRequest;
@@ -55,6 +58,7 @@ public class TripService {
     private final SharedTripRepository sharedTripRepository;
     private final CustomDayLogRepository customDayLogRepository;
     private final CustomTripCityRepository customTripCityRepository;
+    private final OutBoxRepository outBoxRepository;
     private final ApplicationEventPublisher publisher;
 
     public void validateTripByMember(final Long memberId, final Long tripId) {
@@ -107,7 +111,7 @@ public class TripService {
         final List<City> cities = cityRepository.findCitiesByTripId(trip.getId());
         return TripResponse.of(trip, cities);
     }
-    
+
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
@@ -194,6 +198,7 @@ public class TripService {
         publisher.publishEvent(new PublishDeleteEvent(tripId));
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
+        outBoxRepository.save(new OutBox(tripId, TargetType.TRIP));
         publisher.publishEvent(new TripDeleteEvent(tripId));
     }
 

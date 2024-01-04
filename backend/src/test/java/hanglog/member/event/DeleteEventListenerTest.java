@@ -19,6 +19,7 @@ import hanglog.trip.domain.repository.ImageRepository;
 import hanglog.trip.domain.repository.ItemRepository;
 import hanglog.trip.domain.repository.PlaceRepository;
 import hanglog.trip.domain.repository.TripCityRepository;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ class DeleteEventListenerTest {
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private TripCityRepository tripCityRepository;
+    @Mock
+    private OutBoxRepository outBoxRepository;
     @InjectMocks
     private DeleteEventListener listener;
 
@@ -98,6 +101,7 @@ class DeleteEventListenerTest {
         doNothing().when(itemRepository).deleteByIds(anyList());
         doNothing().when(dayLogRepository).deleteByIds(anyList());
         doNothing().when(tripCityRepository).deleteAllByTripId(anyLong());
+        doNothing().when(outBoxRepository).deleteByTargetId(anyLong());
 
         // when
         listener.deleteTrip(event);
@@ -111,5 +115,6 @@ class DeleteEventListenerTest {
         verify(itemRepository, times(1)).deleteByIds(anyList());
         verify(dayLogRepository, times(1)).deleteByIds(anyList());
         verify(tripCityRepository, times(1)).deleteAllByTripId(anyLong());
+        verify(outBoxRepository, times(1)).deleteByTargetId(anyLong());
     }
 }

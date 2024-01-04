@@ -3,8 +3,8 @@ package hanglog.listener;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 import hanglog.expense.domain.repository.ExpenseRepository;
-import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.MemberDeleteEvent;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
@@ -35,7 +35,7 @@ public class DeleteEventListener {
     private final DayLogRepository dayLogRepository;
     private final TripCityRepository tripCityRepository;
     private final TripRepository tripRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final OutBoxRepository outBoxRepository;
 
     @Async
     @Transactional(propagation = REQUIRES_NEW)
@@ -50,6 +50,7 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripRepository.deleteByMemberId(event.getMemberId());
+        outBoxRepository.deleteByTargetId(event.getMemberId());
     }
 
     @Async
@@ -65,6 +66,7 @@ public class DeleteEventListener {
 
         dayLogRepository.deleteByIds(dayLogIds);
         tripCityRepository.deleteAllByTripId(event.getTripId());
+        outBoxRepository.deleteByTargetId(event.getTripId());
     }
 
     private void deletePlaces(final List<ItemElement> itemElements) {

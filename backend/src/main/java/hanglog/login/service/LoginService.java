@@ -17,8 +17,11 @@ import hanglog.login.infrastructure.JwtProvider;
 import hanglog.member.domain.Member;
 import hanglog.member.domain.MemberDeleteEvent;
 import hanglog.member.domain.repository.MemberRepository;
+import hanglog.outbox.domain.OutBox;
+import hanglog.outbox.domain.type.TargetType;
 import hanglog.trip.domain.repository.CustomTripRepository;
 import hanglog.trip.domain.repository.SharedTripRepository;
+import hanglog.outbox.domain.repository.OutBoxRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,6 +44,7 @@ public class LoginService {
     private final OauthProviders oauthProviders;
     private final JwtProvider jwtProvider;
     private final BearerAuthorizationExtractor bearerExtractor;
+    private final OutBoxRepository outBoxRepository;
     private final ApplicationEventPublisher publisher;
 
     public MemberTokens login(final String providerName, final String code) {
@@ -101,6 +105,7 @@ public class LoginService {
         publishedTripRepository.deleteByTripIds(tripIds);
         sharedTripRepository.deleteByTripIds(tripIds);
         memberRepository.deleteByMemberId(memberId);
+        outBoxRepository.save(new OutBox(memberId, TargetType.MEMBER));
         publisher.publishEvent(new MemberDeleteEvent(tripIds, memberId));
     }
 }
