@@ -2,10 +2,10 @@ package hanglog.listener;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
+import hanglog.event.TripDeleteEvent;
 import hanglog.expense.domain.repository.ExpenseRepository;
 import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.member.domain.MemberDeleteEvent;
-import hanglog.trip.domain.TripDeleteEvent;
 import hanglog.trip.domain.repository.CustomDayLogRepository;
 import hanglog.trip.domain.repository.CustomItemRepository;
 import hanglog.trip.domain.repository.DayLogRepository;

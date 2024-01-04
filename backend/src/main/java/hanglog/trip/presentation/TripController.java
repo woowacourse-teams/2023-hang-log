@@ -1,5 +1,6 @@
 package hanglog.trip.presentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import hanglog.auth.Auth;
 import hanglog.auth.MemberOnly;
 import hanglog.auth.domain.Accessor;
@@ -75,7 +76,10 @@ public class TripController {
 
     @DeleteMapping("/{tripId}")
     @MemberOnly
-    public ResponseEntity<Void> deleteTrip(@Auth final Accessor accessor, @PathVariable final Long tripId) {
+    public ResponseEntity<Void> deleteTrip(
+            @Auth final Accessor accessor,
+            @PathVariable final Long tripId
+    ) throws JsonProcessingException {
         tripService.validateTripByMember(accessor.getMemberId(), tripId);
         tripService.delete(tripId);
         return ResponseEntity.noContent().build();

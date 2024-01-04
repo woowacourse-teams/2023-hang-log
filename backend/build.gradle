@@ -56,6 +56,10 @@ dependencies {
 
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-62:3.6.1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+
 }
 
 test {
