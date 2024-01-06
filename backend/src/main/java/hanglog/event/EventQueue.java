@@ -16,12 +16,14 @@ public class EventQueue {
 
     private final ApplicationEventPublisher publisher;
 
-    @Scheduled(fixedRate = 2000)
+    // 매일 새벽 3시에 실행
+    @Scheduled(cron = "0 0 3 * * *")
     public void offerSavedEvent() {
         queue.addAll(outboxRepository.findAll());
     }
 
-    @Scheduled(fixedRate = 2000)
+    // 매일 3시00분-4시55분 사이에 1분 간격으로 실행
+    @Scheduled(cron = "0 0/1 3-5 * * *")
     public void pollEvent() {
         if (queue.isEmpty()) {
             return;
