@@ -2,10 +2,8 @@ package hanglog.event;
 
 import static jakarta.persistence.EnumType.STRING;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.global.BaseEntity;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -35,11 +33,10 @@ public class Outbox extends BaseEntity {
     @Enumerated(value = STRING)
     private EventType eventType;
 
-    @Type(JsonType.class)
-    @Column(name = "payload", columnDefinition = "json")
-    private String eventPayload;
+    @Column(name = "payload")
+    private Long eventPayload;
 
-    public Outbox(final EventType eventType, final String eventPayload) {
+    public Outbox(final EventType eventType, final Long eventPayload) {
         this.id = null;
         this.eventType = eventType;
         this.eventPayload = eventPayload;

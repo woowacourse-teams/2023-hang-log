@@ -1,11 +1,10 @@
 package hanglog.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 import lombok.Getter;
 
 @Getter
-public class TripDeleteEvent extends Event implements Serializable {
+public class TripDeleteEvent extends Event {
 
     @JsonProperty
     private Long tripId;
@@ -18,9 +17,5 @@ public class TripDeleteEvent extends Event implements Serializable {
     public TripDeleteEvent(final Long tripId) {
         super(null, EventType.TRIP_DELETE);
         this.tripId = tripId;
-    }
-
-    public TripDeleteEvent() {
-        super(EventType.TRIP_DELETE);
     }
 }

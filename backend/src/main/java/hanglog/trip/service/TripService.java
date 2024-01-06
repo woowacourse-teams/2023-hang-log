@@ -6,13 +6,11 @@ import static hanglog.global.exception.ExceptionCode.NOT_FOUND_MEMBER_ID;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import hanglog.city.domain.City;
+import hanglog.city.domain.repository.CityRepository;
 import hanglog.event.EventType;
 import hanglog.event.Outbox;
 import hanglog.event.OutboxRepository;
-import hanglog.event.PayloadToEventMapper;
-import hanglog.event.TripDeleteEvent;
-import hanglog.city.domain.City;
-import hanglog.city.domain.repository.CityRepository;
 import hanglog.global.exception.AuthException;
 import hanglog.global.exception.BadRequestException;
 import hanglog.image.domain.S3ImageEvent;
@@ -201,8 +199,7 @@ public class TripService {
         sharedTripRepository.deleteByTripId(tripId);
         tripRepository.deleteById(tripId);
 
-        final String payload = PayloadToEventMapper.toJson(new TripDeleteEvent(tripId));
-        outboxRepository.save(new Outbox(EventType.TRIP_DELETE, payload));
+        outboxRepository.save(new Outbox(EventType.TRIP_DELETE, tripId));
     }
 
     private String generateInitialTitle(final List<City> cites) {
