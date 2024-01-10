@@ -12,7 +12,7 @@ public class Event {
     private Long outboxId;
 
     @JsonProperty
-    private final EventType eventType;
+    private EventType eventType;
 
     public Event(final Long outboxId, final EventType eventType) {
         this.outboxId = outboxId;

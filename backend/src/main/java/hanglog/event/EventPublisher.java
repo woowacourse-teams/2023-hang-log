@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EventQueue {
+public class EventPublisher {
 
     private final Queue<Outbox> queue = new LinkedList<>();
     private final OutboxRepository outboxRepository;
-
     private final ApplicationEventPublisher publisher;
 
     // 매일 새벽 3시에 실행
