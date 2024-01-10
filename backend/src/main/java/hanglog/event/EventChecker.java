@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @AllArgsConstructor
-public class EventHandler {
+public class EventChecker {
 
     private final OutboxRepository outboxRepository;
-    private final EventRetryPublisher eventRetryPublisher;
+    private final EventRetryExecutor eventRetryExecutor;
 
     @AfterReturning("@annotation(org.springframework.transaction.event.TransactionalEventListener)")
     public void checkSuccess(final JoinPoint joinPoint) {
@@ -26,7 +26,7 @@ public class EventHandler {
     public void checkFail(final JoinPoint joinPoint) {
         final Event event = castToEvent(joinPoint);
 //        outboxRepository.updateStatusToRetry();
-        eventRetryPublisher.add(event);
+        eventRetryExecutor.add(event);
     }
 
     private Event castToEvent(final JoinPoint joinPoint) {

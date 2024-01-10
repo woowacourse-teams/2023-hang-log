@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EventPublisher {
+public class EventExecutor {
 
     private final Queue<Outbox> queue = new LinkedList<>();
     private final OutboxRepository outboxRepository;

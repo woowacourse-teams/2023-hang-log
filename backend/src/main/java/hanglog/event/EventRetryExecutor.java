@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class EventRetryPublisher {
+public class EventRetryExecutor {
 
     private final Queue<Event> queue = new LinkedList<>();
     private final RetryEventCountRepository retryEventCountRepository;
