@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { Box, Carousel, ImageCarousel, Modal, Text, useOverlay } from 'hang-log-design-system';
+import { Box, GeneralCarousel, Modal, Text, useOverlay } from 'hang-log-design-system';
 
 import StarRating from '@components/common/StarRating/StarRating';
 import EditMenu from '@components/common/TripItem/EditMenu/EditMenu';
@@ -26,7 +26,7 @@ import useResizeImage from '@hooks/trip/useResizeImage';
 
 import { mediaQueryMobileState } from '@store/mediaQuery';
 
-import { convertToImageUrl, convertToImageUrls } from '@utils/convertImage';
+import { convertToImageUrl } from '@utils/convertImage';
 import { formatNumberToMoney } from '@utils/formatter';
 
 import type { TripItemData } from '@type/tripItem';
@@ -93,15 +93,20 @@ const TripItem = ({
                 }
               }}
             >
-              <ImageCarousel
+              <GeneralCarousel
                 width={isMobile ? width : TRIP_ITEM_IMAGE_WIDTH}
                 height={isMobile ? height : TRIP_ITEM_IMAGE_HEIGHT}
-                isDraggable={false}
                 showNavigationOnHover={!isMobile}
                 showArrows={information.imageNames.length > 1}
                 showDots={information.imageNames.length > 1}
-                images={convertToImageUrls(information.imageNames)}
-              />
+                length={information.imageNames.length}
+              >
+                {information.imageNames.map((imageName, index) => (
+                  <GeneralCarousel.Item index={index}>
+                    <img src={convertToImageUrl(imageName)} alt={imageName} />
+                  </GeneralCarousel.Item>
+                ))}
+              </GeneralCarousel>
             </div>
           )}
           <Box tag="section" css={informationContainerStyling}>
@@ -139,21 +144,22 @@ const TripItem = ({
       </li>
       {!isMobile && (
         <Modal isOpen={isImageModalOpen} closeModal={closeImageModal} css={imageModalStyling}>
-          <Carousel
+          <GeneralCarousel
             width={800}
             height={500}
-            isDraggable={false}
             showNavigationOnHover={!isMobile}
             showArrows={information.imageNames.length > 1}
             showDots={information.imageNames.length > 1}
-            images={convertToImageUrls(information.imageNames)}
+            length={information.imageNames.length}
           >
-            {information.imageNames.map((imageName) => (
-              <div css={expandedImageContainer}>
-                <img src={convertToImageUrl(imageName)} alt="이미지" css={expandedImage} />
-              </div>
+            {information.imageNames.map((imageName, index) => (
+              <GeneralCarousel.Item index={index}>
+                <div css={expandedImageContainer}>
+                  <img src={convertToImageUrl(imageName)} alt="이미지" css={expandedImage} />
+                </div>
+              </GeneralCarousel.Item>
             ))}
-          </Carousel>
+          </GeneralCarousel>
         </Modal>
       )}
     </>
