@@ -3,6 +3,7 @@ package hanglog.global;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
 import hanglog.admin.AdminLoginArgumentResolver;
+import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.global.restdocs.RestDocsConfiguration;
 import hanglog.login.LoginArgumentResolver;
 import hanglog.login.domain.repository.RefreshTokenRepository;
@@ -42,6 +43,9 @@ public abstract class ControllerTest {
 
     @MockBean
     protected RefreshTokenRepository refreshTokenRepository;
+
+    @MockBean
+    protected AdminMemberRepository adminMemberRepository;
 
     @MockBean
     BearerAuthorizationExtractor bearerExtractor;
