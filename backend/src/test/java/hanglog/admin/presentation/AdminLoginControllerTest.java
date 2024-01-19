@@ -21,9 +21,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.admin.domain.type.AdminType;
-import hanglog.admin.dto.request.AdminMemberCreateRequest.AdminLoginRequest;
+import hanglog.admin.dto.request.AdminLoginRequest;
 import hanglog.admin.service.AdminLoginService;
 import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
@@ -57,9 +56,6 @@ class AdminLoginControllerTest extends ControllerTest {
 
     @MockBean
     private AdminLoginService adminLoginService;
-
-    @MockBean
-    protected AdminMemberRepository adminMemberRepository;
 
     @DisplayName("관리자 로그인을 할 수 있다.")
     @Test
