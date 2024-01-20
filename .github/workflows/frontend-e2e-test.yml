@@ -21,8 +21,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Create env file
+      - name: yarn
         run: yarn install
+
+      - name: Create env file
+        run: |
           touch .env
           echo GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} >> .env
           echo GOOGLE_MAP_ID=${{ secrets.GOOGLE_MAP_ID }} >> .env
