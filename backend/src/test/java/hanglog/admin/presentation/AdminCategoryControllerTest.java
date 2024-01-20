@@ -8,9 +8,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,4 +128,36 @@ class AdminCategoryControllerTest extends ControllerTest {
                 ));
     }
 
+    @DisplayName("카테고리 정보를 수정한다.")
+    @Test
+    void updateCategory() throws Exception {
+        // given
+        final CategoryRequest request = new CategoryRequest("engName", "korName");
+
+        doNothing().when(categoryService).update(1L, request);
+
+        // when & then
+        mockMvc.perform(put("/admin/categories/{categoryId}", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("categoryId")
+                                        .description("카테고리 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("engName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("영어 이름")
+                                        .attributes(field("constraint", "50자 이내의 영어 문자열")),
+                                fieldWithPath("korName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("한글 이름")
+                                        .attributes(field("constraint", "50자 이내의 한글 문자열"))
+                        )
+                ));
+    }
 }

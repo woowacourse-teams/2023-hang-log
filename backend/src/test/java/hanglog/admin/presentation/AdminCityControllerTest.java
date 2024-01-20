@@ -152,7 +152,6 @@ class AdminCityControllerTest extends ControllerTest {
                 ));
     }
 
-
     @DisplayName("도시 정보를 수정한다.")
     @Test
     void updateCity() throws Exception {
