@@ -71,7 +71,7 @@ public class CurrencyService {
     }
 
     public void saveDailyCurrency(final LocalDate date) {
-        validateDate(date);
+        validateDateDuplicate(date);
 
         validateWeekend(date);
         final List<SingleCurrencyResponse> singleCurrencyResponses = requestFilteredCurrencyResponses(date);
@@ -88,7 +88,7 @@ public class CurrencyService {
         currencyRepository.save(currency);
     }
 
-    private void validateDate(final LocalDate date) {
+    private void validateDateDuplicate(final LocalDate date) {
         if (currencyRepository.existsByDate(date)) {
             throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
         }
@@ -159,8 +159,23 @@ public class CurrencyService {
     }
 
     public Long save(final CurrencyRequest currencyRequest) {
-        validateDate(currencyRequest.getDate());
+        validateDateDuplicate(currencyRequest.getDate());
 
         return currencyRepository.save(Currency.of(currencyRequest)).getId();
+    }
+
+    public void update(final Long id, final CurrencyRequest currencyRequest) {
+        final Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
+
+        validateDateDuplicate(currency, currencyRequest.getDate());
+
+        currency.update(currencyRequest);
+    }
+
+    private void validateDateDuplicate(final Currency currency, final LocalDate newDate) {
+        if (!currency.getDate().equals(newDate)) {
+            validateDateDuplicate(newDate);
+        }
     }
 }

@@ -68,7 +68,6 @@ public enum ExceptionCode {
     DUPLICATED_CATEGORY_NAME(8311, "중복된 카테고리 이름입니다."),
     NOT_FOUND_CATEGORY(8312, "요청한 ID에 해당하는 카테고리를 찾을 수 없습니다."),
 
-
     INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
     NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),
     FAIL_TO_CONVERT_URL_PARAMETER(9003, "Url Parameter 변환 중 오류가 발생했습니다."),
