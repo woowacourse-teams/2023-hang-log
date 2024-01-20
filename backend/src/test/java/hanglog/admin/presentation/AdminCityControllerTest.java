@@ -8,9 +8,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -128,6 +131,52 @@ class AdminCityControllerTest extends ControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/admin/cities/1"))
                 .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("도시 이름")
+                                        .attributes(field("constraint", "20자 이내의 문자열")),
+                                fieldWithPath("country")
+                                        .type(JsonFieldType.STRING)
+                                        .description("나라 이름")
+                                        .attributes(field("constraint", "20자 이내의 문자열")),
+                                fieldWithPath("latitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("위도")
+                                        .attributes(field("constraint", "BigDecimal(3,13)")),
+                                fieldWithPath("longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "BigDecimal(3,13)"))
+                        )
+                ));
+    }
+
+
+    @DisplayName("도시 정보를 수정한다.")
+    @Test
+    void updateCity() throws Exception {
+        // given
+        final CityRequest request = new CityRequest(
+                "newName",
+                "country",
+                BigDecimal.valueOf(123.12345),
+                BigDecimal.valueOf(123.12345)
+        );
+        doNothing().when(cityService).update(1L, request);
+
+        // when & then
+        mockMvc.perform(put("/admin/cities/{cityId}", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("cityId")
+                                        .description("도시 ID")
+                        ),
                         requestFields(
                                 fieldWithPath("name")
                                         .type(JsonFieldType.STRING)
