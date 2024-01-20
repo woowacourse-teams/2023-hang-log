@@ -1,12 +1,12 @@
 name: Cypress Tests
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - develop
     paths:
       - frontend-monorepo/hanglog-service/**
       - .github/**
+  workflow_dispatch:
 
 defaults:
   run:
