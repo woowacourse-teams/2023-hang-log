@@ -1,6 +1,6 @@
 name: Cypress Tests
 on:
-  pull_request:
+  push:
     branches:
       - refactor/#777
     paths:
