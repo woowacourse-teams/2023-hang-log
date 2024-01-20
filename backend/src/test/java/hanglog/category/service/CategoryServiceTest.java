@@ -5,7 +5,9 @@ import static hanglog.category.fixture.CategoryFixture.EXPENSE_CATEGORIES;
 import static hanglog.category.fixture.CategoryFixture.FOOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -16,6 +18,7 @@ import hanglog.category.dto.response.CategoryDetailResponse;
 import hanglog.category.dto.response.CategoryResponse;
 import hanglog.global.exception.BadRequestException;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -96,6 +99,46 @@ class CategoryServiceTest {
 
         // when & then
         assertThatThrownBy(() -> categoryService.save(categoryRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("카테고리 정보를 수정한다.")
+    @Test
+    void update() {
+        // given
+        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
+        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(false);
+
+        // when & then
+        assertDoesNotThrow(() -> categoryService.update(FOOD.getId(), categoryRequest));
+    }
+
+    @DisplayName("수정한 카테고리의 이름이 다른 카테고리와 중복되면 예외가 발생한다.")
+    @Test
+    void update_DuplicateFail() {
+        // given
+        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
+        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(true);
+
+        // when & then
+        assertThatThrownBy(() -> categoryService.update(FOOD.getId(), categoryRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("ID에 해당하는 카테고리가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void update_NotFoundFail() {
+        // given
+        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> categoryService.update(FOOD.getId(), categoryRequest))
                 .isInstanceOf(BadRequestException.class);
     }
 }
