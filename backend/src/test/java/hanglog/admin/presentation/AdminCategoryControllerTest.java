@@ -7,12 +7,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.category.dto.request.CategoryRequest;
 import hanglog.category.dto.response.CategoryDetailResponse;
 import hanglog.category.service.CategoryService;
 import hanglog.global.ControllerTest;
@@ -27,6 +31,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -89,4 +94,35 @@ class AdminCategoryControllerTest extends ControllerTest {
                         )
                 ));
     }
+
+    @DisplayName("새로운 카테고리를 생성한다.")
+    @Test
+    void createCategory() throws Exception {
+        // given
+        final CategoryRequest request = new CategoryRequest("engName", "korName");
+
+        given(categoryService.save(any(CategoryRequest.class))).willReturn(1L);
+
+        // when & then
+        mockMvc.perform(post("/admin/categories")
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/admin/categories/1"))
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("engName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("영어 이름")
+                                        .attributes(field("constraint", "50자 이내의 영어 문자열")),
+                                fieldWithPath("korName")
+                                        .type(JsonFieldType.STRING)
+                                        .description("한글 이름")
+                                        .attributes(field("constraint", "50자 이내의 한글 문자열"))
+                        )
+                ));
+    }
+
 }
