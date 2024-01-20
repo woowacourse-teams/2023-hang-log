@@ -57,7 +57,6 @@ class AdminCityControllerTest extends ControllerTest {
     @MockBean
     private CityService cityService;
 
-
     @BeforeEach
     void setUp() {
         given(refreshTokenRepository.existsById(any())).willReturn(true);
