@@ -1,6 +1,7 @@
 package hanglog.category.service;
 
 import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_NAME;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
@@ -45,6 +46,21 @@ public class CategoryService {
     private void validateCategoryDuplicate(final CategoryRequest categoryRequest) {
         if (categoryRepository.existsByEngNameAndKorName(categoryRequest.getEngName(), categoryRequest.getKorName())) {
             throw new BadRequestException(DUPLICATED_CATEGORY_NAME);
+        }
+    }
+
+    public void update(final Long id, final CategoryRequest categoryRequest) {
+        final Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CATEGORY_ID));
+
+        validateCategoryDuplicate(category, categoryRequest);
+
+        category.update(categoryRequest);
+    }
+
+    private void validateCategoryDuplicate(final Category category, final CategoryRequest categoryRequest) {
+        if (!category.isSameNames(categoryRequest.getEngName(), categoryRequest.getKorName())) {
+            validateCategoryDuplicate(categoryRequest);
         }
     }
 }
