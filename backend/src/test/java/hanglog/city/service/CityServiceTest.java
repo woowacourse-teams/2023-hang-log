@@ -100,7 +100,7 @@ class CityServiceTest {
 
         given(cityRepository.existsByNameAndCountry(anyString(), anyString())).willReturn(true);
 
-        // when
+        // when &then
         assertThatThrownBy(() -> cityService.save(cityRequest))
                 .isInstanceOf(BadRequestException.class);
     }
