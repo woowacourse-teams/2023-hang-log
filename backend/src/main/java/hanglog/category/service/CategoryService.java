@@ -1,9 +1,13 @@
 package hanglog.category.service;
 
+import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_NAME;
+
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.category.dto.request.CategoryRequest;
 import hanglog.category.dto.response.CategoryDetailResponse;
 import hanglog.category.dto.response.CategoryResponse;
+import hanglog.global.exception.BadRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,5 +34,17 @@ public class CategoryService {
         return expenseCategories.stream()
                 .map(CategoryDetailResponse::of)
                 .toList();
+    }
+
+    public Long save(final CategoryRequest categoryRequest) {
+        validateCategoryDuplicate(categoryRequest);
+
+        return categoryRepository.save(Category.of(categoryRequest)).getId();
+    }
+
+    private void validateCategoryDuplicate(final CategoryRequest categoryRequest) {
+        if (categoryRepository.existsByEngNameAndKorName(categoryRequest.getEngName(), categoryRequest.getKorName())) {
+            throw new BadRequestException(DUPLICATED_CATEGORY_NAME);
+        }
     }
 }

@@ -2,6 +2,7 @@ package hanglog.category.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.category.dto.request.CategoryRequest;
 import hanglog.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +30,10 @@ public class Category extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String korName;
+
+    public static Category of(final CategoryRequest categoryRequest) {
+        return new Category(null, categoryRequest.getEngName(), categoryRequest.getKorName());
+    }
 
     @Override
     public boolean equals(final Object o) {
