@@ -6,6 +6,8 @@ on:
     paths:
       - frontend-monorepo/hanglog-service/**
       - .github/**
+      - frontend-monorepo/.yarn/cache
+      - frontend-monorepo/.pnp.cjs
 
 defaults:
   run:
