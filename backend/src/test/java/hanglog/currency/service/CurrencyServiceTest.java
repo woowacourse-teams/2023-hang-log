@@ -5,7 +5,9 @@ import static hanglog.currency.fixture.CurrencyFixture.CURRENCY_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import hanglog.currency.domain.Currency;
@@ -14,7 +16,9 @@ import hanglog.currency.dto.request.CurrencyRequest;
 import hanglog.currency.dto.response.CurrencyListResponse;
 import hanglog.currency.dto.response.CurrencyResponse;
 import hanglog.global.exception.BadRequestException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,6 +110,81 @@ class CurrencyServiceTest {
 
         // when &then
         assertThatThrownBy(() -> currencyService.save(currencyRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("환율 정보를 수정한다.")
+    @Test
+    void update() {
+        // given
+        final CurrencyRequest currencyRequest = new CurrencyRequest(
+                CURRENCY_1.getDate(),
+                99.99,
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        given(currencyRepository.findById(anyLong())).willReturn(Optional.of(CURRENCY_1));
+
+        // when & then
+        assertDoesNotThrow(() -> currencyService.update(CURRENCY_1.getId(), currencyRequest));
+    }
+
+    @DisplayName("수정한 환율 정보의 날짜가 다른 환율 정보와 중복되면 예외가 발생한다.")
+    @Test
+    void update_DuplicateFail() {
+        // given
+        final CurrencyRequest currencyRequest = new CurrencyRequest(
+                LocalDate.of(9999, 1, 1),
+                99.99,
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        given(currencyRepository.findById(anyLong())).willReturn(Optional.of(CURRENCY_1));
+        given(currencyRepository.existsByDate(any())).willReturn(true);
+
+        // when & then
+        assertThatThrownBy(() -> currencyService.update(CURRENCY_1.getId(), currencyRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("ID에 해당하는 환율 정보가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void update_NotFoundFail() {
+        // given
+        final CurrencyRequest currencyRequest = new CurrencyRequest(
+                CURRENCY_1.getDate(),
+                99.99,
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        given(currencyRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> currencyService.update(CURRENCY_1.getId(), currencyRequest))
                 .isInstanceOf(BadRequestException.class);
     }
 }
