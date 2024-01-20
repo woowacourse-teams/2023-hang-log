@@ -1,4 +1,4 @@
-package hanglog.trip.service;
+package hanglog.city.service;
 
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.city.dto.response.CityDetailResponse;
 import hanglog.city.dto.response.CityResponse;
-import hanglog.city.service.CityService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,5 +40,20 @@ class CityServiceTest {
         // then
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(List.of(CityResponse.withCountry(PARIS), CityResponse.withCountry(LONDON)));
+    }
+
+    @DisplayName("모든 도시의 세부 정보를 반환한다.")
+    @Test
+    void getAllCitiesDetail() {
+        // given
+        given(cityRepository.findAll())
+                .willReturn(List.of(PARIS, LONDON));
+
+        // when
+        final List<CityDetailResponse> actual = cityService.getAllCitiesDetail();
+
+        // then
+        assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(List.of(CityDetailResponse.of(PARIS), CityDetailResponse.of(LONDON)));
     }
 }
