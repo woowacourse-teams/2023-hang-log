@@ -18,9 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: yarn
-        run: yarn install
-
       - name: build design-system
         run: yarn run build:design-system
 
@@ -33,13 +30,15 @@ jobs:
           cat .env
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           browser: chrome
           start: yarn run serve:dev
           wait-on: "http://localhost:3000"
           record: false
           working-directory: ./frontend-monorepo/hanglog-service
+          install-command: yarn install
+          command: yarn run --binaries-only cypress run
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
