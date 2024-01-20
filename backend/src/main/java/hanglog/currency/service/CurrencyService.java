@@ -19,6 +19,8 @@ import static java.time.DayOfWeek.SUNDAY;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
+import hanglog.currency.dto.CurrencyListResponse;
+import hanglog.currency.dto.CurrencyResponse;
 import hanglog.currency.dto.SingleCurrencyResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidCurrencyDateException;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,5 +131,25 @@ public class CurrencyService {
                 currencyTypeRateMap.get(HKD),
                 currencyTypeRateMap.get(KRW)
         );
+    }
+
+    @Transactional(readOnly = true)
+    public CurrencyListResponse getCurrenciesByPage(final Pageable pageable) {
+        final List<Currency> currencies = currencyRepository.findCurrenciesByPageable(pageable.previousOrFirst());
+        final List<CurrencyResponse> currencyResponses = currencies.stream()
+                .map(CurrencyResponse::of)
+                .toList();
+        final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
+
+        return new CurrencyListResponse(currencyResponses, lastPageIndex);
+    }
+
+    private Long getLastPageIndex(final int pageSize) {
+        final long totalCount = currencyRepository.count();
+        final long lastPageIndex = totalCount / pageSize;
+        if (totalCount % pageSize == 0) {
+            return lastPageIndex;
+        }
+        return lastPageIndex + 1;
     }
 }
