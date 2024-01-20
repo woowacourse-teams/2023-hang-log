@@ -2,6 +2,7 @@ package hanglog.category.service;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
+import hanglog.category.dto.CategoryDetailResponse;
 import hanglog.category.dto.CategoryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,14 @@ public class CategoryService {
         final List<Category> expenseCategories = categoryRepository.findExpenseCategory();
         return expenseCategories.stream()
                 .map(CategoryResponse::of)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryDetailResponse> getAllCategoriesDetail() {
+        final List<Category> expenseCategories = categoryRepository.findAll();
+        return expenseCategories.stream()
+                .map(CategoryDetailResponse::of)
                 .toList();
     }
 }
