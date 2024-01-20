@@ -2,13 +2,18 @@ package hanglog.currency.service;
 
 import static hanglog.currency.fixture.CurrencyFixture.CURRENCY_1;
 import static hanglog.currency.fixture.CurrencyFixture.CURRENCY_2;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
+import hanglog.currency.dto.request.CurrencyRequest;
 import hanglog.currency.dto.response.CurrencyListResponse;
 import hanglog.currency.dto.response.CurrencyResponse;
+import hanglog.global.exception.BadRequestException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,5 +54,58 @@ class CurrencyServiceTest {
                     .isEqualTo(List.of(CurrencyResponse.of(CURRENCY_1), CurrencyResponse.of(CURRENCY_2)));
             softly.assertThat(actual.getLastPageIndex()).isEqualTo(1L);
         });
+    }
+
+    @DisplayName("새로운 환율 정보를 추가한다.")
+    @Test
+    void save() {
+        // given
+        final CurrencyRequest currencyRequest = new CurrencyRequest(
+                CURRENCY_1.getDate(),
+                CURRENCY_1.getUsd(),
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        given(currencyRepository.existsByDate(any())).willReturn(false);
+        given(currencyRepository.save(any(Currency.class))).willReturn(CURRENCY_1);
+
+        // when
+        final Long actualId = currencyService.save(currencyRequest);
+
+        // then
+        assertThat(actualId).isEqualTo(CURRENCY_1.getId());
+    }
+
+    @DisplayName("중복된 날짜의 환율을 추가할 수 없다.")
+    @Test
+    void save_DuplicateDateFail() {
+        // given
+        final CurrencyRequest currencyRequest = new CurrencyRequest(
+                CURRENCY_1.getDate(),
+                CURRENCY_1.getUsd(),
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        given(currencyRepository.existsByDate(any())).willReturn(true);
+
+        // when &then
+        assertThatThrownBy(() -> currencyService.save(currencyRequest))
+                .isInstanceOf(BadRequestException.class);
     }
 }
