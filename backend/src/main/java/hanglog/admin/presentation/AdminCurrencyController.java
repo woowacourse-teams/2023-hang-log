@@ -16,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,5 +48,16 @@ public class AdminCurrencyController {
     ) {
         final Long currencyId = currencyService.save(currencyRequest);
         return ResponseEntity.created(URI.create("/admin/currencies/" + currencyId)).build();
+    }
+
+    @PutMapping("/{currencyId}")
+    @AdminOnly
+    public ResponseEntity<Void> updateCategory(
+            @AdminAuth final Accessor accessor,
+            @PathVariable final Long currencyId,
+            @RequestBody @Valid final CurrencyRequest currencyRequest
+    ) {
+        currencyService.update(currencyId, currencyRequest);
+        return ResponseEntity.noContent().build();
     }
 }
