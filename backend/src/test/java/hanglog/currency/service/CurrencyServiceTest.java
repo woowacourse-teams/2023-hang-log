@@ -36,7 +36,7 @@ class CurrencyServiceTest {
         // given
         final Pageable pageable = PageRequest.of(0, 10);
 
-        given(currencyRepository.findCurrenciesByPageable(any())).willReturn(List.of(CURRENCY_1, CURRENCY_2));
+        given(currencyRepository.findBy(any())).willReturn(List.of(CURRENCY_1, CURRENCY_2));
         given(currencyRepository.count()).willReturn(2L);
 
         // when

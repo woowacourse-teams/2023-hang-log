@@ -15,5 +15,5 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     boolean existsByDate(LocalDate date);
 
-    List<Currency> findCurrenciesByPageable(final Pageable pageable);
+    List<Currency> findBy(final Pageable pageable);
 }
