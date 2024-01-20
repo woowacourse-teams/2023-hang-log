@@ -1,6 +1,6 @@
 package hanglog.category.presentation;
 
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import hanglog.category.service.CategoryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

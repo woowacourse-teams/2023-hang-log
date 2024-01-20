@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import hanglog.category.domain.repository.CategoryRepository;
-import hanglog.category.dto.CategoryDetailResponse;
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryDetailResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

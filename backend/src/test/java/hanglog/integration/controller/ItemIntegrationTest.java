@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import hanglog.currency.domain.type.CurrencyType;
 import hanglog.expense.dto.response.ItemExpenseResponse;
 import hanglog.global.exception.BadRequestException;

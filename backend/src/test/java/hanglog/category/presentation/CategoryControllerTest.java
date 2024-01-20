@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import hanglog.category.service.CategoryService;
 import hanglog.global.ControllerTest;
 import java.util.List;

@@ -1,4 +1,4 @@
-package hanglog.category.dto;
+package hanglog.category.dto.response;
 
 import hanglog.category.domain.Category;
 import lombok.Getter;

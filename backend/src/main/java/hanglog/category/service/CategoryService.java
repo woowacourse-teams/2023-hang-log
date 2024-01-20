@@ -2,8 +2,8 @@ package hanglog.category.service;
 
 import hanglog.category.domain.Category;
 import hanglog.category.domain.repository.CategoryRepository;
-import hanglog.category.dto.CategoryDetailResponse;
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryDetailResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

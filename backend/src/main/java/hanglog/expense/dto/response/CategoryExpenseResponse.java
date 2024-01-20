@@ -1,7 +1,7 @@
 package hanglog.expense.dto.response;
 
 
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import hanglog.expense.domain.CategoryExpense;
 import java.math.BigDecimal;
 import lombok.Getter;
