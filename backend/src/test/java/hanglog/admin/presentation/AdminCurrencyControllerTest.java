@@ -14,8 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanglog.currency.dto.CurrencyListResponse;
-import hanglog.currency.dto.CurrencyResponse;
+import hanglog.currency.dto.response.CurrencyListResponse;
+import hanglog.currency.dto.response.CurrencyResponse;
 import hanglog.currency.service.CurrencyService;
 import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;

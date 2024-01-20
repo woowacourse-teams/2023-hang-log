@@ -1,4 +1,4 @@
-package hanglog.currency.dto;
+package hanglog.currency.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 

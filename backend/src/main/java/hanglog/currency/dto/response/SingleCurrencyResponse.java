@@ -1,4 +1,4 @@
-package hanglog.currency.dto;
+package hanglog.currency.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

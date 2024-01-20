@@ -6,7 +6,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 import hanglog.auth.AdminAuth;
 import hanglog.auth.AdminOnly;
 import hanglog.auth.domain.Accessor;
-import hanglog.currency.dto.CurrencyListResponse;
+import hanglog.currency.dto.response.CurrencyListResponse;
 import hanglog.currency.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

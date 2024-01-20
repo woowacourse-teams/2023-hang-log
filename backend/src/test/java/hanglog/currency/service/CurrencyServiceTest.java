@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import hanglog.currency.domain.repository.CurrencyRepository;
-import hanglog.currency.dto.CurrencyListResponse;
-import hanglog.currency.dto.CurrencyResponse;
+import hanglog.currency.dto.response.CurrencyListResponse;
+import hanglog.currency.dto.response.CurrencyResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
