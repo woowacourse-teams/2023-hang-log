@@ -64,6 +64,7 @@ public enum ExceptionCode {
     INVALID_CURRENT_PASSWORD(8104, "현재 사용중인 비밀번호가 일치하지 않습니다."),
     INVALID_ADMIN_AUTHORITY(8201, "해당 관리자 기능에 대한 접근 권한이 없습니다."),
     DUPLICATED_CITY_NAME(8301, "중복된 나라, 도시 이름입니다."),
+    NOT_FOUND_CITY(8302, "요청한 ID에 해당하는 도시를 찾을 수 없습니다."),
 
     INVALID_AUTHORIZATION_CODE(9001, "유효하지 않은 인증 코드입니다."),
     NOT_SUPPORTED_OAUTH_SERVICE(9002, "해당 OAuth 서비스는 제공하지 않습니다."),

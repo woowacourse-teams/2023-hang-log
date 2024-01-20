@@ -45,4 +45,15 @@ public class City extends BaseEntity {
                 cityRequest.getLongitude()
         );
     }
+
+    public void update(final CityRequest cityRequest) {
+        this.name = cityRequest.getName();
+        this.country = cityRequest.getCountry();
+        this.latitude = cityRequest.getLatitude();
+        this.longitude = cityRequest.getLongitude();
+    }
+
+    public boolean isSameNameAndCountry(final String name, final String country) {
+        return this.name.equals(name) && this.country.equals(country);
+    }
 }

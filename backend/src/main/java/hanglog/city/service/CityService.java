@@ -1,12 +1,14 @@
 package hanglog.city.service;
 
+import static hanglog.global.exception.ExceptionCode.DUPLICATED_CITY_NAME;
+import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CITY_ID;
+
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
 import hanglog.city.dto.request.CityRequest;
 import hanglog.city.dto.response.CityDetailResponse;
 import hanglog.city.dto.response.CityResponse;
-import hanglog.global.exception.ExceptionCode;
-import hanglog.global.exception.InvalidDomainException;
+import hanglog.global.exception.BadRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,11 +38,29 @@ public class CityService {
     }
 
     public Long save(final CityRequest cityRequest) {
-        if (cityRepository.existsByNameAndCountry(cityRequest.getName(), cityRequest.getCountry())) {
-            throw new InvalidDomainException(ExceptionCode.DUPLICATED_CITY_NAME);
-        }
+        validateCityDuplicate(cityRequest);
 
         return cityRepository.save(City.of(cityRequest)).getId();
     }
 
+    private void validateCityDuplicate(final CityRequest cityRequest) {
+        if (cityRepository.existsByNameAndCountry(cityRequest.getName(), cityRequest.getCountry())) {
+            throw new BadRequestException(DUPLICATED_CITY_NAME);
+        }
+    }
+
+    public void update(final Long id, final CityRequest cityRequest) {
+        final City city = cityRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CITY_ID));
+
+        validateCityDuplicate(city, cityRequest);
+
+        city.update(cityRequest);
+    }
+
+    private void validateCityDuplicate(final City city, final CityRequest cityRequest) {
+        if (!city.isSameNameAndCountry(cityRequest.getName(), cityRequest.getCountry())) {
+            validateCityDuplicate(cityRequest);
+        }
+    }
 }
