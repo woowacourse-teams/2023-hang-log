@@ -2,8 +2,11 @@ package hanglog.city.service;
 
 import hanglog.city.domain.City;
 import hanglog.city.domain.repository.CityRepository;
+import hanglog.city.dto.request.CityRequest;
 import hanglog.city.dto.response.CityDetailResponse;
 import hanglog.city.dto.response.CityResponse;
+import hanglog.global.exception.ExceptionCode;
+import hanglog.global.exception.InvalidDomainException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,4 +34,13 @@ public class CityService {
                 .map(CityDetailResponse::of)
                 .toList();
     }
+
+    public Long save(final CityRequest cityRequest) {
+        if (cityRepository.existsByNameAndCountry(cityRequest.getName(), cityRequest.getCountry())) {
+            throw new InvalidDomainException(ExceptionCode.DUPLICATED_CITY_NAME);
+        }
+
+        return cityRepository.save(City.of(cityRequest)).getId();
+    }
+
 }
