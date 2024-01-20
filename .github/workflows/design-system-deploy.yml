@@ -1,0 +1,24 @@
+name: "storybook_deploy"
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - frontend-monorepo/hanglog-design-system/**
+      - .github/**
+
+defaults:
+  run:
+    working-directory: frontend-monorepo/hanglog-design-system
+
+jobs:
+  test:
+    if: contains(github.event.pull_request.labels.*.name, 'FE-DesignSystem')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: yarn
+      - uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}

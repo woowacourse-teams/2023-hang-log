@@ -4,16 +4,16 @@ on:
     branches:
       - develop
     paths:
-      - frontend/**
+      - frontend-monorepo/hanglog-service/**
       - .github/**
 
 defaults:
   run:
-    working-directory: frontend
+    working-directory: frontend-monorepo/hanglog-service
 
 jobs:
   run-dev:
-    if: contains(github.event.pull_request.labels.*.name, 'FE')
+    if: contains(github.event.pull_request.labels.*.name, 'FE-Service')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,10 +31,10 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
-          start: npm run serve:dev
+          start: yarn run serve:dev
           wait-on: "http://localhost:3000"
           record: false
-          working-directory: ./frontend
+          working-directory: ./frontend-monorepo/hanglog-service
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
