@@ -4,6 +4,9 @@
     "hanglog-service",
     "hanglog-design-system"
   ],
+  "scripts": {
+    "build:design-system": "yarn workspace hang-log-design-system publish:npm"
+  },
   "dependencies": {
     "@sentry/react": "7.93.0",
     "react": "^18.2.0",

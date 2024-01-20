@@ -4,11 +4,8 @@ on:
     branches:
       - refactor/#777
     paths:
-      - frontend-monorepo/hanglog-service/**
       - .github/**
-      - frontend-monorepo/.yarn/cache
-      - frontend-monorepo/.pnp.cjs
-      - frontend-monorepo/package.json
+      - frontend-monorepo/**
 
 defaults:
   run:
@@ -23,6 +20,9 @@ jobs:
 
       - name: yarn
         run: yarn install
+
+      - name: build design-system
+        run: yarn run build:design-system
 
       - name: Create env file
         run: |
