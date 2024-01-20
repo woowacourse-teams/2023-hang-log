@@ -9,9 +9,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -180,6 +183,87 @@ class AdminCurrencyControllerTest extends ControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/admin/currencies/1"))
                 .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("date")
+                                        .type(JsonFieldType.STRING)
+                                        .description("날짜")
+                                        .attributes(field("constraint", "YYYY-MM-DD")),
+                                fieldWithPath("usd")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("USD")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("eur")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("EUR")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("gbp")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("GBP")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("jpy")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("JPY")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("cny")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("CNY")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("chf")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("CHF")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("sgd")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("SGD")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("thb")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("THB")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("hkd")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("HKD")
+                                        .attributes(field("constraint", "double")),
+                                fieldWithPath("krw")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("KRW")
+                                        .attributes(field("constraint", "double"))
+                        )
+                ));
+    }
+
+    @DisplayName("환율 정보를 수정한다.")
+    @Test
+    void updateCurrency() throws Exception {
+        // given
+        final CurrencyRequest request = new CurrencyRequest(
+                CURRENCY_1.getDate(),
+                CURRENCY_1.getUsd(),
+                CURRENCY_1.getEur(),
+                CURRENCY_1.getGbp(),
+                CURRENCY_1.getJpy(),
+                CURRENCY_1.getCny(),
+                CURRENCY_1.getChf(),
+                CURRENCY_1.getSgd(),
+                CURRENCY_1.getThb(),
+                CURRENCY_1.getHkd(),
+                CURRENCY_1.getKrw()
+        );
+
+        doNothing().when(currencyService).update(1L, request);
+
+        // when & then
+        mockMvc.perform(put("/admin/currencies/{currencyId}", 1)
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("currencyId")
+                                        .description("환율 ID")
+                        ),
                         requestFields(
                                 fieldWithPath("date")
                                         .type(JsonFieldType.STRING)
