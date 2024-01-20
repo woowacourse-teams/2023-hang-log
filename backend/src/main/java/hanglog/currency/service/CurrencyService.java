@@ -19,6 +19,7 @@ import static java.time.DayOfWeek.SUNDAY;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
+import hanglog.currency.dto.request.CurrencyRequest;
 import hanglog.currency.dto.response.CurrencyListResponse;
 import hanglog.currency.dto.response.CurrencyResponse;
 import hanglog.currency.dto.response.SingleCurrencyResponse;
@@ -70,9 +71,7 @@ public class CurrencyService {
     }
 
     public void saveDailyCurrency(final LocalDate date) {
-        if (currencyRepository.existsByDate(date)) {
-            throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
-        }
+        validateDate(date);
 
         validateWeekend(date);
         final List<SingleCurrencyResponse> singleCurrencyResponses = requestFilteredCurrencyResponses(date);
@@ -87,6 +86,12 @@ public class CurrencyService {
 
         final Currency currency = createCurrency(date, rateOfCurrencyType);
         currencyRepository.save(currency);
+    }
+
+    private void validateDate(final LocalDate date) {
+        if (currencyRepository.existsByDate(date)) {
+            throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
+        }
     }
 
     private void validateWeekend(final LocalDate date) {
@@ -151,5 +156,11 @@ public class CurrencyService {
             return lastPageIndex;
         }
         return lastPageIndex + 1;
+    }
+
+    public Long save(final CurrencyRequest currencyRequest) {
+        validateDate(currencyRequest.getDate());
+
+        return currencyRepository.save(Currency.of(currencyRequest)).getId();
     }
 }
