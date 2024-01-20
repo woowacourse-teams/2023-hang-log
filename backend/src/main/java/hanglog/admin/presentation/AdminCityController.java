@@ -41,6 +41,6 @@ public class AdminCityController {
             @RequestBody @Valid final CityRequest cityRequest
     ) {
         final Long cityId = cityService.save(cityRequest);
-        return ResponseEntity.created(URI.create("/admin/cities" + cityId)).build();
+        return ResponseEntity.created(URI.create("/admin/cities/" + cityId)).build();
     }
 }

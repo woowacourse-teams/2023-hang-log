@@ -7,17 +7,22 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.city.dto.request.CityRequest;
 import hanglog.city.dto.response.CityDetailResponse;
 import hanglog.city.service.CityService;
 import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
+import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +32,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -94,6 +100,48 @@ class AdminCityControllerTest extends ControllerTest {
                                         .description("위도")
                                         .attributes(field("constraint", "BigDecimal(3,13)")),
                                 fieldWithPath("[].longitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("경도")
+                                        .attributes(field("constraint", "BigDecimal(3,13)"))
+                        )
+                ));
+    }
+
+    @DisplayName("새로운 도시를 생성한다.")
+    @Test
+    void createCity() throws Exception {
+        // given
+        final CityRequest request = new CityRequest(
+                "name",
+                "country",
+                BigDecimal.valueOf(123.12345),
+                BigDecimal.valueOf(123.12345)
+        );
+        given(cityService.save(any(CityRequest.class))).willReturn(1L);
+
+        // when & then
+        mockMvc.perform(post("/admin/cities")
+                        .header(AUTHORIZATION, MEMBER_TOKENS.getAccessToken())
+                        .cookie(COOKIE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/admin/cities/1"))
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("name")
+                                        .type(JsonFieldType.STRING)
+                                        .description("도시 이름")
+                                        .attributes(field("constraint", "20자 이내의 문자열")),
+                                fieldWithPath("country")
+                                        .type(JsonFieldType.STRING)
+                                        .description("나라 이름")
+                                        .attributes(field("constraint", "20자 이내의 문자열")),
+                                fieldWithPath("latitude")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("위도")
+                                        .attributes(field("constraint", "BigDecimal(3,13)")),
+                                fieldWithPath("longitude")
                                         .type(JsonFieldType.NUMBER)
                                         .description("경도")
                                         .attributes(field("constraint", "BigDecimal(3,13)"))
