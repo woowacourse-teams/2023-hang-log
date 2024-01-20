@@ -14,6 +14,12 @@ public class CategoryFixture {
             new Category(600L, "etc", "기타")
     );
 
+    public static final List<Category> CATEGORIES = List.of(
+            new Category(100L, "food", "음식"),
+            new Category(101L, "cafe", "카페"),
+            new Category(102L, "restaurants", "식당")
+    );
+
     public static final Category FOOD = EXPENSE_CATEGORIES.get(0);
     public static final Category CULTURE = EXPENSE_CATEGORIES.get(1);
     public static final Category SHOPPING = EXPENSE_CATEGORIES.get(2);
