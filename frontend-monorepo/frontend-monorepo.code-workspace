@@ -1,10 +1,10 @@
 {
   "folders": [
     {
-      "path": "./hanglog-design-system"
+      "path": "packages/hang-log-design-system"
     },
     {
-      "path": "./hanglog-service"
+      "path": "packages/hanglog-service"
     }
   ],
   "settings": {
@@ -16,10 +16,10 @@
       "tsconfig.tsbuildinfo": true
     }
   },
-  "eslint.nodePath": ".yarn/sdks",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "eslint.nodePath": "../../.yarn/sdks",
+  "typescript.tsdk": "../.yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "prettier.prettierPath": "../../.yarn/sdks/prettier/index.js",
   "extensions": {
     "recommendations": [
       "arcanis.vscode-zipfs",
