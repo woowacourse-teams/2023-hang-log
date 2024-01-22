@@ -5,7 +5,7 @@ on:
       - develop
     paths:
       - .github/**
-      - frontend-monorepo/packages/**
+      - frontend-monorepo/packages/hang-log-design-system/**
 
 defaults:
   run:
