@@ -10796,7 +10796,6 @@ __metadata:
     react-dom: "npm:^18.2.0"
     storybook: "npm:^7.0.25"
     ts-loader: "npm:^9.4.4"
-    ts-pattern: "npm:^4"
     tsc-alias: "npm:^1.8.7"
     typescript: "npm:4.9.5"
     url-loader: "npm:^4.1.1"

@@ -15942,7 +15942,6 @@ const RAW_RUNTIME_STATE =
           ["react-dom", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:18.2.0"],\
           ["storybook", "npm:7.6.10"],\
           ["ts-loader", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:9.5.1"],\
-          ["ts-pattern", "npm:4.3.0"],\
           ["tsc-alias", "npm:1.8.8"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["url-loader", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:4.1.1"],\
