@@ -14,4 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: yarn
-      - uses: yarn run deploy:design-system ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+      - name: deploy design-system
+        uses: yarn run deploy:design-system ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
