@@ -4,12 +4,12 @@ on:
     branches:
       - develop
     paths:
-      - frontend-monorepo/hanglog-design-system/**
+      - frontend-monorepo/packages/hanglog-design-system/**
       - .github/**
 
 defaults:
   run:
-    working-directory: frontend-monorepo/hanglog-design-system
+    working-directory: frontend-monorepo/packages/hanglog-design-system
 
 jobs:
   test:
