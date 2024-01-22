@@ -1,19 +1,16 @@
 import { CALENDAR_DATE_LENGTH } from '@constants/index';
 import type { DayInfo, YearMonth } from '@type/date';
-import { P, match } from 'ts-pattern';
 
 /** 2023-07-10 포맷인 날짜 문자열을 Date로 변경해 주는 함수 */
 export const toDate = (dateString: string) => new Date(dateString);
 
 /** Date를 2023-07-10 포맷인 날짜 문자열로 변경해 주는 함수 */
-export const formatDate = (
-  year: number | string,
-  month: number | string,
-  date: number | string
-) => `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+export const formatDate = (year: number | string, month: number | string, date: number | string) =>
+  `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
 
 /** 해당 월의 달력에 필요한 Day 박스의 개수를 리턴해 주는 함수 */
-export const getDayBoxSize = (yearMonth: YearMonth) => yearMonth.firstDay + yearMonth.lastDate <= CALENDAR_DATE_LENGTH.MIN
+export const getDayBoxSize = (yearMonth: YearMonth) =>
+  yearMonth.firstDay + yearMonth.lastDate <= CALENDAR_DATE_LENGTH.MIN
     ? CALENDAR_DATE_LENGTH.MIN
     : CALENDAR_DATE_LENGTH.MAX;
 
