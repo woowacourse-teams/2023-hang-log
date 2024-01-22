@@ -5,12 +5,11 @@ on:
       - develop
     paths:
       - .github/**
-      - frontend-monorepo/**
+      - frontend-monorepo/packages/**
 
 defaults:
   run:
-    working-directory: frontend-monorepo/hanglog-service
-
+    working-directory: frontend-monorepo/packages/hanglog-service
 jobs:
   run-dev:
     if: contains(github.event.pull_request.labels.*.name, 'FE-Service')
@@ -37,7 +36,7 @@ jobs:
           start: yarn run serve:dev
           wait-on: "http://localhost:3000"
           record: false
-          working-directory: ./frontend-monorepo/hanglog-service
+          working-directory: ./frontend-monorepo/packages/hanglog-service
           install-command: yarn install
           command: yarn run --binaries-only cypress run
         env:
