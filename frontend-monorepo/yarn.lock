@@ -5091,9 +5091,16 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^16.18.39":
-  version: 16.18.73
-  resolution: "@types/node@npm:16.18.73"
-  checksum: fda7461fa929644a290ea4c4563619f7b52cf7e54e304d19078ed46c68f52a7b0819a1181795026e617c13073b2f887f29e10979458c9968679a5dcdf2efce68
+  version: 16.18.74
+  resolution: "@types/node@npm:16.18.74"
+  checksum: 4978e0c34da7f86c3143cbc1d9ab0b4fccf938b6e06354a8d4c8034a093e352ddf9c6397cdd64d7fef05a104d4edaab23bdca6640b07f37a62315a3c12b5cdc5
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^17.0.8":
+  version: 17.0.45
+  resolution: "@types/node@npm:17.0.45"
+  checksum: 0db377133d709b33a47892581a21a41cd7958f22723a3cc6c71d55ac018121382de42fbfc7970d5ae3e7819dbe5f40e1c6a5174aedf7e7964e9cb8fa72b580b0
   languageName: node
   linkType: hard
 
@@ -9203,17 +9210,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:8.3.0":
-  version: 8.3.0
-  resolution: "eslint-config-prettier@npm:8.3.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  bin:
-    eslint-config-prettier: bin/cli.js
-  checksum: 0d6bd272a05045f2815f0aba4592633a7226713d716d1a4c21126bbdbde27c98e7a6e2a8227e03fae343b40caf8c06a87e7ce87e69851279cf10334b6f36f7bc
-  languageName: node
-  linkType: hard
-
 "eslint-config-prettier@npm:^8.8.0":
   version: 8.10.0
   resolution: "eslint-config-prettier@npm:8.10.0"
@@ -10194,6 +10190,7 @@ __metadata:
     "@testing-library/dom": "npm:^9.3.4"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.1.1"
     "@types/eslint": "npm:^8.56.2"
+    "@types/node": "npm:^17.0.8"
     "@typescript-eslint/eslint-plugin": "npm:^6.19.0"
     "@typescript-eslint/parser": "npm:^6.19.0"
     "@yarnpkg/cli": "npm:^4.0.2"
@@ -10203,14 +10200,14 @@ __metadata:
     babel-loader: "npm:^9.1.3"
     cypress: "npm:^12.17.3"
     eslint: "npm:^8.56.0"
-    eslint-config-prettier: "npm:8.3.0"
+    eslint-config-prettier: "npm:^8.8.0"
     eslint-config-standard-with-typescript: "npm:^43.0.1"
     eslint-plugin-import: "npm:^2.29.1"
     eslint-plugin-n: "npm:^16.6.2"
     eslint-plugin-prettier: "npm:4.0.0"
     eslint-plugin-promise: "npm:^6.1.1"
     eslint-plugin-react: "npm:^7.33.2"
-    prettier: "npm:^2.5.1"
+    prettier: "npm:2.8.8"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:4.9.5"
@@ -10793,7 +10790,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-storybook: "npm:^0.6.12"
     html-webpack-plugin: "npm:^5.5.3"
-    prettier: "npm:2.5.1"
+    prettier: "npm:2.8.8"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     storybook: "npm:^7.0.25"
@@ -10857,6 +10854,7 @@ __metadata:
     esbuild-loader: "npm:^4.0.2"
     eslint: "npm:^8.44.0"
     eslint-config-airbnb: "npm:^19.0.4"
+    eslint-config-prettier: "npm:^8.8.0"
     eslint-plugin-import: "npm:^2.27.5"
     eslint-plugin-jsx-a11y: "npm:^6.7.1"
     eslint-plugin-react: "npm:^7.32.2"
@@ -10868,7 +10866,7 @@ __metadata:
     msw: "npm:^1.2.3"
     msw-storybook-addon: "npm:^1.8.0"
     pnp-webpack-plugin: "npm:^1.7.0"
-    prettier: "npm:2.5.1"
+    prettier: "npm:2.8.8"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-router-dom: "npm:^6.14.1"
@@ -13951,16 +13949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.5.1":
-  version: 2.5.1
-  resolution: "prettier@npm:2.5.1"
-  bin:
-    prettier: bin-prettier.js
-  checksum: fa9750193b3fcdb4bd54ba4e57996d335de4cd492d277539b6ffb6d146c8b6d3c3dc264b75021914c99c91574643637f607da08ef4588ef30a7b78d14326f470
-  languageName: node
-  linkType: hard
-
-"prettier@npm:^2.5.1, prettier@npm:^2.8.0":
+"prettier@npm:2.8.8, prettier@npm:^2.8.0":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
   bin:

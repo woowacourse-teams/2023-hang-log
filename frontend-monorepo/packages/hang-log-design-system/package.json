@@ -91,7 +91,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.12",
     "html-webpack-plugin": "^5.5.3",
-    "prettier": "2.5.1",
+    "prettier": "2.8.8",
     "storybook": "^7.0.25",
     "ts-loader": "^9.4.4",
     "tsc-alias": "^1.8.7",

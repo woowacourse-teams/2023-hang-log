@@ -15,12 +15,12 @@
   },
   "references": [
     {
-      "path": "./packages/hang-log-design-system"
+      "path": "packages/hang-log-design-system"
     },
     {
-      "path": "./packages/hanglog-service"
+      "path": "packages/hanglog-service"
     }
   ],
-  "exclude": ["**/dist/**"],
+  "exclude": ["packages/**/dist/**"],
   "include": []
 }
