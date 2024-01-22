@@ -11,7 +11,7 @@ const HttpsRedirect = ({ children }: HttpsRedirectProps) => {
     window.location.href = window.location.href.replace(REGEX.HTTP_TO_HTTPS, 'https');
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default HttpsRedirect;

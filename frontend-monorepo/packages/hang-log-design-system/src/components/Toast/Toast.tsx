@@ -65,21 +65,20 @@ const Toast = ({
     return () => clearTimeout(hideAnimationRef.current);
   }, [handleClose, showDuration]);
 
-  return (
-    isAdded &&
-    createPortal(
-      <div
-        css={[getToastStyling(isVisible), getVariantStyling(variant)]}
-        role="alert"
-        aria-live="assertive"
-        {...attributes}
-      >
-        <span css={contentStyling}>{children}</span>
-        {hasCloseButton && <CloseIcon css={closeIconStyling} onClick={handleClose} />}
-      </div>,
-      document.getElementById('toast-container') as Element
-    )
-  );
+  return isAdded
+    ? createPortal(
+        <div
+          css={[getToastStyling(isVisible), getVariantStyling(variant)]}
+          role="alert"
+          aria-live="assertive"
+          {...attributes}
+        >
+          <span css={contentStyling}>{children}</span>
+          {hasCloseButton && <CloseIcon css={closeIconStyling} onClick={handleClose} />}
+        </div>,
+        document.getElementById('toast-container') as Element
+      )
+    : createPortal(<></>, document.getElementById('toast-container') as Element);
 };
 
 export default Toast;

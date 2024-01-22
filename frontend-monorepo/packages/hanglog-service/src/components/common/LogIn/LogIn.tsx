@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useLayoutEffect } from 'react';
 
 import { useSetRecoilState } from 'recoil';
@@ -7,9 +7,7 @@ import { isLoggedInState } from '@store/auth';
 
 import { ACCESS_TOKEN_KEY } from '@constants/api';
 
-interface LogInProps {
-  children: ReactNode;
-}
+interface LogInProps extends PropsWithChildren {}
 
 const LogIn = ({ children }: LogInProps) => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
@@ -20,7 +18,7 @@ const LogIn = ({ children }: LogInProps) => {
     }
   }, [setIsLoggedIn]);
 
-  return children;
+  return <>{children}</>;
 };
 
 export default LogIn;

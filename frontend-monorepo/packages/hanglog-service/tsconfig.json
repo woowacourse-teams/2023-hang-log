@@ -30,7 +30,7 @@
     },
     "jsxImportSource": "@emotion/react",
     "allowSyntheticDefaultImports": true,
-    "types": ["cypress", "node", "@testing-library/cypress"]
+    "types": ["cypress", "@testing-library/cypress"]
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]

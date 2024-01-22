@@ -15940,7 +15940,7 @@ const RAW_RUNTIME_STATE =
           ["react-dom", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:18.2.0"],\
           ["storybook", "npm:7.6.10"],\
           ["ts-loader", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:9.5.1"],\
-          ["ts-pattern", "npm:5.0.6"],\
+          ["ts-pattern", "npm:4.3.0"],\
           ["tsc-alias", "npm:1.8.8"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["url-loader", "virtual:16e079ea9138a3ea840a0b741984af25c0f5b16da0c2bb15eac1ecbf413e55fd2cadee4e56af9ab5f0ee42f20cee08591a6727f90314e5f7beaf595b4191138d#npm:4.1.1"],\
@@ -16018,7 +16018,7 @@ const RAW_RUNTIME_STATE =
           ["speed-measure-webpack-plugin", "virtual:c71310c7dd4e59e8a6543f6a144ee8b37b22440af03f27de00e7ceaedb5bf9242ec7e2f6c8672e0c7b76ef8d073eaa61ec3b04830ceeaf8375e81bda58999f53#npm:1.5.0"],\
           ["storybook", "npm:7.6.10"],\
           ["ts-loader", "virtual:c71310c7dd4e59e8a6543f6a144ee8b37b22440af03f27de00e7ceaedb5bf9242ec7e2f6c8672e0c7b76ef8d073eaa61ec3b04830ceeaf8375e81bda58999f53#npm:9.5.1"],\
-          ["ts-pattern", "npm:5.0.6"],\
+          ["ts-pattern", "npm:4.3.0"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["url-loader", "virtual:c71310c7dd4e59e8a6543f6a144ee8b37b22440af03f27de00e7ceaedb5bf9242ec7e2f6c8672e0c7b76ef8d073eaa61ec3b04830ceeaf8375e81bda58999f53#npm:4.1.1"],\
           ["webpack", "virtual:c71310c7dd4e59e8a6543f6a144ee8b37b22440af03f27de00e7ceaedb5bf9242ec7e2f6c8672e0c7b76ef8d073eaa61ec3b04830ceeaf8375e81bda58999f53#npm:5.89.0"],\
@@ -22477,10 +22477,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["ts-pattern", [\
-      ["npm:5.0.6", {\
-        "packageLocation": "./.yarn/cache/ts-pattern-npm-5.0.6-266424eb92-723cab8952.zip/node_modules/ts-pattern/",\
+      ["npm:4.3.0", {\
+        "packageLocation": "./.yarn/cache/ts-pattern-npm-4.3.0-0f6c90aeac-e83d370fee.zip/node_modules/ts-pattern/",\
         "packageDependencies": [\
-          ["ts-pattern", "npm:5.0.6"]\
+          ["ts-pattern", "npm:4.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\

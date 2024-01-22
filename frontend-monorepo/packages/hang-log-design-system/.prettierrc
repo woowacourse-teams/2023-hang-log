@@ -1,5 +1,9 @@
 {
-  
+  "endOfLine": "auto",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "semi": true,
   "importOrder": [
     "^@utils/(.*)$",
     "^@api/(.*)$",
@@ -8,6 +12,7 @@
     "^@components/(.*)$",
     "^@styles/(.*)$",
     "^[./]"
-  ]
-  
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

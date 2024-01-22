@@ -20,14 +20,10 @@
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "prettier.prettierPath": "../../.yarn/sdks/prettier/index.js",
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  
+
   "extensions": {
-    "recommendations": [
-      "arcanis.vscode-zipfs",
-      "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode"
-    ]
+    "recommendations": ["arcanis.vscode-zipfs", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
   }
 }

@@ -16,13 +16,16 @@ const ToastContainer = () => {
     [setToastList]
   );
 
-  return (
-    toastList.length > 0 &&
-    toastList.map(({ id, message, ...attributes }) => (
-      <Toast key={id} onClose={removeToast(id)} {...attributes}>
-        {message}
-      </Toast>
-    ))
+  return toastList.length > 0 ? (
+    <>
+      {toastList.map(({ id, message, ...attributes }) => (
+        <Toast key={id} onClose={removeToast(id)} {...attributes}>
+          {message}
+        </Toast>
+      ))}
+    </>
+  ) : (
+    <></>
   );
 };
 

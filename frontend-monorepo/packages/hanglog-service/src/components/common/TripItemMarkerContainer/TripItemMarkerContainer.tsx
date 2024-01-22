@@ -29,18 +29,22 @@ const TripItemMarkerContainer = ({ map, places }: TripItemMarkerContainerProps) 
     });
   });
 
-  return places.map((place) => (
-    <TripItemMarker
-      key={place.id}
-      map={map}
-      isZoomedOut={isZoomedOut}
-      id={place.id}
-      name={place.name}
-      lat={place.coordinate.lat}
-      lng={place.coordinate.lng}
-      isSelected={place.id === selectedItemId}
-    />
-  ));
+  return (
+    <>
+      {places.map((place) => (
+        <TripItemMarker
+          key={place.id}
+          map={map}
+          isZoomedOut={isZoomedOut}
+          id={place.id}
+          name={place.name}
+          lat={place.coordinate.lat}
+          lng={place.coordinate.lng}
+          isSelected={place.id === selectedItemId}
+        />
+      ))}
+    </>
+  );
 };
 
 export default TripItemMarkerContainer;
