@@ -5,6 +5,7 @@ import static hanglog.global.exception.ExceptionCode.INVALID_PASSWORD;
 import static hanglog.global.exception.ExceptionCode.INVALID_REFRESH_TOKEN;
 import static hanglog.global.exception.ExceptionCode.INVALID_USER_NAME;
 
+import hanglog.admin.PasswordEncoder;
 import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.admin.dto.request.AdminLoginRequest;
@@ -16,7 +17,6 @@ import hanglog.login.domain.repository.RefreshTokenRepository;
 import hanglog.login.infrastructure.BearerAuthorizationExtractor;
 import hanglog.login.infrastructure.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import hanglog.admin.PasswordEncoder;
 import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.admin.domain.type.AdminType;
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class AdminLoginServiceTest {
