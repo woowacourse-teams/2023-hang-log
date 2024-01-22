@@ -10,8 +10,7 @@ export const inputContainerStyling = css({
   gap: Theme.spacer.spacing2,
 });
 
-export const inputWrapperStyling = (isError: Required<InputProps>['isError']) => {
-  return css({
+export const inputWrapperStyling = (isError: Required<InputProps>['isError']) => css({
     display: 'flex',
     gap: '12px',
     alignItems: 'center',
@@ -36,7 +35,6 @@ export const inputWrapperStyling = (isError: Required<InputProps>['isError']) =>
       height: '16px',
     },
   });
-};
 
 export const getVariantStyling = (variant: Required<InputProps>['variant']) => {
   const style = {

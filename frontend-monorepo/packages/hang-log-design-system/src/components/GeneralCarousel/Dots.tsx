@@ -64,8 +64,8 @@ const dotContainerStyling = css({
   },
 });
 
-const dotStyle = (isSelected: boolean) => {
-  return css({
+const dotStyle = (isSelected: boolean) =>
+  css({
     width: '6px',
     height: '6px',
 
@@ -76,4 +76,3 @@ const dotStyle = (isSelected: boolean) => {
     opacity: isSelected ? 1 : 0.6,
     cursor: 'pointer',
   });
-};

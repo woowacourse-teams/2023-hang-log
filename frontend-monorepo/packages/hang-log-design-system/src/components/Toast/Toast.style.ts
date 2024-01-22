@@ -21,8 +21,7 @@ export const getVariantStyling = (variant: Required<ToastProps>['variant']) => {
   return style[variant];
 };
 
-export const getToastStyling = (isVisible: boolean) => {
-  return css({
+export const getToastStyling = (isVisible: boolean) => css({
     bottom: Theme.spacer.spacing6,
     display: 'flex',
     justifyContent: 'space-between',
@@ -50,7 +49,6 @@ export const getToastStyling = (isVisible: boolean) => {
       },
     },
   });
-};
 
 export const contentStyling = css({
   display: 'flex',

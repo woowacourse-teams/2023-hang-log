@@ -50,16 +50,14 @@ export const Circle: Story = {
 };
 
 export const Combination: Story = {
-  render: () => {
-    return (
+  render: () => (
       <div css={containerStyle}>
         <Skeleton variant="circle" width="100px" />
         <Skeleton width="300px" height="100px" />
         <Skeleton />
         <Skeleton />
       </div>
-    );
-  },
+    ),
   argTypes: {
     variant: { control: false },
     width: { control: false },

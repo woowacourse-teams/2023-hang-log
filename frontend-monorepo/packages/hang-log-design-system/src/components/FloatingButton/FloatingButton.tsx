@@ -29,19 +29,17 @@ const FloatingButton = ({
   size = 'medium',
   variant = 'primary',
   ...attributes
-}: FloatingButtonProps) => {
-  return (
-    <button
-      type="button"
-      css={[floatingButtonStyling, getSizeStyling(size), getVariantStyling(variant)]}
-      {...attributes}
-    >
-      <AddIcon
-        aria-label="추가 버튼"
-        css={[getIconSizeStyling(size), getIconVariantStyling(variant)]}
-      />
-    </button>
-  );
-};
+}: FloatingButtonProps) => (
+  <button
+    type="button"
+    css={[floatingButtonStyling, getSizeStyling(size), getVariantStyling(variant)]}
+    {...attributes}
+  >
+    <AddIcon
+      aria-label="추가 버튼"
+      css={[getIconSizeStyling(size), getIconVariantStyling(variant)]}
+    />
+  </button>
+);
 
 export default FloatingButton;

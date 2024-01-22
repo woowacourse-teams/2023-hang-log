@@ -7,8 +7,7 @@ export interface SwitchToggleProps extends ComponentPropsWithoutRef<'input'> {
   checkedState: boolean;
 }
 
-const SwitchToggle = ({ onChange, checkedState, ...attributes }: SwitchToggleProps) => {
-  return (
+const SwitchToggle = ({ onChange, checkedState, ...attributes }: SwitchToggleProps) => (
     <input
       type="checkbox"
       role="switch"
@@ -19,6 +18,5 @@ const SwitchToggle = ({ onChange, checkedState, ...attributes }: SwitchTogglePro
       css={switchToggleStyling}
     />
   );
-};
 
 export default SwitchToggle;

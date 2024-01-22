@@ -35,9 +35,7 @@ type Story = StoryObj<typeof SVGCarouselModal>;
 const images = [icon1, icon2, icon3];
 
 export const Default: Story = {
-  render: ({ ...args }) => {
-    return <SVGCarouselModal {...args} carouselImages={images} />;
-  },
+  render: ({ ...args }) => <SVGCarouselModal {...args} carouselImages={images} />,
   args: {
     showArrows: true,
     showDots: true,

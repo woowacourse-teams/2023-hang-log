@@ -31,33 +31,25 @@ type Story = StoryObj<typeof SVGCarousel>;
 const images = [icon1, icon2, icon3];
 
 export const Default: Story = {
-  render: ({ ...args }) => {
-    return <SVGCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <SVGCarousel {...args} images={images} />,
 };
 
 export const WithArrowButtons: Story = {
-  render: ({ ...args }) => {
-    return <SVGCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <SVGCarousel {...args} images={images} />,
   args: {
     showArrows: true,
   },
 };
 
 export const WithDots: Story = {
-  render: ({ ...args }) => {
-    return <SVGCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <SVGCarousel {...args} images={images} />,
   args: {
     showDots: true,
   },
 };
 
 export const ShowNavigationOnHover: Story = {
-  render: ({ ...args }) => {
-    return <SVGCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <SVGCarousel {...args} images={images} />,
   args: {
     showArrows: true,
     showDots: true,

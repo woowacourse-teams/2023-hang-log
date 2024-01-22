@@ -51,8 +51,7 @@ export const Playground: Story = {};
 
 export const Sizes: Story = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  render: ({ isError, children }) => {
-    return (
+  render: ({ isError, children }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Small</h6>
@@ -71,8 +70,7 @@ export const Sizes: Story = {
           </Select>
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

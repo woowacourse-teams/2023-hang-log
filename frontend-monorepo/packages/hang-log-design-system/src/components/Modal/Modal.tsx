@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import CloseIcon from '@assets/svg/close-icon.svg';
 import type { ComponentPropsWithoutRef } from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import {

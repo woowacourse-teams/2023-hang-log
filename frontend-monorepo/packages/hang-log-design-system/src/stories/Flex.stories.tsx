@@ -14,8 +14,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  render: (args) => {
-    return (
+  render: (args) => (
       <Flex styles={args.styles}>
         <Box
           styles={{
@@ -48,8 +47,7 @@ export const Playground: Story = {
           <div>box3</div>
         </Box>
       </Flex>
-    );
-  },
+    ),
   args: {
     styles: {
       width: '800px',

@@ -33,7 +33,7 @@ const config: StorybookConfig = {
     }
 
     const imageRule = config.module?.rules?.find((rule) => {
-      const test = (rule as { test: RegExp }).test;
+      const {test} = (rule as { test: RegExp });
 
       if (!test) return false;
 

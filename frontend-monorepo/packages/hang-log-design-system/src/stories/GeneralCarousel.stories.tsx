@@ -29,8 +29,7 @@ export default meta;
 type Story = StoryObj<typeof Carousel>;
 
 export const Default: Story = {
-  render: ({ ...args }) => {
-    return (
+  render: ({ ...args }) => (
       <Carousel {...args}>
         {images.map((url, index) => (
           <Carousel.Item index={index} key={index}>
@@ -38,6 +37,5 @@ export const Default: Story = {
           </Carousel.Item>
         ))}
       </Carousel>
-    );
-  },
+    ),
 };

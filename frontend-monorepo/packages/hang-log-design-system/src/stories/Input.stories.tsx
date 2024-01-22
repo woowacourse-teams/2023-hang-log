@@ -45,8 +45,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 export const Variants: Story = {
-  render: ({ size, isError, placeholder }) => {
-    return (
+  render: ({ size, isError, placeholder }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Default</h6>
@@ -57,8 +56,7 @@ export const Variants: Story = {
           <Input variant="text" size={size} isError={isError} placeholder={placeholder} />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     variant: {
       control: false,
@@ -67,8 +65,7 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
-  render: ({ variant, isError, placeholder }) => {
-    return (
+  render: ({ variant, isError, placeholder }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Small</h6>
@@ -83,8 +80,7 @@ export const Sizes: Story = {
           <Input size="large" variant={variant} isError={isError} placeholder={placeholder} />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

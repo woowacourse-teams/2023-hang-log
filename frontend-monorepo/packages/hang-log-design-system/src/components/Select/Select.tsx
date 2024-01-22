@@ -35,22 +35,20 @@ export interface SelectProps extends Omit<ComponentPropsWithRef<'select'>, 'size
 const Select = (
   { label, size = 'medium', isError = false, children, supportingText, ...attributes }: SelectProps,
   ref: ForwardedRef<HTMLSelectElement>
-) => {
-  return (
-    <div css={selectContainerStyling}>
-      {label && (
-        <Label id={attributes.id} required={attributes.required}>
-          {label}
-        </Label>
-      )}
-      <div css={getSelectWrapperStyling(isError)}>
-        <select ref={ref} css={[getSelectStyling(isError), getSizeStyling(size)]} {...attributes}>
-          {children}
-        </select>
-      </div>
-      {supportingText && <SupportingText isError={isError}>{supportingText}</SupportingText>}
+) => (
+  <div css={selectContainerStyling}>
+    {label && (
+      <Label id={attributes.id} required={attributes.required}>
+        {label}
+      </Label>
+    )}
+    <div css={getSelectWrapperStyling(isError)}>
+      <select ref={ref} css={[getSelectStyling(isError), getSizeStyling(size)]} {...attributes}>
+        {children}
+      </select>
     </div>
-  );
-};
+    {supportingText && <SupportingText isError={isError}>{supportingText}</SupportingText>}
+  </div>
+);
 
 export default forwardRef(Select);

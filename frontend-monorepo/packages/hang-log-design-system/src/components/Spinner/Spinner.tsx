@@ -7,8 +7,8 @@ export interface SpinnerProps {
   disabled?: boolean;
 }
 
-const Spinner = ({ timing = 1, size = 50, width = 5, disabled = false }: SpinnerProps) => {
-  return <div css={getSpinnerStyling({ timing, size, width, disabled })} />;
-};
+const Spinner = ({ timing = 1, size = 50, width = 5, disabled = false }: SpinnerProps) => (
+  <div css={getSpinnerStyling({ timing, size, width, disabled })} />
+);
 
 export default Spinner;

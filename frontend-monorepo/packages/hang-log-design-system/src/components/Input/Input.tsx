@@ -32,21 +32,19 @@ const Input = (
     ...attributes
   }: InputProps,
   ref: ForwardedRef<HTMLInputElement>
-) => {
-  return (
-    <div css={inputContainerStyling}>
-      {label && (
-        <Label id={attributes.id} required={attributes.required}>
-          {label}
-        </Label>
-      )}
-      <div css={[getSizeStyling(size), inputWrapperStyling(isError), getVariantStyling(variant)]}>
-        {icon}
-        <input ref={ref} css={[getSizeStyling(size), getInputStyling]} {...attributes} />
-      </div>
-      {supportingText && <SupportingText isError={isError}>{supportingText}</SupportingText>}
+) => (
+  <div css={inputContainerStyling}>
+    {label && (
+      <Label id={attributes.id} required={attributes.required}>
+        {label}
+      </Label>
+    )}
+    <div css={[getSizeStyling(size), inputWrapperStyling(isError), getVariantStyling(variant)]}>
+      {icon}
+      <input ref={ref} css={[getSizeStyling(size), getInputStyling]} {...attributes} />
     </div>
-  );
-};
+    {supportingText && <SupportingText isError={isError}>{supportingText}</SupportingText>}
+  </div>
+);
 
 export default forwardRef(Input);

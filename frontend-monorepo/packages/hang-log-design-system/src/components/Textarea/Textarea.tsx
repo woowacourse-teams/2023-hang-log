@@ -20,8 +20,7 @@ export interface TextareaProps extends Omit<ComponentPropsWithRef<'textarea'>, '
 const Textarea = (
   { label, size = 'medium', isError = false, supportingText, ...attributes }: TextareaProps,
   ref: ForwardedRef<HTMLTextAreaElement>
-) => {
-  return (
+) => (
     <div css={textareaContainerStyling}>
       {label && (
         <Label id={attributes.id} required={attributes.required}>
@@ -36,6 +35,5 @@ const Textarea = (
       {supportingText && <SupportingText isError={isError}>{supportingText}</SupportingText>}
     </div>
   );
-};
 
 export default forwardRef(Textarea);

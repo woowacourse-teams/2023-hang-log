@@ -27,8 +27,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 export const Directions: Story = {
-  render: () => {
-    return (
+  render: () => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Horizontal</h6>
@@ -39,8 +38,7 @@ export const Directions: Story = {
           <Divider direction="vertical" length="200px" />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     direction: {
       control: false,

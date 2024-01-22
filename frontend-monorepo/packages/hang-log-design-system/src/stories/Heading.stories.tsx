@@ -46,8 +46,7 @@ const createHeadingStory = (size: HeadingProps['size']) => ({
 export const Playground: Story = {};
 
 export const Sizes: Story = {
-  render: ({ children }) => {
-    return (
+  render: ({ children }) => (
       <>
         <li css={informationStyle}>
           <h6>X Small</h6>
@@ -74,8 +73,7 @@ export const Sizes: Story = {
           <Heading size="xxLarge">{children}</Heading>
         </li>
       </>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

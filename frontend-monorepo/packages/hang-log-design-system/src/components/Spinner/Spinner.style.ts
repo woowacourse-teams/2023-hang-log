@@ -5,8 +5,7 @@ import type { SpinnerProps } from '@components/Spinner/Spinner';
 import { Theme } from '@styles/Theme';
 import { spinnerRotation } from '@styles/animation';
 
-export const getSpinnerStyling = ({ timing, size, width, disabled }: Required<SpinnerProps>) => {
-  return css({
+export const getSpinnerStyling = ({ timing, size, width, disabled }: Required<SpinnerProps>) => css({
     display: 'inline-block',
 
     width: `${size}px`,
@@ -17,4 +16,3 @@ export const getSpinnerStyling = ({ timing, size, width, disabled }: Required<Sp
 
     animation: `${spinnerRotation} ${timing}s linear infinite`,
   });
-};

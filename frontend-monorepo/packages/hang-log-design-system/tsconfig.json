@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "ES5",
+    "target": "ES2015",
     "skipLibCheck": true,
     "module": "commonjs",
     "moduleResolution": "node",

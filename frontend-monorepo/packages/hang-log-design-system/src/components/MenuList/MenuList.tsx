@@ -8,12 +8,10 @@ type MenuListProps = ComponentPropsWithRef<'ul'>;
 const MenuList = (
   { children, ...attributes }: MenuListProps,
   ref: ForwardedRef<HTMLUListElement>
-) => {
-  return (
-    <ul css={menuListStyling} ref={ref} {...attributes}>
-      {children}
-    </ul>
-  );
-};
+) => (
+  <ul css={menuListStyling} ref={ref} {...attributes}>
+    {children}
+  </ul>
+);
 
 export default forwardRef(MenuList);

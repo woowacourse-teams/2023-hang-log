@@ -10,15 +10,13 @@ export const selectContainerStyling = css({
   gap: Theme.spacer.spacing2,
 });
 
-export const getSelectWrapperStyling = (isError: Required<SelectProps>['isError']) => {
-  return css({
+export const getSelectWrapperStyling = (isError: Required<SelectProps>['isError']) => css({
     position: 'relative',
     paddingRight: Theme.spacer.spacing3,
     backgroundColor: isError ? Theme.color.red100 : Theme.color.gray100,
     border: `1px solid ${isError ? Theme.color.red200 : 'transparent'}`,
     borderRadius: Theme.borderRadius.small,
   });
-};
 
 export const getSizeStyling = (size: Required<SelectProps>['size']) => {
   const style = {
@@ -47,12 +45,10 @@ export const getSizeStyling = (size: Required<SelectProps>['size']) => {
   return style[size];
 };
 
-export const getSelectStyling = (isError: Required<SelectProps>['isError']) => {
-  return css({
+export const getSelectStyling = (isError: Required<SelectProps>['isError']) => css({
     width: '100%',
     backgroundColor: isError ? Theme.color.red100 : Theme.color.gray100,
     border: 'none',
     borderRadius: Theme.borderRadius.small,
     outline: 0,
   });
-};

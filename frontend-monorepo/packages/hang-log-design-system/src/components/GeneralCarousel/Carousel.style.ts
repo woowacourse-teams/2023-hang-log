@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 
 import { Theme } from '@styles/Theme';
 
-export const containerStyling = (width: number, height: number) => {
-  return css({
+export const containerStyling = (width: number, height: number) =>
+  css({
     position: 'relative',
 
     width,
@@ -19,7 +19,6 @@ export const containerStyling = (width: number, height: number) => {
       userSelect: 'none',
     },
   });
-};
 
 export const sliderWrapperStyling = (width: number, height: number) =>
   css({
@@ -43,8 +42,8 @@ export const carouselItemStyling = (width: number, height: number) =>
     },
   });
 
-export const itemWrapperStyling = (width: number, height: number) => {
-  return css({
+export const itemWrapperStyling = (width: number, height: number) =>
+  css({
     minWidth: width,
     width,
     minHeight: height,
@@ -59,7 +58,6 @@ export const itemWrapperStyling = (width: number, height: number) => {
       objectFit: 'cover',
     },
   });
-};
 
 export const buttonContainerStyling = (showOnHover: boolean) =>
   css({
@@ -111,8 +109,8 @@ export const rightButtonStyling = css({
   right: Theme.spacer.spacing2,
 });
 
-export const dotStyling = (isSelected: boolean) => {
-  return css({
+export const dotStyling = (isSelected: boolean) =>
+  css({
     width: '6px',
     height: '6px',
     borderRadius: '50%',
@@ -121,4 +119,3 @@ export const dotStyling = (isSelected: boolean) => {
 
     opacity: isSelected ? 1 : 0.6,
   });
-};

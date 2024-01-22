@@ -19,14 +19,12 @@ const Skeleton = ({
   variant = 'square',
   className = '',
   ...attributes
-}: SkeletonProps) => {
-  return (
-    <div
-      css={getSkeletonStyling(width, height, variant)}
-      className={`skeleton ${className}`}
-      {...attributes}
-    />
-  );
-};
+}: SkeletonProps) => (
+  <div
+    css={getSkeletonStyling(width, height, variant)}
+    className={`skeleton ${className}`}
+    {...attributes}
+  />
+);
 
 export default Skeleton;

@@ -14,8 +14,7 @@ const skeletonAnimation = keyframes`
   }
 `;
 
-export const getSkeletonStyling = (width: string, height: string, variant: 'square' | 'circle') => {
-  return css({
+export const getSkeletonStyling = (width: string, height: string, variant: 'square' | 'circle') => css({
     width,
     height: variant === 'square' ? height : width,
     borderRadius: variant === 'square' ? Theme.spacer.spacing2 : '50%',
@@ -25,4 +24,3 @@ export const getSkeletonStyling = (width: string, height: string, variant: 'squa
 
     animation: `${skeletonAnimation} 5s infinite ease-out`,
   });
-};

@@ -38,8 +38,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 export const Sizes: Story = {
-  render: ({ isError, placeholder }) => {
-    return (
+  render: ({ isError, placeholder }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Small</h6>
@@ -54,8 +53,7 @@ export const Sizes: Story = {
           <Textarea size="large" isError={isError} placeholder={placeholder} />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

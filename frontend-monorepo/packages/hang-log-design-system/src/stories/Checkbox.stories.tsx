@@ -26,8 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 export const Checkboxes: Story = {
-  render: () => {
-    return (
+  render: () => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Checked</h6>
@@ -46,8 +45,7 @@ export const Checkboxes: Story = {
           <Checkbox label="Label" />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     checked: {
       control: false,

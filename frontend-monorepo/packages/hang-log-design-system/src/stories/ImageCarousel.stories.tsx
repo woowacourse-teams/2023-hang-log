@@ -33,33 +33,25 @@ const images = [
 ];
 
 export const Default: Story = {
-  render: ({ ...args }) => {
-    return <ImageCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <ImageCarousel {...args} images={images} />,
 };
 
 export const WithArrowButtons: Story = {
-  render: ({ ...args }) => {
-    return <ImageCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <ImageCarousel {...args} images={images} />,
   args: {
     showArrows: true,
   },
 };
 
 export const WithDots: Story = {
-  render: ({ ...args }) => {
-    return <ImageCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <ImageCarousel {...args} images={images} />,
   args: {
     showDots: true,
   },
 };
 
 export const ShowNavigationOnHover: Story = {
-  render: ({ ...args }) => {
-    return <ImageCarousel {...args} images={images} />;
-  },
+  render: ({ ...args }) => <ImageCarousel {...args} images={images} />,
   args: {
     showArrows: true,
     showDots: true,

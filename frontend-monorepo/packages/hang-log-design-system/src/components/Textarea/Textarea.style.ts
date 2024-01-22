@@ -37,8 +37,7 @@ export const getSizeStyling = (size: Required<TextareaProps>['size']) => {
   return style[size];
 };
 
-export const getTextareaStyling = (isError: Required<TextareaProps>['isError']) => {
-  return css({
+export const getTextareaStyling = (isError: Required<TextareaProps>['isError']) => css({
     width: '100%',
     padding: 0,
     border: 'none',
@@ -54,4 +53,3 @@ export const getTextareaStyling = (isError: Required<TextareaProps>['isError']) 
       boxShadow: isError ? `0 0 0 1px ${Theme.color.red200}` : `0 0 0 1px ${Theme.color.gray300}`,
     },
   });
-};

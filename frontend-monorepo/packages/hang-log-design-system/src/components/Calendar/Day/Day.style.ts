@@ -8,8 +8,7 @@ export const dayContainerStyling = css({
   height: '40px',
 });
 
-export const getDayStyling = (isClickable: boolean) => {
-  return css({
+export const getDayStyling = (isClickable: boolean) => css({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -27,10 +26,8 @@ export const getDayStyling = (isClickable: boolean) => {
       backgroundColor: Theme.color.gray100,
     },
   });
-};
 
-export const getTodayStyling = (isToday: boolean) => {
-  return (
+export const getTodayStyling = (isToday: boolean) => (
     isToday &&
     css({
       backgroundColor: Theme.color.blue300,
@@ -42,10 +39,8 @@ export const getTodayStyling = (isToday: boolean) => {
       },
     })
   );
-};
 
-export const getDayInRangeStyling = (isInRange: boolean) => {
-  return (
+export const getDayInRangeStyling = (isInRange: boolean) => (
     isInRange &&
     css({
       backgroundColor: Theme.color.blue100,
@@ -57,10 +52,8 @@ export const getDayInRangeStyling = (isInRange: boolean) => {
       },
     })
   );
-};
 
-export const getSelectedDayStyling = (isSelected: boolean) => {
-  return (
+export const getSelectedDayStyling = (isSelected: boolean) => (
     isSelected &&
     css({
       backgroundColor: Theme.color.blue500,
@@ -72,10 +65,8 @@ export const getSelectedDayStyling = (isSelected: boolean) => {
       },
     })
   );
-};
 
-export const getDisabledDayStyling = (isDisabled: boolean) => {
-  return (
+export const getDisabledDayStyling = (isDisabled: boolean) => (
     isDisabled &&
     css({
       backgroundColor: Theme.color.white,
@@ -89,4 +80,3 @@ export const getDisabledDayStyling = (isDisabled: boolean) => {
       },
     })
   );
-};

@@ -38,8 +38,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 export const Variants: Story = {
-  render: ({ ...args }) => {
-    return (
+  render: ({ ...args }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Default</h6>
@@ -62,8 +61,7 @@ export const Variants: Story = {
           <Day {...args} isDisabled />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     isToday: { control: false },
     isSelected: { control: false },

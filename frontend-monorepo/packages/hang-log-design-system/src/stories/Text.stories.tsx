@@ -39,8 +39,7 @@ const createTextStory = (size: TextProps['size']) => ({
 export const Playground: Story = {};
 
 export const Sizes: Story = {
-  render: ({ children }) => {
-    return (
+  render: ({ children }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>X Small</h6>
@@ -59,8 +58,7 @@ export const Sizes: Story = {
           <Text size="large">{children}</Text>
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

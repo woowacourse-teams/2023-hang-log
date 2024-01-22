@@ -12,17 +12,15 @@ export interface ButtonProps extends ComponentPropsWithRef<'button'> {
 const Button = (
   { size = 'medium', variant = 'default', children, ...attributes }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
-) => {
-  return (
-    // eslint-disable-next-line react/button-has-type
-    <button
-      ref={ref}
-      css={[buttonStyling, getVariantStyling(variant), getSizeStyling(size)]}
-      {...attributes}
-    >
-      {children}
-    </button>
-  );
-};
+) => (
+  // eslint-disable-next-line react/button-has-type
+  <button
+    ref={ref}
+    css={[buttonStyling, getVariantStyling(variant), getSizeStyling(size)]}
+    {...attributes}
+  >
+    {children}
+  </button>
+);
 
 export default forwardRef(Button);

@@ -14,8 +14,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  render: () => {
-    return (
+  render: () => (
       <Box
         styles={{
           width: '500px',
@@ -35,6 +34,5 @@ export const Playground: Story = {
           </div>
         </Center>
       </Box>
-    );
-  },
+    ),
 };

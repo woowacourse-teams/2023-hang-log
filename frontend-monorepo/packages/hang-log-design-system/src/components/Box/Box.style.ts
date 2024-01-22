@@ -50,8 +50,7 @@ export const getBoxStyling = ({
   backgroundColor = '',
   color = '',
   position = 'static',
-}: BoxStylingProps) => {
-  return css({
+}: BoxStylingProps) => css({
     width,
     height,
     margin,
@@ -75,4 +74,3 @@ export const getBoxStyling = ({
     color,
     position,
   });
-};

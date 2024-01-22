@@ -2,8 +2,7 @@ import { css } from '@emotion/react';
 
 import { Theme } from '@styles/Theme';
 
-export const getContainerStyling = (width: number, height: number) => {
-  return css({
+export const getContainerStyling = (width: number, height: number) => css({
     position: 'relative',
 
     minWidth: width,
@@ -20,7 +19,6 @@ export const getContainerStyling = (width: number, height: number) => {
       userSelect: 'none',
     },
   });
-};
 
 export const sliderWrapperStyling = {
   width: '100%',
@@ -35,8 +33,7 @@ export const getSliderContainerStyling = (
   width: number,
   translateX: number,
   animate: boolean
-) => {
-  return css({
+) => css({
     display: 'flex',
 
     width: '100%',
@@ -45,10 +42,8 @@ export const getSliderContainerStyling = (
     transform: `translateX(${-currentPosition * width + translateX}px)`,
     transition: `transform ${animate ? 300 : 0}ms ease-in-out 0s`,
   });
-};
 
-export const getImageWrapperStyling = (width: number, height: number) => {
-  return css({
+export const getImageWrapperStyling = (width: number, height: number) => css({
     minWidth: width,
     width,
     minHeight: height,
@@ -63,7 +58,6 @@ export const getImageWrapperStyling = (width: number, height: number) => {
       objectFit: 'cover',
     },
   });
-};
 
 export const getButtonContainerStyling = (showOnHover: boolean) =>
   css({
@@ -121,8 +115,7 @@ export const rightButtonStyling = css({
   right: Theme.spacer.spacing2,
 });
 
-export const getDotsWrapperStyling = (showOnHover: boolean) => {
-  return css({
+export const getDotsWrapperStyling = (showOnHover: boolean) => css({
     position: 'absolute',
     left: '50%',
     bottom: Theme.spacer.spacing3,
@@ -139,10 +132,8 @@ export const getDotsWrapperStyling = (showOnHover: boolean) => {
       opacity: 1,
     },
   });
-};
 
-export const dotStyling = (isSelected: boolean) => {
-  return css({
+export const dotStyling = (isSelected: boolean) => css({
     width: '6px',
     height: '6px',
     borderRadius: '50%',
@@ -151,4 +142,3 @@ export const dotStyling = (isSelected: boolean) => {
 
     opacity: isSelected ? 1 : 0.6,
   });
-};

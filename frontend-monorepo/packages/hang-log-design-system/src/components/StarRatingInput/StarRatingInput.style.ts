@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 
-export const inputContainerStyling = (size: number, gap: number) => {
-  return css({
+export const inputContainerStyling = (size: number, gap: number) => css({
     display: 'flex',
 
     'div:not(:last-of-type):nth-of-type(even)': {
@@ -12,7 +11,6 @@ export const inputContainerStyling = (size: number, gap: number) => {
       height: size,
     },
   });
-};
 
 export const starItemStyling = css({
   cursor: 'pointer',

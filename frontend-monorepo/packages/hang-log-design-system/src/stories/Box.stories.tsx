@@ -21,13 +21,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  render: (args) => {
-    return (
+  render: (args) => (
       <Box styles={args.styles}>
         <div>box1</div>
       </Box>
-    );
-  },
+    ),
   args: {
     styles: {
       backgroundColor: Theme.color.blue500,

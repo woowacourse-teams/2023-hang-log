@@ -5,12 +5,10 @@ import { containerStyling } from '@components/Tabs/Tabs.style';
 
 export type TabsProps = ComponentPropsWithRef<'ul'>;
 
-const Tabs = ({ children, ...attributes }: TabsProps, ref: ForwardedRef<HTMLUListElement>) => {
-  return (
+const Tabs = ({ children, ...attributes }: TabsProps, ref: ForwardedRef<HTMLUListElement>) => (
     <ul role="tablist" tabIndex={-1} css={containerStyling} ref={ref} {...attributes}>
       {children}
     </ul>
   );
-};
 
 export default forwardRef(Tabs);

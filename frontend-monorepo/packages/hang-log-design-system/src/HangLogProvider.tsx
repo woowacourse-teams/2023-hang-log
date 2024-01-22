@@ -8,14 +8,12 @@ import { Theme } from '@styles/Theme';
 
 type HangLogProviderProps = PropsWithChildren;
 
-const HangLogProvider = ({ children }: HangLogProviderProps) => {
-  return (
-    <ThemeProvider theme={Theme}>
-      <Global styles={GlobalStyle} />
-      {children}
-      <ToastContainer />
-    </ThemeProvider>
-  );
-};
+const HangLogProvider = ({ children }: HangLogProviderProps) => (
+  <ThemeProvider theme={Theme}>
+    <Global styles={GlobalStyle} />
+    {children}
+    <ToastContainer />
+  </ThemeProvider>
+);
 
 export default HangLogProvider;

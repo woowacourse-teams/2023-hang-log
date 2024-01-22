@@ -2,8 +2,7 @@ import { css } from '@emotion/react';
 
 import { Theme } from '@styles/Theme';
 
-export const getToggleStyling = (isSelected: boolean) => {
-  return css({
+export const getToggleStyling = (isSelected: boolean) => css({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,4 +25,3 @@ export const getToggleStyling = (isSelected: boolean) => {
       backgroundColor: isSelected ? Theme.color.blue200 : Theme.color.gray100,
     },
   });
-};

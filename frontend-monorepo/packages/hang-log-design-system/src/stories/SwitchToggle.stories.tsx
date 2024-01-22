@@ -1,6 +1,6 @@
 import { containerStyle, informationStyle } from '@stories/styles';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 import SwitchToggle from '@components/SwitchToggle/SwitchToggle';
 

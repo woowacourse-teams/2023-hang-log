@@ -89,8 +89,7 @@ export const getFlexStyling = ({
   width = '',
   height = '',
   position = 'static',
-}: FlexStylingProps) => {
-  return css({
+}: FlexStylingProps) => css({
     display: 'flex',
     flexDirection: direction,
     flexWrap: wrap,
@@ -121,4 +120,3 @@ export const getFlexStyling = ({
     height,
     position,
   });
-};

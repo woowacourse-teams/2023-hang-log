@@ -44,8 +44,7 @@ const createButtonStory = (variant: ButtonProps['variant']) => ({
 export const Playground: Story = {};
 
 export const Variants: Story = {
-  render: ({ size, children }) => {
-    return (
+  render: ({ size, children }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Default</h6>
@@ -84,8 +83,7 @@ export const Variants: Story = {
           </Button>
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     variant: {
       control: false,
@@ -94,8 +92,7 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
-  render: ({ variant, children }) => {
-    return (
+  render: ({ variant, children }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Small</h6>
@@ -116,8 +113,7 @@ export const Sizes: Story = {
           </Button>
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,

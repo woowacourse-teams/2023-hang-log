@@ -13,8 +13,7 @@ export const inputWrapperStyling = css({
   overflowY: 'hidden',
 });
 
-export const getUploadButtonStyling = (isUploaded: boolean, maxUploaded: boolean) => {
-  return css({
+export const getUploadButtonStyling = (isUploaded: boolean, maxUploaded: boolean) => css({
     display: maxUploaded ? 'none' : 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -28,7 +27,6 @@ export const getUploadButtonStyling = (isUploaded: boolean, maxUploaded: boolean
 
     transition: 'none',
   });
-};
 
 export const inputStyling = css({
   display: 'none',

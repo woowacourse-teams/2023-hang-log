@@ -58,9 +58,11 @@ const StarRatingInput = (
                   onClick={() => {
                     onStarClick(index);
                   }}
+                  // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
                   onMouseOver={() => {
                     if (!isMobile) onStarHover(index);
                   }}
+                  // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
                   onMouseOut={() => {
                     if (!isMobile) onStarHoverOut(index);
                   }}

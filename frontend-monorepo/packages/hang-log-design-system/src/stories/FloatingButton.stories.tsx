@@ -40,8 +40,7 @@ const createButtonStory = (variant: FloatingButtonProps['variant']) => ({
 export const Playground: Story = {};
 
 export const Variants: Story = {
-  render: ({ size }) => {
-    return (
+  render: ({ size }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Primary</h6>
@@ -52,8 +51,7 @@ export const Variants: Story = {
           <FloatingButton variant="default" size={size} />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     variant: {
       control: false,
@@ -62,8 +60,7 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
-  render: ({ variant }) => {
-    return (
+  render: ({ variant }) => (
       <ul css={containerStyle}>
         <li css={informationStyle}>
           <h6>Small</h6>
@@ -74,8 +71,7 @@ export const Sizes: Story = {
           <FloatingButton variant={variant} size="medium" />
         </li>
       </ul>
-    );
-  },
+    ),
   argTypes: {
     size: {
       control: false,
