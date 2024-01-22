@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react';
-import { match } from 'ts-pattern';
 
 import { useDebounce } from '@hooks/useDebounce';
 
@@ -21,19 +20,17 @@ export const useStarRatingInput = (initialRate: InitialRateType, onClick?: Calla
     (index: number) => {
       const newRate = ((index + 1) / 2) as InitialRateType;
 
-      match(hookStarRate === newRate)
-        .with(true, () => {
-          setStarRate(0);
-          setPrevStarRate(0);
-          setHookStarRate(0);
-          onClick?.(0);
-        })
-        .with(false, () => {
-          setStarRate(newRate);
-          setHookStarRate(newRate);
-          setPrevStarRate(newRate);
-          onClick?.(newRate);
-        });
+      if (hookStarRate === newRate) {
+        setStarRate(0);
+        setPrevStarRate(0);
+        setHookStarRate(0);
+        onClick?.(0);
+      } else {
+        setStarRate(newRate);
+        setHookStarRate(newRate);
+        setPrevStarRate(newRate);
+        onClick?.(newRate);
+      }
     },
     [hookStarRate, onClick]
   );

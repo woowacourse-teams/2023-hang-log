@@ -42,6 +42,7 @@ module.exports = {
     static: path.resolve(__dirname, 'dist'),
   },
 
+  // eslint-disable-next-line no-dupe-keys
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
     alias: {

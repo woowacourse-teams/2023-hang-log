@@ -66,6 +66,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:2.8.8"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:bfca90541deadef7ca04341b77694a3566f3f74bd9fba48871c271fa573dfe36954ed36daf70be7a147b2df8f86d5f876593eb78f1d8ef71040405a3ef477ede#npm:18.2.0"],\
+          ["ts-pattern", "npm:4.3.0"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["webpack", "virtual:bfca90541deadef7ca04341b77694a3566f3f74bd9fba48871c271fa573dfe36954ed36daf70be7a147b2df8f86d5f876593eb78f1d8ef71040405a3ef477ede#npm:5.89.0"]\
         ],\
@@ -15313,6 +15314,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:2.8.8"],\
           ["react", "npm:18.2.0"],\
           ["react-dom", "virtual:bfca90541deadef7ca04341b77694a3566f3f74bd9fba48871c271fa573dfe36954ed36daf70be7a147b2df8f86d5f876593eb78f1d8ef71040405a3ef477ede#npm:18.2.0"],\
+          ["ts-pattern", "npm:4.3.0"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["webpack", "virtual:bfca90541deadef7ca04341b77694a3566f3f74bd9fba48871c271fa573dfe36954ed36daf70be7a147b2df8f86d5f876593eb78f1d8ef71040405a3ef477ede#npm:5.89.0"]\
         ],\

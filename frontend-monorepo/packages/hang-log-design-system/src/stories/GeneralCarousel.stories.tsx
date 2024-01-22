@@ -30,12 +30,12 @@ type Story = StoryObj<typeof Carousel>;
 
 export const Default: Story = {
   render: ({ ...args }) => (
-      <Carousel {...args}>
-        {images.map((url, index) => (
-          <Carousel.Item index={index} key={index}>
-            <img src={url} alt="image" />
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    ),
+    <Carousel {...args}>
+      {images.map((url, index) => (
+        <Carousel.Item index={index} key={index}>
+          <img src={url} alt="image" />
+        </Carousel.Item>
+      ))}
+    </Carousel>
+  ),
 };

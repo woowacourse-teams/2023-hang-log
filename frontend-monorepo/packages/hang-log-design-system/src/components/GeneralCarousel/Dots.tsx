@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import type { MouseEvent } from 'react';
-import { match } from 'ts-pattern';
 
 import { Theme } from '@styles/Theme';
 
@@ -15,9 +14,9 @@ const Dots = ({ imageLength, activeNumber, moveImage }: DotsProps) => {
 
   return (
     <div css={dotContainerStyling}>
-      {images.map((_, index) =>
-        match(activeNumber === index)
-          .with(true, () => (
+      {images.map((_, index) => {
+        if (activeNumber === index)
+          return (
             <button
               type="button"
               key={crypto.randomUUID()}
@@ -27,19 +26,19 @@ const Dots = ({ imageLength, activeNumber, moveImage }: DotsProps) => {
                 moveImage(index);
               }}
             />
-          ))
-          .otherwise(() => (
-            <button
-              type="button"
-              key={crypto.randomUUID()}
-              css={dotStyle(false)}
-              onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                e.stopPropagation();
-                moveImage(index);
-              }}
-            />
-          ))
-      )}
+          );
+        return (
+          <button
+            type="button"
+            key={crypto.randomUUID()}
+            css={dotStyle(false)}
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              moveImage(index);
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

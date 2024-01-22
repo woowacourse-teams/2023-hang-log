@@ -78,7 +78,7 @@ const Toast = ({
         </div>,
         document.getElementById('toast-container') as Element
       )
-    : createPortal(<></>, document.getElementById('toast-container') as Element);
+    : createPortal(<div />, document.getElementById('toast-container') as Element);
 };
 
 export default Toast;
