@@ -4,8 +4,8 @@ on:
     branches:
       - develop
     paths:
-      - frontend-monorepo/packages/hang-log-design-system/**
       - .github/**
+      - frontend-monorepo/packages/**
 
 defaults:
   run:
