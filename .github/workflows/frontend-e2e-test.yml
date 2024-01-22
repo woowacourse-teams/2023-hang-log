@@ -4,20 +4,22 @@ on:
     branches:
       - develop
     paths:
-      - frontend/**
       - .github/**
+      - frontend-monorepo/packages/hanglog-service/**
 
 defaults:
   run:
-    working-directory: frontend
-
+    working-directory: frontend-monorepo/packages/hanglog-service
 jobs:
   run-dev:
-    if: contains(github.event.pull_request.labels.*.name, 'FE')
+    if: contains(github.event.pull_request.labels.*.name, 'FE-Service')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: build design-system
+        run: yarn run build:design-system
 
       - name: Create env file
         run: |
@@ -28,13 +30,15 @@ jobs:
           cat .env
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          start: npm run serve:dev
+          start: yarn run serve:dev
           wait-on: "http://localhost:3000"
           record: false
-          working-directory: ./frontend
+          working-directory: ./frontend-monorepo/packages/hanglog-service
+          install-command: yarn install
+          command: yarn run --binaries-only cypress run
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
