@@ -1,16 +1,12 @@
-name: "storybook_deploy"
+name: storybook_deploy
 on:
   pull_request:
     branches:
       - develop
-    paths:
-      - .github/**
-      - frontend-monorepo/packages/hang-log-design-system/**
 
 defaults:
   run:
     working-directory: frontend-monorepo/packages/hang-log-design-system
-
 jobs:
   test:
     if: contains(github.event.pull_request.labels.*.name, 'FE-DesignSystem')
