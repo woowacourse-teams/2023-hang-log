@@ -14,7 +14,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: yarn
-      - uses: chromaui/action@v1
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: yarn run deploy:design-system ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

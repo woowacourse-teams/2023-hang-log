@@ -7,7 +7,8 @@
     ]
   },
   "scripts": {
-    "build:design-system": "yarn workspace hang-log-design-system publish:npm"
+    "build:design-system": "yarn workspace hang-log-design-system publish:npm",
+    "deploy:design-system":"yarn workspace hang-log-design-system npx chromatic --project-token="
   },
   "dependencies": {
     "@babel/runtime": "7.14.6",
