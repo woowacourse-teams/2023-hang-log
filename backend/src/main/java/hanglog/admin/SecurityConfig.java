@@ -1,5 +1,7 @@
 package hanglog.admin;
 
+import hanglog.admin.infrastructure.BCryptPasswordEncoder;
+import hanglog.admin.infrastructure.PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

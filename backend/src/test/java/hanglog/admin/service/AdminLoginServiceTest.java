@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import hanglog.admin.PasswordEncoder;
 import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.admin.domain.type.AdminType;
 import hanglog.admin.dto.request.AdminLoginRequest;
+import hanglog.admin.infrastructure.PasswordEncoder;
 import hanglog.global.exception.AdminException;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.domain.repository.RefreshTokenRepository;

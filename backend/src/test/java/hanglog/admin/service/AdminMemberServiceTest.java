@@ -8,12 +8,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import hanglog.admin.PasswordEncoder;
 import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.admin.domain.type.AdminType;
 import hanglog.admin.dto.request.AdminMemberCreateRequest;
 import hanglog.admin.dto.request.PasswordUpdateRequest;
+import hanglog.admin.infrastructure.PasswordEncoder;
 import hanglog.global.exception.AdminException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;

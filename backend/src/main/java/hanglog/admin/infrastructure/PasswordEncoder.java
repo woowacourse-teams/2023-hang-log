@@ -1,4 +1,4 @@
-package hanglog.admin;
+package hanglog.admin.infrastructure;
 
 public interface PasswordEncoder {
     String encode(String password);

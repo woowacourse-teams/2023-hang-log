@@ -1,4 +1,4 @@
-package hanglog.admin;
+package hanglog.admin.infrastructure;
 
 import org.mindrot.jbcrypt.BCrypt;
 
