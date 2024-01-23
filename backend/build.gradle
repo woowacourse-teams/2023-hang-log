@@ -57,7 +57,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
-    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
 test {
