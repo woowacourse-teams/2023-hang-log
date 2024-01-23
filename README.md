@@ -39,15 +39,15 @@
 
 ### 프론트엔드
 
-<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 31" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/db073e79-a6cc-4bda-844b-58ac17d95e90">
+<img width="80%" alt="스크린샷 2024-01-22 오후 11 43 48" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/9284b40e-c931-4f04-ac78-9c97a548338e">
 
 ### 백엔드
 
-<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 13" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/9cb02663-f540-4659-8d35-6fbde5c3cf2d">
+<img width="80%" alt="스크린샷 2024-01-22 오후 11 43 16" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/b64dde4f-9467-4427-a361-e2301657efa4">
 
 ### 인프라
 
-<img width="70%" alt="스크린샷 2023-10-18 오후 5 32 49" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/15309fe5-bda5-4793-8e65-af52e7b4a4e9">
+<img width="80%" alt="스크린샷 2024-01-22 오후 11 44 27" src="https://github.com/woowacourse-teams/2023-hang-log/assets/45068522/d0e03eb4-e159-405b-b22e-3d3fa79b99b7">
 
 <br>
 

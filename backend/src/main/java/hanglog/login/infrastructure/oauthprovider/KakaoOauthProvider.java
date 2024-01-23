@@ -2,12 +2,15 @@ package hanglog.login.infrastructure.oauthprovider;
 
 import static hanglog.global.exception.ExceptionCode.INVALID_AUTHORIZATION_CODE;
 import static hanglog.global.exception.ExceptionCode.NOT_SUPPORTED_OAUTH_SERVICE;
+import static java.lang.Boolean.TRUE;
 
 import hanglog.global.exception.AuthException;
 import hanglog.login.domain.OauthAccessToken;
 import hanglog.login.domain.OauthProvider;
 import hanglog.login.domain.OauthUserInfo;
 import hanglog.login.infrastructure.oauthuserinfo.KakaoUserInfo;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -24,6 +27,7 @@ public class KakaoOauthProvider implements OauthProvider {
 
     private static final String PROPERTIES_PATH = "${oauth2.provider.kakao.";
     private static final String PROVIDER_NAME = "kakao";
+    private static final String SECURE_RESOURCE = "secure_resource";
 
     protected final String clientId;
     protected final String clientSecret;
@@ -57,11 +61,15 @@ public class KakaoOauthProvider implements OauthProvider {
         headers.setBearerAuth(accessToken);
         final HttpEntity<MultiValueMap<String, String>> userInfoRequestEntity = new HttpEntity<>(headers);
 
+        final Map<String, Boolean> queryParam = new HashMap<>();
+        queryParam.put(SECURE_RESOURCE, TRUE);
+
         final ResponseEntity<KakaoUserInfo> response = restTemplate.exchange(
                 userUri,
                 HttpMethod.GET,
                 userInfoRequestEntity,
-                KakaoUserInfo.class
+                KakaoUserInfo.class,
+                queryParam
         );
 
         if (response.getStatusCode().is2xxSuccessful()) {

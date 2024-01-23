@@ -6,7 +6,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 import hanglog.category.domain.Category;
 import hanglog.global.BaseEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -37,7 +36,7 @@ public class Expense extends BaseEntity {
     @Embedded
     private Amount amount;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

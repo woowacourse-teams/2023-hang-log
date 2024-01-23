@@ -73,7 +73,7 @@ class CommunityControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
     }

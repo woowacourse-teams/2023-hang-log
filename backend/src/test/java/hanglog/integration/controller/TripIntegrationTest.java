@@ -73,6 +73,49 @@ public class TripIntegrationTest extends IntegrationTest {
         );
     }
 
+
+    @DisplayName("Trip을 수정한다. (도시 수정)")
+    @Test
+    void updateTrip_City() {
+        // given
+        final ExtractableResponse<Response> tripCreateResponse = requestCreateTrip(memberTokens, TRIP_CREATE_REQUEST);
+        final Long tripId = Long.parseLong(parseUri(tripCreateResponse.header("Location")));
+
+        final TripUpdateRequest tripUpdateRequest = new TripUpdateRequest(
+                "수정된 여행 제목",
+                null,
+                LocalDate.of(2023, 8, 1),
+                LocalDate.of(2023, 8, 3),
+                "매번 색다르고 즐거운 서유럽 여행",
+                List.of(1L, 3L)
+        );
+
+        // when
+        final ExtractableResponse<Response> response = requestUpdateTrip(memberTokens, tripId, tripUpdateRequest);
+        final TripDetailResponse tripDetailResponse = requestGetTrip(memberTokens, tripId).as(TripDetailResponse.class);
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                    softly.assertThat(tripDetailResponse)
+                            .usingRecursiveComparison()
+                            .comparingOnlyFields("title", "startDate", "endDate", "description", "cities")
+                            .ignoringFieldsMatchingRegexes(".*latitude", ".*longitude")
+                            .isEqualTo(tripUpdateRequest);
+                    softly.assertThat(tripDetailResponse.getCities())
+                            .size()
+                            .isEqualTo(2);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .size()
+                            .isEqualTo(4);
+                    softly.assertThat(tripDetailResponse.getDayLogs())
+                            .extracting("ordinal")
+                            .containsExactly(1, 2, 3, 4);
+                }
+        );
+    }
+
     @DisplayName("Trip을 수정한다. (여행 기간 감소)")
     @Test
     void updateTrip_DecreasePeriod() {
@@ -172,17 +215,14 @@ public class TripIntegrationTest extends IntegrationTest {
     }
 
     public static ExtractableResponse<Response> requestCreateTrip(final MemberTokens memberTokens,
-                                                                  final TripCreateRequest TRIP_CREATE_REQUEST) {
-        System.out.println("memberTokens.getAccessToken = " + memberTokens.getAccessToken());
-        System.out.println("memberTokens.getRefreshToken = " + memberTokens.getRefreshToken());
-
+                                                                  final TripCreateRequest tripCreateRequest) {
         return RestAssured
                 .given().log().all()
                 .header(AUTHORIZATION,
                         "Bearer " + memberTokens.getAccessToken())
                 .cookies("refresh-token", memberTokens.getRefreshToken())
                 .contentType(JSON)
-                .body(TRIP_CREATE_REQUEST)
+                .body(tripCreateRequest)
                 .when().post("/trips")
                 .then().log().all()
                 .extract();

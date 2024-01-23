@@ -89,7 +89,7 @@ class TripControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
     }
@@ -740,7 +740,7 @@ class TripControllerTest extends ControllerTest {
         final SharedCodeResponse sharedCodeResponse = new SharedCodeResponse("sharedCode");
         when(tripService.updateSharedTripStatus(anyLong(), any(SharedStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
@@ -783,7 +783,7 @@ class TripControllerTest extends ControllerTest {
         final SharedCodeResponse sharedCodeResponse = new SharedCodeResponse("xxxxxx");
         when(tripService.updateSharedTripStatus(anyLong(), any(SharedStatusRequest.class)))
                 .thenReturn(sharedCodeResponse);
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
@@ -803,7 +803,7 @@ class TripControllerTest extends ControllerTest {
     void updatePublishedStatus() throws Exception {
         // given
         final PublishedStatusRequest publishedStatusRequest = new PublishedStatusRequest(true);
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
@@ -834,7 +834,7 @@ class TripControllerTest extends ControllerTest {
     @Test
     void getLedger() throws Exception {
         // given
-        given(refreshTokenRepository.existsByToken(any())).willReturn(true);
+        given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(tripService).validateTripByMember(anyLong(), anyLong());
