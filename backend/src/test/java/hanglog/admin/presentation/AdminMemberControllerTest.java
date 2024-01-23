@@ -60,7 +60,7 @@ class AdminMemberControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        given(adminMemberRepository.existsAdminMemberByIdAndAdminType(any(), any())).willReturn(true);
+        given(adminMemberRepository.existsByIdAndAdminType(any(), any())).willReturn(true);
     }
 
     @DisplayName("관리자 멤버 목록을 조회한다.")

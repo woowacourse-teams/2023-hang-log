@@ -50,7 +50,7 @@ class AdminLoginServiceTest {
         final AdminMember adminMember = new AdminMember(1L, "user", "password", AdminType.ADMIN);
         final MemberTokens memberTokens = new MemberTokens("accessToken", "refreshToken");
 
-        when(adminMemberRepository.findAdminMemberByUserName(anyString())).thenReturn(Optional.of(adminMember));
+        when(adminMemberRepository.findByUserName(anyString())).thenReturn(Optional.of(adminMember));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
         when(jwtProvider.generateLoginToken(anyString())).thenReturn(memberTokens);
 
@@ -71,7 +71,7 @@ class AdminLoginServiceTest {
         final AdminLoginRequest loginRequest = new AdminLoginRequest("user", "wrongpassword");
         final AdminMember adminMember = new AdminMember("user", "password", AdminType.ADMIN);
 
-        when(adminMemberRepository.findAdminMemberByUserName(anyString())).thenReturn(Optional.of(adminMember));
+        when(adminMemberRepository.findByUserName(anyString())).thenReturn(Optional.of(adminMember));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         // when & then

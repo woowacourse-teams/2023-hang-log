@@ -33,7 +33,7 @@ public class AdminLoginService {
 
 
     public MemberTokens login(final AdminLoginRequest adminLoginRequest) {
-        final AdminMember adminMember = adminMemberRepository.findAdminMemberByUserName(
+        final AdminMember adminMember = adminMemberRepository.findByUserName(
                         adminLoginRequest.getUserName())
                 .orElseThrow(() -> new AdminException(INVALID_USER_NAME));
 

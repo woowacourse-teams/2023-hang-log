@@ -109,7 +109,7 @@ class AdminLoginControllerTest extends ControllerTest {
     @Test
     void extendLogin() throws Exception {
         // given
-        given(adminMemberRepository.existsAdminMemberByIdAndAdminType(anyLong(), any(AdminType.class)))
+        given(adminMemberRepository.existsByIdAndAdminType(anyLong(), any(AdminType.class)))
                 .willReturn(false);
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
@@ -164,7 +164,7 @@ class AdminLoginControllerTest extends ControllerTest {
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(adminLoginService).removeRefreshToken(anyString());
-        given(adminMemberRepository.existsAdminMemberByIdAndAdminType(anyLong(), any(AdminType.class)))
+        given(adminMemberRepository.existsByIdAndAdminType(anyLong(), any(AdminType.class)))
                 .willReturn(false);
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);

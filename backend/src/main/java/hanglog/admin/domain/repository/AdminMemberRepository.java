@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AdminMemberRepository extends JpaRepository<AdminMember, Long> {
 
-    Optional<AdminMember> findAdminMemberByUserName(String userName);
+    Optional<AdminMember> findByUserName(String userName);
 
-    Boolean existsAdminMemberByIdAndAdminType(Long id, AdminType adminType);
+    Boolean existsByIdAndAdminType(Long id, AdminType adminType);
 
-    Boolean existsAdminMemberByUserName(String userName);
+    Boolean existsByUserName(String userName);
 }

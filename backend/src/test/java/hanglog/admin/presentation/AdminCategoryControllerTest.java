@@ -61,7 +61,7 @@ class AdminCategoryControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        given(adminMemberRepository.existsAdminMemberByIdAndAdminType(any(), any())).willReturn(false);
+        given(adminMemberRepository.existsByIdAndAdminType(any(), any())).willReturn(false);
     }
 
     @DisplayName("카테고리 상세 목록을 조회한다.")

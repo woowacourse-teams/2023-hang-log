@@ -34,7 +34,7 @@ public class AdminMemberService {
     }
 
     public Long createAdminMember(final AdminMemberCreateRequest request) {
-        if (adminMemberRepository.existsAdminMemberByUserName(request.getUserName())) {
+        if (adminMemberRepository.existsByUserName(request.getUserName())) {
             throw new AdminException(DUPLICATED_ADMIN_USERNAME);
         }
 
