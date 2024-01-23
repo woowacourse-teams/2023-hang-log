@@ -1,5 +1,6 @@
 package hanglog.category.service;
 
+import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_ID;
 import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_NAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 
@@ -38,16 +39,24 @@ public class CategoryService {
     }
 
     public Long save(final CategoryRequest categoryRequest) {
-        validateCategoryDuplicate(categoryRequest);
+        validateCategoryDuplicateId(categoryRequest);
+        validateCategoryDuplicateName(categoryRequest);
 
         return categoryRepository.save(Category.of(categoryRequest)).getId();
     }
 
-    private void validateCategoryDuplicate(final CategoryRequest categoryRequest) {
+    private void validateCategoryDuplicateId(final CategoryRequest categoryRequest) {
+        if (categoryRepository.existsById(categoryRequest.getId())) {
+            throw new BadRequestException(DUPLICATED_CATEGORY_ID);
+        }
+    }
+
+    private void validateCategoryDuplicateName(final CategoryRequest categoryRequest) {
         if (categoryRepository.existsByEngNameAndKorName(categoryRequest.getEngName(), categoryRequest.getKorName())) {
             throw new BadRequestException(DUPLICATED_CATEGORY_NAME);
         }
     }
+
 
     public void update(final Long id, final CategoryRequest categoryRequest) {
         final Category category = categoryRepository.findById(id)
@@ -59,8 +68,11 @@ public class CategoryService {
     }
 
     private void validateCategoryDuplicate(final Category category, final CategoryRequest categoryRequest) {
+        if (!category.getId().equals(categoryRequest.getId())) {
+            validateCategoryDuplicateId(categoryRequest);
+        }
         if (!category.isSameNames(categoryRequest.getEngName(), categoryRequest.getKorName())) {
-            validateCategoryDuplicate(categoryRequest);
+            validateCategoryDuplicateName(categoryRequest);
         }
     }
 }

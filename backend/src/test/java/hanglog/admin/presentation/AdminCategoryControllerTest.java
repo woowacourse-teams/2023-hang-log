@@ -102,7 +102,7 @@ class AdminCategoryControllerTest extends ControllerTest {
     @Test
     void createCategory() throws Exception {
         // given
-        final CategoryRequest request = new CategoryRequest("engName", "korName");
+        final CategoryRequest request = new CategoryRequest(1L, "engName", "korName");
 
         given(categoryService.save(any(CategoryRequest.class))).willReturn(1L);
 
@@ -116,6 +116,10 @@ class AdminCategoryControllerTest extends ControllerTest {
                 .andExpect(header().string("Location", "/admin/categories/1"))
                 .andDo(restDocs.document(
                         requestFields(
+                                fieldWithPath("id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("카테고리 ID")
+                                        .attributes(field("constraint", "양의 정수")),
                                 fieldWithPath("engName")
                                         .type(JsonFieldType.STRING)
                                         .description("영어 이름")
@@ -132,7 +136,7 @@ class AdminCategoryControllerTest extends ControllerTest {
     @Test
     void updateCategory() throws Exception {
         // given
-        final CategoryRequest request = new CategoryRequest("engName", "korName");
+        final CategoryRequest request = new CategoryRequest(1L, "engName", "korName");
 
         doNothing().when(categoryService).update(1L, request);
 
@@ -149,6 +153,10 @@ class AdminCategoryControllerTest extends ControllerTest {
                                         .description("카테고리 ID")
                         ),
                         requestFields(
+                                fieldWithPath("id")
+                                        .type(JsonFieldType.NUMBER)
+                                        .description("카테고리 ID")
+                                        .attributes(field("constraint", "양의 정수")),
                                 fieldWithPath("engName")
                                         .type(JsonFieldType.STRING)
                                         .description("영어 이름")

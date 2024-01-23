@@ -77,7 +77,7 @@ class CategoryServiceTest {
     @Test
     void save() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest(FOOD.getEngName(), FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, FOOD.getEngName(), FOOD.getKorName());
 
         given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(false);
         given(categoryRepository.save(any(Category.class))).willReturn(FOOD);
@@ -93,7 +93,7 @@ class CategoryServiceTest {
     @Test
     void save_DuplicateFail() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest(FOOD.getEngName(), FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, FOOD.getEngName(), FOOD.getKorName());
 
         given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(true);
 
@@ -106,7 +106,7 @@ class CategoryServiceTest {
     @Test
     void update() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", FOOD.getKorName());
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
         given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(false);
@@ -119,7 +119,7 @@ class CategoryServiceTest {
     @Test
     void update_DuplicateFail() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", FOOD.getKorName());
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
         given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(true);
@@ -133,7 +133,7 @@ class CategoryServiceTest {
     @Test
     void update_NotFoundFail() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest("newName", FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", FOOD.getKorName());
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.empty());
 

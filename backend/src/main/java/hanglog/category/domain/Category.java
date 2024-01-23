@@ -32,10 +32,11 @@ public class Category extends BaseEntity {
     private String korName;
 
     public static Category of(final CategoryRequest categoryRequest) {
-        return new Category(null, categoryRequest.getEngName(), categoryRequest.getKorName());
+        return new Category(categoryRequest.getId(), categoryRequest.getEngName(), categoryRequest.getKorName());
     }
 
     public void update(final CategoryRequest categoryRequest) {
+        this.id = categoryRequest.getId();
         this.engName = categoryRequest.getEngName();
         this.korName = categoryRequest.getKorName();
     }
