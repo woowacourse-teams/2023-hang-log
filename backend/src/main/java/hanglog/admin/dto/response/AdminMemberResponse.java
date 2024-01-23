@@ -15,7 +15,7 @@ public class AdminMemberResponse {
     public static AdminMemberResponse from(final AdminMember adminMember) {
         return new AdminMemberResponse(
                 adminMember.getId(),
-                adminMember.getUserName(),
+                adminMember.getUsername(),
                 adminMember.getAdminType().name()
         );
     }

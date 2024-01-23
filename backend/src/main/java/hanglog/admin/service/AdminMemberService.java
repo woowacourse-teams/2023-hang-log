@@ -34,7 +34,7 @@ public class AdminMemberService {
     }
 
     public Long createAdminMember(final AdminMemberCreateRequest request) {
-        if (adminMemberRepository.existsByUserName(request.getUserName())) {
+        if (adminMemberRepository.existsByUsername(request.getUserName())) {
             throw new AdminException(DUPLICATED_ADMIN_USERNAME);
         }
 
@@ -54,7 +54,7 @@ public class AdminMemberService {
 
         final AdminMember updatedAdminMember = new AdminMember(
                 adminMember.getId(),
-                adminMember.getUserName(),
+                adminMember.getUsername(),
                 passwordEncoder.encode(request.getNewPassword()),
                 adminMember.getAdminType()
         );

@@ -31,7 +31,7 @@ public class AdminMember {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 20)
-    private String userName;
+    private String username;
 
     @Column(nullable = false, length = 64)
     private String password;
@@ -53,9 +53,9 @@ public class AdminMember {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    public AdminMember(final Long id, final String userName, final String password, final AdminType adminType) {
+    public AdminMember(final Long id, final String username, final String password, final AdminType adminType) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.lastLoginDate = LocalDateTime.now();
         this.adminType = adminType;
@@ -64,7 +64,7 @@ public class AdminMember {
         this.modifiedAt = LocalDateTime.now();
     }
 
-    public AdminMember(final String userName, final String password, final AdminType adminType) {
-        this(null, userName, password, adminType);
+    public AdminMember(final String username, final String password, final AdminType adminType) {
+        this(null, username, password, adminType);
     }
 }

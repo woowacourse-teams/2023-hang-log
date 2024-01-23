@@ -46,7 +46,7 @@ class AdminMemberServiceTest {
         );
         final AdminMember adminMember = new AdminMember(1L, "username", "password", AdminType.ADMIN);
 
-        given(adminMemberRepository.existsByUserName("username")).willReturn(false);
+        given(adminMemberRepository.existsByUsername("username")).willReturn(false);
         given(adminMemberRepository.save(any(AdminMember.class))).willReturn(adminMember);
         given(passwordEncoder.encode("password")).willReturn(anyString());
 
