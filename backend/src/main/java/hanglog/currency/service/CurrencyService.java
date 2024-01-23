@@ -140,7 +140,7 @@ public class CurrencyService {
 
     @Transactional(readOnly = true)
     public CurrencyListResponse getCurrenciesByPage(final Pageable pageable) {
-        final List<Currency> currencies = currencyRepository.findBy(pageable.previousOrFirst());
+        final List<Currency> currencies = currencyRepository.findAllBy(pageable.previousOrFirst());
         final List<CurrencyResponse> currencyResponses = currencies.stream()
                 .map(CurrencyResponse::of)
                 .toList();
