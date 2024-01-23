@@ -32,8 +32,8 @@ public class AdminCityController {
     public ResponseEntity<List<CityDetailResponse>> getCitiesDetail(
             @AdminAuth final Accessor accessor
     ) {
-        final List<CityDetailResponse> citiesDetail = cityService.getAllCitiesDetail();
-        return ResponseEntity.ok(citiesDetail);
+        final List<CityDetailResponse> cityDetailResponses = cityService.getAllCitiesDetail();
+        return ResponseEntity.ok(cityDetailResponses);
     }
 
     @PostMapping

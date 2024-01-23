@@ -32,8 +32,8 @@ public class AdminMemberController {
     public ResponseEntity<List<AdminMemberResponse>> getAdminMembers(
             @AdminAuth final Accessor accessor
     ) {
-        final List<AdminMemberResponse> adminMembers = adminMemberService.getAdminMembers();
-        return ResponseEntity.ok(adminMembers);
+        final List<AdminMemberResponse> adminMemberResponses = adminMemberService.getAdminMembers();
+        return ResponseEntity.ok(adminMemberResponses);
     }
 
     @PostMapping

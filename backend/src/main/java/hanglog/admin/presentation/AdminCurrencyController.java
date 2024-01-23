@@ -36,8 +36,8 @@ public class AdminCurrencyController {
             @AdminAuth final Accessor accessor,
             @PageableDefault(sort = "date", direction = DESC) final Pageable pageable
     ) {
-        final CurrencyListResponse currencies = currencyService.getCurrenciesByPage(pageable);
-        return ResponseEntity.ok().body(currencies);
+        final CurrencyListResponse currencyListResponse = currencyService.getCurrenciesByPage(pageable);
+        return ResponseEntity.ok().body(currencyListResponse);
     }
 
     @PostMapping

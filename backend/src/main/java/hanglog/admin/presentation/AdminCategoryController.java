@@ -32,8 +32,8 @@ public class AdminCategoryController {
     public ResponseEntity<List<CategoryDetailResponse>> getCategoriesDetail(
             @AdminAuth final Accessor accessor
     ) {
-        final List<CategoryDetailResponse> categoriesDetail = categoryService.getAllCategoriesDetail();
-        return ResponseEntity.ok(categoriesDetail);
+        final List<CategoryDetailResponse> categoryDetailResponses = categoryService.getAllCategoriesDetail();
+        return ResponseEntity.ok(categoryDetailResponses);
     }
 
     @PostMapping
