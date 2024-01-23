@@ -1,11 +1,11 @@
 package hanglog.admin;
 
+import static hanglog.admin.domain.type.AdminType.MASTER;
 import static hanglog.global.exception.ExceptionCode.INVALID_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import hanglog.admin.domain.repository.AdminMemberRepository;
-import hanglog.admin.domain.type.AdminType;
 import hanglog.auth.AdminAuth;
 import hanglog.auth.domain.Accessor;
 import hanglog.global.exception.BadRequestException;
@@ -63,7 +63,7 @@ public class AdminLoginArgumentResolver implements HandlerMethodArgumentResolver
 
         final Long memberId = Long.valueOf(jwtProvider.getSubject(accessToken));
 
-        if (adminMemberRepository.existsAdminMemberByIdAndAdminType(memberId, AdminType.MASTER)) {
+        if (adminMemberRepository.existsByIdAndAdminType(memberId, MASTER)) {
             return Accessor.master(memberId);
         }
         return Accessor.admin(memberId);
