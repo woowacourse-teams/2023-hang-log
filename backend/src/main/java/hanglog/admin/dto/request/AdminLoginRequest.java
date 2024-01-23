@@ -1,16 +1,12 @@
 package hanglog.admin.dto.request;
 
-import static lombok.AccessLevel.PRIVATE;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = PRIVATE)
 public class AdminLoginRequest {
 
     @NotNull(message = "사용자 이름을 입력해주세요.")
