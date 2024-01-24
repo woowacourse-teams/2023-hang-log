@@ -1,11 +1,13 @@
 package hanglog.category.dto.response;
 
+import static lombok.AccessLevel.PRIVATE;
+
 import hanglog.category.domain.Category;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = PRIVATE)
 public class CategoryDetailResponse {
 
     private final Long id;

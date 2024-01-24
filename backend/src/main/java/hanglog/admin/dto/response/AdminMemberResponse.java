@@ -1,11 +1,13 @@
 package hanglog.admin.dto.response;
 
+import static lombok.AccessLevel.PRIVATE;
+
 import hanglog.admin.domain.AdminMember;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor()
+@RequiredArgsConstructor(access = PRIVATE)
 public class AdminMemberResponse {
 
     private final Long id;

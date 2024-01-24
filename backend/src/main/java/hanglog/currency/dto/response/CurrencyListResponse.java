@@ -9,6 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CurrencyListResponse {
 
-    final List<CurrencyResponse> currencies;
-    final Long lastPageIndex;
+    private final List<CurrencyResponse> currencies;
+    private final Long lastPageIndex;
 }

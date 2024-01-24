@@ -18,6 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.admin.domain.AdminMember;
+import hanglog.admin.domain.type.AdminType;
 import hanglog.admin.dto.request.AdminMemberCreateRequest;
 import hanglog.admin.dto.request.PasswordUpdateRequest;
 import hanglog.admin.dto.response.AdminMemberResponse;
@@ -67,7 +69,8 @@ class AdminMemberControllerTest extends ControllerTest {
     @Test
     void getAdminMembers() throws Exception {
         // given
-        final AdminMemberResponse response = new AdminMemberResponse(1L, "adminUser", "MASTER");
+        final AdminMember adminMember = new AdminMember(1L, "adminUser", "password", AdminType.MASTER);
+        final AdminMemberResponse response = AdminMemberResponse.from(adminMember);
 
         given(adminMemberService.getAdminMembers()).willReturn(List.of(response));
 
