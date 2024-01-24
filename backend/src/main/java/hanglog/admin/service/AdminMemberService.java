@@ -38,10 +38,13 @@ public class AdminMemberService {
             throw new AdminException(DUPLICATED_ADMIN_USERNAME);
         }
 
-        return adminMemberRepository.save(new AdminMember(request.getUserName(),
+        return adminMemberRepository.save(
+                new AdminMember(
+                        request.getUserName(),
                         passwordEncoder.encode(request.getPassword()),
-                        AdminType.getMappedAdminType(request.getAdminType())))
-                .getId();
+                        AdminType.getMappedAdminType(request.getAdminType())
+                )
+        ).getId();
     }
 
     public void updatePassword(final Long adminMemberId, final PasswordUpdateRequest request) {

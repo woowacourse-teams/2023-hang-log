@@ -52,7 +52,7 @@ public class AdminCurrencyController {
 
     @PutMapping("/{currencyId}")
     @AdminOnly
-    public ResponseEntity<Void> updateCategory(
+    public ResponseEntity<Void> updateCurrency(
             @AdminAuth final Accessor accessor,
             @PathVariable final Long currencyId,
             @RequestBody @Valid final CurrencyRequest currencyRequest

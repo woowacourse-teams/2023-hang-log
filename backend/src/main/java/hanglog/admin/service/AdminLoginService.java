@@ -31,10 +31,9 @@ public class AdminLoginService {
     private final BearerAuthorizationExtractor bearerExtractor;
     private final PasswordEncoder passwordEncoder;
 
-
     public MemberTokens login(final AdminLoginRequest adminLoginRequest) {
-        final AdminMember adminMember = adminMemberRepository.findByUsername(
-                        adminLoginRequest.getUserName())
+        final AdminMember adminMember = adminMemberRepository
+                .findByUsername(adminLoginRequest.getUserName())
                 .orElseThrow(() -> new AdminException(INVALID_USER_NAME));
 
         if (passwordEncoder.matches(adminLoginRequest.getPassword(), adminMember.getPassword())) {
@@ -47,7 +46,6 @@ public class AdminLoginService {
 
         throw new AdminException(INVALID_PASSWORD);
     }
-
 
     public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
         final String accessToken = bearerExtractor.extractAccessToken(authorizationHeader);
