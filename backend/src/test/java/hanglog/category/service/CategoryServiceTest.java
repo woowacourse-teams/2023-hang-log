@@ -79,7 +79,9 @@ class CategoryServiceTest {
         // given
         final CategoryRequest categoryRequest = new CategoryRequest(1L, FOOD.getEngName(), FOOD.getKorName());
 
-        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(false);
+        given(categoryRepository.existsById(anyLong())).willReturn(false);
+        given(categoryRepository.existsByEngName(anyString())).willReturn(false);
+        given(categoryRepository.existsByKorName(anyString())).willReturn(false);
         given(categoryRepository.save(any(Category.class))).willReturn(FOOD);
 
         // when
@@ -95,7 +97,8 @@ class CategoryServiceTest {
         // given
         final CategoryRequest categoryRequest = new CategoryRequest(1L, FOOD.getEngName(), FOOD.getKorName());
 
-        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(true);
+        given(categoryRepository.existsById(anyLong())).willReturn(false);
+        given(categoryRepository.existsByEngName(anyString())).willReturn(true);
 
         // when & then
         assertThatThrownBy(() -> categoryService.save(categoryRequest))
@@ -106,10 +109,12 @@ class CategoryServiceTest {
     @Test
     void update() {
         // given
-        final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", FOOD.getKorName());
+        final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", "새이름");
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
-        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(false);
+        given(categoryRepository.existsById(anyLong())).willReturn(false);
+        given(categoryRepository.existsByEngName(anyString())).willReturn(false);
+        given(categoryRepository.existsByKorName(anyString())).willReturn(false);
 
         // when & then
         assertDoesNotThrow(() -> categoryService.update(FOOD.getId(), categoryRequest));
@@ -122,7 +127,8 @@ class CategoryServiceTest {
         final CategoryRequest categoryRequest = new CategoryRequest(1L, "newName", FOOD.getKorName());
 
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
-        given(categoryRepository.existsByEngNameAndKorName(anyString(), anyString())).willReturn(true);
+        given(categoryRepository.existsById(anyLong())).willReturn(false);
+        given(categoryRepository.existsByEngName(anyString())).willReturn(true);
 
         // when & then
         assertThatThrownBy(() -> categoryService.update(FOOD.getId(), categoryRequest))

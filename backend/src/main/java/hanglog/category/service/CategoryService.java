@@ -1,7 +1,7 @@
 package hanglog.category.service;
 
+import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_ENG_NAME;
 import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_ID;
-import static hanglog.global.exception.ExceptionCode.DUPLICATED_CATEGORY_NAME;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_CATEGORY_ID;
 
 import hanglog.category.domain.Category;
@@ -39,21 +39,32 @@ public class CategoryService {
     }
 
     public Long save(final CategoryRequest categoryRequest) {
-        validateCategoryDuplicateId(categoryRequest);
-        validateCategoryDuplicateName(categoryRequest);
+        validateCategoryDuplicate(categoryRequest);
 
         return categoryRepository.save(Category.of(categoryRequest)).getId();
     }
 
-    private void validateCategoryDuplicateId(final CategoryRequest categoryRequest) {
-        if (categoryRepository.existsById(categoryRequest.getId())) {
+    private void validateCategoryDuplicate(final CategoryRequest categoryRequest) {
+        validateCategoryDuplicateId(categoryRequest.getId());
+        validateCategoryDuplicateEngName(categoryRequest.getEngName());
+        validateCategoryDuplicateKorName(categoryRequest.getKorName());
+    }
+
+    private void validateCategoryDuplicateId(final Long id) {
+        if (categoryRepository.existsById(id)) {
             throw new BadRequestException(DUPLICATED_CATEGORY_ID);
         }
     }
 
-    private void validateCategoryDuplicateName(final CategoryRequest categoryRequest) {
-        if (categoryRepository.existsByEngNameAndKorName(categoryRequest.getEngName(), categoryRequest.getKorName())) {
-            throw new BadRequestException(DUPLICATED_CATEGORY_NAME);
+    private void validateCategoryDuplicateEngName(final String engName) {
+        if (categoryRepository.existsByEngName(engName)) {
+            throw new BadRequestException(DUPLICATED_CATEGORY_ENG_NAME);
+        }
+    }
+
+    private void validateCategoryDuplicateKorName(final String korName) {
+        if (categoryRepository.existsByKorName(korName)) {
+            throw new BadRequestException(DUPLICATED_CATEGORY_ENG_NAME);
         }
     }
 
@@ -69,10 +80,13 @@ public class CategoryService {
 
     private void validateCategoryDuplicate(final Category category, final CategoryRequest categoryRequest) {
         if (!category.getId().equals(categoryRequest.getId())) {
-            validateCategoryDuplicateId(categoryRequest);
+            validateCategoryDuplicateId(categoryRequest.getId());
         }
-        if (!category.isSameNames(categoryRequest.getEngName(), categoryRequest.getKorName())) {
-            validateCategoryDuplicateName(categoryRequest);
+        if (!category.getEngName().equals(categoryRequest.getEngName())) {
+            validateCategoryDuplicateEngName(categoryRequest.getEngName());
+        }
+        if (!category.getKorName().equals(categoryRequest.getKorName())) {
+            validateCategoryDuplicateKorName(categoryRequest.getKorName());
         }
     }
 }

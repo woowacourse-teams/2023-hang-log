@@ -41,10 +41,6 @@ public class Category extends BaseEntity {
         this.korName = categoryRequest.getKorName();
     }
 
-    public boolean isSameNames(final String engName, final String korName) {
-        return this.engName.equals(engName) && this.korName.equals(korName);
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
