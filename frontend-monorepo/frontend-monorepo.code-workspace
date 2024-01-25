@@ -5,6 +5,9 @@
     },
     {
       "path": "packages/hanglog-service"
+    },
+    {
+      "path": "packages/hanglog-admin"
     }
   ],
   "settings": {
