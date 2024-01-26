@@ -1,5 +1,7 @@
 package hanglog.like.service;
 
+import static java.lang.Boolean.TRUE;
+
 import hanglog.like.domain.LikeCount;
 import hanglog.like.domain.Likes;
 import hanglog.like.domain.MemberLike;
@@ -44,8 +46,11 @@ public class LikeService {
 
     private void updateLikeCountCache(final Long tripId, final LikeRequest likeRequest) {
         final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
-        if (Boolean.TRUE.equals(likeRequest.getIsLike())) {
-            likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() + 1)));
+        if (TRUE.equals(likeRequest.getIsLike())) {
+            likeCount.ifPresentOrElse(
+                    count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() + 1)),
+                    () -> likeCountRepository.save(new LikeCount(tripId, 1L))
+            );
             return;
         }
         likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() - 1)));
