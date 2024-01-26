@@ -79,10 +79,7 @@ public class CommunityService {
         );
         final Map<Long, List<City>> citiesByTrip = tripCityElements.toCityMap();
 
-        final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(
-                accessor.getMemberId(),
-                tripIds
-        ));
+        final LikeElements likeElements = new LikeElements(getLikeElements(accessor.getMemberId(), tripIds));
         final Map<Long, LikeInfo> likeInfoByTrip = likeElements.toLikeMap();
 
         return trips.stream()
@@ -93,6 +90,7 @@ public class CommunityService {
                         getLikeCount(likeInfoByTrip, trip.getId())
                 )).toList();
     }
+
 
     private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
         final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
@@ -139,6 +137,12 @@ public class CommunityService {
                 likeElement.getLikeCount(),
                 publishedDate
         );
+    }
+
+    private List<LikeElement> getLikeElements(final Long memberId, final List<Long> tripIds) {
+        return tripIds.stream()
+                .map(tripId -> getLikeElement(memberId, tripId))
+                .toList();
     }
 
     private LikeElement getLikeElement(final Long memberId, final Long tripId) {
