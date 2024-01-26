@@ -34,6 +34,11 @@ public class LikeService {
     private final CustomLikeRepository customLikeRepository;
 
     public void update(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
+        updateMemberLikeCache(memberId, tripId, likeRequest);
+        updateLikeCountCache(tripId, likeRequest);
+    }
+
+    private void updateMemberLikeCache(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
         Map<Long, Boolean> tripLikeStatusMap = new HashMap<>();
         final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
         if (memberLike.isPresent()) {
@@ -41,7 +46,6 @@ public class LikeService {
         }
         tripLikeStatusMap.put(tripId, likeRequest.getIsLike());
         memberLikeRepository.save(new MemberLike(memberId, tripLikeStatusMap));
-        updateLikeCountCache(tripId, likeRequest);
     }
 
     private void updateLikeCountCache(final Long tripId, final LikeRequest likeRequest) {
