@@ -16,9 +16,7 @@ import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.like.domain.LikeInfo;
-import hanglog.like.domain.repository.LikeCountRepository;
 import hanglog.like.domain.repository.LikeRepository;
-import hanglog.like.domain.repository.MemberLikeRepository;
 import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
 import hanglog.trip.domain.Trip;
@@ -53,10 +51,7 @@ public class CommunityService {
     private final CityRepository cityRepository;
     private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
-    private final LikeCountRepository likeCountRepository;
-    private final MemberLikeRepository memberLikeRepository;
     private final RedisTemplate<String, Object> redisTemplate;
-
 
     @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
@@ -169,20 +164,4 @@ public class CommunityService {
         memberIds.forEach(memberId -> opsForSet.add(key, memberId));
         redisTemplate.expire(key, Duration.ofMinutes(90L));
     }
-
-    /*
-    private LikeElement getLikeElement(final Long memberId, final Long tripId) {
-        final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
-        final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
-        if (likeCount.isPresent() && memberLike.isPresent()) {
-            final Map<Long, Boolean> tripLikeStatusMap = memberLike.get().getLikeStatusForTrip();
-            if (tripLikeStatusMap.containsKey(tripId)) {
-                return new LikeElement(tripId, likeCount.get().getCount(), tripLikeStatusMap.get(tripId));
-            }
-            return new LikeElement(tripId, likeCount.get().getCount(), false);
-        }
-        return likeRepository.findLikeCountAndIsLikeByTripId(memberId, tripId)
-                .orElseGet(() -> new LikeElement(tripId, 0, false));
-    }
-     */
 }
