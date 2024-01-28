@@ -5,6 +5,7 @@ import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.TripLikeCount;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +38,15 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
             GROUP BY l.tripId
              """)
     List<TripLikeCount> findCountByAllTrips();
+
+    @Query("""
+            SELECT new hanglog.like.dto.TripLikeCount(l.tripId, COUNT(l.memberId))
+            FROM Likes l
+            WHERE l.tripId = :tripId
+            GROUP BY l.tripId
+             """)
+    List<Long> findByTripId(@Param("tripId") final Long tripId);
+
+    @Query("DELETE FROM Likes WHERE tripId IN :tripIds")
+    void deleteByTripIds(final Set<Long> tripIds);
 }
