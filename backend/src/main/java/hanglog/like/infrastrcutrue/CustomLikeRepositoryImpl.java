@@ -87,6 +87,7 @@ public class CustomLikeRepositoryImpl implements CustomLikeRepository {
         }
         final String[] idArray = memberIds.split(",");
         return Arrays.stream(idArray)
+                .filter(StringUtils::hasText)
                 .map(Long::valueOf)
                 .collect(Collectors.toSet());
     }
