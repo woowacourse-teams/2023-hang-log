@@ -31,7 +31,7 @@ public class CustomLikeRepositoryImpl implements CustomLikeRepository {
     @Override
     public void saveAll(final List<Likes> likes) {
         final String sql = """
-                    INSERT INTO likes (trip_id, member_id) 
+                    INSERT INTO likes (trip_id, member_id)
                     VALUES (:tripId, :memberId)
                 """;
         namedParameterJdbcTemplate.batchUpdate(sql, getLikesToSqlParameterSources(likes));
@@ -85,7 +85,7 @@ public class CustomLikeRepositoryImpl implements CustomLikeRepository {
         if (!StringUtils.hasText(memberIds)) {
             return Collections.emptySet();
         }
-        final String[] idArray = memberIds.split(",");
+        final String[] idArray = memberIds.strip().split(",");
         return Arrays.stream(idArray)
                 .filter(StringUtils::hasText)
                 .map(Long::valueOf)
