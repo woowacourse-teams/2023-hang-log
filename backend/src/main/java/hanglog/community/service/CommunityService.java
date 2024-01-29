@@ -138,10 +138,12 @@ public class CommunityService {
             }
         }
 
-        final List<LikeElement> likeElementByTripIds = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
-        likeElementByTripIds.addAll(getEmptyLikeElements(likeInfoByTrip, nonCachedTripIds));
-        likeElementByTripIds.forEach(this::cachingLike);
-        likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
+        if (!nonCachedTripIds.isEmpty()) {
+            final List<LikeElement> likeElementByTripIds = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
+            likeElementByTripIds.addAll(getEmptyLikeElements(likeInfoByTrip, nonCachedTripIds));
+            likeElementByTripIds.forEach(this::cachingLike);
+            likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
+        }
         return likeInfoByTrip;
     }
 
