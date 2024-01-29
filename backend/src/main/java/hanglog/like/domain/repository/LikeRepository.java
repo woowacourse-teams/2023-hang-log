@@ -13,7 +13,7 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     @Query(value = """
             SELECT l.trip_id AS tripId, COUNT(l.id) AS likeCount, GROUP_CONCAT(l.member_id) AS memberIds
-            FROM Likes l
+            FROM likes l
             WHERE l.trip_id IN :tripIds
             GROUP BY l.trip_id
             """, nativeQuery = true)
@@ -21,7 +21,7 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     @Query(value = """
             SELECT l.trip_id AS tripId, COUNT(l.id) AS likeCount, GROUP_CONCAT(l.member_id) AS memberIds
-            FROM Likes l
+            FROM likes l
             WHERE l.trip_id = :tripId
             GROUP BY l.trip_id
             """, nativeQuery = true)
