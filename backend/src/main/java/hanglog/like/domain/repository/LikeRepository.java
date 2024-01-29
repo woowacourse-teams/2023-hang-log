@@ -47,6 +47,22 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
              """)
     List<Long> findByTripId(@Param("tripId") final Long tripId);
 
+    @Query(value = """
+            SELECT l.trip_id AS tripId, COUNT(l.id) AS likeCount, GROUP_CONCAT(l.member_id) AS memberIds
+            FROM Likes l
+            WHERE l.trip_id IN :tripIds
+            GROUP BY l.trip_id
+            """, nativeQuery = true)
+    List<LikeElement> findLikeElementByTripIds(@Param("tripIds") final List<Long> tripIds);
+
+    @Query(value = """
+            SELECT l.trip_id AS tripId, COUNT(l.id) AS likeCount, GROUP_CONCAT(l.member_id) AS memberIds
+            FROM Likes l
+            WHERE l.trip_id = :tripId
+            GROUP BY l.trip_id
+            """, nativeQuery = true)
+    Optional<LikeElement> findLikesElementByTripId(@Param("tripId") final Long tripId);
+
     @Query("DELETE FROM Likes WHERE tripId IN :tripIds")
     void deleteByTripIds(final Set<Long> tripIds);
 }

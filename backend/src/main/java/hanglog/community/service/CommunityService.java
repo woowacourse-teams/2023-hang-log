@@ -17,8 +17,8 @@ import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.like.domain.LikeInfo;
 import hanglog.like.domain.repository.LikeRepository;
-import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
+import hanglog.like.dto.LikeElement;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -26,6 +26,8 @@ import hanglog.trip.dto.TripCityElements;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,8 +51,8 @@ public class CommunityService {
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
     private final CityRepository cityRepository;
-    private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
+    private final RecommendStrategies recommendStrategies;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
@@ -77,9 +79,7 @@ public class CommunityService {
                 tripCityRepository.findTripIdAndCitiesByTripIds(tripIds)
         );
         final Map<Long, List<City>> citiesByTrip = tripCityElements.toCityMap();
-
-        final LikeElements likeElements = new LikeElements(getLikeElements(accessor.getMemberId(), tripIds));
-        final Map<Long, LikeInfo> likeInfoByTrip = likeElements.toLikeMap();
+        final Map<Long, LikeInfo> likeInfoByTrip = getLikeInfoByTripIds(accessor.getMemberId(), tripIds);
 
         return trips.stream()
                 .map(trip -> CommunityTripResponse.of(
@@ -89,7 +89,6 @@ public class CommunityService {
                         getLikeCount(likeInfoByTrip, trip.getId())
                 )).toList();
     }
-
 
     private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
         final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
@@ -125,43 +124,62 @@ public class CommunityService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
 
-        final LikeElement likeElement = getLikeElement(accessor.getMemberId(), tripId);
+        final LikeInfo likeInfo = getLikeInfoByTripId(accessor.getMemberId(), tripId);
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
 
         return TripDetailResponse.publishedTrip(
                 trip,
                 cities,
                 isWriter,
-                likeElement.isLike(),
-                likeElement.getLikeCount(),
+                likeInfo.isLike(),
+                likeInfo.getLikeCount(),
                 publishedDate
         );
     }
 
-    private List<LikeElement> getLikeElements(final Long memberId, final List<Long> tripIds) {
-        return tripIds.stream()
-                .map(tripId -> getLikeElement(memberId, tripId))
-                .toList();
+    private Map<Long, LikeInfo> getLikeInfoByTripIds(final Long memberId, final List<Long> tripIds) {
+        final Map<Long, LikeInfo> likeInfoByTrip = new HashMap<>();
+
+        final List<Long> nonCachedTripIds = new ArrayList<>();
+        for (final Long tripId : tripIds) {
+            final String key = "likes:" + tripId;
+            if (TRUE.equals(redisTemplate.hasKey(key))) {
+                likeInfoByTrip.put(tripId, readLikeInfoFromCache(key, memberId));
+                continue;
+            }
+            nonCachedTripIds.add(tripId);
+        }
+
+        final List<LikeElement> likeElementByTripIds = likeRepository.findLikeElementByTripIds(nonCachedTripIds);
+        likeElementByTripIds.forEach(this::cachingLike);
+        likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
+        return likeInfoByTrip;
     }
 
-    private LikeElement getLikeElement(final Long memberId, final Long tripId) {
-        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+    private LikeInfo getLikeInfoByTripId(final Long memberId, final Long tripId) {
         final String key = "likes:" + tripId;
         if (TRUE.equals(redisTemplate.hasKey(key))) {
-            final boolean isLike = TRUE.equals(opsForSet.isMember(key, memberId));
-            final long count = Objects.requireNonNull(opsForSet.size(key)) - 1;
-            return new LikeElement(tripId, count, isLike);
+            return readLikeInfoFromCache(key, memberId);
         }
-        final LikeElement likeElement = likeRepository.findLikeCountAndIsLikeByTripId(memberId, tripId)
-                .orElse(new LikeElement(tripId, 0, false));
-        cachingLike(key, tripId, opsForSet);
-        return likeElement;
+
+        final LikeElement likeElement = likeRepository.findLikesElementByTripId(tripId)
+                .orElse(LikeElement.empty(tripId));
+        cachingLike(likeElement);
+        return likeElement.toLikeMap(memberId);
     }
 
-    private void cachingLike(final String key, final Long tripId, final SetOperations<String, Object> opsForSet) {
-        final List<Long> memberIds = likeRepository.findByTripId(tripId);
+    private LikeInfo readLikeInfoFromCache(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        final boolean isLike = TRUE.equals(opsForSet.isMember(key, memberId));
+        final long count = Objects.requireNonNull(opsForSet.size(key)) - 1;
+        return new LikeInfo(count, isLike);
+    }
+
+    private void cachingLike(final LikeElement likeElement) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        final String key = "likes:" + likeElement.getTripId();
         opsForSet.add(key, "empty");
-        memberIds.forEach(memberId -> opsForSet.add(key, memberId));
+        opsForSet.add(key, likeElement.getMemberIds());
         redisTemplate.expire(key, Duration.ofMinutes(90L));
     }
 }
