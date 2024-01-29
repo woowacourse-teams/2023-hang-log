@@ -1,7 +1,7 @@
 package hanglog.integration.service;
 
 import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
-import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

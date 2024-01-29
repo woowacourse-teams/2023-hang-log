@@ -2,8 +2,9 @@ package hanglog.community.service;
 
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
-import static hanglog.like.domain.LikeRedisKeyConstants.EMPTY_MARKER;
-import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
+import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_TTL;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 import static java.lang.Boolean.TRUE;
 
@@ -26,7 +27,6 @@ import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.TripCityElements;
 import hanglog.trip.dto.response.TripDetailResponse;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,6 +177,6 @@ public class CommunityService {
         final String key = generateLikeKey(likeElement.getTripId());
         opsForSet.add(key, EMPTY_MARKER);
         opsForSet.add(key, likeElement.getMemberIds());
-        redisTemplate.expire(key, Duration.ofMinutes(90L));
+        redisTemplate.expire(key, LIKE_TTL);
     }
 }

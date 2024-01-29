@@ -1,9 +1,9 @@
 package hanglog.like.service;
 
-import static hanglog.like.domain.LikeRedisKeyConstants.EMPTY_MARKER;
-import static hanglog.like.domain.LikeRedisKeyConstants.LIKE_KEY_PREFIX;
-import static hanglog.like.domain.LikeRedisKeyConstants.SEPARATOR;
-import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
+import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_KEY_PREFIX;
+import static hanglog.like.domain.LikeRedisConstants.KEY_SEPARATOR;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 
 import hanglog.like.domain.Likes;
 import hanglog.like.domain.repository.CustomLikeRepository;
@@ -46,7 +46,7 @@ public class LikeSyncScheduler {
 
     private Set<Long> extractTripIdsInRedisKeys(final Set<String> likeKeys) {
         return likeKeys.stream().map(key -> {
-            final int indexOfColon = key.indexOf(SEPARATOR);
+            final int indexOfColon = key.indexOf(KEY_SEPARATOR);
             return Long.valueOf(key.substring(indexOfColon + 1));
         }).collect(Collectors.toSet());
     }

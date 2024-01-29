@@ -1,10 +1,10 @@
 package hanglog.like.service;
 
-import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_TTL;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 import static java.lang.Boolean.TRUE;
 
 import hanglog.like.dto.request.LikeRequest;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
@@ -32,7 +32,7 @@ public class LikeService {
                                     final SetOperations<String, Object> opsForSet) {
         if (!isLike) {
             opsForSet.remove(key, memberId);
-            redisTemplate.expire(key, Duration.ofMinutes(90L));
+            redisTemplate.expire(key, LIKE_TTL);
         }
     }
 
@@ -40,7 +40,7 @@ public class LikeService {
                                  final SetOperations<String, Object> opsForSet) {
         if (isLike) {
             opsForSet.add(key, memberId);
-            redisTemplate.expire(key, Duration.ofMinutes(90L));
+            redisTemplate.expire(key, LIKE_TTL);
         }
     }
 }
