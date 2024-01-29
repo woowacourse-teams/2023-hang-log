@@ -17,8 +17,8 @@ import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.like.domain.LikeInfo;
 import hanglog.like.domain.repository.LikeRepository;
-import hanglog.like.dto.LikeElements;
 import hanglog.like.dto.LikeElement;
+import hanglog.like.dto.LikeElements;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
@@ -85,25 +85,9 @@ public class CommunityService {
                 .map(trip -> CommunityTripResponse.of(
                         trip,
                         citiesByTrip.get(trip.getId()),
-                        isLike(likeInfoByTrip, trip.getId()),
-                        getLikeCount(likeInfoByTrip, trip.getId())
+                        likeInfoByTrip.get(trip.getId()).isLike(),
+                        likeInfoByTrip.get(trip.getId()).getLikeCount()
                 )).toList();
-    }
-
-    private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
-        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
-        if (likeInfo == null) {
-            return false;
-        }
-        return likeInfo.isLike();
-    }
-
-    private Long getLikeCount(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
-        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
-        if (likeInfo == null) {
-            return 0L;
-        }
-        return likeInfo.getLikeCount();
     }
 
     private Long getLastPageIndex(final int pageSize) {
@@ -145,12 +129,13 @@ public class CommunityService {
             final String key = "likes:" + tripId;
             if (TRUE.equals(redisTemplate.hasKey(key))) {
                 likeInfoByTrip.put(tripId, readLikeInfoFromCache(key, memberId));
-                continue;
+            } else {
+                nonCachedTripIds.add(tripId);
             }
-            nonCachedTripIds.add(tripId);
         }
 
         final List<LikeElement> likeElementByTripIds = likeRepository.findLikeElementByTripIds(nonCachedTripIds);
+        likeElementByTripIds.addAll(getEmptyLikeElements(likeInfoByTrip, nonCachedTripIds));
         likeElementByTripIds.forEach(this::cachingLike);
         likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
         return likeInfoByTrip;
@@ -166,6 +151,16 @@ public class CommunityService {
                 .orElse(LikeElement.empty(tripId));
         cachingLike(likeElement);
         return likeElement.toLikeMap(memberId);
+    }
+
+    private List<LikeElement> getEmptyLikeElements(
+            final Map<Long, LikeInfo> likeInfoByTrip,
+            final List<Long> nonCachedTripIds
+    ) {
+        return nonCachedTripIds.stream()
+                .filter(tripId -> likeInfoByTrip.get(tripId) == null)
+                .map(LikeElement::empty)
+                .toList();
     }
 
     private LikeInfo readLikeInfoFromCache(final String key, final Long memberId) {
