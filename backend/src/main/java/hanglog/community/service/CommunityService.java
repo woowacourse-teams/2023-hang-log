@@ -2,6 +2,8 @@ package hanglog.community.service;
 
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.like.domain.LikeRedisKeyConstants.EMPTY_MARKER;
+import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
 import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
 import static java.lang.Boolean.TRUE;
 
@@ -126,7 +128,7 @@ public class CommunityService {
 
         final List<Long> nonCachedTripIds = new ArrayList<>();
         for (final Long tripId : tripIds) {
-            final String key = "likes:" + tripId;
+            final String key = generateLikeKey(tripId);
             if (TRUE.equals(redisTemplate.hasKey(key))) {
                 likeInfoByTrip.put(tripId, readLikeInfoFromCache(key, memberId));
             } else {
@@ -142,7 +144,7 @@ public class CommunityService {
     }
 
     private LikeInfo getLikeInfoByTripId(final Long memberId, final Long tripId) {
-        final String key = "likes:" + tripId;
+        final String key = generateLikeKey(tripId);
         if (TRUE.equals(redisTemplate.hasKey(key))) {
             return readLikeInfoFromCache(key, memberId);
         }
@@ -172,8 +174,8 @@ public class CommunityService {
 
     private void cachingLike(final LikeElement likeElement) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
-        final String key = "likes:" + likeElement.getTripId();
-        opsForSet.add(key, "empty");
+        final String key = generateLikeKey(likeElement.getTripId());
+        opsForSet.add(key, EMPTY_MARKER);
         opsForSet.add(key, likeElement.getMemberIds());
         redisTemplate.expire(key, Duration.ofMinutes(90L));
     }

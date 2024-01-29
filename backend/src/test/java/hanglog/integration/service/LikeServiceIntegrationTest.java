@@ -1,6 +1,7 @@
 package hanglog.integration.service;
 
 import static hanglog.integration.IntegrationFixture.TRIP_CREATE_REQUEST;
+import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -42,7 +43,7 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
 
         final Long memberId = member.getId();
         final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = String.format("likes:%d", tripId);
+        final String key = generateLikeKey(tripId);
 
         // when & then
         assertSoftly(softly -> {
@@ -64,7 +65,7 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
 
         final Long memberId = member.getId();
         final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = String.format("likes:%d", tripId);
+        final String key = generateLikeKey(tripId);
 
         likeService.update(memberId, tripId, likeTrueRequest);
 
@@ -84,7 +85,7 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
 
         final Long memberId = member.getId();
         final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = String.format("likes:%d", tripId);
+        final String key = generateLikeKey(tripId);
 
         likeService.update(memberId, tripId, likeFalseRequest);
 

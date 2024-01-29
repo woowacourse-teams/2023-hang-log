@@ -1,5 +1,6 @@
 package hanglog.like.service;
 
+import static hanglog.like.domain.LikeRedisKeyConstants.generateLikeKey;
 import static java.lang.Boolean.TRUE;
 
 import hanglog.like.dto.request.LikeRequest;
@@ -19,7 +20,7 @@ public class LikeService {
 
     public void update(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
-        final String key = String.format("likes:%d", tripId);
+        final String key = generateLikeKey(tripId);
         if (TRUE.equals(opsForSet.isMember(key, memberId))) {
             removeMemberInLike(key, memberId, likeRequest.getIsLike(), opsForSet);
             return;
