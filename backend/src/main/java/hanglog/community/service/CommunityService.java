@@ -19,6 +19,7 @@ import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.like.domain.LikeInfo;
+import hanglog.like.domain.repository.CustomLikeRepository;
 import hanglog.like.domain.repository.LikeRepository;
 import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
@@ -49,11 +50,12 @@ public class CommunityService {
 
     private static final int RECOMMEND_AMOUNT = 5;
 
-    private final LikeRepository likeRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
     private final CityRepository cityRepository;
     private final PublishedTripRepository publishedTripRepository;
+    private final LikeRepository likeRepository;
+    private final CustomLikeRepository customLikeRepository;
     private final RecommendStrategies recommendStrategies;
     private final RedisTemplate<String, Object> redisTemplate;
 
@@ -136,7 +138,7 @@ public class CommunityService {
             }
         }
 
-        final List<LikeElement> likeElementByTripIds = likeRepository.findLikeElementByTripIds(nonCachedTripIds);
+        final List<LikeElement> likeElementByTripIds = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
         likeElementByTripIds.addAll(getEmptyLikeElements(likeInfoByTrip, nonCachedTripIds));
         likeElementByTripIds.forEach(this::cachingLike);
         likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
@@ -149,7 +151,7 @@ public class CommunityService {
             return readLikeInfoFromCache(key, memberId);
         }
 
-        final LikeElement likeElement = likeRepository.findLikesElementByTripId(tripId)
+        final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
                 .orElse(LikeElement.empty(tripId));
         cachingLike(likeElement);
         return likeElement.toLikeMap(memberId);
