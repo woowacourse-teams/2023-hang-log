@@ -1,8 +1,8 @@
 package hanglog.like.service;
 
 import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
-import static hanglog.like.domain.LikeRedisConstants.LIKE_KEY_PREFIX;
 import static hanglog.like.domain.LikeRedisConstants.KEY_SEPARATOR;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_KEY_PREFIX;
 import static hanglog.like.domain.LikeRedisConstants.WILD_CARD;
 import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 
