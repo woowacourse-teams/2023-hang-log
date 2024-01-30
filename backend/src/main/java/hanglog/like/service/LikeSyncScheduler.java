@@ -3,6 +3,7 @@ package hanglog.like.service;
 import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
 import static hanglog.like.domain.LikeRedisConstants.LIKE_KEY_PREFIX;
 import static hanglog.like.domain.LikeRedisConstants.KEY_SEPARATOR;
+import static hanglog.like.domain.LikeRedisConstants.WILD_CARD;
 import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 
 import hanglog.like.domain.Likes;
@@ -32,7 +33,7 @@ public class LikeSyncScheduler {
 
     @Scheduled(cron = "0 0 * * * *")
     public void writeBackLikeCache() {
-        final Set<String> likeKeys = redisTemplate.keys(LIKE_KEY_PREFIX);
+        final Set<String> likeKeys = redisTemplate.keys(LIKE_KEY_PREFIX + WILD_CARD);
         if (Objects.isNull(likeKeys)) {
             return;
         }
