@@ -1,5 +1,6 @@
 package hanglog.admin.presentation;
 
+import static hanglog.admin.domain.type.AdminType.ADMIN;
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,6 +22,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.type.AdminType;
 import hanglog.admin.dto.request.AdminLoginRequest;
 import hanglog.admin.service.AdminLoginService;
@@ -28,6 +30,7 @@ import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
 import hanglog.login.dto.AccessTokenResponse;
 import jakarta.servlet.http.Cookie;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,7 @@ class AdminLoginControllerTest extends ControllerTest {
         final MvcResult mvcResult = resultActions.andExpect(status().isCreated())
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("userName")
+                                fieldWithPath("username")
                                         .type(JsonFieldType.STRING)
                                         .description("사용자 이름")
                                         .attributes(field("constraint", "문자열")),
@@ -164,8 +167,12 @@ class AdminLoginControllerTest extends ControllerTest {
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
         doNothing().when(adminLoginService).removeRefreshToken(anyString());
-        given(adminMemberRepository.existsByIdAndAdminType(anyLong(), any(AdminType.class)))
-                .willReturn(false);
+        given(adminMemberRepository.findById(1L)).willReturn(Optional.of(new AdminMember(
+                1L,
+                "username",
+                "password",
+                ADMIN
+        )));
 
         final MemberTokens memberTokens = new MemberTokens(REFRESH_TOKEN, RENEW_ACCESS_TOKEN);
         final Cookie cookie = new Cookie("refresh-token", memberTokens.getRefreshToken());
