@@ -74,9 +74,9 @@ class AdminCurrencyControllerTest extends ControllerTest {
         )));
     }
 
-    @DisplayName("도시 상세 목록을 조회한다.")
+    @DisplayName("환율 상세 목록을 조회한다.")
     @Test
-    void getCitiesDetail() throws Exception {
+    void getCurrenciesDetail() throws Exception {
         // given
         final CurrencyResponse response1 = CurrencyResponse.of(CURRENCY_1);
         final CurrencyResponse response2 = CurrencyResponse.of(CURRENCY_2);

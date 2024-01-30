@@ -261,7 +261,7 @@ include::{snippets}/login-controller-test/extend-login/request-fields.adoc[]
 include::{snippets}/login-controller-test/extend-login/http-response.adoc[]
 include::{snippets}/login-controller-test/extend-login/response-fields.adoc[]
 
-=== 로그아웃 (POST /logout)
+=== 로그아웃 (DELETE /logout)
 
 ==== 요청
 include::{snippets}/login-controller-test/logout/http-request.adoc[]
