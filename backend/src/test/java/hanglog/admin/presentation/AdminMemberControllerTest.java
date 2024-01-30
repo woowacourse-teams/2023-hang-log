@@ -1,5 +1,6 @@
 package hanglog.admin.presentation;
 
+import static hanglog.admin.domain.type.AdminType.MASTER;
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -28,6 +29,7 @@ import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,7 +64,12 @@ class AdminMemberControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        given(adminMemberRepository.existsByIdAndAdminType(any(), any())).willReturn(true);
+        given(adminMemberRepository.findById(1L)).willReturn(Optional.of(new AdminMember(
+                1L,
+                "username",
+                "password",
+                MASTER
+        )));
     }
 
     @DisplayName("관리자 멤버 목록을 조회한다.")

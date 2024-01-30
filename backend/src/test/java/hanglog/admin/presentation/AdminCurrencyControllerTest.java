@@ -1,5 +1,6 @@
 package hanglog.admin.presentation;
 
+import static hanglog.admin.domain.type.AdminType.ADMIN;
 import static hanglog.currency.fixture.CurrencyFixture.CURRENCY_1;
 import static hanglog.currency.fixture.CurrencyFixture.CURRENCY_2;
 import static hanglog.global.restdocs.RestDocsConfiguration.field;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hanglog.admin.domain.AdminMember;
 import hanglog.currency.dto.request.CurrencyRequest;
 import hanglog.currency.dto.response.CurrencyListResponse;
 import hanglog.currency.dto.response.CurrencyResponse;
@@ -28,6 +30,7 @@ import hanglog.global.ControllerTest;
 import hanglog.login.domain.MemberTokens;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,7 +66,12 @@ class AdminCurrencyControllerTest extends ControllerTest {
         given(refreshTokenRepository.existsById(any())).willReturn(true);
         doNothing().when(jwtProvider).validateTokens(any());
         given(jwtProvider.getSubject(any())).willReturn("1");
-        given(adminMemberRepository.existsByIdAndAdminType(any(), any())).willReturn(false);
+        given(adminMemberRepository.findById(1L)).willReturn(Optional.of(new AdminMember(
+                1L,
+                "username",
+                "password",
+                ADMIN
+        )));
     }
 
     @DisplayName("도시 상세 목록을 조회한다.")

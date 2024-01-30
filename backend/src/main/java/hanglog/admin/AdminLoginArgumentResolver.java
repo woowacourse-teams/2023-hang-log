@@ -1,10 +1,13 @@
 package hanglog.admin;
 
+import static hanglog.admin.domain.type.AdminType.ADMIN;
 import static hanglog.admin.domain.type.AdminType.MASTER;
+import static hanglog.global.exception.ExceptionCode.INVALID_ADMIN_AUTHORITY;
 import static hanglog.global.exception.ExceptionCode.INVALID_REQUEST;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import hanglog.admin.domain.AdminMember;
 import hanglog.admin.domain.repository.AdminMemberRepository;
 import hanglog.auth.AdminAuth;
 import hanglog.auth.domain.Accessor;
@@ -63,10 +66,16 @@ public class AdminLoginArgumentResolver implements HandlerMethodArgumentResolver
 
         final Long memberId = Long.valueOf(jwtProvider.getSubject(accessToken));
 
-        if (adminMemberRepository.existsByIdAndAdminType(memberId, MASTER)) {
+        final AdminMember adminMember = adminMemberRepository.findById(memberId)
+                .orElseThrow(() -> new RefreshTokenException(INVALID_ADMIN_AUTHORITY));
+
+        if (adminMember.getAdminType().equals(MASTER)) {
             return Accessor.master(memberId);
         }
-        return Accessor.admin(memberId);
+        if (adminMember.getAdminType().equals(ADMIN)) {
+            return Accessor.admin(memberId);
+        }
+        throw new RefreshTokenException(INVALID_ADMIN_AUTHORITY);
     }
 
     private String extractRefreshToken(final Cookie... cookies) {
