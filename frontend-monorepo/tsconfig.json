@@ -19,6 +19,9 @@
     },
     {
       "path": "packages/hanglog-service"
+    },
+    {
+      "path": "packages/hanglog-admin"
     }
   ],
   "exclude": ["packages/**/dist/**"],

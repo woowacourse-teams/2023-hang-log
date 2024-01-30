@@ -16,15 +16,17 @@
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.3",
     "@tanstack/react-query": "^5.17.19",
-    "hang-log-design-system": "workspace:^",
+    "hang-log-design-system": "^1.3.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3",
     "recoil": "^0.7.7",
     "storybook": "^7.6.10",
+    "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.9",
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
@@ -36,6 +38,7 @@
     "@storybook/react": "^7.6.10",
     "@storybook/react-vite": "^7.6.10",
     "@storybook/test": "^7.6.10",
+    "@types/babel__core": "^7",
     "@types/babel__preset-env": "^7",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
@@ -53,7 +56,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "msw": "1.2.3",
     "prettier": "3.2.4",
-    "typescript": "*",
+    "typescript": "4.9.5",
     "vite": "^5.0.8"
   },
   "msw": {
