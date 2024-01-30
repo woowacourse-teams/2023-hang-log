@@ -6,7 +6,8 @@ import hanglog.global.exception.AdminException;
 import java.util.Arrays;
 
 public enum AdminType {
-    ADMIN, MASTER;
+    ADMIN,
+    MASTER;
 
     public static AdminType getMappedAdminType(final String adminType) {
         return Arrays.stream(values())
