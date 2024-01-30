@@ -55,7 +55,7 @@ public class AdminMemberServiceIntegrationTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual).hasSize(1);
-            softly.assertThat(actual.get(0).getUserName()).isEqualTo(CREATE_REQUEST.getUserName());
+            softly.assertThat(actual.get(0).getUsername()).isEqualTo(CREATE_REQUEST.getUsername());
         });
     }
 

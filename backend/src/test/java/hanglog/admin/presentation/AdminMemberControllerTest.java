@@ -80,7 +80,7 @@ class AdminMemberControllerTest extends ControllerTest {
                         .cookie(COOKIE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(response.getId()))
-                .andExpect(jsonPath("$[0].userName").value(response.getUserName()))
+                .andExpect(jsonPath("$[0].username").value(response.getUsername()))
                 .andExpect(jsonPath("$[0].adminType").value(response.getAdminType()))
                 .andDo(restDocs.document(
                         responseFields(
@@ -88,7 +88,7 @@ class AdminMemberControllerTest extends ControllerTest {
                                         .type(JsonFieldType.NUMBER)
                                         .description("멤버 ID")
                                         .attributes(field("constraint", "양의 정수")),
-                                fieldWithPath("[].userName")
+                                fieldWithPath("[].username")
                                         .type(JsonFieldType.STRING)
                                         .description("사용자 이름")
                                         .attributes(field("constraint", "20자 이내의 문자열")),
@@ -121,7 +121,7 @@ class AdminMemberControllerTest extends ControllerTest {
                 .andExpect(header().string("Location", "/admin/members/2"))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("userName")
+                                fieldWithPath("username")
                                         .type(JsonFieldType.STRING)
                                         .description("사용자 이름")
                                         .attributes(field("constraint", "20자 이내의 문자열")),

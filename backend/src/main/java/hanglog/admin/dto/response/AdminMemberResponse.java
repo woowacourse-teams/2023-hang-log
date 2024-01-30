@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminMemberResponse {
 
     private final Long id;
-    private final String userName;
+    private final String username;
     private final String adminType;
 
     public static AdminMemberResponse from(final AdminMember adminMember) {

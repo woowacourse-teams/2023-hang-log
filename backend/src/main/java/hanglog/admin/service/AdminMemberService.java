@@ -34,13 +34,13 @@ public class AdminMemberService {
     }
 
     public Long createAdminMember(final AdminMemberCreateRequest request) {
-        if (adminMemberRepository.existsByUsername(request.getUserName())) {
+        if (adminMemberRepository.existsByUsername(request.getUsername())) {
             throw new AdminException(DUPLICATED_ADMIN_USERNAME);
         }
 
         return adminMemberRepository.save(
                 new AdminMember(
-                        request.getUserName(),
+                        request.getUsername(),
                         passwordEncoder.encode(request.getPassword()),
                         AdminType.getMappedAdminType(request.getAdminType())
                 )
