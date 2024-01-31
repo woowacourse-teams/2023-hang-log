@@ -8,49 +8,27 @@ const SidebarNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
+  const tabs = [
+    { text: '홈', path: PATH.HOME },
+    { text: '관리자', path: PATH.ADMIN_MEMBER },
+    { text: '도시', path: PATH.CITY },
+    { text: '카테고리', path: PATH.CATEGORY },
+    { text: '환율', path: PATH.CURRENCY },
+  ];
+
   return (
     <Flex styles={{ justify: 'right' }} css={containerStyling}>
       <Flex styles={{ direction: 'column' }}>
-        <Tab
-          text="홈"
-          variant="block"
-          tabId={PATH.HOME}
-          selectedId={location}
-          changeSelect={() => navigate(PATH.HOME)}
-          css={tabStyling}
-        />
-        <Tab
-          text="관리자"
-          variant="block"
-          tabId={PATH.ADMIN_MEMBER}
-          selectedId={location}
-          changeSelect={() => navigate(PATH.ADMIN_MEMBER)}
-          css={tabStyling}
-        />
-        <Tab
-          text="도시"
-          variant="block"
-          tabId={PATH.CITY}
-          selectedId={location}
-          changeSelect={() => navigate(PATH.CITY)}
-          css={tabStyling}
-        />
-        <Tab
-          text="카테고리"
-          variant="block"
-          tabId={PATH.CATEGORY}
-          selectedId={location}
-          changeSelect={() => navigate(PATH.CATEGORY)}
-          css={tabStyling}
-        />
-        <Tab
-          text="환율"
-          variant="block"
-          tabId={PATH.CURRENCY}
-          selectedId={location}
-          changeSelect={() => navigate(PATH.CURRENCY)}
-          css={tabStyling}
-        />
+        {tabs.map((item) => (
+          <Tab
+            text={item.text}
+            variant="block"
+            tabId={item.path}
+            selectedId={location}
+            changeSelect={() => navigate(item.path)}
+            css={tabStyling}
+          />
+        ))}
       </Flex>
     </Flex>
   );
