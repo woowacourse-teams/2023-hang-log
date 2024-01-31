@@ -141,7 +141,7 @@ public class CommunityService {
             final List<LikeElement> likeElementByTripIds = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
             likeElementByTripIds.addAll(getEmptyLikeElements(likeElementByTripIds, nonCachedTripIds));
             likeElementByTripIds.forEach(this::cachingLike);
-            likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeMap(memberId));
+            likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeInfo(memberId));
         }
         return likeInfoByTrip;
     }
@@ -155,7 +155,7 @@ public class CommunityService {
         final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
                 .orElse(LikeElement.empty(tripId));
         cachingLike(likeElement);
-        return likeElement.toLikeMap(memberId);
+        return likeElement.toLikeInfo(memberId);
     }
 
     private List<LikeElement> getEmptyLikeElements(

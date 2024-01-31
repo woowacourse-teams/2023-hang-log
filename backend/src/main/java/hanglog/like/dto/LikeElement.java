@@ -18,7 +18,7 @@ public class LikeElement {
         return memberIds.contains(memberId);
     }
 
-    public LikeInfo toLikeMap(final Long memberId) {
+    public LikeInfo toLikeInfo(final Long memberId) {
         return new LikeInfo(this.getLikeCount(), this.isLike(memberId));
     }
 
