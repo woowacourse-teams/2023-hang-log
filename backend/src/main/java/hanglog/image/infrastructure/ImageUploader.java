@@ -10,7 +10,11 @@ import hanglog.global.exception.ImageException;
 import hanglog.image.domain.ImageFile;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,9 +34,21 @@ public class ImageUploader {
     private String folder;
 
     public List<String> uploadImages(final List<ImageFile> imageFiles) {
-        return imageFiles.stream()
-                .map(this::uploadImage)
+        List<CompletableFuture<String>> imageUploadsFuture = imageFiles.stream()
+                .map(imageFile -> CompletableFuture.supplyAsync(() -> uploadImage(imageFile)))
                 .toList();
+        return getUploadedImageNamesFromFutures(imageUploadsFuture);
+    }
+
+    private List<String> getUploadedImageNamesFromFutures(List<CompletableFuture<String>> futures) {
+        List<String> fileNames = new ArrayList<>();
+        futures.forEach(future -> {
+            try {
+                fileNames.add(future.join());
+            } catch (final CompletionException ignored) {
+            }
+        });
+        return fileNames;
     }
 
     private String uploadImage(final ImageFile imageFile) {
