@@ -18,7 +18,7 @@ import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
-import hanglog.like.domain.LikeInfo;
+import hanglog.like.dto.LikeInfo;
 import hanglog.like.domain.repository.CustomLikeRepository;
 import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
@@ -118,7 +118,7 @@ public class CommunityService {
         if (!nonCachedTripIds.isEmpty()) {
             final List<LikeElement> likeElements = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
             likeElements.addAll(getEmptyLikeElements(likeElements, nonCachedTripIds));
-            likeElements.forEach(this::cachingLike);
+            likeElements.forEach(this::storeLikeInCache);
             likeInfoByTrip.putAll(new LikeElements(likeElements).toLikeInfo(memberId));
         }
         return likeInfoByTrip;
@@ -169,8 +169,8 @@ public class CommunityService {
 
         final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
                 .orElse(LikeElement.empty(tripId));
-        cachingLike(likeElement);
-        return likeElement.toLikeInfo(memberId);
+        storeLikeInCache(likeElement);
+        return new LikeInfo(likeElement.getLikeCount(), likeElement.isLike(memberId));
     }
 
     private LikeInfo readLikeInfoFromCache(final String key, final Long memberId) {
@@ -180,7 +180,7 @@ public class CommunityService {
         return new LikeInfo(count, isLike);
     }
 
-    private void cachingLike(final LikeElement likeElement) {
+    private void storeLikeInCache(final LikeElement likeElement) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
         final String key = generateLikeKey(likeElement.getTripId());
         opsForSet.add(key, EMPTY_MARKER);

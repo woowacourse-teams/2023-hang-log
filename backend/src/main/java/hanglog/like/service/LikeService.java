@@ -28,12 +28,12 @@ public class LikeService {
         if (FALSE.equals(redisTemplate.hasKey(key))) {
             final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
                     .orElse(LikeElement.empty(tripId));
-            cachingLike(likeElement);
+            storeLikeInCache(likeElement);
         }
-        update(key, memberId, likeRequest.getIsLike());
+        updateToCache(key, memberId, likeRequest.getIsLike());
     }
 
-    private void cachingLike(final LikeElement likeElement) {
+    private void storeLikeInCache(final LikeElement likeElement) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
         final String key = generateLikeKey(likeElement.getTripId());
         opsForSet.add(key, EMPTY_MARKER);
@@ -44,21 +44,21 @@ public class LikeService {
         redisTemplate.expire(key, LIKE_TTL);
     }
 
-    private void update(final String key, final Long memberId, final Boolean isLike) {
+    private void updateToCache(final String key, final Long memberId, final Boolean isLike) {
         if (isLike) {
-            addMemberInLike(key, memberId);
+            addMember(key, memberId);
             return;
         }
-        removeMemberInLike(key, memberId);
+        removeMember(key, memberId);
     }
 
-    private void addMemberInLike(final String key, final Long memberId) {
+    private void addMember(final String key, final Long memberId) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
         opsForSet.add(key, memberId);
         redisTemplate.expire(key, LIKE_TTL);
     }
 
-    private void removeMemberInLike(final String key, final Long memberId) {
+    private void removeMember(final String key, final Long memberId) {
         final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
         opsForSet.remove(key, memberId);
         redisTemplate.expire(key, LIKE_TTL);
