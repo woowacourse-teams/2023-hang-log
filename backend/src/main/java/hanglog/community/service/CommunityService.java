@@ -102,28 +102,6 @@ public class CommunityService {
         return lastPageIndex + 1;
     }
 
-    @Transactional(readOnly = true)
-    public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
-        final Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
-        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
-        final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
-                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
-                .getCreatedAt();
-
-        final LikeInfo likeInfo = getLikeInfoByTripId(accessor.getMemberId(), tripId);
-        final Boolean isWriter = trip.isWriter(accessor.getMemberId());
-
-        return TripDetailResponse.publishedTrip(
-                trip,
-                cities,
-                isWriter,
-                likeInfo.isLike(),
-                likeInfo.getLikeCount(),
-                publishedDate
-        );
-    }
-
     private Map<Long, LikeInfo> getLikeInfoByTripIds(final Long memberId, final List<Long> tripIds) {
         final Map<Long, LikeInfo> likeInfoByTrip = new HashMap<>();
 
@@ -146,18 +124,6 @@ public class CommunityService {
         return likeInfoByTrip;
     }
 
-    private LikeInfo getLikeInfoByTripId(final Long memberId, final Long tripId) {
-        final String key = generateLikeKey(tripId);
-        if (TRUE.equals(redisTemplate.hasKey(key))) {
-            return readLikeInfoFromCache(key, memberId);
-        }
-
-        final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
-                .orElse(LikeElement.empty(tripId));
-        cachingLike(likeElement);
-        return likeElement.toLikeInfo(memberId);
-    }
-
     private List<LikeElement> getEmptyLikeElements(
             final List<LikeElement> likeElements,
             final List<Long> nonCachedTripIds
@@ -171,6 +137,40 @@ public class CommunityService {
     private boolean doesNotContainTripId(final List<LikeElement> likeElements, final Long tripId) {
         return likeElements.stream()
                 .noneMatch(likeElement -> likeElement.getTripId().equals(tripId));
+    }
+
+    @Transactional(readOnly = true)
+    public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
+        final Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID));
+        final List<City> cities = cityRepository.findCitiesByTripId(tripId);
+        final LocalDateTime publishedDate = publishedTripRepository.findByTripId(tripId)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
+                .getCreatedAt();
+
+        final LikeInfo likeInfo = getLikeInfoByTripId(accessor.getMemberId(), tripId);
+        final Boolean isWriter = trip.isWriter(accessor.getMemberId());
+
+        return TripDetailResponse.publishedTrip(
+                trip,
+                cities,
+                isWriter,
+                likeInfo.isLike(),
+                likeInfo.getLikeCount(),
+                publishedDate
+        );
+    }
+
+    private LikeInfo getLikeInfoByTripId(final Long memberId, final Long tripId) {
+        final String key = generateLikeKey(tripId);
+        if (TRUE.equals(redisTemplate.hasKey(key))) {
+            return readLikeInfoFromCache(key, memberId);
+        }
+
+        final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
+                .orElse(LikeElement.empty(tripId));
+        cachingLike(likeElement);
+        return likeElement.toLikeInfo(memberId);
     }
 
     private LikeInfo readLikeInfoFromCache(final String key, final Long memberId) {
