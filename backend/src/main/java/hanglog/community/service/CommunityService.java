@@ -138,10 +138,10 @@ public class CommunityService {
         }
 
         if (!nonCachedTripIds.isEmpty()) {
-            final List<LikeElement> likeElementByTripIds = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
-            likeElementByTripIds.addAll(getEmptyLikeElements(likeElementByTripIds, nonCachedTripIds));
-            likeElementByTripIds.forEach(this::cachingLike);
-            likeInfoByTrip.putAll(new LikeElements(likeElementByTripIds).toLikeInfo(memberId));
+            final List<LikeElement> likeElements = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
+            likeElements.addAll(getEmptyLikeElements(likeElements, nonCachedTripIds));
+            likeElements.forEach(this::cachingLike);
+            likeInfoByTrip.putAll(new LikeElements(likeElements).toLikeInfo(memberId));
         }
         return likeInfoByTrip;
     }
@@ -159,17 +159,17 @@ public class CommunityService {
     }
 
     private List<LikeElement> getEmptyLikeElements(
-            final List<LikeElement> likeElementByTripIds,
+            final List<LikeElement> likeElements,
             final List<Long> nonCachedTripIds
     ) {
         return nonCachedTripIds.stream()
-                .filter(tripId -> doesNotContainTripId(likeElementByTripIds, tripId))
+                .filter(tripId -> doesNotContainTripId(likeElements, tripId))
                 .map(LikeElement::empty)
                 .toList();
     }
 
-    private boolean doesNotContainTripId(final List<LikeElement> likeElementByTripIds, final Long tripId) {
-        return likeElementByTripIds.stream()
+    private boolean doesNotContainTripId(final List<LikeElement> likeElements, final Long tripId) {
+        return likeElements.stream()
                 .noneMatch(likeElement -> likeElement.getTripId().equals(tripId));
     }
 
