@@ -4,7 +4,6 @@ import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
 import static hanglog.like.domain.LikeRedisConstants.LIKE_TTL;
 import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 import hanglog.like.domain.repository.CustomLikeRepository;
 import hanglog.like.dto.LikeElement;
@@ -25,19 +24,13 @@ public class LikeService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     public void update(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
-        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
         final String key = generateLikeKey(tripId);
         if (FALSE.equals(redisTemplate.hasKey(key))) {
             final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
                     .orElse(LikeElement.empty(tripId));
             cachingLike(likeElement);
         }
-
-        if (TRUE.equals(opsForSet.isMember(key, memberId))) {
-            removeMemberInLike(key, memberId, likeRequest.getIsLike(), opsForSet);
-            return;
-        }
-        addMemberInLike(key, memberId, likeRequest.getIsLike(), opsForSet);
+        update(key, memberId, likeRequest.getIsLike());
     }
 
     private void cachingLike(final LikeElement likeElement) {
@@ -51,19 +44,23 @@ public class LikeService {
         redisTemplate.expire(key, LIKE_TTL);
     }
 
-    private void removeMemberInLike(final String key, final Long memberId, final Boolean isLike,
-                                    final SetOperations<String, Object> opsForSet) {
-        if (!isLike) {
-            opsForSet.remove(key, memberId);
-            redisTemplate.expire(key, LIKE_TTL);
+    private void update(final String key, final Long memberId, final Boolean isLike) {
+        if (isLike) {
+            addMemberInLike(key, memberId);
+            return;
         }
+        removeMemberInLike(key, memberId);
     }
 
-    private void addMemberInLike(final String key, final Long memberId, final Boolean isLike,
-                                 final SetOperations<String, Object> opsForSet) {
-        if (isLike) {
-            opsForSet.add(key, memberId);
-            redisTemplate.expire(key, LIKE_TTL);
-        }
+    private void addMemberInLike(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        opsForSet.add(key, memberId);
+        redisTemplate.expire(key, LIKE_TTL);
+    }
+
+    private void removeMemberInLike(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        opsForSet.remove(key, memberId);
+        redisTemplate.expire(key, LIKE_TTL);
     }
 }
