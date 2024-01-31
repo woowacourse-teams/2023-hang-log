@@ -6,6 +6,8 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import hanglog.like.domain.Likes;
+import hanglog.like.domain.repository.LikeRepository;
 import hanglog.like.dto.request.LikeRequest;
 import hanglog.like.service.LikeService;
 import hanglog.trip.service.TripService;
@@ -27,11 +29,20 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private LikeRepository likeRepository;
+
     private SetOperations<String, Object> opsForSet;
+    private Long memberId;
+    private Long tripId;
+    private String key;
 
     @BeforeEach
     void setUp() {
         opsForSet = redisTemplate.opsForSet();
+        memberId = member.getId();
+        tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
+        key = generateLikeKey(tripId);
     }
 
     @DisplayName("해당 게시물의 좋아요 여부를 변경할 수 있다.")
@@ -40,10 +51,6 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
         // given
         final LikeRequest likeTrueRequest = new LikeRequest(true);
         final LikeRequest likeFalseRequest = new LikeRequest(false);
-
-        final Long memberId = member.getId();
-        final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = generateLikeKey(tripId);
 
         // when & then
         assertSoftly(softly -> {
@@ -63,13 +70,10 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
         // given
         final LikeRequest likeTrueRequest = new LikeRequest(true);
 
-        final Long memberId = member.getId();
-        final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = generateLikeKey(tripId);
-
+        // when
         likeService.update(memberId, tripId, likeTrueRequest);
 
-        // when & then
+        // then
         assertSoftly(softly -> {
             softly.assertThat(opsForSet.isMember(key, memberId)).isEqualTo(TRUE);
             likeService.update(memberId, tripId, likeTrueRequest);
@@ -83,17 +87,31 @@ class LikeServiceIntegrationTest extends RedisServiceIntegrationTest {
         // given
         final LikeRequest likeFalseRequest = new LikeRequest(false);
 
-        final Long memberId = member.getId();
-        final Long tripId = tripService.save(memberId, TRIP_CREATE_REQUEST);
-        final String key = generateLikeKey(tripId);
-
+        // when
         likeService.update(memberId, tripId, likeFalseRequest);
 
-        // when & then
+        // then
         assertSoftly(softly -> {
             softly.assertThat(opsForSet.isMember(key, memberId)).isEqualTo(FALSE);
             likeService.update(memberId, tripId, likeFalseRequest);
             softly.assertThat(opsForSet.isMember(key, memberId)).isEqualTo(FALSE);
+        });
+    }
+    
+    @DisplayName("TripId 키가 Redis에 존재하지 않을 경우 DB에 조회해서 업데이트한다.")
+    @Test
+    void update_WhenTripIdIsNotExistInRedis() {
+        // given
+        final LikeRequest likeTrueRequest = new LikeRequest(true);
+
+        final Likes likes = new Likes(tripId, memberId);
+        likeRepository.save(likes);
+
+        // when & then
+        assertSoftly(softly -> {
+            softly.assertThat(opsForSet.isMember(key, memberId)).isEqualTo(FALSE);
+            likeService.update(memberId, tripId, likeTrueRequest);
+            softly.assertThat(opsForSet.isMember(key, memberId)).isEqualTo(TRUE);
         });
     }
 }
