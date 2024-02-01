@@ -9,7 +9,7 @@ const AdminMainPage = () => {
     <>
       <Flex>
         <SidebarNavigation />
-        <Heading css={subTitleStyling({ topPadding: 50, bottomPadding: 8 })}>
+        <Heading size="large" css={subTitleStyling({ topPadding: 50, bottomPadding: 8 })}>
           행록 관리자 페이지에 오신 것을 환영합니다.
         </Heading>
       </Flex>

@@ -5,24 +5,28 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
-if (process.env.NODE_ENV === 'development') {
-  import('./mocks/browser').then(({ worker }) => {
-    worker.start();
-  });
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return;
+  }
+  const { worker } = await import('./mocks/browser');
+  return worker.start();
 }
 
 const root = createRoot(document.querySelector('#root') as Element);
 
 const queryClient = new QueryClient();
 
-root.render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <HangLogProvider>
-          <AppRouter />
-        </HangLogProvider>
-      </RecoilRoot>
-    </QueryClientProvider>
-  </StrictMode>
-);
+enableMocking().then(() => {
+  root.render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <HangLogProvider>
+            <AppRouter />
+          </HangLogProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
+    </StrictMode>
+  );
+});

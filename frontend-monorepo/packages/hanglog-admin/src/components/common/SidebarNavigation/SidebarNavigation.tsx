@@ -10,7 +10,7 @@ const SidebarNavigation = () => {
 
   const tabs = [
     { text: '홈', path: PATH.HOME },
-    { text: '관리자', path: PATH.ADMIN_MEMBER },
+    { text: '관리자 계정', path: PATH.ADMIN_MEMBER },
     { text: '도시', path: PATH.CITY },
     { text: '카테고리', path: PATH.CATEGORY },
     { text: '환율', path: PATH.CURRENCY },
@@ -21,6 +21,7 @@ const SidebarNavigation = () => {
       <Flex styles={{ direction: 'column' }}>
         {tabs.map((item) => (
           <Tab
+            key={item.text}
             text={item.text}
             variant="block"
             tabId={item.path}

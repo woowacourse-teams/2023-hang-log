@@ -7,6 +7,8 @@ import CityPage from '@/pages/CityPage/CityPage';
 import CategoryPage from '@/pages/CategoryPage/CategoryPage';
 import CurrencyPage from '@/pages/CurrencyPage/CurrencyPage';
 
+import CityPageSkeleton from '@/pages/CityPage/CityPageSkeleton';
+
 import { PATH } from '@constants/path';
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
       {
         path: PATH.CITY,
         element: (
-          <Suspense>
+          <Suspense fallback={<CityPageSkeleton />}>
             <CityPage />
           </Suspense>
         ),
