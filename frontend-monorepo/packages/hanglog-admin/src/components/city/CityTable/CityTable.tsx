@@ -1,18 +1,16 @@
-import React from 'react';
+import { Flex } from 'hang-log-design-system';
 
 import { CityData } from '@/types/city';
+
+import { tableStyling } from './CityTable.style';
 
 interface CityTableProps {
   cities: CityData[];
 }
 
 const CityTable = ({ cities }: CityTableProps) => {
-  if (!Array.isArray(cities)) {
-    return <p>{JSON.stringify(cities)}</p>;
-  }
-
   return (
-    <table>
+    <table css={tableStyling}>
       <thead>
         <tr>
           <th>ID</th>
@@ -20,7 +18,7 @@ const CityTable = ({ cities }: CityTableProps) => {
           <th>나라</th>
           <th>위도</th>
           <th>경도</th>
-          <th></th>
+          <th> </th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +29,7 @@ const CityTable = ({ cities }: CityTableProps) => {
             <td>{city.country}</td>
             <td>{city.latitude}</td>
             <td>{city.longitude}</td>
-            <td></td>
+            <td>aa</td>
           </tr>
         ))}
       </tbody>
