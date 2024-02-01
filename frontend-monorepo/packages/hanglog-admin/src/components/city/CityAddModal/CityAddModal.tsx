@@ -40,6 +40,7 @@ const CityAddModal = ({ cityId, initialData, isOpen = true, onClose }: CityAddMo
     updateInputValue,
     handleSubmit,
   } = UseAddCityForm({
+    cityId,
     initialData,
     onSuccess: onClose,
   });

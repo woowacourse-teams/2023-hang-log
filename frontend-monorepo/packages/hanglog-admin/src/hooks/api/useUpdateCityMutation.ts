@@ -11,8 +11,9 @@ export const useUpdateCityMutation = () => {
 
   const updateCityMutation = useMutation({
     mutationFn: putCity,
-    onSuccess: (_) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['city'] });
+      createToast('도시를 성공적으로 수정했습니다.', 'success');
     },
     onError: (error: ErrorResponseData) => {
       createToast('도시 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.');

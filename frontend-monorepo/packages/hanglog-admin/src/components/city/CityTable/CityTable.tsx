@@ -1,6 +1,6 @@
-import { Flex } from 'hang-log-design-system';
+import CityEditMenu from '../CityEditMenu/CityEditMenu';
 
-import { CityData } from '@/types/city';
+import type { CityData } from '@/types/city';
 
 import { tableStyling } from './CityTable.style';
 
@@ -29,7 +29,9 @@ const CityTable = ({ cities }: CityTableProps) => {
             <td>{city.country}</td>
             <td>{city.latitude}</td>
             <td>{city.longitude}</td>
-            <td>aa</td>
+            <td>
+              <CityEditMenu {...city} />
+            </td>
           </tr>
         ))}
       </tbody>
