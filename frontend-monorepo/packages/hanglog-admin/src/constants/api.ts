@@ -13,14 +13,14 @@ export const END_POINTS = {
   TOKEN: '/admin/token',
   LOGOUT: '/admin/logout',
   MEMBER: '/admin/members',
-  CHANGE_MEMBER_PASSWORD: (memberId: string) => `/admin/members/${memberId}/password`,
+  CHANGE_MEMBER_PASSWORD: (memberId: number) => `/admin/members/${memberId}/password`,
   CITY: '/admin/cities',
-  CHANGE_CITY: (cityId: string) => `/admin/cities/${cityId}`,
+  CHANGE_CITY: (cityId: number) => `/admin/cities/${cityId}`,
   CATEGORY: '/admin/categories',
-  CHANGE_CATEGORY: (categoryId: string) => `/admin/categories/${categoryId}`,
+  CHANGE_CATEGORY: (categoryId: number) => `/admin/categories/${categoryId}`,
   CURRENCY: '/admin/currency',
   CURRENCIES: (page: number, size: number) => `/admin/currencies/trips?page=${page}&size=${size}`,
-  CHANGE_CURRENCY: (currencyId: string) => `/admin/currencies/${currencyId}`,
+  CHANGE_CURRENCY: (currencyId: number) => `/admin/currencies/${currencyId}`,
 } as const;
 
 export const NETWORK = {
