@@ -1,4 +1,5 @@
 import type { CurrencyData } from '@/types/currency';
+import CurrencyEditButton from '../CurrencyEditButton/CurrencyEditButton';
 
 import { tableStyling } from './CurrencyTable.style';
 
@@ -39,7 +40,9 @@ const CurrencyTable = ({ currencies }: CurrencyTableProps) => {
             <td>{currency.sgd}</td>
             <td>{currency.thb}</td>
             <td>{currency.hkd}</td>
-            <td></td>
+            <td>
+              <CurrencyEditButton {...currency} />
+            </td>
           </tr>
         ))}
       </tbody>
