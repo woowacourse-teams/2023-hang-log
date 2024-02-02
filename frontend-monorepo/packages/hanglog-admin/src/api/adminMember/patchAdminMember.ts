@@ -12,8 +12,8 @@ export const patchAdminMemberPassword = ({
   adminMemberId,
   ...passwordInformation
 }: PatchPasswordParams) => {
-  return (
-    axiosInstance.patch<PassowrdFormData>(END_POINTS.CHANGE_MEMBER_PASSWORD(adminMemberId)),
-    { ...passwordInformation }
+  return axiosInstance.patch<PassowrdFormData>(
+    END_POINTS.CHANGE_MEMBER_PASSWORD(adminMemberId),
+    passwordInformation
   );
 };
