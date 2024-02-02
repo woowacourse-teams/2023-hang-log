@@ -7,10 +7,10 @@ import { getCurrency } from '@/api/currency/getCurrency';
 import type { CurrencyListData } from '@/types/currency';
 
 export const useCurrencyQuery = (page: number, size: number) => {
-  const { data: currencyData } = useSuspenseQuery<CurrencyListData, AxiosError>({
+  const { data: currencyListData } = useSuspenseQuery<CurrencyListData, AxiosError>({
     queryKey: ['currency', page, size],
     queryFn: () => getCurrency(page, size),
   });
 
-  return { currencyData };
+  return { currencyListData };
 };

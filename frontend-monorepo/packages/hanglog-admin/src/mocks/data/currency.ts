@@ -1,4 +1,14 @@
-import type { CurrencyData } from '@/types/currency';
+import type { CurrencyData, CurrencyListData } from '@/types/currency';
+
+export const currencyListData = (page: number, size: number) => {
+  const lastPageIndex = Math.ceil(currencies.length / size) - 1;
+  const listData = currencies.slice(page * size, (page + 1) * size);
+
+  return {
+    lastPageIndex: lastPageIndex,
+    currencies: listData,
+  };
+};
 
 export const currencies: CurrencyData[] = [
   {

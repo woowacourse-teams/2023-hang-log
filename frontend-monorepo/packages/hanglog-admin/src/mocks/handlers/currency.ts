@@ -2,11 +2,15 @@ import { http, HttpResponse } from 'msw';
 
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 
-import { currencies } from '../data/currency';
+import { currencyListData } from '../data/currency';
 
 export const currencyHandlers = [
-  http.get(END_POINTS.CURRENCY, () => {
-    return HttpResponse.json(currencies);
+  http.get(`${END_POINTS.CURRENCY}`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.getAll('page'));
+    const size = Number(url.searchParams.getAll('size'));
+
+    return HttpResponse.json(currencyListData(page, size));
   }),
   http.post(END_POINTS.CURRENCY, async ({ request }) => {
     const newCurrencyId = 999;
