@@ -17,6 +17,7 @@ import {
   addButtonStyling,
   tableStyling,
 } from './CurrencyPage.style';
+import CurrencyAddModal from '@/components/currency/CurrencyAddModal/CurrencyAddModal';
 
 const CurrencyPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
@@ -58,6 +59,7 @@ const CurrencyPage = () => {
             maxPage={currencyListData.lastPageIndex}
             onChangeNavigate={handleSetPage}
           />
+          {isAddModalOpen && <CurrencyAddModal onClose={closeAddModal} />}
         </Flex>
       </Flex>
     </>

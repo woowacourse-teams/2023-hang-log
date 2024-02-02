@@ -29,5 +29,4 @@ export interface CurrencyFormData {
   sgd: number;
   thb: number;
   hkd: number;
-  krw: number;
 }

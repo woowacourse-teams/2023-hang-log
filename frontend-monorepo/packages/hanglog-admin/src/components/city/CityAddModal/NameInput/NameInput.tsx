@@ -15,7 +15,7 @@ interface NameInputProps {
 }
 
 const NameInput = ({ isError, value, updateInputValue, disableError }: NameInputProps) => {
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 
     updateInputValue('name', event.target.value);
@@ -32,7 +32,7 @@ const NameInput = ({ isError, value, updateInputValue, disableError }: NameInput
       supportingText={isError ? '도시의 이름을 입력해 주세요' : undefined}
       isError={isError}
       required
-      onChange={handleTitleChange}
+      onChange={handleNameChange}
     />
   );
 };
