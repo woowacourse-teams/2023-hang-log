@@ -1,3 +1,5 @@
+import CategoryEditMenu from '../CategoryEditMenu/CategoryEditMenu';
+
 import type { CategoryData } from '@/types/category';
 
 import { tableStyling } from './CategoryTable.style';
@@ -23,7 +25,9 @@ const CategoryTable = ({ categories }: CategoryTableProps) => {
             <td>{category.id}</td>
             <td>{category.engName}</td>
             <td>{category.korName}</td>
-            <td></td>
+            <td>
+              <CategoryEditMenu {...category} />
+            </td>
           </tr>
         ))}
       </tbody>
