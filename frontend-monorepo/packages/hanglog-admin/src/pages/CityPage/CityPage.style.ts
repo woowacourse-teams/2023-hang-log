@@ -28,3 +28,18 @@ export const tableStyling = () => {
     height: '60vh',
   });
 };
+
+export const pagenationSkeletonStyling = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+
+  padding: `${Theme.spacer.spacing6} 0px ${Theme.spacer.spacing6} 0px`,
+
+  width: '100%',
+  height: Theme.spacer.spacing6,
+
+  '& > div': {
+    width: '300px',
+  },
+});
