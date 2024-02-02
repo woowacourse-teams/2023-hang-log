@@ -1,4 +1,4 @@
-import CategoryEditMenu from '../CategoryEditMenu/CategoryEditMenu';
+import CategoryEditButton from '../CategoryEditButton/CategoryEditButton';
 
 import type { CategoryData } from '@/types/category';
 
@@ -26,7 +26,7 @@ const CategoryTable = ({ categories }: CategoryTableProps) => {
             <td>{category.engName}</td>
             <td>{category.korName}</td>
             <td>
-              <CategoryEditMenu {...category} />
+              <CategoryEditButton {...category} />
             </td>
           </tr>
         ))}

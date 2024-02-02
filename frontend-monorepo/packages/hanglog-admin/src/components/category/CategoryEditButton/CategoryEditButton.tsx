@@ -4,11 +4,11 @@ import CategoryAddModal from '../CategoryAddModal/CategoryAddModal';
 
 import type { CategoryData } from '@/types/category';
 
-import { buttonStyling, editIconStyling } from './CategoryEditMenu.style';
+import { buttonStyling, editIconStyling } from './CategoryEditButton.style';
 
 import EditIcon from '@assets/svg/edit-icon.svg?react';
 
-const CategoryEditMenu = ({ ...information }: CategoryData) => {
+const CategoryEditButton = ({ ...information }: CategoryData) => {
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
 
   return (
@@ -32,4 +32,4 @@ const CategoryEditMenu = ({ ...information }: CategoryData) => {
   );
 };
 
-export default CategoryEditMenu;
+export default CategoryEditButton;
