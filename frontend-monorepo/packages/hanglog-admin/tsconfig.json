@@ -28,8 +28,9 @@
       "@utils/*": ["./src/utils/*"]
     },
     "jsxImportSource": "@emotion/react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite-plugin-svgr/client"]
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx", "assets/index.d.ts"]
 }
