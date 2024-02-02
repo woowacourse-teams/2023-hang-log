@@ -15,3 +15,9 @@ export const CITY_LATITUDE_MAX = 90;
 export const CITY_LONGITUDE_MIN = -180;
 
 export const CITY_LONGITUDE_MAX = 180;
+
+export const CATEGORY_ID_MIN = 100;
+
+export const CATEGORY_ID_MAX = 999;
+
+export const CATEGORY_NAME_MAX = 50;

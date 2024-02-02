@@ -4,6 +4,7 @@ import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 
 import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
 import PageNavigation from '@/components/common/PageNavigation/PageNavigation';
+import CategoryAddModal from '@/components/category/CategoryAddModal/CategoryAddModal';
 
 import { useCategoryQuery } from '@/hooks/api/useCategoryQuery';
 import { usePageIndex } from '@/hooks/common/usePageIndex';
@@ -62,6 +63,7 @@ const CategoryPage = () => {
             onChangeNavigate={handleSetPage}
           />
         </Flex>
+        {isAddModalOpen && <CategoryAddModal onClose={closeAddModal} />}
       </Flex>
     </>
   );
