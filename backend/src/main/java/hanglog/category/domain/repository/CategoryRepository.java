@@ -16,6 +16,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findCategoryETC();
 
     Boolean existsByEngName(String engName);
-
-    Boolean existsByKorName(String korName);
 }

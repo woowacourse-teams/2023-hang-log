@@ -47,7 +47,6 @@ public class CategoryService {
     private void validateCategoryDuplicate(final CategoryRequest categoryRequest) {
         validateCategoryDuplicateId(categoryRequest.getId());
         validateCategoryDuplicateEngName(categoryRequest.getEngName());
-        validateCategoryDuplicateKorName(categoryRequest.getKorName());
     }
 
     private void validateCategoryDuplicateId(final Long id) {
@@ -61,13 +60,6 @@ public class CategoryService {
             throw new BadRequestException(DUPLICATED_CATEGORY_ENG_NAME);
         }
     }
-
-    private void validateCategoryDuplicateKorName(final String korName) {
-        if (categoryRepository.existsByKorName(korName)) {
-            throw new BadRequestException(DUPLICATED_CATEGORY_ENG_NAME);
-        }
-    }
-
 
     public void update(final Long id, final CategoryRequest categoryRequest) {
         final Category category = categoryRepository.findById(id)
@@ -84,9 +76,6 @@ public class CategoryService {
         }
         if (!category.getEngName().equals(categoryRequest.getEngName())) {
             validateCategoryDuplicateEngName(categoryRequest.getEngName());
-        }
-        if (!category.getKorName().equals(categoryRequest.getKorName())) {
-            validateCategoryDuplicateKorName(categoryRequest.getKorName());
         }
     }
 }

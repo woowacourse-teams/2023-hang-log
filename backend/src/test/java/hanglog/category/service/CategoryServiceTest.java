@@ -81,7 +81,6 @@ class CategoryServiceTest {
 
         given(categoryRepository.existsById(anyLong())).willReturn(false);
         given(categoryRepository.existsByEngName(anyString())).willReturn(false);
-        given(categoryRepository.existsByKorName(anyString())).willReturn(false);
         given(categoryRepository.save(any(Category.class))).willReturn(FOOD);
 
         // when
@@ -114,7 +113,6 @@ class CategoryServiceTest {
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(FOOD));
         given(categoryRepository.existsById(anyLong())).willReturn(false);
         given(categoryRepository.existsByEngName(anyString())).willReturn(false);
-        given(categoryRepository.existsByKorName(anyString())).willReturn(false);
 
         // when & then
         assertDoesNotThrow(() -> categoryService.update(FOOD.getId(), categoryRequest));
