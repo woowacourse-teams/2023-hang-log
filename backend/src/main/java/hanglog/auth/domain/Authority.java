@@ -1,5 +1,8 @@
 package hanglog.auth.domain;
 
 public enum Authority {
-    GUEST, MEMBER
+    GUEST,
+    MEMBER,
+    ADMIN,
+    MASTER
 }

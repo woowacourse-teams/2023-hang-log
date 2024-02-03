@@ -19,7 +19,10 @@ import static java.time.DayOfWeek.SUNDAY;
 import hanglog.currency.domain.Currency;
 import hanglog.currency.domain.repository.CurrencyRepository;
 import hanglog.currency.domain.type.CurrencyType;
-import hanglog.currency.dto.SingleCurrencyResponse;
+import hanglog.currency.dto.request.CurrencyRequest;
+import hanglog.currency.dto.response.CurrencyListResponse;
+import hanglog.currency.dto.response.CurrencyResponse;
+import hanglog.currency.dto.response.SingleCurrencyResponse;
 import hanglog.global.exception.BadRequestException;
 import hanglog.global.exception.InvalidCurrencyDateException;
 import java.time.DayOfWeek;
@@ -30,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,9 +71,7 @@ public class CurrencyService {
     }
 
     public void saveDailyCurrency(final LocalDate date) {
-        if (currencyRepository.existsByDate(date)) {
-            throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
-        }
+        validateDuplicateDate(date);
 
         validateWeekend(date);
         final List<SingleCurrencyResponse> singleCurrencyResponses = requestFilteredCurrencyResponses(date);
@@ -84,6 +86,12 @@ public class CurrencyService {
 
         final Currency currency = createCurrency(date, rateOfCurrencyType);
         currencyRepository.save(currency);
+    }
+
+    private void validateDuplicateDate(final LocalDate date) {
+        if (currencyRepository.existsByDate(date)) {
+            throw new BadRequestException(INVALID_DATE_ALREADY_EXIST);
+        }
     }
 
     private void validateWeekend(final LocalDate date) {
@@ -128,5 +136,46 @@ public class CurrencyService {
                 currencyTypeRateMap.get(HKD),
                 currencyTypeRateMap.get(KRW)
         );
+    }
+
+    @Transactional(readOnly = true)
+    public CurrencyListResponse getCurrenciesByPage(final Pageable pageable) {
+        final List<Currency> currencies = currencyRepository.findAllBy(pageable.previousOrFirst());
+        final List<CurrencyResponse> currencyResponses = currencies.stream()
+                .map(CurrencyResponse::of)
+                .toList();
+        final Long lastPageIndex = getLastPageIndex(pageable.getPageSize());
+
+        return new CurrencyListResponse(currencyResponses, lastPageIndex);
+    }
+
+    private Long getLastPageIndex(final int pageSize) {
+        final long totalCount = currencyRepository.count();
+        final long lastPageIndex = totalCount / pageSize;
+        if (totalCount % pageSize == 0) {
+            return lastPageIndex;
+        }
+        return lastPageIndex + 1;
+    }
+
+    public Long save(final CurrencyRequest currencyRequest) {
+        validateDuplicateDate(currencyRequest.getDate());
+
+        return currencyRepository.save(Currency.of(currencyRequest)).getId();
+    }
+
+    public void update(final Long id, final CurrencyRequest currencyRequest) {
+        final Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(NOT_FOUND_CURRENCY_DATA));
+
+        validateDuplicateDate(currency.getDate(), currencyRequest.getDate());
+
+        currency.update(currencyRequest);
+    }
+
+    private void validateDuplicateDate(final LocalDate date, final LocalDate newDate) {
+        if (!date.equals(newDate)) {
+            validateDuplicateDate(newDate);
+        }
     }
 }

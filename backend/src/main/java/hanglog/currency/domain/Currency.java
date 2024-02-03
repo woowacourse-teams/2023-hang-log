@@ -3,6 +3,7 @@ package hanglog.currency.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.currency.dto.request.CurrencyRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -69,6 +70,36 @@ public class Currency {
             final Double krw
     ) {
         this(null, date, usd, eur, gbp, jpy, cny, chf, sgd, thb, hkd, krw);
+    }
+
+    public static Currency of(final CurrencyRequest currencyRequest) {
+        return new Currency(
+                null,
+                currencyRequest.getDate(),
+                currencyRequest.getUsd(),
+                currencyRequest.getEur(),
+                currencyRequest.getGbp(),
+                currencyRequest.getJpy(),
+                currencyRequest.getCny(),
+                currencyRequest.getChf(),
+                currencyRequest.getSgd(),
+                currencyRequest.getThb(),
+                currencyRequest.getHkd(),
+                1d
+        );
+    }
+
+    public void update(final CurrencyRequest currencyRequest) {
+        this.date = currencyRequest.getDate();
+        this.usd = currencyRequest.getUsd();
+        this.eur = currencyRequest.getEur();
+        this.gbp = currencyRequest.getGbp();
+        this.jpy = currencyRequest.getJpy();
+        this.cny = currencyRequest.getCny();
+        this.chf = currencyRequest.getChf();
+        this.sgd = currencyRequest.getSgd();
+        this.thb = currencyRequest.getThb();
+        this.hkd = currencyRequest.getHkd();
     }
 
     public double getUnitRateOfJpy() {

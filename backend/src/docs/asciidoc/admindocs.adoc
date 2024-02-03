@@ -1,0 +1,196 @@
+= HangLog
+:toc: left
+:source-highlighter: highlightjs
+:sectlinks:
+
+[[overview-http-status-codes]]
+=== HTTP status codes
+
+|===
+| 상태 코드 | 설명
+
+| `200 OK`
+| 성공
+
+| `201 Created`
+| 리소스 생성
+
+| `204 NO_CONTENT`
+| 성공 후 반환 값 없음
+
+| `400 Bad Request`
+| 잘못된 요청
+
+| `401 Unauthorized`
+| 비인증 상태
+
+| `403 Forbidden`
+| 권한 거부
+
+| `404 Not Found`
+| 존재하지 않는 요청 리소스
+
+| `500 Internal Server Error`
+| 서버 에러
+|===
+
+=== Exception codes
+[[exception-codes]]
+include::{snippets}/exception-code-controller-test/get-exception-codes/exception-response-fields.adoc[]
+
+== 관리자 로그인 API
+
+=== 로그인 (POST /admin/login)
+
+==== 요청
+include::{snippets}/admin-login-controller-test/login/http-request.adoc[]
+include::{snippets}/admin-login-controller-test/login/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-login-controller-test/login/http-response.adoc[]
+include::{snippets}/admin-login-controller-test/login/response-fields.adoc[]
+
+=== 토큰 재발급 (POST /admin/token)
+
+==== 요청
+include::{snippets}/admin-login-controller-test/extend-login/http-request.adoc[]
+요청 쿠키
+include::{snippets}/admin-login-controller-test/extend-login/request-cookies.adoc[]
+
+==== 응답
+include::{snippets}/admin-login-controller-test/extend-login/http-response.adoc[]
+include::{snippets}/admin-login-controller-test/extend-login/response-fields.adoc[]
+
+=== 로그아웃 (DELETE /admin/logout)
+
+==== 요청
+include::{snippets}/admin-login-controller-test/logout/http-request.adoc[]
+요청 헤더
+include::{snippets}/admin-login-controller-test/logout/request-headers.adoc[]
+요청 쿠키
+include::{snippets}/admin-login-controller-test/logout/request-cookies.adoc[]
+
+==== 응답
+include::{snippets}/admin-login-controller-test/logout/http-response.adoc[]
+
+
+== 관리자 멤버 관리 API
+
+=== 관리자 멤버 목록 조회 (GET /admin/members)
+
+==== 요청
+include::{snippets}/admin-member-controller-test/get-admin-members/http-request.adoc[]
+
+==== 응답
+include::{snippets}/admin-member-controller-test/get-admin-members/http-response.adoc[]
+include::{snippets}/admin-member-controller-test/get-admin-members/response-fields.adoc[]
+
+=== 관리자 멤버 생성 (POST /admin/members)
+
+==== 요청
+include::{snippets}/admin-member-controller-test/create-admin-member/http-request.adoc[]
+include::{snippets}/admin-member-controller-test/create-admin-member/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-member-controller-test/create-admin-member/http-response.adoc[]
+
+=== 관리자 멤버 비밀번호 수정 (PATCH /admin/members/:memberId/password)
+
+==== 요청
+include::{snippets}/admin-member-controller-test/update-password/http-request.adoc[]
+include::{snippets}/admin-member-controller-test/update-password/path-parameters.adoc[]
+include::{snippets}/admin-member-controller-test/update-password/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-member-controller-test/update-password/http-response.adoc[]
+
+== 도시 관리 API
+
+=== 도시 목록 조회 (GET /admin/cities)
+
+==== 요청
+include::{snippets}/admin-city-controller-test/get-cities-detail/http-request.adoc[]
+
+==== 응답
+include::{snippets}/admin-city-controller-test/get-cities-detail/http-response.adoc[]
+include::{snippets}/admin-city-controller-test/get-cities-detail/response-fields.adoc[]
+
+=== 도시 생성 (POST /admin/cities)
+
+==== 요청
+include::{snippets}/admin-city-controller-test/create-city/http-request.adoc[]
+include::{snippets}/admin-city-controller-test/create-city/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-city-controller-test/create-city/http-response.adoc[]
+
+=== 도시 수정 (PUT /admin/cities/:citiId)
+
+==== 요청
+include::{snippets}/admin-city-controller-test/update-city/http-request.adoc[]
+include::{snippets}/admin-city-controller-test/update-city/path-parameters.adoc[]
+include::{snippets}/admin-city-controller-test/update-city/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-city-controller-test/update-city/http-response.adoc[]
+
+
+== 카테고리 관리 API
+
+=== 카테고리 목록 조회 (GET /admin/categories)
+
+==== 요청
+include::{snippets}/admin-category-controller-test/get-categories-detail/http-request.adoc[]
+
+==== 응답
+include::{snippets}/admin-category-controller-test/get-categories-detail/http-response.adoc[]
+include::{snippets}/admin-category-controller-test/get-categories-detail/response-fields.adoc[]
+
+=== 카테고리 생성 (POST /admin/categories)
+
+==== 요청
+include::{snippets}/admin-category-controller-test/create-category/http-request.adoc[]
+include::{snippets}/admin-category-controller-test/create-category/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-category-controller-test/create-category/http-response.adoc[]
+
+=== 카테고리 수정 (PUT /admin/categories/:categoryId)
+
+==== 요청
+include::{snippets}/admin-category-controller-test/update-category/http-request.adoc[]
+include::{snippets}/admin-category-controller-test/update-category/path-parameters.adoc[]
+include::{snippets}/admin-category-controller-test/update-category/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-category-controller-test/update-category/http-response.adoc[]
+
+== 환율 관리 API
+
+=== 환율 목록 페이지 조회 (GET /admin/currencies)
+
+==== 요청
+include::{snippets}/admin-currency-controller-test/get-currencies-detail/http-request.adoc[]
+
+==== 응답
+include::{snippets}/admin-currency-controller-test/get-currencies-detail/http-response.adoc[]
+include::{snippets}/admin-currency-controller-test/get-currencies-detail/response-fields.adoc[]
+
+=== 환율 생성 (POST /admin/currencies)
+
+==== 요청
+include::{snippets}/admin-currency-controller-test/create-currency/http-request.adoc[]
+include::{snippets}/admin-currency-controller-test/create-currency/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-currency-controller-test/create-currency/http-response.adoc[]
+
+=== 환율 수정 (PUT /admin/currencies/:currencyId)
+
+==== 요청
+include::{snippets}/admin-currency-controller-test/update-currency/http-request.adoc[]
+include::{snippets}/admin-currency-controller-test/update-currency/path-parameters.adoc[]
+include::{snippets}/admin-currency-controller-test/update-currency/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/admin-currency-controller-test/update-currency/http-response.adoc[]

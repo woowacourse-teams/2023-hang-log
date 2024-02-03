@@ -1,4 +1,4 @@
-package hanglog.like.infrastrcutrue;
+package hanglog.like.infrastructrue;
 
 import hanglog.like.domain.Likes;
 import hanglog.like.domain.repository.CustomLikeRepository;

@@ -1,6 +1,6 @@
 package hanglog.trip.dto.response;
 
-import hanglog.category.dto.CategoryResponse;
+import hanglog.category.dto.response.CategoryResponse;
 import hanglog.trip.domain.Place;
 import java.math.BigDecimal;
 import lombok.Getter;

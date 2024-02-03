@@ -22,4 +22,6 @@ public interface CityRepository extends JpaRepository<City, Long> {
             AND tc.trip.id = :tripId
             """)
     List<City> findCitiesByTripId(@Param("tripId") final Long tripId);
+
+    Boolean existsByNameAndCountry(final String name, final String country);
 }

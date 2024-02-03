@@ -1,4 +1,4 @@
-package hanglog.trip.presentation;
+package hanglog.city.presentation;
 
 import static hanglog.trip.fixture.CityFixture.LONDON;
 import static hanglog.trip.fixture.CityFixture.PARIS;
@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanglog.city.dto.response.CityResponse;
-import hanglog.city.presentation.CityController;
 import hanglog.city.service.CityService;
 import hanglog.global.ControllerTest;
 import java.util.List;

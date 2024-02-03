@@ -3,6 +3,7 @@ package hanglog.city.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import hanglog.city.dto.request.CityRequest;
 import hanglog.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,4 +35,25 @@ public class City extends BaseEntity {
 
     @Column(nullable = false, precision = 16, scale = 13)
     private BigDecimal longitude;
+
+    public static City of(final CityRequest cityRequest) {
+        return new City(
+                null,
+                cityRequest.getName(),
+                cityRequest.getCountry(),
+                cityRequest.getLatitude(),
+                cityRequest.getLongitude()
+        );
+    }
+
+    public void update(final CityRequest cityRequest) {
+        this.name = cityRequest.getName();
+        this.country = cityRequest.getCountry();
+        this.latitude = cityRequest.getLatitude();
+        this.longitude = cityRequest.getLongitude();
+    }
+
+    public boolean isSameNameAndCountry(final String name, final String country) {
+        return this.name.equals(name) && this.country.equals(country);
+    }
 }
