@@ -175,8 +175,7 @@ class AdminCurrencyControllerTest extends ControllerTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyService.save(any(CurrencyRequest.class))).willReturn(1L);
@@ -230,10 +229,6 @@ class AdminCurrencyControllerTest extends ControllerTest {
                                 fieldWithPath("hkd")
                                         .type(JsonFieldType.NUMBER)
                                         .description("HKD")
-                                        .attributes(field("constraint", "double")),
-                                fieldWithPath("krw")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("KRW")
                                         .attributes(field("constraint", "double"))
                         )
                 ));
@@ -253,8 +248,7 @@ class AdminCurrencyControllerTest extends ControllerTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         doNothing().when(currencyService).update(1L, request);
@@ -311,10 +305,6 @@ class AdminCurrencyControllerTest extends ControllerTest {
                                 fieldWithPath("hkd")
                                         .type(JsonFieldType.NUMBER)
                                         .description("HKD")
-                                        .attributes(field("constraint", "double")),
-                                fieldWithPath("krw")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("KRW")
                                         .attributes(field("constraint", "double"))
                         )
                 ));

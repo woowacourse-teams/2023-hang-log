@@ -74,8 +74,7 @@ class CurrencyServiceTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyRepository.existsByDate(any())).willReturn(false);
@@ -102,8 +101,7 @@ class CurrencyServiceTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyRepository.existsByDate(any())).willReturn(true);
@@ -127,8 +125,7 @@ class CurrencyServiceTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyRepository.findById(anyLong())).willReturn(Optional.of(CURRENCY_1));
@@ -151,8 +148,7 @@ class CurrencyServiceTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyRepository.findById(anyLong())).willReturn(Optional.of(CURRENCY_1));
@@ -177,8 +173,7 @@ class CurrencyServiceTest {
                 CURRENCY_1.getChf(),
                 CURRENCY_1.getSgd(),
                 CURRENCY_1.getThb(),
-                CURRENCY_1.getHkd(),
-                CURRENCY_1.getKrw()
+                CURRENCY_1.getHkd()
         );
 
         given(currencyRepository.findById(anyLong())).willReturn(Optional.empty());

@@ -28,8 +28,7 @@ public class AdminCurrencyIntegrationTest extends AdminIntegrationTest {
             1139.06,
             820.17,
             34.89,
-            142.78,
-            1.0
+            142.78
     );
 
     @DisplayName("새로운 환율 정보를 추가할 수 있다.")
@@ -70,7 +69,7 @@ public class AdminCurrencyIntegrationTest extends AdminIntegrationTest {
                     softly.assertThat(currencyListResponse.getCurrencies()).isNotEmpty();
                     softly.assertThat(currencyListResponse.getCurrencies().get(0))
                             .usingRecursiveComparison()
-                            .ignoringFields("id")
+                            .ignoringFields("id", "krw")
                             .isEqualTo(CURRENCY_REQUEST);
                 }
         );

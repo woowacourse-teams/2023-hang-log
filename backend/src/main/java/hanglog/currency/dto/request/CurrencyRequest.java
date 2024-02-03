@@ -61,9 +61,4 @@ public class CurrencyRequest {
     @DecimalMin(value = "0", message = "HKD 환율이 0원보다 작을 수 없습니다.")
     @DecimalMax(value = "100000", message = "HKD 환율이 10만원보다 클 수 없습니다.")
     private final double hkd;
-
-    @NotNull(message = "KRW 환율을 입력해주세요.")
-    @DecimalMin(value = "0", message = "KRW 환율이 0원보다 작을 수 없습니다.")
-    @DecimalMax(value = "100000", message = "KRW 환율이 10만원보다 클 수 없습니다.")
-    private final double krw;
 }

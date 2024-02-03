@@ -85,7 +85,7 @@ public class Currency {
                 currencyRequest.getSgd(),
                 currencyRequest.getThb(),
                 currencyRequest.getHkd(),
-                currencyRequest.getKrw()
+                1d
         );
     }
 
@@ -100,7 +100,6 @@ public class Currency {
         this.sgd = currencyRequest.getSgd();
         this.thb = currencyRequest.getThb();
         this.hkd = currencyRequest.getHkd();
-        this.krw = currencyRequest.getKrw();
     }
 
     public double getUnitRateOfJpy() {
