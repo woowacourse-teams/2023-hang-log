@@ -14,6 +14,7 @@ import CurrencyPageSkeleton from '@/pages/CurrencyPage/CurrencyPageSkeleton';
 import { PATH } from '@constants/path';
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import AdminMemberPageSkeleton from '@/pages/AdminMemberPage/AdminMemberPageSkeleton';
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
       {
         path: PATH.ADMIN_MEMBER,
         element: (
-          <Suspense>
+          <Suspense fallback={<AdminMemberPageSkeleton />}>
             <AdminMemberPage />
           </Suspense>
         ),
