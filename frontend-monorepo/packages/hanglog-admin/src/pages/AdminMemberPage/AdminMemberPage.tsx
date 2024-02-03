@@ -5,6 +5,7 @@ import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
 import PageNavigation from '@/components/common/PageNavigation/PageNavigation';
 import AdminMemberTable from '@/components/adminMember/AdminMemberTable/AdminMemberTable';
+import AdminMemberAddModal from '@/components/adminMember/AdminMemberAddModal/AdminMemberAddModal';
 
 import { useAdminMemberQuery } from '@/hooks/api/useAdminMemberQuery';
 import { usePageIndex } from '@/hooks/common/usePageIndex';
@@ -62,6 +63,7 @@ const AdminMemberPage = () => {
             onChangeNavigate={handleSetPage}
           />
         </Flex>
+        {isAddModalOpen && <AdminMemberAddModal onClose={closeAddModal} />}
       </Flex>
     </>
   );

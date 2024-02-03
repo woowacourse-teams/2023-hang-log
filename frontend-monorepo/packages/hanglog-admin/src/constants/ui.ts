@@ -27,3 +27,5 @@ export const CURRENCY_DATE_MAX_LENGTH = 10;
 export const CURRENCY_MIN = 0;
 
 export const CURRENCY_MAX = 10000000;
+
+export const ADMIN_MEMBER_MAX_LENGTH = 20;

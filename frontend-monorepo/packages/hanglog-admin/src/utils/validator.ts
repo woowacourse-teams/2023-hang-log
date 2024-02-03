@@ -37,3 +37,7 @@ export const isValidCurrencyDate = (input: string) => {
 export const isInvalidCurrency = (input: number) => {
   return input < 0 || input > 10000000;
 };
+
+export const isValidPassword = (input: string) => {
+  return input.length >= 4;
+};

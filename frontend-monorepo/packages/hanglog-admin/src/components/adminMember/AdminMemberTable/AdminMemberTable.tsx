@@ -13,7 +13,7 @@ const AdminMemberTable = ({ adminMembers }: AdminmemberTableProps) => {
         <tr>
           <th>ID</th>
           <th>계정명</th>
-          <th>등급</th>
+          <th>관리자 등급</th>
           <th> </th>
         </tr>
       </thead>

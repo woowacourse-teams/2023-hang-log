@@ -4,14 +4,22 @@ export interface AdminMemberData {
   adminType: string;
 }
 
+export interface AdminMemberPostData {
+  username: string;
+  adminType: string;
+  password: string;
+}
+
 export interface AdminMemberFormData {
   username: string;
-  adminType: AdminTypeData;
+  adminType: string;
   password: string;
   confirmPassword: string;
 }
 
 export type AdminTypeData = 'MASTER' | 'ADMIN';
+
+export const SelectableAdminType = ['ADMIN'];
 
 export interface PassowrdFormData {
   currentPassword: string;
