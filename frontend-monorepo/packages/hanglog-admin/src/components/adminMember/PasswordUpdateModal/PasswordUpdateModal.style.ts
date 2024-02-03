@@ -4,7 +4,7 @@ import { Theme } from 'hang-log-design-system';
 
 export const wrapperStyling = css({
   width: '400px',
-  minHeight: '528px',
+  minHeight: '428px',
 
   '@media screen and (max-width: 600px)': {
     width: `calc(100vw - ${Theme.spacer.spacing4})`,
