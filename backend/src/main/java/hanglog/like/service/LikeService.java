@@ -1,22 +1,17 @@
 package hanglog.like.service;
 
-import hanglog.like.domain.LikeCount;
-import hanglog.like.domain.Likes;
-import hanglog.like.domain.MemberLike;
-import hanglog.like.dto.TripLikeCount;
-import hanglog.like.dto.request.LikeRequest;
+import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_TTL;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
+import static java.lang.Boolean.FALSE;
+
 import hanglog.like.domain.repository.CustomLikeRepository;
-import hanglog.like.domain.repository.LikeCountRepository;
-import hanglog.like.domain.repository.LikeRepository;
-import hanglog.like.domain.repository.MemberLikeRepository;
-import hanglog.member.domain.repository.MemberRepository;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
+import hanglog.like.dto.LikeElement;
+import hanglog.like.dto.request.LikeRequest;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,50 +20,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LikeService {
 
-    private final LikeRepository likeRepository;
-    private final MemberLikeRepository memberLikeRepository;
-    private final LikeCountRepository likeCountRepository;
-    private final MemberRepository memberRepository;
     private final CustomLikeRepository customLikeRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public void update(final Long memberId, final Long tripId, final LikeRequest likeRequest) {
-        Map<Long, Boolean> tripLikeStatusMap = new HashMap<>();
-        final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
-        if (memberLike.isPresent()) {
-            tripLikeStatusMap = memberLike.get().getLikeStatusForTrip();
+        final String key = generateLikeKey(tripId);
+        if (FALSE.equals(redisTemplate.hasKey(key))) {
+            final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
+                    .orElse(LikeElement.empty(tripId));
+            storeLikeInCache(likeElement);
         }
-        tripLikeStatusMap.put(tripId, likeRequest.getIsLike());
-        memberLikeRepository.save(new MemberLike(memberId, tripLikeStatusMap));
-        updateLikeCountCache(tripId, likeRequest);
+        updateToCache(key, memberId, likeRequest.getIsLike());
     }
 
-    private void updateLikeCountCache(final Long tripId, final LikeRequest likeRequest) {
-        final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
-        if (Boolean.TRUE.equals(likeRequest.getIsLike())) {
-            likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() + 1)));
+    private void storeLikeInCache(final LikeElement likeElement) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        final String key = generateLikeKey(likeElement.getTripId());
+        opsForSet.add(key, EMPTY_MARKER);
+        final Set<Long> memberIds = likeElement.getMemberIds();
+        if (!memberIds.isEmpty()) {
+            opsForSet.add(key, likeElement.getMemberIds().toArray());
+        }
+        redisTemplate.expire(key, LIKE_TTL);
+    }
+
+    private void updateToCache(final String key, final Long memberId, final Boolean isLike) {
+        if (isLike) {
+            addMember(key, memberId);
             return;
         }
-        likeCount.ifPresent(count -> likeCountRepository.save(new LikeCount(tripId, count.getCount() - 1)));
+        removeMember(key, memberId);
     }
 
-    @Scheduled(cron = "0 0 * * * *")
-    public void writeBackMemberLikeCache() {
-        final List<Likes> likes = memberRepository.findAll().stream()
-                .flatMap(member -> memberLikeRepository.findById(member.getId())
-                        .map(memberLike -> memberLike.getLikeStatusForTrip()
-                                .entrySet().stream()
-                                .filter(Map.Entry::getValue)
-                                .map(entry -> new Likes(entry.getKey(), member.getId())))
-                        .orElseGet(Stream::empty))
-                .toList();
-        customLikeRepository.saveAll(likes);
+    private void addMember(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        opsForSet.add(key, memberId);
+        redisTemplate.expire(key, LIKE_TTL);
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void cacheLikeCount() {
-        final List<TripLikeCount> tripLikeCounts = likeRepository.findCountByAllTrips();
-        for (final TripLikeCount tripLikeCount : tripLikeCounts) {
-            likeCountRepository.save(new LikeCount(tripLikeCount.getTripId(), tripLikeCount.getCount()));
-        }
+    private void removeMember(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        opsForSet.remove(key, memberId);
+        redisTemplate.expire(key, LIKE_TTL);
     }
 }
