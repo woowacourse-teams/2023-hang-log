@@ -1,12 +1,11 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddAdminMemberForm } from '@/hooks/adminMember/useAddAdminMemberForm';
+import { UseUpdatePasswordForm } from '@/hooks/adminMember/useUpdatePasswordForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import UsernameInput from './UsernameInput/UsernameInput';
-import AdminTypeSelect from './AdminTypeSelect/AdminTypeSelect';
 import PasswordInput from './PasswordInput/PasswordInput';
+import CurrentPasswordInput from './PasswordInput/CurrentPasswordInput';
 import ConfirmPasswordInput from './PasswordInput/ConfirmPasswordInput';
 
 import {
@@ -15,25 +14,30 @@ import {
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
-} from './AdminMemberAddModal.style';
+} from './PasswordUpdateModal.style';
 
-interface AdminMemberAddModalProps {
+interface PasswordUpdateModalProps {
+  adminMemberId: number;
   isOpen?: boolean;
   onClose: () => void;
 }
 
-const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProps) => {
+const PasswordUpdateModal = ({
+  adminMemberId,
+  isOpen = true,
+  onClose,
+}: PasswordUpdateModalProps) => {
   const {
     adminMemberInformation,
-    isUsernameError,
+    isCurrentPasswordError,
     isPasswordError,
     isConfirmPasswordError,
-    disableUsernameError,
+    disableCurrentPasswordError,
     disablePasswordError,
     disableConfirmPasswordError,
     updateInputValue,
     handleSubmit,
-  } = UseAddAdminMemberForm({ onSuccess: onClose });
+  } = UseUpdatePasswordForm({ adminMemberId: adminMemberId, onSuccess: onClose });
 
   return (
     <>
@@ -54,18 +58,14 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
         </button>
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
-            <UsernameInput
-              value={adminMemberInformation.username}
-              isError={isUsernameError}
+            <CurrentPasswordInput
+              value={adminMemberInformation.currentPassword}
+              isError={isCurrentPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disableUsernameError}
-            />
-            <AdminTypeSelect
-              value={adminMemberInformation.adminType}
-              updateInputValue={updateInputValue}
+              disableError={disableCurrentPasswordError}
             />
             <PasswordInput
-              value={adminMemberInformation.password}
+              value={adminMemberInformation.newPassword}
               isError={isPasswordError}
               updateInputValue={updateInputValue}
               disableError={disablePasswordError}
@@ -78,7 +78,7 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
             />
           </Flex>
           <Button css={buttonStyling} variant="primary">
-            관리자 추가하기
+            비밀번호 변경하기
           </Button>
         </form>
       </Modal>
@@ -86,4 +86,4 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
   );
 };
 
-export default AdminMemberAddModal;
+export default PasswordUpdateModal;

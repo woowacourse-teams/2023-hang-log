@@ -3,17 +3,14 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { AdminMemberFormData } from '@/types/adminMember';
+import type { PasswordFormData } from '@/types/adminMember';
 
 import { ADMIN_MEMBER_MAX_LENGTH } from '@/constants/ui';
 
 interface PasswordInputProps {
   value: string;
   isError: boolean;
-  updateInputValue: <K extends keyof AdminMemberFormData>(
-    key: K,
-    value: AdminMemberFormData[K]
-  ) => void;
+  updateInputValue: <K extends keyof PasswordFormData>(key: K, value: PasswordFormData[K]) => void;
   disableError: () => void;
 }
 
@@ -21,15 +18,15 @@ const PasswordInput = ({ isError, value, updateInputValue, disableError }: Passw
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 
-    updateInputValue('password', event.target.value);
+    updateInputValue('newPassword', event.target.value);
   };
 
   return (
     <Input
       type="password"
-      label="비밀번호"
-      id="password"
-      name="password"
+      label="새 비밀번호"
+      id="newPassword"
+      name="newPassword"
       maxLength={ADMIN_MEMBER_MAX_LENGTH}
       value={value}
       placeholder="비밀번호를 입력해 주세요"

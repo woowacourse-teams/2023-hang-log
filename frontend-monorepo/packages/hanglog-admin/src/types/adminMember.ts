@@ -10,10 +10,7 @@ export interface AdminMemberPostData {
   password: string;
 }
 
-export interface AdminMemberFormData {
-  username: string;
-  adminType: string;
-  password: string;
+export interface AdminMemberFormData extends AdminMemberPostData {
   confirmPassword: string;
 }
 
@@ -21,8 +18,11 @@ export type AdminTypeData = 'MASTER' | 'ADMIN';
 
 export const SelectableAdminType = ['ADMIN'];
 
-export interface PassowrdFormData {
+export interface PassowrdPatchData {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface PasswordFormData extends PassowrdPatchData {
   confirmPassword: string;
 }
