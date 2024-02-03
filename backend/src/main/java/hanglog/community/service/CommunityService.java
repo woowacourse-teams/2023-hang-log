@@ -2,7 +2,11 @@ package hanglog.community.service;
 
 import static hanglog.community.domain.recommendstrategy.RecommendType.LIKE;
 import static hanglog.global.exception.ExceptionCode.NOT_FOUND_TRIP_ID;
+import static hanglog.like.domain.LikeRedisConstants.EMPTY_MARKER;
+import static hanglog.like.domain.LikeRedisConstants.LIKE_TTL;
+import static hanglog.like.domain.LikeRedisConstants.generateLikeKey;
 import static hanglog.trip.domain.type.PublishedStatusType.PUBLISHED;
+import static java.lang.Boolean.TRUE;
 
 import hanglog.auth.domain.Accessor;
 import hanglog.city.domain.City;
@@ -14,26 +18,27 @@ import hanglog.community.dto.response.CommunityTripListResponse;
 import hanglog.community.dto.response.CommunityTripResponse;
 import hanglog.community.dto.response.RecommendTripListResponse;
 import hanglog.global.exception.BadRequestException;
-import hanglog.like.domain.LikeCount;
-import hanglog.like.domain.LikeInfo;
-import hanglog.like.domain.MemberLike;
+import hanglog.like.dto.LikeInfo;
+import hanglog.like.domain.repository.CustomLikeRepository;
 import hanglog.like.dto.LikeElement;
 import hanglog.like.dto.LikeElements;
-import hanglog.like.domain.repository.LikeCountRepository;
-import hanglog.like.domain.repository.LikeRepository;
-import hanglog.like.domain.repository.MemberLikeRepository;
 import hanglog.trip.domain.Trip;
 import hanglog.trip.domain.repository.TripCityRepository;
 import hanglog.trip.domain.repository.TripRepository;
 import hanglog.trip.dto.TripCityElements;
 import hanglog.trip.dto.response.TripDetailResponse;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,14 +50,13 @@ public class CommunityService {
 
     private static final int RECOMMEND_AMOUNT = 5;
 
-    private final LikeRepository likeRepository;
     private final TripRepository tripRepository;
     private final TripCityRepository tripCityRepository;
     private final CityRepository cityRepository;
-    private final RecommendStrategies recommendStrategies;
     private final PublishedTripRepository publishedTripRepository;
-    private final LikeCountRepository likeCountRepository;
-    private final MemberLikeRepository memberLikeRepository;
+    private final CustomLikeRepository customLikeRepository;
+    private final RecommendStrategies recommendStrategies;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
     public CommunityTripListResponse getCommunityTripsByPage(final Accessor accessor, final Pageable pageable) {
@@ -78,36 +82,15 @@ public class CommunityService {
                 tripCityRepository.findTripIdAndCitiesByTripIds(tripIds)
         );
         final Map<Long, List<City>> citiesByTrip = tripCityElements.toCityMap();
-
-        final LikeElements likeElements = new LikeElements(likeRepository.findLikeCountAndIsLikeByTripIds(
-                accessor.getMemberId(),
-                tripIds
-        ));
-        final Map<Long, LikeInfo> likeInfoByTrip = likeElements.toLikeMap();
+        final Map<Long, LikeInfo> likeInfoByTrip = getLikeInfoByTripIds(accessor.getMemberId(), tripIds);
 
         return trips.stream()
                 .map(trip -> CommunityTripResponse.of(
                         trip,
                         citiesByTrip.get(trip.getId()),
-                        isLike(likeInfoByTrip, trip.getId()),
-                        getLikeCount(likeInfoByTrip, trip.getId())
+                        likeInfoByTrip.get(trip.getId()).isLike(),
+                        likeInfoByTrip.get(trip.getId()).getLikeCount()
                 )).toList();
-    }
-
-    private boolean isLike(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
-        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
-        if (likeInfo == null) {
-            return false;
-        }
-        return likeInfo.isLike();
-    }
-
-    private Long getLikeCount(final Map<Long, LikeInfo> likeInfoByTrip, final Long tripId) {
-        final LikeInfo likeInfo = likeInfoByTrip.get(tripId);
-        if (likeInfo == null) {
-            return 0L;
-        }
-        return likeInfo.getLikeCount();
     }
 
     private Long getLastPageIndex(final int pageSize) {
@@ -119,6 +102,43 @@ public class CommunityService {
         return lastPageIndex + 1;
     }
 
+    private Map<Long, LikeInfo> getLikeInfoByTripIds(final Long memberId, final List<Long> tripIds) {
+        final Map<Long, LikeInfo> likeInfoByTrip = new HashMap<>();
+
+        final List<Long> nonCachedTripIds = new ArrayList<>();
+        for (final Long tripId : tripIds) {
+            final String key = generateLikeKey(tripId);
+            if (TRUE.equals(redisTemplate.hasKey(key))) {
+                likeInfoByTrip.put(tripId, readLikeInfoFromCache(key, memberId));
+            } else {
+                nonCachedTripIds.add(tripId);
+            }
+        }
+
+        if (!nonCachedTripIds.isEmpty()) {
+            final List<LikeElement> likeElements = customLikeRepository.findLikeElementByTripIds(nonCachedTripIds);
+            likeElements.addAll(getEmptyLikeElements(likeElements, nonCachedTripIds));
+            likeElements.forEach(this::storeLikeInCache);
+            likeInfoByTrip.putAll(new LikeElements(likeElements).toLikeInfo(memberId));
+        }
+        return likeInfoByTrip;
+    }
+
+    private List<LikeElement> getEmptyLikeElements(
+            final List<LikeElement> likeElements,
+            final List<Long> nonCachedTripIds
+    ) {
+        return nonCachedTripIds.stream()
+                .filter(tripId -> doesNotContainTripId(likeElements, tripId))
+                .map(LikeElement::empty)
+                .toList();
+    }
+
+    private boolean doesNotContainTripId(final List<LikeElement> likeElements, final Long tripId) {
+        return likeElements.stream()
+                .noneMatch(likeElement -> likeElement.getTripId().equals(tripId));
+    }
+
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(final Accessor accessor, final Long tripId) {
         final Trip trip = tripRepository.findById(tripId)
@@ -128,30 +148,46 @@ public class CommunityService {
                 .orElseThrow(() -> new BadRequestException(NOT_FOUND_TRIP_ID))
                 .getCreatedAt();
 
-        final LikeElement likeElement = getLikeElement(accessor.getMemberId(), tripId);
+        final LikeInfo likeInfo = getLikeInfoByTripId(accessor.getMemberId(), tripId);
         final Boolean isWriter = trip.isWriter(accessor.getMemberId());
 
         return TripDetailResponse.publishedTrip(
                 trip,
                 cities,
                 isWriter,
-                likeElement.isLike(),
-                likeElement.getLikeCount(),
+                likeInfo.isLike(),
+                likeInfo.getLikeCount(),
                 publishedDate
         );
     }
 
-    private LikeElement getLikeElement(final Long memberId, final Long tripId) {
-        final Optional<LikeCount> likeCount = likeCountRepository.findById(tripId);
-        final Optional<MemberLike> memberLike = memberLikeRepository.findById(memberId);
-        if (likeCount.isPresent() && memberLike.isPresent()) {
-            final Map<Long, Boolean> tripLikeStatusMap = memberLike.get().getLikeStatusForTrip();
-            if (tripLikeStatusMap.containsKey(tripId)) {
-                return new LikeElement(tripId, likeCount.get().getCount(), tripLikeStatusMap.get(tripId));
-            }
-            return new LikeElement(tripId, likeCount.get().getCount(), false);
+    private LikeInfo getLikeInfoByTripId(final Long memberId, final Long tripId) {
+        final String key = generateLikeKey(tripId);
+        if (TRUE.equals(redisTemplate.hasKey(key))) {
+            return readLikeInfoFromCache(key, memberId);
         }
-        return likeRepository.findLikeCountAndIsLikeByTripId(memberId, tripId)
-                .orElseGet(() -> new LikeElement(tripId, 0, false));
+
+        final LikeElement likeElement = customLikeRepository.findLikesElementByTripId(tripId)
+                .orElse(LikeElement.empty(tripId));
+        storeLikeInCache(likeElement);
+        return new LikeInfo(likeElement.getLikeCount(), likeElement.isLike(memberId));
+    }
+
+    private LikeInfo readLikeInfoFromCache(final String key, final Long memberId) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        final boolean isLike = TRUE.equals(opsForSet.isMember(key, memberId));
+        final long count = Objects.requireNonNull(opsForSet.size(key)) - 1;
+        return new LikeInfo(count, isLike);
+    }
+
+    private void storeLikeInCache(final LikeElement likeElement) {
+        final SetOperations<String, Object> opsForSet = redisTemplate.opsForSet();
+        final String key = generateLikeKey(likeElement.getTripId());
+        opsForSet.add(key, EMPTY_MARKER);
+        final Set<Long> memberIds = likeElement.getMemberIds();
+        if (!memberIds.isEmpty()) {
+            opsForSet.add(key, likeElement.getMemberIds().toArray());
+        }
+        redisTemplate.expire(key, LIKE_TTL);
     }
 }
