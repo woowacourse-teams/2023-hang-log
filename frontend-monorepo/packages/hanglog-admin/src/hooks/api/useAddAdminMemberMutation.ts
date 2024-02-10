@@ -4,7 +4,7 @@ import { useToast } from '../common/useToast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { postAdminMember } from '@/api/adminMember/postAdminMember';
+import { postAdminMember } from '@api/adminMember/postAdminMember';
 
 export const useAddAdminMemberMutation = () => {
   const queryClient = useQueryClient();

@@ -3,9 +3,9 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { PasswordFormData } from '@/types/adminMember';
+import type { PasswordFormData } from '@type/adminMember';
 
-import { ADMIN_MEMBER_MAX_LENGTH } from '@/constants/ui';
+import { ADMIN_MEMBER_MAX_LENGTH } from '@constants/ui';
 
 interface ConfirmPasswordInputProps {
   value: string;

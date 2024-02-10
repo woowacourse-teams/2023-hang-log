@@ -1,4 +1,4 @@
-import type { CurrencyData, CurrencyListData } from '@/types/currency';
+import type { CurrencyData, CurrencyListData } from '@type/currency';
 
 export const currencyListData = (page: number, size: number) => {
   const lastPageIndex = Math.ceil(currencies.length / size) - 1;

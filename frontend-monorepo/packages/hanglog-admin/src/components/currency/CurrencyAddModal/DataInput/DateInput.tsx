@@ -3,9 +3,9 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { CurrencyFormData } from '@/types/currency';
+import type { CurrencyFormData } from '@type/currency';
 
-import { CURRENCY_DATE_MAX_LENGTH } from '@/constants/ui';
+import { CURRENCY_DATE_MAX_LENGTH } from '@constants/ui';
 
 interface DateInputProps {
   value: string;

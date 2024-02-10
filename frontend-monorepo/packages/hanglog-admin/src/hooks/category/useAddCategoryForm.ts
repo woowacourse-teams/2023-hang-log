@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react';
 import { useAddCategoryMutation } from '../api/useAddCategoryMutation';
 import { useUpdateCategoryMutation } from '../api/useUpdateCategoryMutation';
 
-import { isEmptyString, isEnglish, isInvalidCategoryId, isKorean } from '@/utils/validator';
+import { isEmptyString, isEnglish, isInvalidCategoryId, isKorean } from '@utils/validator';
 
-import type { CategoryData } from '@/types/category';
+import type { CategoryData } from '@type/category';
 
 interface UseAddCategoryFormParams {
   originalCategoryId?: number;

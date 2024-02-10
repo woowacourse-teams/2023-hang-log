@@ -1,7 +1,7 @@
 import { Modal, Flex, Button, Theme } from 'hang-log-design-system';
 
-import { UseAddCategoryForm } from '@/hooks/category/useAddCategoryForm';
-import { CategoryData } from '@/types/category';
+import { UseAddCategoryForm } from '@hooks/category/useAddCategoryForm';
+import { CategoryData } from '@type/category';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 

@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Skeleton } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
-import CurrencyTableSkeleton from '@/components/currency/CurrencyTable/CurrencyTableSkeleton';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import CurrencyTableSkeleton from '@components/currency/CurrencyTable/CurrencyTableSkeleton';
 
 import {
   containerStyling,
@@ -10,7 +10,7 @@ import {
   tableStyling,
   pagenationSkeletonStyling,
 } from './CurrencyPage.style';
-import CurrencyAddModal from '@/components/currency/CurrencyAddModal/CurrencyAddModal';
+import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 
 const CurrencyPageSkeleton = () => {
   return (

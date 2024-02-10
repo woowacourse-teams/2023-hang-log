@@ -4,10 +4,10 @@ import { useCallback, useState } from 'react';
 import { useAddCurrencyMutation } from '../api/useAddCurrencyMutation';
 import { useUpdateCurrencyMutation } from '../api/useUpdateCurrencyMutation';
 
-import { isInvalidCurrency, isValidCurrencyDate } from '@/utils/validator';
-import { currencyKeys } from '@/constants/currency';
+import { isInvalidCurrency, isValidCurrencyDate } from '@utils/validator';
+import { currencyKeys } from '@constants/currency';
 
-import type { CurrencyFormData } from '@/types/currency';
+import type { CurrencyFormData } from '@type/currency';
 
 interface UseAddCurrencyFormPrams {
   currencyId?: number;

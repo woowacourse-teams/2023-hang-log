@@ -3,9 +3,9 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { CurrencyFormData } from '@/types/currency';
+import type { CurrencyFormData } from '@type/currency';
 
-import { CURRENCY_MIN, CURRENCY_MAX } from '@/constants/ui';
+import { CURRENCY_MIN, CURRENCY_MAX } from '@constants/ui';
 
 interface CurrencyInputProps {
   currencyType: string;

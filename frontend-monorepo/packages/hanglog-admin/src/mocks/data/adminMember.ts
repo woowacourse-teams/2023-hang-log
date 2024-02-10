@@ -1,4 +1,4 @@
-import type { AdminMemberData } from '@/types/adminMember';
+import type { AdminMemberData } from '@type/adminMember';
 
 export const adminMembers: AdminMemberData[] = [
   {

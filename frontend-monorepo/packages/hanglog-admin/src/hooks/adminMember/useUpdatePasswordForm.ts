@@ -3,9 +3,9 @@ import { useCallback, useState } from 'react';
 
 import { useUpdateAdminMemberPasswordMutation } from '../api/useUpdateAdminMemberPasswordMutation';
 
-import { isEmptyString, isValidPassword } from '@/utils/validator';
+import { isEmptyString, isValidPassword } from '@utils/validator';
 
-import type { PassowrdPatchData } from '@/types/adminMember';
+import { PasswordPatchData } from '@type/adminMember';
 
 interface UseUpdatePasswordFormParams {
   adminMemberId: number;
@@ -13,7 +13,7 @@ interface UseUpdatePasswordFormParams {
   onError?: () => void;
 }
 
-export interface PassowrdFormData extends PassowrdPatchData {
+export interface PassowrdFormData extends PasswordPatchData {
   confirmPassword: string;
 }
 

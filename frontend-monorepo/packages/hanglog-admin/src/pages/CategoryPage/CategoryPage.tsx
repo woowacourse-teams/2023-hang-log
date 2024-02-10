@@ -2,14 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
-import PageNavigation from '@/components/common/PageNavigation/PageNavigation';
-import CategoryAddModal from '@/components/category/CategoryAddModal/CategoryAddModal';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import PageNavigation from '@components/common/PageNavigation/PageNavigation';
+import CategoryAddModal from '@components/category/CategoryAddModal/CategoryAddModal';
 
-import { useCategoryQuery } from '@/hooks/api/useCategoryQuery';
-import { usePageIndex } from '@/hooks/common/usePageIndex';
+import { useCategoryQuery } from '@hooks/api/useCategoryQuery';
+import { usePageIndex } from '@hooks/common/usePageIndex';
 
-import { TABLE_ROW_LENGTH } from '@/constants/ui';
+import { TABLE_ROW_LENGTH } from '@constants/ui';
 
 import {
   containerStyling,
@@ -17,7 +17,7 @@ import {
   addButtonStyling,
   tableStyling,
 } from './CategoryPage.style';
-import CategoryTable from '@/components/category/CategoryTable/CategoryTable';
+import CategoryTable from '@components/category/CategoryTable/CategoryTable';
 
 const CategoryPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();

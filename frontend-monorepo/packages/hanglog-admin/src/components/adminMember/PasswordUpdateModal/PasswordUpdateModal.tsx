@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseUpdatePasswordForm } from '@/hooks/adminMember/useUpdatePasswordForm';
+import { UseUpdatePasswordForm } from '@hooks/adminMember/useUpdatePasswordForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 

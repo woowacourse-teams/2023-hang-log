@@ -2,14 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Flex, Heading, Button, useOverlay } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
-import PageNavigation from '@/components/common/PageNavigation/PageNavigation';
-import CurrencyTable from '@/components/currency/CurrencyTable/CurrencyTable';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import PageNavigation from '@components/common/PageNavigation/PageNavigation';
+import CurrencyTable from '@components/currency/CurrencyTable/CurrencyTable';
 
-import { useCurrencyQuery } from '@/hooks/api/useCurrencyQuery';
-import { usePageIndex } from '@/hooks/common/usePageIndex';
+import { useCurrencyQuery } from '@hooks/api/useCurrencyQuery';
+import { usePageIndex } from '@hooks/common/usePageIndex';
 
-import { TABLE_ROW_LENGTH } from '@/constants/ui';
+import { TABLE_ROW_LENGTH } from '@constants/ui';
 
 import {
   containerStyling,
@@ -17,7 +17,7 @@ import {
   addButtonStyling,
   tableStyling,
 } from './CurrencyPage.style';
-import CurrencyAddModal from '@/components/currency/CurrencyAddModal/CurrencyAddModal';
+import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 
 const CurrencyPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();

@@ -3,9 +3,9 @@ import { useCallback, useState } from 'react';
 
 import { useAddAdminMemberMutation } from '../api/useAddAdminMemberMutation';
 
-import { isEmptyString, isValidPassword } from '@/utils/validator';
+import { isEmptyString, isValidPassword } from '@utils/validator';
 
-import type { AdminMemberFormData } from '@/types/adminMember';
+import type { AdminMemberFormData } from '@type/adminMember';
 
 interface UseAddAdminMemberFormParams {
   onSuccess?: () => void;

@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddAdminMemberForm } from '@/hooks/adminMember/useAddAdminMemberForm';
+import { UseAddAdminMemberForm } from '@hooks/adminMember/useAddAdminMemberForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 

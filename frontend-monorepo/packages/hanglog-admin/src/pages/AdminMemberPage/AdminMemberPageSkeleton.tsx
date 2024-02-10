@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Skeleton } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
-import AdminMemberTableSkeleton from '@/components/adminMember/AdminMemberTable/AdminMemberTableSkeleton';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import AdminMemberTableSkeleton from '@components/adminMember/AdminMemberTable/AdminMemberTableSkeleton';
 
 import {
   containerStyling,

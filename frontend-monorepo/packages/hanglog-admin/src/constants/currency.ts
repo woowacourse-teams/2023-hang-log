@@ -1,4 +1,4 @@
-import { CurrencyFormData } from '@/types/currency';
+import { CurrencyFormData } from '@type/currency';
 
 export const currencyKeys: (keyof CurrencyFormData)[] = [
   'usd',

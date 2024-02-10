@@ -4,7 +4,7 @@ import { useToast } from '../common/useToast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { putCurrency } from '@/api/currency/putCurrency';
+import { putCurrency } from '@api/currency/putCurrency';
 
 export const useUpdateCurrencyMutation = () => {
   const queryClient = useQueryClient();

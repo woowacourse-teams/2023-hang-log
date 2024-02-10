@@ -1,20 +1,20 @@
 import App from '@/App';
 
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
-import AdminMainPage from '@/pages/AdminMainPage/AdminMainPage';
-import AdminMemberPage from '@/pages/AdminMemberPage/AdminMemberPage';
-import CityPage from '@/pages/CityPage/CityPage';
-import CategoryPage from '@/pages/CategoryPage/CategoryPage';
-import CurrencyPage from '@/pages/CurrencyPage/CurrencyPage';
+import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import AdminMainPage from '@pages/AdminMainPage/AdminMainPage';
+import AdminMemberPage from '@pages/AdminMemberPage/AdminMemberPage';
+import CityPage from '@pages/CityPage/CityPage';
+import CategoryPage from '@pages/CategoryPage/CategoryPage';
+import CurrencyPage from '@pages/CurrencyPage/CurrencyPage';
 
-import CityPageSkeleton from '@/pages/CityPage/CityPageSkeleton';
-import CategoryPageSkeleton from '@/pages/CategoryPage/CategoryPageSkeleton';
-import CurrencyPageSkeleton from '@/pages/CurrencyPage/CurrencyPageSkeleton';
+import CityPageSkeleton from '@pages/CityPage/CityPageSkeleton';
+import CategoryPageSkeleton from '@pages/CategoryPage/CategoryPageSkeleton';
+import CurrencyPageSkeleton from '@pages/CurrencyPage/CurrencyPageSkeleton';
 
 import { PATH } from '@constants/path';
 import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import AdminMemberPageSkeleton from '@/pages/AdminMemberPage/AdminMemberPageSkeleton';
+import AdminMemberPageSkeleton from '@pages/AdminMemberPage/AdminMemberPageSkeleton';
 
 const router = createBrowserRouter([
   {

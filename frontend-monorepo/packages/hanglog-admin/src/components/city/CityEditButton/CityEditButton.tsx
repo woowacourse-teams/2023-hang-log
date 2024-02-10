@@ -2,7 +2,7 @@ import { useOverlay } from 'hang-log-design-system';
 
 import CityAddModal from '../CityAddModal/CityAddModal';
 
-import type { CityData } from '@/types/city';
+import type { CityData } from '@type/city';
 
 import { buttonStyling, editIconStyling } from './CityEditButton.style';
 

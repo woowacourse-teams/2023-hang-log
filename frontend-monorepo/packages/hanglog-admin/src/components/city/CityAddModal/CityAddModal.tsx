@@ -1,8 +1,8 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddCityForm } from '@/hooks/city/useAddCityForm';
+import { UseAddCityForm } from '@hooks/city/useAddCityForm';
 
-import type { CityFormData } from '@/types/city';
+import type { CityFormData } from '@type/city';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 

@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import type { AxiosError } from 'axios';
 
-import { getCategory } from '@/api/category/getCategory';
+import { getCategory } from '@api/category/getCategory';
 
 import type { CategoryData } from '@type/category';
 

@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react';
 import { useAddCityMutation } from '../api/useAddCityMutation';
 import { useUpdateCityMutation } from '../api/useUpdateCityMutation';
 
-import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@/utils/validator';
+import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@utils/validator';
 
-import type { CityFormData } from '@/types/city';
+import type { CityFormData } from '@type/city';
 
 interface UseAddCityFormParams {
   cityId?: number;

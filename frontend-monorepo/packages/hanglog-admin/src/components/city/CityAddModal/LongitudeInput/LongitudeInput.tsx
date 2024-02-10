@@ -3,9 +3,9 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { CityFormData } from '@/types/city';
+import type { CityFormData } from '@type/city';
 
-import { CITY_LONGITUDE_MAX, CITY_LONGITUDE_MIN } from '@/constants/ui';
+import { CITY_LONGITUDE_MAX, CITY_LONGITUDE_MIN } from '@constants/ui';
 
 interface LongitudeInputProps {
   value: number;

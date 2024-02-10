@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import { Select } from 'hang-log-design-system';
 
-import { AdminMemberFormData, SelectableAdminType } from '@/types/adminMember';
+import { AdminMemberFormData, SelectableAdminType } from '@type/adminMember';
 
 interface AdminTypeSelectProps {
   value: string;

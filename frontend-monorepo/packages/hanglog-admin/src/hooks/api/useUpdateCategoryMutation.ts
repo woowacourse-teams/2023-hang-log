@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../common/useToast';
 
 import type { ErrorResponseData } from '@api/interceptors';
-import { putCategory } from '@/api/category/putCategeory';
+import { putCategory } from '@api/category/putCategeory';
 
 export const useUpdateCategoryMutation = () => {
   const queryClient = useQueryClient();

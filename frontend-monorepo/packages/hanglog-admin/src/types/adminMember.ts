@@ -18,11 +18,11 @@ export type AdminTypeData = 'MASTER' | 'ADMIN';
 
 export const SelectableAdminType = ['ADMIN'];
 
-export interface PassowrdPatchData {
+export interface PasswordPatchData {
   currentPassword: string;
   newPassword: string;
 }
 
-export interface PasswordFormData extends PassowrdPatchData {
+export interface PasswordFormData extends PasswordPatchData {
   confirmPassword: string;
 }

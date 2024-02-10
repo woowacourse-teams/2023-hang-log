@@ -3,9 +3,9 @@ import { memo } from 'react';
 
 import { Input } from 'hang-log-design-system';
 
-import type { CategoryData } from '@/types/category';
+import type { CategoryData } from '@type/category';
 
-import { CATEGORY_ID_MAX, CATEGORY_ID_MIN } from '@/constants/ui';
+import { CATEGORY_ID_MAX, CATEGORY_ID_MIN } from '@constants/ui';
 
 interface IdInputProps {
   value: number;

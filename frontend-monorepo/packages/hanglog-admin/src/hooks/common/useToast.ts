@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { toastListState } from '@store/toast';
 
-import { generateUniqueId } from '@/utils/uniqueId';
+import { generateUniqueId } from '@utils/uniqueId';
 
 import type { ToastType } from '@type/toast';
 

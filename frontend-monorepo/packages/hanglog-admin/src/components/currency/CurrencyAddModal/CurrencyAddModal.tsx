@@ -1,10 +1,10 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddCurrencyForm } from '@/hooks/currency/useAddCurrencyForm';
+import { UseAddCurrencyForm } from '@hooks/currency/useAddCurrencyForm';
 
-import type { CurrencyFormData } from '@/types/currency';
+import type { CurrencyFormData } from '@type/currency';
 
-import { currencyKeys } from '@/constants/currency';
+import { currencyKeys } from '@constants/currency';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 

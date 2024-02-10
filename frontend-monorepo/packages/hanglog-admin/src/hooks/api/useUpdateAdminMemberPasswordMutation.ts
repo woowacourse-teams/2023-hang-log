@@ -4,7 +4,7 @@ import { useToast } from '../common/useToast';
 
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { patchAdminMemberPassword } from '@/api/adminMember/patchAdminMember';
+import { patchAdminMemberPassword } from '@api/adminMember/patchAdminMember';
 
 export const useUpdateAdminMemberPasswordMutation = () => {
   const { createToast } = useToast();

@@ -1,8 +1,8 @@
 import { Flex, Heading, Button, Skeleton } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 
-import CityTableSkeleton from '@/components/city/CityTable/CityTableSkeleton';
+import CityTableSkeleton from '@components/city/CityTable/CityTableSkeleton';
 
 import {
   containerStyling,

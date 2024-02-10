@@ -2,7 +2,7 @@ import { useOverlay } from 'hang-log-design-system';
 
 import CategoryAddModal from '../CategoryAddModal/CategoryAddModal';
 
-import type { CategoryData } from '@/types/category';
+import type { CategoryData } from '@type/category';
 
 import { buttonStyling, editIconStyling } from './CategoryEditButton.style';
 

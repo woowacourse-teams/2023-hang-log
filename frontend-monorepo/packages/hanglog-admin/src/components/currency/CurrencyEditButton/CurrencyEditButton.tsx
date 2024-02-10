@@ -2,7 +2,7 @@ import { useOverlay } from 'hang-log-design-system';
 
 import CurrencyAddModal from '../CurrencyAddModal/CurrencyAddModal';
 
-import type { CurrencyData } from '@/types/currency';
+import type { CurrencyData } from '@type/currency';
 
 import { buttonStyling, editIconStyling } from './CurrencyEditButton.style';
 
