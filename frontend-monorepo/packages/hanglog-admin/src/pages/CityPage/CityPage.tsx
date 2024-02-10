@@ -1,10 +1,9 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import CityTableSkeleton from '@/components/city/CityTable/CityTableSkeleton';
-
 import CityAddModal from '@components/city/CityAddModal/CityAddModal';
 import CityTable from '@components/city/CityTable/CityTable';
+import CityTableSkeleton from '@components/city/CityTable/CityTableSkeleton';
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 

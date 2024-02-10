@@ -1,10 +1,9 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import CategoryTableSkeleton from '@/components/category/CategoryTable/CategoryTableSkeleton';
-
 import CategoryAddModal from '@components/category/CategoryAddModal/CategoryAddModal';
 import CategoryTable from '@components/category/CategoryTable/CategoryTable';
+import CategoryTableSkeleton from '@components/category/CategoryTable/CategoryTableSkeleton';
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 

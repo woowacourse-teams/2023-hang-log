@@ -1,10 +1,9 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import AdminMemberTableSkeleton from '@/components/adminMember/AdminMemberTable/AdminMemberTableSkeleton';
-
 import AdminMemberAddModal from '@components/adminMember/AdminMemberAddModal/AdminMemberAddModal';
 import AdminMemberTable from '@components/adminMember/AdminMemberTable/AdminMemberTable';
+import AdminMemberTableSkeleton from '@components/adminMember/AdminMemberTable/AdminMemberTableSkeleton';
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 

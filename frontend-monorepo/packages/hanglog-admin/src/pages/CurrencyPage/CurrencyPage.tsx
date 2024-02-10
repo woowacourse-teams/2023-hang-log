@@ -1,12 +1,11 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import CurrencyTableSkeleton from '@/components/currency/CurrencyTable/CurrencyTableSkeleton';
-
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 import CurrencyTable from '@components/currency/CurrencyTable/CurrencyTable';
+import CurrencyTableSkeleton from '@components/currency/CurrencyTable/CurrencyTableSkeleton';
 
 import { useCurrencyQuery } from '@hooks/api/useCurrencyQuery';
 import { usePageIndex } from '@hooks/common/usePageIndex';
