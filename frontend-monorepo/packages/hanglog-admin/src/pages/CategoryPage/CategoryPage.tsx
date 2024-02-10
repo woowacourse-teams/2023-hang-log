@@ -1,5 +1,7 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+
+import CategoryTableSkeleton from '@/components/category/CategoryTable/CategoryTableSkeleton';
 
 import CategoryAddModal from '@components/category/CategoryAddModal/CategoryAddModal';
 import CategoryTable from '@components/category/CategoryTable/CategoryTable';
@@ -53,7 +55,9 @@ const CategoryPage = () => {
             추가하기
           </Button>
           <section css={tableStyling}>
-            <CategoryTable categories={currentPageData} />
+            <Suspense fallback={<CategoryTableSkeleton length={TABLE_ROW_LENGTH} />}>
+              <CategoryTable categories={currentPageData} />
+            </Suspense>
           </section>
           <PageNavigation
             pages={pageIndexDatas}

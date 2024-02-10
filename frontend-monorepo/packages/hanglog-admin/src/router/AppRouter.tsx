@@ -5,13 +5,9 @@ import App from '@/App';
 
 import AdminMainPage from '@pages/AdminMainPage/AdminMainPage';
 import AdminMemberPage from '@pages/AdminMemberPage/AdminMemberPage';
-import AdminMemberPageSkeleton from '@pages/AdminMemberPage/AdminMemberPageSkeleton';
 import CategoryPage from '@pages/CategoryPage/CategoryPage';
-import CategoryPageSkeleton from '@pages/CategoryPage/CategoryPageSkeleton';
 import CityPage from '@pages/CityPage/CityPage';
-import CityPageSkeleton from '@pages/CityPage/CityPageSkeleton';
 import CurrencyPage from '@pages/CurrencyPage/CurrencyPage';
-import CurrencyPageSkeleton from '@pages/CurrencyPage/CurrencyPageSkeleton';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 
 import { PATH } from '@constants/path';
@@ -37,7 +33,7 @@ const router = createBrowserRouter([
       {
         path: PATH.ADMIN_MEMBER,
         element: (
-          <Suspense fallback={<AdminMemberPageSkeleton />}>
+          <Suspense>
             <AdminMemberPage />
           </Suspense>
         ),
@@ -45,7 +41,7 @@ const router = createBrowserRouter([
       {
         path: PATH.CITY,
         element: (
-          <Suspense fallback={<CityPageSkeleton />}>
+          <Suspense>
             <CityPage />
           </Suspense>
         ),
@@ -53,7 +49,7 @@ const router = createBrowserRouter([
       {
         path: PATH.CATEGORY,
         element: (
-          <Suspense fallback={<CategoryPageSkeleton />}>
+          <Suspense>
             <CategoryPage />
           </Suspense>
         ),
@@ -61,7 +57,7 @@ const router = createBrowserRouter([
       {
         path: PATH.CURRENCY,
         element: (
-          <Suspense fallback={<CurrencyPageSkeleton />}>
+          <Suspense>
             <CurrencyPage />
           </Suspense>
         ),

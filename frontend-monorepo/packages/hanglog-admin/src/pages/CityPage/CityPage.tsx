@@ -1,5 +1,7 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+
+import CityTableSkeleton from '@/components/city/CityTable/CityTableSkeleton';
 
 import CityAddModal from '@components/city/CityAddModal/CityAddModal';
 import CityTable from '@components/city/CityTable/CityTable';
@@ -45,7 +47,9 @@ const CityPage = () => {
             추가하기
           </Button>
           <section css={tableStyling}>
-            <CityTable cities={currentPageData} />
+            <Suspense fallback={<CityTableSkeleton length={TABLE_ROW_LENGTH} />}>
+              <CityTable cities={currentPageData} />
+            </Suspense>
           </section>
           <PageNavigation
             pages={pageIndexDatas}

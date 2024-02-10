@@ -78,9 +78,8 @@ export const useUpdatePasswordForm = (
 
     updatePasswordMutaion.mutate(
       {
-        adminMemberId: adminMemberId,
-        currentPassword: adminMemberInformation.currentPassword,
-        newPassword: adminMemberInformation.newPassword,
+        adminMemberId,
+        ...adminMemberInformation,
       },
       { onSuccess, onError }
     );

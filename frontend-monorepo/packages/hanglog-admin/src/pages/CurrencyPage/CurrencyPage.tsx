@@ -1,5 +1,7 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+
+import CurrencyTableSkeleton from '@/components/currency/CurrencyTable/CurrencyTableSkeleton';
 
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
 import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
@@ -50,7 +52,9 @@ const CurrencyPage = () => {
             추가하기
           </Button>
           <section css={tableStyling}>
-            <CurrencyTable currencies={currencyListData.currencies} />
+            <Suspense fallback={<CurrencyTableSkeleton length={TABLE_ROW_LENGTH} />}>
+              <CurrencyTable currencies={currencyListData.currencies} />
+            </Suspense>
           </section>
           <PageNavigation
             pages={pageIndexDatas}

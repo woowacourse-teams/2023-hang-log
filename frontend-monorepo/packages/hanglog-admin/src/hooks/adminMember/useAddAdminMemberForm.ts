@@ -72,9 +72,7 @@ export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberF
 
     addAdminMemberMutaion.mutate(
       {
-        username: adminMemberInformation.username,
-        adminType: adminMemberInformation.adminType,
-        password: adminMemberInformation.password,
+        ...adminMemberInformation,
       },
       { onSuccess, onError }
     );

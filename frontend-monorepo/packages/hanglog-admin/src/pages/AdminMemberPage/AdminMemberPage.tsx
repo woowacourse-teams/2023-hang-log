@@ -1,5 +1,7 @@
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+
+import AdminMemberTableSkeleton from '@/components/adminMember/AdminMemberTable/AdminMemberTableSkeleton';
 
 import AdminMemberAddModal from '@components/adminMember/AdminMemberAddModal/AdminMemberAddModal';
 import AdminMemberTable from '@components/adminMember/AdminMemberTable/AdminMemberTable';
@@ -53,7 +55,9 @@ const AdminMemberPage = () => {
             추가하기
           </Button>
           <section css={tableStyling}>
-            <AdminMemberTable adminMembers={currentPageData} />
+            <Suspense fallback={<AdminMemberTableSkeleton length={TABLE_ROW_LENGTH} />}>
+              <AdminMemberTable adminMembers={currentPageData} />
+            </Suspense>
           </section>
           <PageNavigation
             pages={pageIndexDatas}
