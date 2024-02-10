@@ -8,15 +8,15 @@ import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@utils/val
 import { useAddCityMutation } from '../api/useAddCityMutation';
 import { useUpdateCityMutation } from '../api/useUpdateCityMutation';
 
-interface UseAddCityFormParams {
+interface useAddCityFormParams {
   cityId?: number;
   initialData?: CityFormData;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export const UseAddCityForm = (
-  { cityId, initialData, onSuccess, onError }: UseAddCityFormParams
+export const useAddCityForm = (
+  { cityId, initialData, onSuccess, onError }: useAddCityFormParams
 ) => {
   const addCityMutation = useAddCityMutation();
   const updateCityMutation = useUpdateCityMutation();

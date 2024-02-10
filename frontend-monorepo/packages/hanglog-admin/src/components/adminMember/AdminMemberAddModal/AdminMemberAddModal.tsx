@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddAdminMemberForm } from '@hooks/adminMember/useAddAdminMemberForm';
+import { useAddAdminMemberForm } from '@hooks/adminMember/useAddAdminMemberForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
@@ -32,7 +32,7 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
     disableConfirmPasswordError,
     updateInputValue,
     handleSubmit,
-  } = UseAddAdminMemberForm({ onSuccess: onClose });
+  } = useAddAdminMemberForm({ onSuccess: onClose });
 
   return (
     <>

@@ -8,15 +8,15 @@ import { isEmptyString, isEnglish, isInvalidCategoryId, isKorean } from '@utils/
 import { useAddCategoryMutation } from '../api/useAddCategoryMutation';
 import { useUpdateCategoryMutation } from '../api/useUpdateCategoryMutation';
 
-interface UseAddCategoryFormParams {
+interface useAddCategoryFormParams {
   originalCategoryId?: number;
   initialData?: CategoryData;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export const UseAddCategoryForm = (
-  { originalCategoryId, initialData, onSuccess, onError }: UseAddCategoryFormParams
+export const useAddCategoryForm = (
+  { originalCategoryId, initialData, onSuccess, onError }: useAddCategoryFormParams
 ) => {
   const addCategoryMutation = useAddCategoryMutation();
   const updateCategoryMutation = useUpdateCategoryMutation();

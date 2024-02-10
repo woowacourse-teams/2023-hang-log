@@ -2,7 +2,7 @@ import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
 import type { CurrencyFormData } from '@type/currency';
 
-import { UseAddCurrencyForm } from '@hooks/currency/useAddCurrencyForm';
+import { useAddCurrencyForm } from '@hooks/currency/useAddCurrencyForm';
 
 import { currencyKeys } from '@constants/currency';
 
@@ -36,7 +36,7 @@ const CurrencyAddModal = (
     disableCurrencyError,
     updateInputValue,
     handleSubmit,
-  } = UseAddCurrencyForm({
+  } = useAddCurrencyForm({
     currencyId,
     initialData,
     onSuccess: onClose,

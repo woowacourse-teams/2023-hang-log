@@ -2,7 +2,7 @@ import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
 import { CategoryData } from '@type/category';
 
-import { UseAddCategoryForm } from '@hooks/category/useAddCategoryForm';
+import { useAddCategoryForm } from '@hooks/category/useAddCategoryForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
@@ -37,7 +37,7 @@ const CategoryAddModal = (
     disableKorNameError,
     updateInputValue,
     handleSubmit,
-  } = UseAddCategoryForm({
+  } = useAddCategoryForm({
     originalCategoryId,
     initialData,
     onSuccess: onClose,

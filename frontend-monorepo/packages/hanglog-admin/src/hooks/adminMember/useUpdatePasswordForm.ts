@@ -7,7 +7,7 @@ import { isEmptyString, isValidPassword } from '@utils/validator';
 
 import { useUpdateAdminMemberPasswordMutation } from '../api/useUpdateAdminMemberPasswordMutation';
 
-interface UseUpdatePasswordFormParams {
+interface useUpdatePasswordFormParams {
   adminMemberId: number;
   onSuccess?: () => void;
   onError?: () => void;
@@ -17,10 +17,10 @@ export interface PassowrdFormData extends PasswordPatchData {
   confirmPassword: string;
 }
 
-export const UseUpdatePasswordForm = (
-  { adminMemberId, onSuccess, onError }: UseUpdatePasswordFormParams
+export const useUpdatePasswordForm = (
+  { adminMemberId, onSuccess, onError }: useUpdatePasswordFormParams
 ) => {
-  const UpdatePasswordMutaion = useUpdateAdminMemberPasswordMutation();
+  const updatePasswordMutaion = useUpdateAdminMemberPasswordMutation();
 
   const [adminMemberInformation, setAdminMemberInformation] = useState<PassowrdFormData>({
     currentPassword: '',
@@ -76,7 +76,7 @@ export const UseUpdatePasswordForm = (
       return;
     }
 
-    UpdatePasswordMutaion.mutate(
+    updatePasswordMutaion.mutate(
       {
         adminMemberId: adminMemberId,
         currentPassword: adminMemberInformation.currentPassword,
@@ -99,4 +99,4 @@ export const UseUpdatePasswordForm = (
   };
 };
 
-export default UseUpdatePasswordForm;
+export default useUpdatePasswordForm;

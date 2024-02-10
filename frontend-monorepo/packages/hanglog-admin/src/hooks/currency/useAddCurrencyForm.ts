@@ -10,15 +10,15 @@ import { isInvalidCurrency, isValidCurrencyDate } from '@utils/validator';
 import { useAddCurrencyMutation } from '../api/useAddCurrencyMutation';
 import { useUpdateCurrencyMutation } from '../api/useUpdateCurrencyMutation';
 
-interface UseAddCurrencyFormPrams {
+interface useAddCurrencyFormPrams {
   currencyId?: number;
   initialData?: CurrencyFormData;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export const UseAddCurrencyForm = (
-  { currencyId, initialData, onSuccess, onError }: UseAddCurrencyFormPrams
+export const useAddCurrencyForm = (
+  { currencyId, initialData, onSuccess, onError }: useAddCurrencyFormPrams
 ) => {
   const addCurrencyMutation = useAddCurrencyMutation();
   const updateCurrencyMutation = useUpdateCurrencyMutation();
@@ -58,10 +58,6 @@ export const UseAddCurrencyForm = (
     setIsDateError(false);
   }, []);
 
-  //   const checkCurrencyValidity = (currencyInformation: CurrencyFormData) => {
-  //     return currencyKeys.some((key) => isInvalidCurrency(Number(currencyInformation[key])));
-  //   };
-
   const [currencyErrors, setCurrencyErrors] = useState<Record<string, boolean>>(
     currencyKeys.reduce((acc, key) => {
       acc[key] = false;
@@ -95,10 +91,6 @@ export const UseAddCurrencyForm = (
       return;
     }
 
-    // if (checkCurrencyValidity(currencyInformation)) {
-    //   setIsCurrencyError(true);
-    //   return;
-    // }
     const isAnyCurrencyInvalid = checkAndSetCurrencyValidity();
     if (isAnyCurrencyInvalid) {
       return;

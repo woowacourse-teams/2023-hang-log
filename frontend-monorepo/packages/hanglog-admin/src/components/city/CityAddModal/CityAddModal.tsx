@@ -2,7 +2,7 @@ import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
 import type { CityFormData } from '@type/city';
 
-import { UseAddCityForm } from '@hooks/city/useAddCityForm';
+import { useAddCityForm } from '@hooks/city/useAddCityForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
@@ -38,7 +38,7 @@ const CityAddModal = ({ cityId, initialData, isOpen = true, onClose }: CityAddMo
     disableLongitudeError,
     updateInputValue,
     handleSubmit,
-  } = UseAddCityForm({
+  } = useAddCityForm({
     cityId,
     initialData,
     onSuccess: onClose,

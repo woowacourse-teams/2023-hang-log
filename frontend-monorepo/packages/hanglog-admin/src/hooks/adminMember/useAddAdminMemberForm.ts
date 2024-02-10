@@ -7,12 +7,12 @@ import { isEmptyString, isValidPassword } from '@utils/validator';
 
 import { useAddAdminMemberMutation } from '../api/useAddAdminMemberMutation';
 
-interface UseAddAdminMemberFormParams {
+interface useAddAdminMemberFormParams {
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export const UseAddAdminMemberForm = ({ onSuccess, onError }: UseAddAdminMemberFormParams) => {
+export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberFormParams) => {
   const addAdminMemberMutaion = useAddAdminMemberMutation();
 
   const [adminMemberInformation, setAdminMemberInformation] = useState<AdminMemberFormData>({
