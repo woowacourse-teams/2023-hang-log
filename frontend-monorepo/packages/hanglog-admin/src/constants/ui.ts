@@ -29,3 +29,5 @@ export const CURRENCY_MIN = 0;
 export const CURRENCY_MAX = 10000000;
 
 export const ADMIN_MEMBER_MAX_LENGTH = 20;
+
+export const ADMIN_MEMBER_MIN_PASSWORD_LENGTH = 4;
