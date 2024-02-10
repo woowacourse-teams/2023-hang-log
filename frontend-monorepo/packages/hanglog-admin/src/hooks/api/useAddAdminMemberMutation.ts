@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useToast } from '../common/useToast';
-
+import { postAdminMember } from '@api/adminMember/postAdminMember';
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { postAdminMember } from '@api/adminMember/postAdminMember';
+import { useToast } from '../common/useToast';
 
 export const useAddAdminMemberMutation = () => {
   const queryClient = useQueryClient();

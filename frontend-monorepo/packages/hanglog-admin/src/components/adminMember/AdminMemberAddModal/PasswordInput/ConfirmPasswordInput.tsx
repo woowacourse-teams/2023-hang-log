@@ -1,7 +1,6 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
-
-import { Input } from 'hang-log-design-system';
 
 import type { AdminMemberFormData } from '@type/adminMember';
 
@@ -17,12 +16,9 @@ interface ConfirmPasswordInputProps {
   disableError: () => void;
 }
 
-const ConfirmPasswordInput = ({
-  isError,
-  value,
-  updateInputValue,
-  disableError,
-}: ConfirmPasswordInputProps) => {
+const ConfirmPasswordInput = (
+  { isError, value, updateInputValue, disableError }: ConfirmPasswordInputProps
+) => {
   const handleConfirmPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 

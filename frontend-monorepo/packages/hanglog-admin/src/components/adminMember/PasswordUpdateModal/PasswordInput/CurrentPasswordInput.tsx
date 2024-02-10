@@ -1,7 +1,6 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
-
-import { Input } from 'hang-log-design-system';
 
 import type { PasswordFormData } from '@type/adminMember';
 
@@ -14,12 +13,9 @@ interface CurrentPasswordInputProps {
   disableError: () => void;
 }
 
-const CurrentPasswordInput = ({
-  isError,
-  value,
-  updateInputValue,
-  disableError,
-}: CurrentPasswordInputProps) => {
+const CurrentPasswordInput = (
+  { isError, value, updateInputValue, disableError }: CurrentPasswordInputProps
+) => {
   const handleCurrentPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 

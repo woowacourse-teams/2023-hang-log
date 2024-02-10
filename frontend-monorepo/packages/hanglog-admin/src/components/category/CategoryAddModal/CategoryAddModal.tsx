@@ -1,19 +1,20 @@
-import { Modal, Flex, Button, Theme } from 'hang-log-design-system';
+import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
+
+import { CategoryData } from '@type/category';
 
 import { UseAddCategoryForm } from '@hooks/category/useAddCategoryForm';
-import { CategoryData } from '@type/category';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './CategoryAddModal.style';
-import IdInput from './IdInput/IdInput';
 import EngNameInput from './EngNameInput/EngNameInput';
+import IdInput from './IdInput/IdInput';
 import KorNameInput from './KorNameInput/KorNameInput';
 
 interface CategoryAddModalProps {
@@ -23,12 +24,9 @@ interface CategoryAddModalProps {
   onClose: () => void;
 }
 
-const CategoryAddModal = ({
-  originalCategoryId,
-  initialData,
-  isOpen = true,
-  onClose,
-}: CategoryAddModalProps) => {
+const CategoryAddModal = (
+  { originalCategoryId, initialData, isOpen = true, onClose }: CategoryAddModalProps
+) => {
   const {
     categoryInformation,
     isIdError,

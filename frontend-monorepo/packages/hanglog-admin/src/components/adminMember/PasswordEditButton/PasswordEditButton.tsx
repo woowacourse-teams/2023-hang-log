@@ -1,10 +1,9 @@
 import { useOverlay } from 'hang-log-design-system';
 
-import PasswordUpdateModal from '../PasswordUpdateModal/PasswordUpdateModal';
-
-import { buttonStyling, editIconStyling } from './PasswordEditButton.style';
-
 import EditIcon from '@assets/svg/edit-icon.svg?react';
+
+import PasswordUpdateModal from '../PasswordUpdateModal/PasswordUpdateModal';
+import { buttonStyling, editIconStyling } from './PasswordEditButton.style';
 
 interface PasswordEditButtonProps {
   id: number;

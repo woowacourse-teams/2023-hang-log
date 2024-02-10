@@ -1,15 +1,14 @@
-import { Flex, Heading, Button, Skeleton } from 'hang-log-design-system';
-
-import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import { Button, Flex, Heading, Skeleton } from 'hang-log-design-system';
 
 import CityTableSkeleton from '@components/city/CityTable/CityTableSkeleton';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 
 import {
-  containerStyling,
-  titleStyling,
   addButtonStyling,
-  tableStyling,
+  containerStyling,
   pagenationSkeletonStyling,
+  tableStyling,
+  titleStyling,
 } from './CityPage.style';
 
 const CityPageSkeleton = () => {

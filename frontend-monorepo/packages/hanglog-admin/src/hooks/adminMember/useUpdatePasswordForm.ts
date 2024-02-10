@@ -1,11 +1,11 @@
-import type { FormEvent, ChangeEvent } from 'react';
+import type { FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
-import { useUpdateAdminMemberPasswordMutation } from '../api/useUpdateAdminMemberPasswordMutation';
+import { PasswordPatchData } from '@type/adminMember';
 
 import { isEmptyString, isValidPassword } from '@utils/validator';
 
-import { PasswordPatchData } from '@type/adminMember';
+import { useUpdateAdminMemberPasswordMutation } from '../api/useUpdateAdminMemberPasswordMutation';
 
 interface UseUpdatePasswordFormParams {
   adminMemberId: number;
@@ -17,11 +17,9 @@ export interface PassowrdFormData extends PasswordPatchData {
   confirmPassword: string;
 }
 
-export const UseUpdatePasswordForm = ({
-  adminMemberId,
-  onSuccess,
-  onError,
-}: UseUpdatePasswordFormParams) => {
+export const UseUpdatePasswordForm = (
+  { adminMemberId, onSuccess, onError }: UseUpdatePasswordFormParams
+) => {
   const UpdatePasswordMutaion = useUpdateAdminMemberPasswordMutation();
 
   const [adminMemberInformation, setAdminMemberInformation] = useState<PassowrdFormData>({

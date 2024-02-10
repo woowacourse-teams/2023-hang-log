@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useToast } from '../common/useToast';
-
+import { postCurrency } from '@api/currency/postCurrency';
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { postCurrency } from '@api/currency/postCurrency';
+import { useToast } from '../common/useToast';
 
 export const useAddCurrencyMutation = () => {
   const queryClient = useQueryClient();

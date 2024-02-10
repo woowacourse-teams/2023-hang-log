@@ -1,7 +1,8 @@
-import { Tab, Flex } from 'hang-log-design-system';
+import { Flex, Tab } from 'hang-log-design-system';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { PATH } from '@constants/path';
+
 import { containerStyling, tabStyling } from './SidevarNavigation.style';
 
 const SidebarNavigation = () => {

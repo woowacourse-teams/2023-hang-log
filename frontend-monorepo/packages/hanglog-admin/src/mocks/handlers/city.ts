@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
 
 import { END_POINTS, HTTP_STATUS_CODE } from '@constants/api';
 

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useToast } from '../common/useToast';
-
-import type { ErrorResponseData } from '@api/interceptors';
 import { putCategory } from '@api/category/putCategeory';
+import type { ErrorResponseData } from '@api/interceptors';
+
+import { useToast } from '../common/useToast';
 
 export const useUpdateCategoryMutation = () => {
   const queryClient = useQueryClient();

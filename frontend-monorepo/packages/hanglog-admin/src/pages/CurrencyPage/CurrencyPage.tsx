@@ -1,9 +1,9 @@
+import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
 import { useCallback, useEffect, useState } from 'react';
 
-import { Flex, Heading, Button, useOverlay } from 'hang-log-design-system';
-
-import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 import PageNavigation from '@components/common/PageNavigation/PageNavigation';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
+import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 import CurrencyTable from '@components/currency/CurrencyTable/CurrencyTable';
 
 import { useCurrencyQuery } from '@hooks/api/useCurrencyQuery';
@@ -12,12 +12,11 @@ import { usePageIndex } from '@hooks/common/usePageIndex';
 import { TABLE_ROW_LENGTH } from '@constants/ui';
 
 import {
-  containerStyling,
-  titleStyling,
   addButtonStyling,
+  containerStyling,
   tableStyling,
+  titleStyling,
 } from './CurrencyPage.style';
-import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 
 const CurrencyPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();

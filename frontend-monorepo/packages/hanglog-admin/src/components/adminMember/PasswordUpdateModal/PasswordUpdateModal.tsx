@@ -4,16 +4,15 @@ import { UseUpdatePasswordForm } from '@hooks/adminMember/useUpdatePasswordForm'
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import PasswordInput from './PasswordInput/PasswordInput';
-import CurrentPasswordInput from './PasswordInput/CurrentPasswordInput';
 import ConfirmPasswordInput from './PasswordInput/ConfirmPasswordInput';
-
+import CurrentPasswordInput from './PasswordInput/CurrentPasswordInput';
+import PasswordInput from './PasswordInput/PasswordInput';
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './PasswordUpdateModal.style';
 
 interface PasswordUpdateModalProps {
@@ -22,11 +21,9 @@ interface PasswordUpdateModalProps {
   onClose: () => void;
 }
 
-const PasswordUpdateModal = ({
-  adminMemberId,
-  isOpen = true,
-  onClose,
-}: PasswordUpdateModalProps) => {
+const PasswordUpdateModal = (
+  { adminMemberId, isOpen = true, onClose }: PasswordUpdateModalProps
+) => {
   const {
     adminMemberInformation,
     isCurrentPasswordError,

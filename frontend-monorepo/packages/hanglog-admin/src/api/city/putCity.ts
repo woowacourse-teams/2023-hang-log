@@ -1,8 +1,8 @@
-import { axiosInstance } from '@api/axiosInstance';
-
 import type { CityFormData } from '@type/city';
 
 import { END_POINTS } from '@constants/api';
+
+import { axiosInstance } from '@api/axiosInstance';
 
 export interface PutCityParams extends CityFormData {
   cityId: number;

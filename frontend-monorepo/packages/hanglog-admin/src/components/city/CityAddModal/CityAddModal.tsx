@@ -1,23 +1,22 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddCityForm } from '@hooks/city/useAddCityForm';
-
 import type { CityFormData } from '@type/city';
+
+import { UseAddCityForm } from '@hooks/city/useAddCityForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import NameInput from './NameInput/NameInput';
-import CountryInput from './CountryInput/CountryInput';
-import LatitudeInput from './LatitudeInput/LatitudeInput';
-import LongitudeInput from './LongitudeInput/LongitudeInput';
-
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './CityAddModal.style';
+import CountryInput from './CountryInput/CountryInput';
+import LatitudeInput from './LatitudeInput/LatitudeInput';
+import LongitudeInput from './LongitudeInput/LongitudeInput';
+import NameInput from './NameInput/NameInput';
 
 interface CityAddModalProps {
   cityId?: number;

@@ -1,7 +1,6 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
-
-import { Input } from 'hang-log-design-system';
 
 import type { CityFormData } from '@type/city';
 
@@ -14,12 +13,9 @@ interface LongitudeInputProps {
   disableError: () => void;
 }
 
-const LongitudeInput = ({
-  isError,
-  value,
-  updateInputValue,
-  disableError,
-}: LongitudeInputProps) => {
+const LongitudeInput = (
+  { isError, value, updateInputValue, disableError }: LongitudeInputProps
+) => {
   const handleLongitudeChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 

@@ -1,6 +1,6 @@
 import type { CurrencyData } from '@type/currency';
-import CurrencyEditButton from '../CurrencyEditButton/CurrencyEditButton';
 
+import CurrencyEditButton from '../CurrencyEditButton/CurrencyEditButton';
 import { tableStyling } from './CurrencyTable.style';
 
 interface CurrencyTableProps {

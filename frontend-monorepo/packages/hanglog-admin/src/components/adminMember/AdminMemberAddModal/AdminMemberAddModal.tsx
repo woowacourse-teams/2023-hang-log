@@ -4,18 +4,17 @@ import { UseAddAdminMemberForm } from '@hooks/adminMember/useAddAdminMemberForm'
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import UsernameInput from './UsernameInput/UsernameInput';
-import AdminTypeSelect from './AdminTypeSelect/AdminTypeSelect';
-import PasswordInput from './PasswordInput/PasswordInput';
-import ConfirmPasswordInput from './PasswordInput/ConfirmPasswordInput';
-
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './AdminMemberAddModal.style';
+import AdminTypeSelect from './AdminTypeSelect/AdminTypeSelect';
+import ConfirmPasswordInput from './PasswordInput/ConfirmPasswordInput';
+import PasswordInput from './PasswordInput/PasswordInput';
+import UsernameInput from './UsernameInput/UsernameInput';
 
 interface AdminMemberAddModalProps {
   isOpen?: boolean;

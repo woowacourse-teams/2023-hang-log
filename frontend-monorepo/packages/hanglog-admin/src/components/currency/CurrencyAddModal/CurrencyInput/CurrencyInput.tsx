@@ -1,11 +1,10 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-import { Input } from 'hang-log-design-system';
-
 import type { CurrencyFormData } from '@type/currency';
 
-import { CURRENCY_MIN, CURRENCY_MAX } from '@constants/ui';
+import { CURRENCY_MAX, CURRENCY_MIN } from '@constants/ui';
 
 interface CurrencyInputProps {
   currencyType: string;
@@ -18,13 +17,9 @@ interface CurrencyInputProps {
   disableError: () => void;
 }
 
-const CurrencyInput = ({
-  currencyType,
-  isError,
-  value,
-  updateInputValue,
-  disableError,
-}: CurrencyInputProps) => {
+const CurrencyInput = (
+  { currencyType, isError, value, updateInputValue, disableError }: CurrencyInputProps
+) => {
   const handleCurrencyChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 

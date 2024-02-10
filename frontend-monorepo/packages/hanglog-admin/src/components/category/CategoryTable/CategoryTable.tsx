@@ -1,7 +1,6 @@
-import CategoryEditButton from '../CategoryEditButton/CategoryEditButton';
-
 import type { CategoryData } from '@type/category';
 
+import CategoryEditButton from '../CategoryEditButton/CategoryEditButton';
 import { tableStyling } from './CategoryTable.style';
 
 interface CategoryTableProps {

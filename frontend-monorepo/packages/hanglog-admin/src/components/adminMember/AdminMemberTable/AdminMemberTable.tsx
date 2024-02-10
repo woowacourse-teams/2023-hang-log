@@ -1,8 +1,7 @@
 import type { AdminMemberData } from '@type/adminMember';
 
-import { tableStyling } from './AdminMemberTable.style';
-
 import PasswordEditButton from '../PasswordEditButton/PasswordEditButton';
+import { tableStyling } from './AdminMemberTable.style';
 
 interface AdminmemberTableProps {
   adminMembers: AdminMemberData[];

@@ -4,13 +4,12 @@ import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavig
 import CurrencyTableSkeleton from '@components/currency/CurrencyTable/CurrencyTableSkeleton';
 
 import {
-  containerStyling,
-  titleStyling,
   addButtonStyling,
-  tableStyling,
+  containerStyling,
   pagenationSkeletonStyling,
+  tableStyling,
+  titleStyling,
 } from './CurrencyPage.style';
-import CurrencyAddModal from '@components/currency/CurrencyAddModal/CurrencyAddModal';
 
 const CurrencyPageSkeleton = () => {
   return (

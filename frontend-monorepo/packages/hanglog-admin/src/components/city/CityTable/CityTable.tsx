@@ -1,7 +1,6 @@
-import CityEditButton from '../CityEditButton/CityEditButton';
-
 import type { CityData } from '@type/city';
 
+import CityEditButton from '../CityEditButton/CityEditButton';
 import { tableStyling } from './CityTable.style';
 
 interface CityTableProps {

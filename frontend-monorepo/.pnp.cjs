@@ -9848,6 +9848,29 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
+      ["virtual:6264e4ace59854ecf9b472698c80728bdcc2d10f14544f599ba5efc7fcd6964ec6168fe59fac412c2d471e85c1215f26fcc7078067d892fabf03abcb468d4c65#npm:4.3.0", {\
+        "packageLocation": "./.yarn/__virtual__/@trivago-prettier-plugin-sort-imports-virtual-41b758e5dd/0/cache/@trivago-prettier-plugin-sort-imports-npm-4.3.0-622c28680b-42270fb9c8.zip/node_modules/@trivago/prettier-plugin-sort-imports/",\
+        "packageDependencies": [\
+          ["@trivago/prettier-plugin-sort-imports", "virtual:6264e4ace59854ecf9b472698c80728bdcc2d10f14544f599ba5efc7fcd6964ec6168fe59fac412c2d471e85c1215f26fcc7078067d892fabf03abcb468d4c65#npm:4.3.0"],\
+          ["@babel/generator", "npm:7.17.7"],\
+          ["@babel/parser", "npm:7.23.9"],\
+          ["@babel/traverse", "npm:7.23.2"],\
+          ["@babel/types", "npm:7.17.0"],\
+          ["@types/prettier", null],\
+          ["@types/vue__compiler-sfc", null],\
+          ["@vue/compiler-sfc", null],\
+          ["javascript-natural-sort", "npm:0.7.1"],\
+          ["lodash", "npm:4.17.21"],\
+          ["prettier", "npm:3.2.4"]\
+        ],\
+        "packagePeers": [\
+          "@types/prettier",\
+          "@types/vue__compiler-sfc",\
+          "@vue/compiler-sfc",\
+          "prettier"\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["virtual:bfca90541deadef7ca04341b77694a3566f3f74bd9fba48871c271fa573dfe36954ed36daf70be7a147b2df8f86d5f876593eb78f1d8ef71040405a3ef477ede#npm:4.3.0", {\
         "packageLocation": "./.yarn/__virtual__/@trivago-prettier-plugin-sort-imports-virtual-f48f9a9d6a/0/cache/@trivago-prettier-plugin-sort-imports-npm-4.3.0-622c28680b-42270fb9c8.zip/node_modules/@trivago/prettier-plugin-sort-imports/",\
         "packageDependencies": [\
@@ -18338,6 +18361,7 @@ const RAW_RUNTIME_STATE =
           ["@storybook/react-vite", "virtual:6264e4ace59854ecf9b472698c80728bdcc2d10f14544f599ba5efc7fcd6964ec6168fe59fac412c2d471e85c1215f26fcc7078067d892fabf03abcb468d4c65#npm:7.6.10"],\
           ["@storybook/test", "npm:7.6.10"],\
           ["@tanstack/react-query", "virtual:6264e4ace59854ecf9b472698c80728bdcc2d10f14544f599ba5efc7fcd6964ec6168fe59fac412c2d471e85c1215f26fcc7078067d892fabf03abcb468d4c65#npm:5.17.19"],\
+          ["@trivago/prettier-plugin-sort-imports", "virtual:6264e4ace59854ecf9b472698c80728bdcc2d10f14544f599ba5efc7fcd6964ec6168fe59fac412c2d471e85c1215f26fcc7078067d892fabf03abcb468d4c65#npm:4.3.0"],\
           ["@types/babel__core", "npm:7.20.5"],\
           ["@types/babel__preset-env", "npm:7.9.6"],\
           ["@types/react", "npm:18.2.48"],\

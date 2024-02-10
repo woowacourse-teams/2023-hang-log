@@ -1,8 +1,8 @@
-import { axiosInstance } from '@api/axiosInstance';
-
 import type { CurrencyFormData } from '@type/currency';
 
 import { END_POINTS } from '@constants/api';
+
+import { axiosInstance } from '@api/axiosInstance';
 
 export interface PutCurrencyParams extends CurrencyFormData {
   currencyId: number;

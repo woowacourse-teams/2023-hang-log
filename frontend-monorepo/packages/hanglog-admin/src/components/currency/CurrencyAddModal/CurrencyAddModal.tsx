@@ -1,22 +1,22 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddCurrencyForm } from '@hooks/currency/useAddCurrencyForm';
-
 import type { CurrencyFormData } from '@type/currency';
+
+import { UseAddCurrencyForm } from '@hooks/currency/useAddCurrencyForm';
 
 import { currencyKeys } from '@constants/currency';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import DateInput from './DataInput/DateInput';
-import CurrencyInput from './CurrencyInput/CurrencyInput';
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './CurrencyAddModal.style';
+import CurrencyInput from './CurrencyInput/CurrencyInput';
+import DateInput from './DataInput/DateInput';
 
 interface CurrencyAddModalProps {
   currencyId?: number;
@@ -25,12 +25,9 @@ interface CurrencyAddModalProps {
   onClose: () => void;
 }
 
-const CurrencyAddModal = ({
-  currencyId,
-  initialData,
-  isOpen = true,
-  onClose,
-}: CurrencyAddModalProps) => {
+const CurrencyAddModal = (
+  { currencyId, initialData, isOpen = true, onClose }: CurrencyAddModalProps
+) => {
   const {
     currencyInformation,
     isDateError,

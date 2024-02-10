@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { useToast } from '../common/useToast';
-
+import { patchAdminMemberPassword } from '@api/adminMember/patchAdminMember';
 import type { ErrorResponseData } from '@api/interceptors';
 
-import { patchAdminMemberPassword } from '@api/adminMember/patchAdminMember';
+import { useToast } from '../common/useToast';
 
 export const useUpdateAdminMemberPasswordMutation = () => {
   const { createToast } = useToast();

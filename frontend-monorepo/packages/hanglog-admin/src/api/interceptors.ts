@@ -1,7 +1,8 @@
 import type { AxiosError } from 'axios';
 
-import { HTTPError } from '@api/HTTPError';
 import { HTTP_STATUS_CODE } from '@constants/api';
+
+import { HTTPError } from '@api/HTTPError';
 
 export interface ErrorResponseData {
   statusCode?: number;

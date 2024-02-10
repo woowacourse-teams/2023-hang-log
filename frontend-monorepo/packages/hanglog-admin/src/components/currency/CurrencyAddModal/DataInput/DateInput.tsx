@@ -1,7 +1,6 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
-
-import { Input } from 'hang-log-design-system';
 
 import type { CurrencyFormData } from '@type/currency';
 

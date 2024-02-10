@@ -1,10 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-
 import type { AxiosError } from 'axios';
 
-import { getAdminMember } from '@api/adminMember/getAdminMember';
-
 import type { AdminMemberData } from '@type/adminMember';
+
+import { getAdminMember } from '@api/adminMember/getAdminMember';
 
 export const useAdminMemberQuery = () => {
   const { data: adminMemberData } = useSuspenseQuery<AdminMemberData[], AxiosError>({

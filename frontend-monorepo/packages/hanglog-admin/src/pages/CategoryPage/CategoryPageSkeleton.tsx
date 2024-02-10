@@ -1,14 +1,14 @@
 import { Button, Flex, Heading, Skeleton } from 'hang-log-design-system';
 
-import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 import CategoryTableSkeleton from '@components/category/CategoryTable/CategoryTableSkeleton';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 
 import {
-  containerStyling,
-  titleStyling,
   addButtonStyling,
-  tableStyling,
+  containerStyling,
   pagenationSkeletonStyling,
+  tableStyling,
+  titleStyling,
 } from './CategoryPage.style';
 
 const CategoryPageSkeleton = () => {

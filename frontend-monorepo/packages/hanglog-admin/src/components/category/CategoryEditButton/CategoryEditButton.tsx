@@ -1,12 +1,11 @@
 import { useOverlay } from 'hang-log-design-system';
 
-import CategoryAddModal from '../CategoryAddModal/CategoryAddModal';
-
 import type { CategoryData } from '@type/category';
 
-import { buttonStyling, editIconStyling } from './CategoryEditButton.style';
-
 import EditIcon from '@assets/svg/edit-icon.svg?react';
+
+import CategoryAddModal from '../CategoryAddModal/CategoryAddModal';
+import { buttonStyling, editIconStyling } from './CategoryEditButton.style';
 
 const CategoryEditButton = ({ ...information }: CategoryData) => {
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();

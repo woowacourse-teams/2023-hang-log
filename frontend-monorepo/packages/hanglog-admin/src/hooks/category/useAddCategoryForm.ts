@@ -1,12 +1,12 @@
 import type { FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
-import { useAddCategoryMutation } from '../api/useAddCategoryMutation';
-import { useUpdateCategoryMutation } from '../api/useUpdateCategoryMutation';
+import type { CategoryData } from '@type/category';
 
 import { isEmptyString, isEnglish, isInvalidCategoryId, isKorean } from '@utils/validator';
 
-import type { CategoryData } from '@type/category';
+import { useAddCategoryMutation } from '../api/useAddCategoryMutation';
+import { useUpdateCategoryMutation } from '../api/useUpdateCategoryMutation';
 
 interface UseAddCategoryFormParams {
   originalCategoryId?: number;
@@ -15,12 +15,9 @@ interface UseAddCategoryFormParams {
   onError?: () => void;
 }
 
-export const UseAddCategoryForm = ({
-  originalCategoryId,
-  initialData,
-  onSuccess,
-  onError,
-}: UseAddCategoryFormParams) => {
+export const UseAddCategoryForm = (
+  { originalCategoryId, initialData, onSuccess, onError }: UseAddCategoryFormParams
+) => {
   const addCategoryMutation = useAddCategoryMutation();
   const updateCategoryMutation = useUpdateCategoryMutation();
 

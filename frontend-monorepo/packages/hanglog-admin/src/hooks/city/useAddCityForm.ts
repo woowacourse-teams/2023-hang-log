@@ -1,12 +1,12 @@
 import type { FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
-import { useAddCityMutation } from '../api/useAddCityMutation';
-import { useUpdateCityMutation } from '../api/useUpdateCityMutation';
+import type { CityFormData } from '@type/city';
 
 import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@utils/validator';
 
-import type { CityFormData } from '@type/city';
+import { useAddCityMutation } from '../api/useAddCityMutation';
+import { useUpdateCityMutation } from '../api/useUpdateCityMutation';
 
 interface UseAddCityFormParams {
   cityId?: number;
@@ -15,12 +15,9 @@ interface UseAddCityFormParams {
   onError?: () => void;
 }
 
-export const UseAddCityForm = ({
-  cityId,
-  initialData,
-  onSuccess,
-  onError,
-}: UseAddCityFormParams) => {
+export const UseAddCityForm = (
+  { cityId, initialData, onSuccess, onError }: UseAddCityFormParams
+) => {
   const addCityMutation = useAddCityMutation();
   const updateCityMutation = useUpdateCityMutation();
 
