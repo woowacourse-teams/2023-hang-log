@@ -9840,7 +9840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^15.0.0 || ^16.0.0 , eslint-plugin-n@npm:^16.6.2":
+"eslint-plugin-n@npm:^15.0.0 || ^16.0.0 ":
   version: 16.6.2
   resolution: "eslint-plugin-n@npm:16.6.2"
   dependencies:
@@ -10720,7 +10720,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.8.0"
     eslint-config-standard-with-typescript: "npm:^43.0.1"
     eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-n: "npm:^16.6.2"
+    eslint-plugin-n: "npm:^15.0.0 || ^16.0.0 "
     eslint-plugin-prettier: "npm:4.0.0"
     eslint-plugin-promise: "npm:^6.1.1"
     eslint-plugin-react: "npm:^7.33.2"
