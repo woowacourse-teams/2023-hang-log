@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Button, Flex, Heading, Text, Toggle, ToggleGroup } from 'hang-log-design-system';
+import { Box, Button, Flex, Heading, Text, NewToggle as Toggle } from 'hang-log-design-system';
 
 import TripsItem from '@components/trips/TripsItem/TripsItem';
 import {
@@ -19,54 +19,62 @@ import type { TripsData } from '@type/trips';
 
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
+import { sortByNewest, sortByStartDate } from '@utils/sort';
+import { queryClient } from '@/hooks/api/queryClient';
 
 interface TripsItemListProps {
   trips: TripsData[];
-  order: string | number;
-  changeSelect: (selectedId: string | number) => void;
 }
 
-const TripsItemList = ({ trips, order, changeSelect }: TripsItemListProps) => {
+const TripsItemList = () => {
+  const tripsData = queryClient.getQueryData(['trips']) as TripsData[];
+
+  const handleSort = (select: number | string) => {
+    const sortedTrips =
+      select === ORDER_BY_DATE
+        ? tripsData?.slice().sort(sortByStartDate)
+        : tripsData?.slice().sort(sortByNewest);
+
+    queryClient.setQueryData(['trips'], sortedTrips);
+    console.log(sortedTrips);
+  };
+
   return (
     <section css={containerStyling}>
-      <Flex
-        tag="section"
-        styles={{ justify: 'right', paddingRight: '50px' }}
-        css={toggleGroupStyling}
-      >
-        <ToggleGroup>
-          <Toggle
+      <Toggle initialSelect={ORDER_BY_REGISTRATION} additinalFunc={handleSort}>
+        <Flex
+          tag="section"
+          styles={{ justify: 'right', paddingRight: '50px' }}
+          css={toggleGroupStyling}
+        >
+          <Toggle.List
             text={ORDER_BY_REGISTRATION}
-            toggleId={ORDER_BY_REGISTRATION}
-            selectedId={order}
-            changeSelect={changeSelect}
+            toggleKey={ORDER_BY_REGISTRATION}
             aria-label="등록순 정렬 버튼"
           />
-          <Toggle
+          <Toggle.List
             text={ORDER_BY_DATE}
-            toggleId={ORDER_BY_DATE}
-            selectedId={order}
-            changeSelect={changeSelect}
+            toggleKey={ORDER_BY_DATE}
             aria-label="날짜순 정렬 버튼"
           />
-        </ToggleGroup>
-      </Flex>
-      <Box tag="ol" css={gridBoxStyling}>
-        {trips.map((trip, index) => {
-          return (
-            <TripsItem
-              key={trip.id}
-              id={trip.id}
-              coverImage={trip.imageName}
-              cityTags={trip.cities}
-              itemName={trip.title}
-              duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
-              description={trip.description}
-              index={index}
-            />
-          );
-        })}
-      </Box>
+        </Flex>
+        <Box tag="ol" css={gridBoxStyling}>
+          {tripsData.map((trip, index) => {
+            return (
+              <TripsItem
+                key={trip.id}
+                id={trip.id}
+                coverImage={trip.imageName}
+                cityTags={trip.cities}
+                itemName={trip.title}
+                duration={`${formatDate(trip.startDate)} - ${formatDate(trip.endDate)}`}
+                description={trip.description}
+                index={index}
+              />
+            );
+          })}
+        </Box>
+      </Toggle>
     </section>
   );
 };

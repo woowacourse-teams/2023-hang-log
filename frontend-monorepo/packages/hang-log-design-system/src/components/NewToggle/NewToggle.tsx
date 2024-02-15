@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react';
-import { useMemo, createContext } from 'react';
-import { useSelect } from '@hooks/useSelect';
+import { useCallback, useState, useMemo, createContext } from 'react';
 import List from '@components/NewToggle/List';
 import Item from '@components/NewToggle/Item';
+import { flushSync } from 'react-dom';
 
 interface ToggleContextType {
   selectKey: number | string;
@@ -11,19 +11,28 @@ interface ToggleContextType {
 
 export interface NewToggleProps extends PropsWithChildren {
   initialSelect?: number | string;
+  additinalFunc?: (key: number | string) => void;
 }
 
 export const NewToggleContext = createContext<ToggleContextType | null>(null);
 
-const NewToggle = ({ initialSelect = 0, children }: NewToggleProps) => {
-  const { selected, handleSelectClick } = useSelect(initialSelect);
+const NewToggle = ({ initialSelect = 0, additinalFunc, children }: NewToggleProps) => {
+  const [selected, setSelected] = useState<number | string>(initialSelect);
+
+  const handleSelect = useCallback(
+    (select: number | string) => {
+      flushSync(() => setSelected(select));
+      if (additinalFunc) additinalFunc(select);
+    },
+    [additinalFunc]
+  );
 
   const context = useMemo(
     () => ({
       selectKey: selected,
-      handleSelect: handleSelectClick,
+      handleSelect,
     }),
-    [handleSelectClick, selected]
+    [handleSelect, selected]
   );
 
   return <NewToggleContext.Provider value={context}>{children}</NewToggleContext.Provider>;

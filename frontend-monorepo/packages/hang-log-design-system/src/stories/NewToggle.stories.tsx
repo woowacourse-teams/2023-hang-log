@@ -26,7 +26,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: ({ ...args }) => (
-    <NewToggle {...args}>
+    <NewToggle
+      {...args}
+      additinalFunc={(id: number | string) => {
+        // eslint-disable-next-line no-console
+        console.log(id);
+      }}
+    >
       <h6>NewToggle</h6>
       <div style={{ display: 'flex' }}>
         <NewToggle.List text="Toggle 1" toggleKey="toggle1" />
