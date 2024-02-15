@@ -26,3 +26,20 @@ export const getListStyling = (isSelected: boolean) =>
       backgroundColor: isSelected ? Theme.color.blue200 : Theme.color.gray100,
     },
   });
+
+export const getToggleWrapperStyling = css({
+  width: 'fit-content',
+  borderRadius: Theme.borderRadius.small,
+
+  overflow: 'hidden',
+
+  '& :first-of-type': {
+    borderTopLeftRadius: Theme.borderRadius.small,
+    borderBottomLeftRadius: Theme.borderRadius.small,
+  },
+
+  '& :last-of-type': {
+    borderTopRightRadius: Theme.borderRadius.small,
+    borderBottomRightRadius: Theme.borderRadius.small,
+  },
+});

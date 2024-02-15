@@ -1,8 +1,8 @@
 import type { ComponentPropsWithRef, ForwardedRef, KeyboardEvent } from 'react';
 import { useContext, forwardRef } from 'react';
 
-import { getListStyling } from '@components/NewToggle/List.style';
-import { NewToggleContext } from './NewToggle';
+import { getListStyling } from '@components/NewToggle/Toggle.style';
+import { NewToggleContext } from '@components/NewToggle/NewToggle';
 
 export interface ToggleProps extends ComponentPropsWithRef<'li'> {
   toggleKey: number | string;

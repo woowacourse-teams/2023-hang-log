@@ -3,6 +3,7 @@ import { useCallback, useState, useMemo, createContext } from 'react';
 import List from '@components/NewToggle/List';
 import Item from '@components/NewToggle/Item';
 import { flushSync } from 'react-dom';
+import { getToggleWrapperStyling } from '@components/NewToggle/Toggle.style';
 
 interface ToggleContextType {
   selectKey: number | string;
@@ -35,7 +36,11 @@ const NewToggle = ({ initialSelect = 0, additinalFunc, children }: NewToggleProp
     [handleSelect, selected]
   );
 
-  return <NewToggleContext.Provider value={context}>{children}</NewToggleContext.Provider>;
+  return (
+    <NewToggleContext.Provider value={context}>
+      <div css={getToggleWrapperStyling}>{children}</div>
+    </NewToggleContext.Provider>
+  );
 };
 
 NewToggle.List = List;
