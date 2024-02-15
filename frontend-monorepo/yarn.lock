@@ -9840,7 +9840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^15.0.0 || ^16.0.0 , eslint-plugin-n@npm:^16.6.2":
+"eslint-plugin-n@npm:^15.0.0 || ^16.0.0 ":
   version: 16.6.2
   resolution: "eslint-plugin-n@npm:16.6.2"
   dependencies:
@@ -10720,7 +10720,7 @@ __metadata:
     eslint-config-prettier: "npm:^8.8.0"
     eslint-config-standard-with-typescript: "npm:^43.0.1"
     eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-n: "npm:^16.6.2"
+    eslint-plugin-n: "npm:^15.0.0 || ^16.0.0 "
     eslint-plugin-prettier: "npm:4.0.0"
     eslint-plugin-promise: "npm:^6.1.1"
     eslint-plugin-react: "npm:^7.33.2"
@@ -11280,7 +11280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hang-log-design-system@npm:^1.3.8, hang-log-design-system@workspace:packages/hang-log-design-system":
+"hang-log-design-system@npm:^1.3.8, hang-log-design-system@npm:^1.3.9, hang-log-design-system@workspace:packages/hang-log-design-system":
   version: 0.0.0-use.local
   resolution: "hang-log-design-system@workspace:packages/hang-log-design-system"
   dependencies:
@@ -11440,7 +11440,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-storybook: "npm:^0.6.13"
     fork-ts-checker-webpack-plugin: "npm:^9.0.0"
-    hang-log-design-system: "npm:^1.3.8"
+    hang-log-design-system: "npm:^1.3.9"
     html-webpack-plugin: "npm:^5.5.3"
     msw: "npm:^1.2.3"
     msw-storybook-addon: "npm:^1.8.0"

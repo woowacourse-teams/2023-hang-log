@@ -17,26 +17,11 @@ import { PATH } from '@constants/path';
 const TripsPage = () => {
   const navigate = useNavigate();
   const { tripsData } = useTripsQuery();
-  const { selected: sortSelected, handleSelectClick: handleSortSelectClick } =
-    useSelect(ORDER_BY_REGISTRATION);
-
-  const sortedTrips =
-    sortSelected === ORDER_BY_DATE
-      ? tripsData?.slice().sort(sortByStartDate)
-      : tripsData?.slice().sort(sortByNewest);
 
   return (
     <>
       <TripsHeader />
-      {sortedTrips.length > 0 ? (
-        <TripsItemList
-          trips={sortedTrips}
-          order={sortSelected}
-          changeSelect={handleSortSelectClick}
-        />
-      ) : (
-        <TripsItemList.Empty />
-      )}
+      {tripsData.length > 0 ? <TripsItemList /> : <TripsItemList.Empty />}
       <FloatingButton css={addButtonStyling} onClick={() => navigate(PATH.CREATE_TRIP)} />
     </>
   );
