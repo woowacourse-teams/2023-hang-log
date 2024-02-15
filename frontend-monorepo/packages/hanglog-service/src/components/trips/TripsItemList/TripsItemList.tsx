@@ -22,10 +22,6 @@ import { PATH } from '@constants/path';
 import { sortByNewest, sortByStartDate } from '@utils/sort';
 import { queryClient } from '@/hooks/api/queryClient';
 
-interface TripsItemListProps {
-  trips: TripsData[];
-}
-
 const TripsItemList = () => {
   const tripsData = queryClient.getQueryData(['trips']) as TripsData[];
 
@@ -36,7 +32,6 @@ const TripsItemList = () => {
         : tripsData?.slice().sort(sortByNewest);
 
     queryClient.setQueryData(['trips'], sortedTrips);
-    console.log(sortedTrips);
   };
 
   return (
