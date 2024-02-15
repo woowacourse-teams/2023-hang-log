@@ -43,6 +43,7 @@ import Textarea from '@components/Textarea/Textarea';
 import Toast from '@components/Toast/Toast';
 import Toggle from '@components/Toggle/Toggle';
 import ToggleGroup from '@components/ToggleGroup/ToggleGroup';
+import NewToggle from '@components/NewToggle/NewToggle';
 
 import { Theme } from '@styles/Theme';
 
@@ -56,6 +57,7 @@ export {
   Badge,
   Box,
   SwitchToggle,
+  NewToggle,
   Button,
   Calendar,
   Carousel,
