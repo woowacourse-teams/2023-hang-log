@@ -20,7 +20,7 @@ import type { TripsData } from '@type/trips';
 import { ORDER_BY_DATE, ORDER_BY_REGISTRATION } from '@constants/order';
 import { PATH } from '@constants/path';
 import { sortByNewest, sortByStartDate } from '@utils/sort';
-import { queryClient } from '@/hooks/api/queryClient';
+import { queryClient } from '@hooks/api/queryClient';
 
 const TripsItemList = () => {
   const tripsData = queryClient.getQueryData(['trips']) as TripsData[];

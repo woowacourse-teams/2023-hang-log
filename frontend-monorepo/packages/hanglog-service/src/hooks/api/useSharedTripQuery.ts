@@ -1,4 +1,4 @@
-import { TRIP_TYPE } from '@/constants/trip';
+import { TRIP_TYPE } from '@constants/trip';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
