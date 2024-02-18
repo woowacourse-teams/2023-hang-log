@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Box, Flex, Heading, Toggle, ToggleGroup, useSelect } from 'hang-log-design-system';
+import { Box, Flex, Heading, NewToggle as Toggle } from 'hang-log-design-system';
 
 import { containerStyling, headerStyling } from '@components/common/DayLogItem/DayLogItem.style';
 import TitleInput from '@components/common/DayLogItem/TitleInput/TitleInput';
@@ -8,6 +8,7 @@ import TripItemList from '@components/common/TripItemList/TripItemList';
 
 import type { DayLogData } from '@type/dayLog';
 import type { TripTypeData } from '@type/trip';
+import { TripItemData } from '@type/tripItem';
 
 import { DAY_LOG_ITEM_FILTERS, TRIP_TYPE } from '@constants/trip';
 
@@ -25,18 +26,20 @@ const DayLogItem = ({
   openAddModal,
   ...information
 }: DayLogItemProps) => {
-  const { selected: selectedFilter, handleSelectClick: handleFilterSelectClick } = useSelect(
-    DAY_LOG_ITEM_FILTERS.ALL
-  );
+  const [dayLogLists, setDayLogLists] = useState<TripItemData[]>([]);
 
-  const selectedTripItemList =
-    selectedFilter === DAY_LOG_ITEM_FILTERS.SPOT
-      ? information.items.filter((item) => item.itemType === true)
-      : information.items;
+  const handleChangeSelect = (key: number | string) => {
+    const resultList =
+      key === DAY_LOG_ITEM_FILTERS.SPOT
+        ? information.items.filter((item) => item.itemType === true)
+        : information.items;
+
+    setDayLogLists(resultList);
+  };
 
   useEffect(() => {
-    handleFilterSelectClick(DAY_LOG_ITEM_FILTERS.ALL);
-  }, [handleFilterSelectClick, information.items]);
+    setDayLogLists(information.items);
+  }, [information.id, information.items.length]);
 
   return (
     <Box tag="section" css={containerStyling}>
@@ -47,25 +50,25 @@ const DayLogItem = ({
           <Heading size="xSmall">{information.title}</Heading>
         )}
         {!isEditable && (
-          <ToggleGroup>
-            {[DAY_LOG_ITEM_FILTERS.ALL, DAY_LOG_ITEM_FILTERS.SPOT].map((filter) => (
-              <Toggle
-                key={filter}
-                text={filter}
-                toggleId={filter}
-                selectedId={selectedFilter}
-                changeSelect={handleFilterSelectClick}
-                aria-label={`${filter} 필터`}
-              />
-            ))}
-          </ToggleGroup>
+          <Toggle initialSelect={DAY_LOG_ITEM_FILTERS.ALL} additinalFunc={handleChangeSelect}>
+            <Flex>
+              {[DAY_LOG_ITEM_FILTERS.ALL, DAY_LOG_ITEM_FILTERS.SPOT].map((filter) => (
+                <Toggle.List
+                  key={filter}
+                  text={filter}
+                  toggleKey={filter}
+                  aria-label={`${filter} 필터`}
+                />
+              ))}
+            </Flex>
+          </Toggle>
         )}
       </Flex>
-      {selectedTripItemList.length > 0 ? (
+      {dayLogLists.length > 0 ? (
         <TripItemList
           tripId={tripId}
           dayLogId={information.id}
-          tripItems={selectedTripItemList}
+          tripItems={dayLogLists}
           isEditable={isEditable}
         />
       ) : (
