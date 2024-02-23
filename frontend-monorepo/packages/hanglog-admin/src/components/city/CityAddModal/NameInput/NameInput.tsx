@@ -1,11 +1,10 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-import { Input } from 'hang-log-design-system';
+import type { CityFormData } from '@type/city';
 
-import type { CityFormData } from '@/types/city';
-
-import { CITY_NAME_MAX_LENGTH } from '@/constants/ui';
+import { CITY_NAME_MAX_LENGTH } from '@constants/ui';
 
 interface NameInputProps {
   value: string;
@@ -15,7 +14,7 @@ interface NameInputProps {
 }
 
 const NameInput = ({ isError, value, updateInputValue, disableError }: NameInputProps) => {
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     disableError();
 
     updateInputValue('name', event.target.value);
@@ -32,7 +31,7 @@ const NameInput = ({ isError, value, updateInputValue, disableError }: NameInput
       supportingText={isError ? '도시의 이름을 입력해 주세요' : undefined}
       isError={isError}
       required
-      onChange={handleTitleChange}
+      onChange={handleNameChange}
     />
   );
 };

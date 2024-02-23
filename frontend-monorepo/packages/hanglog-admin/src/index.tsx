@@ -1,5 +1,4 @@
 import { Global } from '@emotion/react';
-import AppRouter from '@router/AppRouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HangLogProvider } from 'hang-log-design-system';
 import { StrictMode } from 'react';
@@ -7,6 +6,8 @@ import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
 import { GlobalStyle } from '@styles/index';
+
+import AppRouter from '@router/AppRouter';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {

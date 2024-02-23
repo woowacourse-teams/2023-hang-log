@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
-
 import { Button, Flex, Heading, useOverlay } from 'hang-log-design-system';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
-import PageNavigation from '@/components/common/PageNavigation/PageNavigation';
-import CityTable from '@/components/city/CityTable/CityTable';
-import CityAddModal from '@/components/city/CityAddModal/CityAddModal';
+import CityAddModal from '@components/city/CityAddModal/CityAddModal';
+import CityTable from '@components/city/CityTable/CityTable';
+import CityTableSkeleton from '@components/city/CityTable/CityTableSkeleton';
+import PageNavigation from '@components/common/PageNavigation/PageNavigation';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 
-import { useCityQuery } from '@/hooks/api/useCityQuery';
-import { usePageIndex } from '@/hooks/common/usePageIndex';
+import { useCityQuery } from '@hooks/api/useCityQuery';
+import { usePageIndex } from '@hooks/common/usePageIndex';
 
-import { TABLE_ROW_LENGTH } from '@/constants/ui';
+import { TABLE_ROW_LENGTH } from '@constants/ui';
 
-import { containerStyling, titleStyling, addButtonStyling, tableStyling } from './CityPage.style';
+import { addButtonStyling, containerStyling, tableStyling, titleStyling } from './CityPage.style';
 
 const CityPage = () => {
   const { isOpen: isAddModalOpen, open: openAddModal, close: closeAddModal } = useOverlay();
@@ -46,7 +46,9 @@ const CityPage = () => {
             추가하기
           </Button>
           <section css={tableStyling}>
-            <CityTable cities={currentPageData} />
+            <Suspense fallback={<CityTableSkeleton length={TABLE_ROW_LENGTH} />}>
+              <CityTable cities={currentPageData} />
+            </Suspense>
           </section>
           <PageNavigation
             pages={pageIndexDatas}

@@ -1,10 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-
 import type { AxiosError } from 'axios';
 
-import { getCity } from '@api/city/getCity';
-
 import type { CityData } from '@type/city';
+
+import { getCity } from '@api/city/getCity';
 
 export const useCityQuery = () => {
   const { data: cityData } = useSuspenseQuery<CityData[], AxiosError>({

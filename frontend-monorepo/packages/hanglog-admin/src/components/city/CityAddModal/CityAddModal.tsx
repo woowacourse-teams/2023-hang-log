@@ -1,23 +1,22 @@
 import { Button, Flex, Modal, Theme } from 'hang-log-design-system';
 
-import { UseAddCityForm } from '@/hooks/city/useAddCityForm';
+import type { CityFormData } from '@type/city';
 
-import type { CityFormData } from '@/types/city';
+import { useAddCityForm } from '@hooks/city/useAddCityForm';
 
 import CloseIcon from '@assets/svg/close-icon.svg?react';
 
-import NameInput from './NameInput/NameInput';
-import CountryInput from './CountryInput/CountryInput';
-import LatitudeInput from './LatitudeInput/LatitudeInput';
-import LongitudeInput from './LongitudeInput/LongitudeInput';
-
 import {
-  wrapperStyling,
-  formStyling,
   buttonStyling,
   closeButtonStyling,
   closeIconStyling,
+  formStyling,
+  wrapperStyling,
 } from './CityAddModal.style';
+import CountryInput from './CountryInput/CountryInput';
+import LatitudeInput from './LatitudeInput/LatitudeInput';
+import LongitudeInput from './LongitudeInput/LongitudeInput';
+import NameInput from './NameInput/NameInput';
 
 interface CityAddModalProps {
   cityId?: number;
@@ -27,19 +26,7 @@ interface CityAddModalProps {
 }
 
 const CityAddModal = ({ cityId, initialData, isOpen = true, onClose }: CityAddModalProps) => {
-  const {
-    cityInformation,
-    isNameError,
-    isCountryError,
-    isLatitudeError,
-    isLongitudeError,
-    disableNameError,
-    disableCountryError,
-    disableLatitudeError,
-    disableLongitudeError,
-    updateInputValue,
-    handleSubmit,
-  } = UseAddCityForm({
+  const { cityInformation, errors, disableError, updateInputValue, handleSubmit } = useAddCityForm({
     cityId,
     initialData,
     onSuccess: onClose,
@@ -66,27 +53,27 @@ const CityAddModal = ({ cityId, initialData, isOpen = true, onClose }: CityAddMo
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
             <NameInput
               value={cityInformation.name}
-              isError={isNameError}
+              isError={errors.isNameError}
               updateInputValue={updateInputValue}
-              disableError={disableNameError}
+              disableError={() => disableError('isNameError')}
             />
             <CountryInput
               value={cityInformation.country}
-              isError={isCountryError}
+              isError={errors.isCountryError}
               updateInputValue={updateInputValue}
-              disableError={disableCountryError}
+              disableError={() => disableError('isCountryError')}
             />
             <LatitudeInput
               value={cityInformation.latitude}
-              isError={isLatitudeError}
+              isError={errors.isLatitudeError}
               updateInputValue={updateInputValue}
-              disableError={disableLatitudeError}
+              disableError={() => disableError('isLatitudeError')}
             />
             <LongitudeInput
               value={cityInformation.longitude}
-              isError={isLongitudeError}
+              isError={errors.isLongitudeError}
               updateInputValue={updateInputValue}
-              disableError={disableLongitudeError}
+              disableError={() => disableError('isLongitudeError')}
             />
           </Flex>
           <Button css={buttonStyling} variant="primary">

@@ -1,26 +1,23 @@
 import type { FormEvent } from 'react';
 import { useCallback, useState } from 'react';
 
+import type { CityFormData } from '@type/city';
+
+import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@utils/validator';
+
 import { useAddCityMutation } from '../api/useAddCityMutation';
 import { useUpdateCityMutation } from '../api/useUpdateCityMutation';
 
-import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@/utils/validator';
-
-import type { CityFormData } from '@/types/city';
-
-interface UseAddCityFormParams {
+interface useAddCityFormParams {
   cityId?: number;
   initialData?: CityFormData;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export const UseAddCityForm = ({
-  cityId,
-  initialData,
-  onSuccess,
-  onError,
-}: UseAddCityFormParams) => {
+export const useAddCityForm = (
+  { cityId, initialData, onSuccess, onError }: useAddCityFormParams
+) => {
   const addCityMutation = useAddCityMutation();
   const updateCityMutation = useUpdateCityMutation();
 
@@ -33,10 +30,12 @@ export const UseAddCityForm = ({
     }
   );
 
-  const [isNameError, setIsNameError] = useState(false);
-  const [isCountryError, setIsCountryError] = useState(false);
-  const [isLatitudeError, setIsLatitudeError] = useState(false);
-  const [isLongitudeError, setIsLongitudeError] = useState(false);
+  const [errors, setErrors] = useState({
+    isNameError: false,
+    isCountryError: false,
+    isLatitudeError: false,
+    isLongitudeError: false,
+  });
 
   const updateInputValue = useCallback(
     <K extends keyof CityFormData>(key: K, value: CityFormData[K]) => {
@@ -52,39 +51,28 @@ export const UseAddCityForm = ({
     []
   );
 
-  const disableNameError = useCallback(() => {
-    setIsNameError(false);
+  const disableError = useCallback((errorKey: keyof typeof errors) => {
+    setErrors((prev) => ({ ...prev, [errorKey]: false }));
   }, []);
 
-  const disableCountryError = useCallback(() => {
-    setIsCountryError(false);
-  }, []);
+  const validateForm = () => {
+    const { name, country, latitude, longitude } = cityInformation;
+    const newErrors = {
+      isNameError: isEmptyString(name.trim()),
+      isCountryError: isEmptyString(country.trim()),
+      isLatitudeError: isInvalidLatitude(latitude),
+      isLongitudeError: isInvalidLongitude(longitude),
+    };
 
-  const disableLatitudeError = useCallback(() => {
-    setIsLatitudeError(false);
-  }, []);
+    setErrors(newErrors);
 
-  const disableLongitudeError = useCallback(() => {
-    setIsLongitudeError(false);
-  }, []);
+    return Object.values(newErrors).some((isError) => isError);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isEmptyString(cityInformation.name.trim())) {
-      setIsNameError(true);
-      return;
-    }
-    if (isEmptyString(cityInformation.country.trim())) {
-      setIsCountryError(true);
-      return;
-    }
-    if (isInvalidLatitude(cityInformation.latitude)) {
-      setIsLatitudeError(true);
-      return;
-    }
-    if (isInvalidLongitude(cityInformation.longitude)) {
-      setIsLongitudeError(true);
+    if (validateForm()) {
       return;
     }
 
@@ -110,14 +98,8 @@ export const UseAddCityForm = ({
 
   return {
     cityInformation,
-    isNameError,
-    isCountryError,
-    isLatitudeError,
-    isLongitudeError,
-    disableNameError,
-    disableCountryError,
-    disableLatitudeError,
-    disableLongitudeError,
+    errors,
+    disableError,
     updateInputValue,
     handleSubmit,
   };

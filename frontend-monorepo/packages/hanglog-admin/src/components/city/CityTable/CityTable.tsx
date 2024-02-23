@@ -1,7 +1,6 @@
-import CityEditMenu from '../CityEditMenu/CityEditMenu';
+import type { CityData } from '@type/city';
 
-import type { CityData } from '@/types/city';
-
+import CityEditButton from '../CityEditButton/CityEditButton';
 import { tableStyling } from './CityTable.style';
 
 interface CityTableProps {
@@ -30,7 +29,7 @@ const CityTable = ({ cities }: CityTableProps) => {
             <td>{city.latitude}</td>
             <td>{city.longitude}</td>
             <td>
-              <CityEditMenu {...city} />
+              <CityEditButton {...city} />
             </td>
           </tr>
         ))}

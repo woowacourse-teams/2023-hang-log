@@ -1,6 +1,5 @@
+import { Button } from 'hang-log-design-system';
 import { useNavigate } from 'react-router-dom';
-
-import { Button} from 'hang-log-design-system';
 
 import { PATH } from '@constants/path';
 

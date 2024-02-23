@@ -18,8 +18,8 @@ export const END_POINTS = {
   CHANGE_CITY: (cityId: number) => `/admin/cities/${cityId}`,
   CATEGORY: '/admin/categories',
   CHANGE_CATEGORY: (categoryId: number) => `/admin/categories/${categoryId}`,
-  CURRENCY: '/admin/currency',
-  CURRENCIES: (page: number, size: number) => `/admin/currencies/trips?page=${page}&size=${size}`,
+  CURRENCY: '/admin/currencies',
+  CURRENCY_PAGE: (page: number, size: number) => `/admin/currencies?page=${page}&size=${size}`,
   CHANGE_CURRENCY: (currencyId: number) => `/admin/currencies/${currencyId}`,
 } as const;
 

@@ -1,19 +1,9 @@
 /* eslint-disable jsx-a11y/tabindex-no-positive */
-import { Suspense } from 'react';
+import { Flex, Theme } from 'hang-log-design-system';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useRecoilValue } from 'recoil';
-
-import { Flex, Text, Theme } from 'hang-log-design-system';
-
-import {
-  getItemStyling,
-  getTapNavigateButtonStyling,
-  headerStyling,
-} from '@components/layout/Header/Header.style';
+import { getItemStyling, headerStyling } from '@components/layout/Header/Header.style';
 import LoggedOutOption from '@components/layout/Header/LoggedOutMenu/LoggedOutMenu';
-
-import { isLoggedInState } from '@store/auth';
 
 import { PATH } from '@constants/path';
 

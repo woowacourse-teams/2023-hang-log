@@ -1,14 +1,13 @@
 import { useOverlay } from 'hang-log-design-system';
 
-import CityAddModal from '../CityAddModal/CityAddModal';
-
-import type { CityData } from '@/types/city';
-
-import { buttonStyling, editIconStyling } from './CityEditMenu.style';
+import type { CityData } from '@type/city';
 
 import EditIcon from '@assets/svg/edit-icon.svg?react';
 
-const CityEditMenu = ({ ...information }: CityData) => {
+import CityAddModal from '../CityAddModal/CityAddModal';
+import { buttonStyling, editIconStyling } from './CityEditButton.style';
+
+const CityEditButton = ({ ...information }: CityData) => {
   const { isOpen: isEditModalOpen, open: openEditModal, close: closeEditModal } = useOverlay();
 
   return (
@@ -23,4 +22,4 @@ const CityEditMenu = ({ ...information }: CityData) => {
   );
 };
 
-export default CityEditMenu;
+export default CityEditButton;

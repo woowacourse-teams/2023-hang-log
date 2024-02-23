@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-
 import { Theme } from 'hang-log-design-system';
 
 export const GlobalStyle = css({
@@ -24,7 +23,7 @@ export const GlobalStyle = css({
     backgroundColor: Theme.color.gray200,
   },
 
-  'th:first-of-type, td:first-of-type': {
+  'th:first-of-type, th:last-of-type, td:first-of-type, td:last-of-type': {
     textAlign: 'center',
   },
 });

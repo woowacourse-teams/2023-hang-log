@@ -1,8 +1,5 @@
-import { useEffect } from 'react';
-
-import { useRecoilValue } from 'recoil';
-
 import { Box, Button, Flex, Heading, Text } from 'hang-log-design-system';
+import { useRecoilValue } from 'recoil';
 
 import {
   buttonStyling,
@@ -11,13 +8,13 @@ import {
   textStyling,
 } from '@components/common/Error/Error.style';
 
-import { mediaQueryMobileState } from '@store/mediaQuery';
+import { HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@constants/api';
+
+import ErrorImage from '@assets/svg/error-image.svg?react';
 
 import { hasKeyInObject } from '@utils/typeGuard';
 
-import { ERROR_CODE, HTTP_ERROR_MESSAGE, HTTP_STATUS_CODE } from '@constants/api';
-
-import ErrorImage from '@assets/svg/error-image.svg?react';
+import { mediaQueryMobileState } from '@store/mediaQuery';
 
 export interface ErrorProps {
   statusCode?: number;

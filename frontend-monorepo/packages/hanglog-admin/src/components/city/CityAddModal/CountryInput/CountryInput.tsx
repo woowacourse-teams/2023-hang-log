@@ -1,11 +1,10 @@
+import { Input } from 'hang-log-design-system';
 import type { ChangeEvent } from 'react';
 import { memo } from 'react';
 
-import { Input } from 'hang-log-design-system';
+import type { CityFormData } from '@type/city';
 
-import type { CityFormData } from '@/types/city';
-
-import { CITY_COUNTRY_MAX_LENGTH } from '@/constants/ui';
+import { CITY_COUNTRY_MAX_LENGTH } from '@constants/ui';
 
 interface CountryInputProps {
   value: string;

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useToast } from '../common/useToast';
-
+import { putCity } from '@api/city/putCity';
 import type { ErrorResponseData } from '@api/interceptors';
-import { putCity } from '@/api/city/putCity';
+
+import { useToast } from '../common/useToast';
 
 export const useUpdateCityMutation = () => {
   const queryClient = useQueryClient();

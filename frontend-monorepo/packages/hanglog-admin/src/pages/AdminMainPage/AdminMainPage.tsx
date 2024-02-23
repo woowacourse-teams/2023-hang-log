@@ -1,6 +1,6 @@
 import { Flex, Heading } from 'hang-log-design-system';
 
-import SidebarNavigation from '@/components/common/SidebarNavigation/SidebarNavigation';
+import SidebarNavigation from '@components/common/SidebarNavigation/SidebarNavigation';
 
 import { subTitleStyling } from './AdminMainPage.style';
 
