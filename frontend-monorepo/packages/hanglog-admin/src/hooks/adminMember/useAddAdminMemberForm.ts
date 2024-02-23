@@ -22,9 +22,11 @@ export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberF
     confirmPassword: '',
   });
 
-  const [isUsernameError, setIsUsernameError] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-  const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
+  const [errors, setErrors] = useState({
+    isUsernameError: false,
+    isPasswordError: false,
+    isConfirmPasswordError: false,
+  });
 
   const updateInputValue = useCallback(
     <K extends keyof AdminMemberFormData>(key: K, value: AdminMemberFormData[K]) => {
@@ -40,33 +42,27 @@ export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberF
     []
   );
 
-  const disableUsernameError = useCallback(() => {
-    setIsUsernameError(false);
+  const disableError = useCallback((errorKey: keyof typeof errors) => {
+    setErrors((prev) => ({ ...prev, [errorKey]: false }));
   }, []);
 
-  const disablePasswordError = useCallback(() => {
-    setIsPasswordError(false);
-  }, []);
+  const validateForm = () => {
+    const { username, password, confirmPassword } = adminMemberInformation;
+    const newErrors = {
+      isUsernameError: isEmptyString(username.trim()),
+      isPasswordError: !isValidPassword(password.trim()),
+      isConfirmPasswordError: password !== confirmPassword,
+    };
 
-  const disableConfirmPasswordError = useCallback(() => {
-    setIsConfirmPasswordError(false);
-  }, []);
+    setErrors(newErrors);
+
+    return Object.values(newErrors).some((isError) => isError);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isEmptyString(adminMemberInformation.username.trim())) {
-      setIsUsernameError(true);
-      return;
-    }
-
-    if (!isValidPassword(adminMemberInformation.password.trim())) {
-      setIsPasswordError(true);
-      return;
-    }
-
-    if (adminMemberInformation.password != adminMemberInformation.confirmPassword) {
-      setIsConfirmPasswordError(true);
+    if (validateForm()) {
       return;
     }
 
@@ -80,12 +76,8 @@ export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberF
 
   return {
     adminMemberInformation,
-    isUsernameError,
-    isPasswordError,
-    isConfirmPasswordError,
-    disableUsernameError,
-    disablePasswordError,
-    disableConfirmPasswordError,
+    errors,
+    disableError,
     updateInputValue,
     handleSubmit,
   };

@@ -27,21 +27,12 @@ interface CategoryAddModalProps {
 const CategoryAddModal = (
   { originalCategoryId, initialData, isOpen = true, onClose }: CategoryAddModalProps
 ) => {
-  const {
-    categoryInformation,
-    isIdError,
-    isEngNameError,
-    isKorNameError,
-    disableIdError,
-    disableEngNameError,
-    disableKorNameError,
-    updateInputValue,
-    handleSubmit,
-  } = useAddCategoryForm({
-    originalCategoryId,
-    initialData,
-    onSuccess: onClose,
-  });
+  const { categoryInformation, errors, disableError, updateInputValue, handleSubmit } =
+    useAddCategoryForm({
+      originalCategoryId,
+      initialData,
+      onSuccess: onClose,
+    });
 
   return (
     <>
@@ -64,21 +55,21 @@ const CategoryAddModal = (
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
             <IdInput
               value={categoryInformation.id}
-              isError={isIdError}
+              isError={errors.isIdError}
               updateInputValue={updateInputValue}
-              disableError={disableIdError}
+              disableError={() => disableError('isIdError')}
             />
             <EngNameInput
               value={categoryInformation.engName}
-              isError={isEngNameError}
+              isError={errors.isEngNameError}
               updateInputValue={updateInputValue}
-              disableError={disableEngNameError}
+              disableError={() => disableError('isEngNameError')}
             />
             <KorNameInput
               value={categoryInformation.korName}
-              isError={isKorNameError}
+              isError={errors.isKorNameError}
               updateInputValue={updateInputValue}
-              disableError={disableKorNameError}
+              disableError={() => disableError('isKorNameError')}
             />
           </Flex>
           <Button css={buttonStyling} variant="primary">

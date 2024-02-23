@@ -24,17 +24,8 @@ interface PasswordUpdateModalProps {
 const PasswordUpdateModal = (
   { adminMemberId, isOpen = true, onClose }: PasswordUpdateModalProps
 ) => {
-  const {
-    adminMemberInformation,
-    isCurrentPasswordError,
-    isPasswordError,
-    isConfirmPasswordError,
-    disableCurrentPasswordError,
-    disablePasswordError,
-    disableConfirmPasswordError,
-    updateInputValue,
-    handleSubmit,
-  } = useUpdatePasswordForm({ adminMemberId: adminMemberId, onSuccess: onClose });
+  const { adminMemberInformation, errors, disableError, updateInputValue, handleSubmit } =
+    useUpdatePasswordForm({ adminMemberId: adminMemberId, onSuccess: onClose });
 
   return (
     <>
@@ -57,21 +48,21 @@ const PasswordUpdateModal = (
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
             <CurrentPasswordInput
               value={adminMemberInformation.currentPassword}
-              isError={isCurrentPasswordError}
+              isError={errors.isCurrentPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disableCurrentPasswordError}
+              disableError={() => disableError('isCurrentPasswordError')}
             />
             <PasswordInput
               value={adminMemberInformation.newPassword}
-              isError={isPasswordError}
+              isError={errors.isPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disablePasswordError}
+              disableError={() => disableError('isPasswordError')}
             />
             <ConfirmPasswordInput
               value={adminMemberInformation.confirmPassword}
-              isError={isConfirmPasswordError}
+              isError={errors.isConfirmPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disableConfirmPasswordError}
+              disableError={() => disableError('isConfirmPasswordError')}
             />
           </Flex>
           <Button css={buttonStyling} variant="primary">

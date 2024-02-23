@@ -28,9 +28,11 @@ export const useUpdatePasswordForm = (
     confirmPassword: '',
   });
 
-  const [isCurrentPasswordError, setIsCurrentPasswordError] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-  const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
+  const [errors, setErrors] = useState({
+    isCurrentPasswordError: false,
+    isPasswordError: false,
+    isConfirmPasswordError: false,
+  });
 
   const updateInputValue = useCallback(
     <K extends keyof PassowrdFormData>(key: K, value: PassowrdFormData[K]) => {
@@ -46,33 +48,27 @@ export const useUpdatePasswordForm = (
     []
   );
 
-  const disableCurrentPasswordError = useCallback(() => {
-    setIsCurrentPasswordError(false);
+  const disableError = useCallback((errorKey: keyof typeof errors) => {
+    setErrors((prev) => ({ ...prev, [errorKey]: false }));
   }, []);
 
-  const disablePasswordError = useCallback(() => {
-    setIsPasswordError(false);
-  }, []);
+  const validateForm = () => {
+    const { currentPassword, newPassword, confirmPassword } = adminMemberInformation;
+    const newErrors = {
+      isCurrentPasswordError: isEmptyString(currentPassword.trim()),
+      isPasswordError: !isValidPassword(newPassword.trim()),
+      isConfirmPasswordError: newPassword !== confirmPassword,
+    };
 
-  const disableConfirmPasswordError = useCallback(() => {
-    setIsConfirmPasswordError(false);
-  }, []);
+    setErrors(newErrors);
+
+    return Object.values(newErrors).some((isError) => isError);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isEmptyString(adminMemberInformation.currentPassword.trim())) {
-      setIsCurrentPasswordError(true);
-      return;
-    }
-
-    if (!isValidPassword(adminMemberInformation.newPassword.trim())) {
-      setIsPasswordError(true);
-      return;
-    }
-
-    if (adminMemberInformation.newPassword != adminMemberInformation.confirmPassword) {
-      setIsConfirmPasswordError(true);
+    if (validateForm()) {
       return;
     }
 
@@ -87,12 +83,8 @@ export const useUpdatePasswordForm = (
 
   return {
     adminMemberInformation,
-    isCurrentPasswordError,
-    isPasswordError,
-    isConfirmPasswordError,
-    disableCurrentPasswordError,
-    disablePasswordError,
-    disableConfirmPasswordError,
+    errors,
+    disableError,
     updateInputValue,
     handleSubmit,
   };

@@ -22,17 +22,8 @@ interface AdminMemberAddModalProps {
 }
 
 const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProps) => {
-  const {
-    adminMemberInformation,
-    isUsernameError,
-    isPasswordError,
-    isConfirmPasswordError,
-    disableUsernameError,
-    disablePasswordError,
-    disableConfirmPasswordError,
-    updateInputValue,
-    handleSubmit,
-  } = useAddAdminMemberForm({ onSuccess: onClose });
+  const { adminMemberInformation, errors, disableError, updateInputValue, handleSubmit } =
+    useAddAdminMemberForm({ onSuccess: onClose });
 
   return (
     <>
@@ -55,9 +46,9 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
             <UsernameInput
               value={adminMemberInformation.username}
-              isError={isUsernameError}
+              isError={errors.isUsernameError}
               updateInputValue={updateInputValue}
-              disableError={disableUsernameError}
+              disableError={() => disableError('isUsernameError')}
             />
             <AdminTypeSelect
               value={adminMemberInformation.adminType}
@@ -65,15 +56,15 @@ const AdminMemberAddModal = ({ isOpen = true, onClose }: AdminMemberAddModalProp
             />
             <PasswordInput
               value={adminMemberInformation.password}
-              isError={isPasswordError}
+              isError={errors.isPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disablePasswordError}
+              disableError={() => disableError('isPasswordError')}
             />
             <ConfirmPasswordInput
               value={adminMemberInformation.confirmPassword}
-              isError={isConfirmPasswordError}
+              isError={errors.isConfirmPasswordError}
               updateInputValue={updateInputValue}
-              disableError={disableConfirmPasswordError}
+              disableError={() => disableError('isConfirmPasswordError')}
             />
           </Flex>
           <Button css={buttonStyling} variant="primary">

@@ -29,9 +29,11 @@ export const useAddCategoryForm = (
     }
   );
 
-  const [isIdError, setIsIdError] = useState(false);
-  const [isEngNameError, setIsEngNameError] = useState(false);
-  const [isKorNameError, setIsKorNameError] = useState(false);
+  const [errors, setErrors] = useState({
+    isIdError: false,
+    isEngNameError: false,
+    isKorNameError: false,
+  });
 
   const updateInputValue = useCallback(
     <K extends keyof CategoryData>(key: K, value: CategoryData[K]) => {
@@ -47,39 +49,26 @@ export const useAddCategoryForm = (
     []
   );
 
-  const disableIdError = useCallback(() => {
-    setIsIdError(false);
+  const disableError = useCallback((errorKey: keyof typeof errors) => {
+    setErrors((prev) => ({ ...prev, [errorKey]: false }));
   }, []);
 
-  const disableEngNameError = useCallback(() => {
-    setIsEngNameError(false);
-  }, []);
+  const validateForm = () => {
+    const { id, engName, korName } = categoryInformation;
+    const newErrors = {
+      isIdError: isInvalidCategoryId(id),
+      isEngNameError: isEmptyString(engName.trim()) || !isEnglish(engName),
+      isKorNameError: isEmptyString(korName.trim()) || !isKorean(korName),
+    };
 
-  const disableKorNameError = useCallback(() => {
-    setIsKorNameError(false);
-  }, []);
+    setErrors(newErrors);
 
+    return Object.values(newErrors).some((isError) => isError);
+  };
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isInvalidCategoryId(categoryInformation.id)) {
-      setIsIdError(true);
-      return;
-    }
-
-    if (
-      isEmptyString(categoryInformation.engName.trim()) ||
-      !isEnglish(categoryInformation.engName)
-    ) {
-      setIsEngNameError(true);
-      return;
-    }
-
-    if (
-      isEmptyString(categoryInformation.korName.trim()) ||
-      !isKorean(categoryInformation.korName)
-    ) {
-      setIsKorNameError(true);
+    if (validateForm()) {
       return;
     }
 
@@ -103,12 +92,8 @@ export const useAddCategoryForm = (
 
   return {
     categoryInformation,
-    isIdError,
-    isEngNameError,
-    isKorNameError,
-    disableIdError,
-    disableEngNameError,
-    disableKorNameError,
+    errors,
+    disableError,
     updateInputValue,
     handleSubmit,
   };
