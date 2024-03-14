@@ -1,7 +1,6 @@
-import type { FormEvent } from 'react';
-import { useCallback, useState } from 'react';
-
 import type { AdminMemberFormData } from '@type/adminMember';
+
+import { useForm } from '@hooks/useForm';
 
 import { isEmptyString, isValidPassword } from '@utils/validator';
 
@@ -13,70 +12,47 @@ interface useAddAdminMemberFormParams {
 }
 
 export const useAddAdminMemberForm = ({ onSuccess, onError }: useAddAdminMemberFormParams) => {
-  const addAdminMemberMutaion = useAddAdminMemberMutation();
+  const addAdminMemberMutation = useAddAdminMemberMutation();
 
-  const [adminMemberInformation, setAdminMemberInformation] = useState<AdminMemberFormData>({
+  const initialValues: AdminMemberFormData = {
     username: '',
     adminType: 'ADMIN',
     password: '',
     confirmPassword: '',
-  });
-
-  const [errors, setErrors] = useState({
-    isUsernameError: false,
-    isPasswordError: false,
-    isConfirmPasswordError: false,
-  });
-
-  const updateInputValue = useCallback(
-    <K extends keyof AdminMemberFormData>(key: K, value: AdminMemberFormData[K]) => {
-      setAdminMemberInformation((prevAdminMemberInformation) => {
-        const data = {
-          ...prevAdminMemberInformation,
-          [key]: value,
-        };
-
-        return data;
-      });
-    },
-    []
-  );
-
-  const disableError = useCallback((errorKey: keyof typeof errors) => {
-    setErrors((prev) => ({ ...prev, [errorKey]: false }));
-  }, []);
-
-  const validateForm = () => {
-    const { username, password, confirmPassword } = adminMemberInformation;
-    const newErrors = {
-      isUsernameError: isEmptyString(username.trim()),
-      isPasswordError: !isValidPassword(password.trim()),
-      isConfirmPasswordError: password !== confirmPassword,
-    };
-
-    setErrors(newErrors);
-
-    return Object.values(newErrors).some((isError) => isError);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const validate = (values: AdminMemberFormData) => {
+    return {
+      username: isEmptyString(values.username.trim()),
+      password: !isValidPassword(values.password.trim()),
+      confirmPassword: values.password !== values.confirmPassword,
+    };
+  };
 
-    if (validateForm()) {
-      return;
-    }
+  const submitAction = (
+    values: AdminMemberFormData,
+    onSuccess?: () => void,
+    onError?: () => void
+  ) => {
+    addAdminMemberMutation.mutate(values, { onSuccess, onError });
+  };
 
-    addAdminMemberMutaion.mutate(
-      {
-        ...adminMemberInformation,
-      },
-      { onSuccess, onError }
-    );
+  const { formValues, errors, updateInputValue, disableError, handleSubmit } = useForm(
+    initialValues,
+    validate,
+    submitAction,
+    { onSuccess, onError }
+  );
+
+  const adjustedErrors = {
+    isUsernameError: errors.username,
+    isPasswordError: errors.password,
+    isConfirmPasswordError: errors.confirmPassword,
   };
 
   return {
-    adminMemberInformation,
-    errors,
+    adminMemberInformation: formValues,
+    errors: adjustedErrors,
     disableError,
     updateInputValue,
     handleSubmit,

@@ -24,7 +24,7 @@ interface PasswordUpdateModalProps {
 const PasswordUpdateModal = (
   { adminMemberId, isOpen = true, onClose }: PasswordUpdateModalProps
 ) => {
-  const { adminMemberInformation, errors, disableError, updateInputValue, handleSubmit } =
+  const { passwordFormData, errors, disableError, updateInputValue, handleSubmit } =
     useUpdatePasswordForm({ adminMemberId: adminMemberId, onSuccess: onClose });
 
   return (
@@ -47,19 +47,19 @@ const PasswordUpdateModal = (
         <form css={formStyling} onSubmit={handleSubmit} noValidate>
           <Flex styles={{ direction: 'column', gap: Theme.spacer.spacing3, align: 'stretch' }}>
             <CurrentPasswordInput
-              value={adminMemberInformation.currentPassword}
+              value={passwordFormData.currentPassword}
               isError={errors.isCurrentPasswordError}
               updateInputValue={updateInputValue}
               disableError={() => disableError('isCurrentPasswordError')}
             />
             <PasswordInput
-              value={adminMemberInformation.newPassword}
-              isError={errors.isPasswordError}
+              value={passwordFormData.newPassword}
+              isError={errors.isNewPasswordError}
               updateInputValue={updateInputValue}
               disableError={() => disableError('isPasswordError')}
             />
             <ConfirmPasswordInput
-              value={adminMemberInformation.confirmPassword}
+              value={passwordFormData.confirmPassword}
               isError={errors.isConfirmPasswordError}
               updateInputValue={updateInputValue}
               disableError={() => disableError('isConfirmPasswordError')}

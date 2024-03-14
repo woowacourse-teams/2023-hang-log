@@ -28,19 +28,12 @@ interface CurrencyAddModalProps {
 const CurrencyAddModal = (
   { currencyId, initialData, isOpen = true, onClose }: CurrencyAddModalProps
 ) => {
-  const {
-    currencyInformation,
-    isDateError,
-    currencyErrors,
-    disableDateError,
-    disableCurrencyError,
-    updateInputValue,
-    handleSubmit,
-  } = useAddCurrencyForm({
-    currencyId,
-    initialData,
-    onSuccess: onClose,
-  });
+  const { currencyInformation, errors, disableError, updateInputValue, handleSubmit } =
+    useAddCurrencyForm({
+      currencyId,
+      initialData,
+      onSuccess: onClose,
+    });
 
   const midIdx = currencyKeys.length / 2;
   const leftCurrency = currencyKeys.slice(0, midIdx);
@@ -75,18 +68,19 @@ const CurrencyAddModal = (
             >
               <DateInput
                 value={currencyInformation.date}
-                isError={isDateError}
+                isError={errors.date}
                 updateInputValue={updateInputValue}
-                disableError={disableDateError}
+                disableError={() => disableError('date')}
               />
               {leftCurrency.map((key) => {
                 return (
                   <CurrencyInput
+                    key={key}
                     currencyType={key}
                     value={Number(currencyInformation[key])}
-                    isError={currencyErrors[key]}
+                    isError={errors[key]}
                     updateInputValue={updateInputValue}
-                    disableError={() => disableCurrencyError(key)}
+                    disableError={() => disableError(key)}
                   />
                 );
               })}
@@ -102,11 +96,12 @@ const CurrencyAddModal = (
               {rightCurrency.map((key) => {
                 return (
                   <CurrencyInput
+                    key={key}
                     currencyType={key}
                     value={Number(currencyInformation[key])}
-                    isError={currencyErrors[key]}
+                    isError={errors[key]}
                     updateInputValue={updateInputValue}
-                    disableError={() => disableCurrencyError(key)}
+                    disableError={() => disableError(key)}
                   />
                 );
               })}

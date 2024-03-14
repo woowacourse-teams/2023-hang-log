@@ -1,7 +1,6 @@
-import type { FormEvent } from 'react';
-import { useCallback, useState } from 'react';
-
 import { PasswordPatchData } from '@type/adminMember';
+
+import { useForm } from '@hooks/useForm';
 
 import { isEmptyString, isValidPassword } from '@utils/validator';
 
@@ -13,81 +12,58 @@ interface useUpdatePasswordFormParams {
   onError?: () => void;
 }
 
-export interface PassowrdFormData extends PasswordPatchData {
+export interface PasswordFormData extends PasswordPatchData {
   confirmPassword: string;
 }
 
 export const useUpdatePasswordForm = (
   { adminMemberId, onSuccess, onError }: useUpdatePasswordFormParams
 ) => {
-  const updatePasswordMutaion = useUpdateAdminMemberPasswordMutation();
+  const updatePasswordMutation = useUpdateAdminMemberPasswordMutation();
 
-  const [adminMemberInformation, setAdminMemberInformation] = useState<PassowrdFormData>({
+  const initialValues: PasswordFormData = {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  });
-
-  const [errors, setErrors] = useState({
-    isCurrentPasswordError: false,
-    isPasswordError: false,
-    isConfirmPasswordError: false,
-  });
-
-  const updateInputValue = useCallback(
-    <K extends keyof PassowrdFormData>(key: K, value: PassowrdFormData[K]) => {
-      setAdminMemberInformation((prevAdminMemberInformation) => {
-        const data = {
-          ...prevAdminMemberInformation,
-          [key]: value,
-        };
-
-        return data;
-      });
-    },
-    []
-  );
-
-  const disableError = useCallback((errorKey: keyof typeof errors) => {
-    setErrors((prev) => ({ ...prev, [errorKey]: false }));
-  }, []);
-
-  const validateForm = () => {
-    const { currentPassword, newPassword, confirmPassword } = adminMemberInformation;
-    const newErrors = {
-      isCurrentPasswordError: isEmptyString(currentPassword.trim()),
-      isPasswordError: !isValidPassword(newPassword.trim()),
-      isConfirmPasswordError: newPassword !== confirmPassword,
-    };
-
-    setErrors(newErrors);
-
-    return Object.values(newErrors).some((isError) => isError);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const validate = (values: PasswordFormData) => {
+    return {
+      currentPassword: isEmptyString(values.currentPassword.trim()),
+      newPassword: !isValidPassword(values.newPassword.trim()),
+      confirmPassword: values.newPassword !== values.confirmPassword,
+    };
+  };
 
-    if (validateForm()) {
-      return;
-    }
-
-    updatePasswordMutaion.mutate(
+  const submitAction = (values: PasswordFormData, onSuccess?: () => void, onError?: () => void) => {
+    updatePasswordMutation.mutate(
       {
         adminMemberId,
-        ...adminMemberInformation,
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
       },
       { onSuccess, onError }
     );
   };
 
+  const { formValues, errors, updateInputValue, disableError, handleSubmit } = useForm(
+    initialValues,
+    validate,
+    submitAction,
+    { onSuccess, onError }
+  );
+
+  const adjustedErrors = {
+    isCurrentPasswordError: errors.currentPassword,
+    isNewPasswordError: errors.newPassword,
+    isConfirmPasswordError: errors.confirmPassword,
+  };
+
   return {
-    adminMemberInformation,
-    errors,
+    passwordFormData: formValues,
+    errors: adjustedErrors,
     disableError,
     updateInputValue,
     handleSubmit,
   };
 };
-
-export default useUpdatePasswordForm;

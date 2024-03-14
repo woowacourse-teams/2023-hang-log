@@ -1,7 +1,6 @@
-import type { FormEvent } from 'react';
-import { useCallback, useState } from 'react';
-
 import type { CurrencyFormData } from '@type/currency';
+
+import { useForm } from '@hooks/useForm';
 
 import { currencyKeys } from '@constants/currency';
 
@@ -10,7 +9,7 @@ import { isInvalidCurrency, isValidCurrencyDate } from '@utils/validator';
 import { useAddCurrencyMutation } from './useAddCurrencyMutation';
 import { useUpdateCurrencyMutation } from './useUpdateCurrencyMutation';
 
-interface useAddCurrencyFormPrams {
+interface useAddCurrencyFormParams {
   currencyId?: number;
   initialData?: CurrencyFormData;
   onSuccess?: () => void;
@@ -18,110 +17,51 @@ interface useAddCurrencyFormPrams {
 }
 
 export const useAddCurrencyForm = (
-  { currencyId, initialData, onSuccess, onError }: useAddCurrencyFormPrams
+  { currencyId, initialData, onSuccess, onError }: useAddCurrencyFormParams
 ) => {
   const addCurrencyMutation = useAddCurrencyMutation();
   const updateCurrencyMutation = useUpdateCurrencyMutation();
 
-  const [currencyInformation, setCurrencyInformation] = useState<CurrencyFormData>(
-    initialData ?? {
-      date: '',
-      usd: 0,
-      eur: 0,
-      gbp: 0,
-      jpy: 0,
-      cny: 0,
-      chf: 0,
-      sgd: 0,
-      thb: 0,
-      hkd: 0,
-    }
-  );
-
-  const [isDateError, setIsDateError] = useState(false);
-
-  const updateInputValue = useCallback(
-    <K extends keyof CurrencyFormData>(key: string, value: CurrencyFormData[K]) => {
-      setCurrencyInformation((prevCurrencyInformation) => {
-        const data = {
-          ...prevCurrencyInformation,
-          [key]: value,
-        };
-
-        return data;
-      });
-    },
-    []
-  );
-
-  const disableDateError = useCallback(() => {
-    setIsDateError(false);
-  }, []);
-
-  const [currencyErrors, setCurrencyErrors] = useState<Record<string, boolean>>(
-    currencyKeys.reduce((acc, key) => {
-      acc[key] = false;
-      return acc;
-    }, {} as Record<string, boolean>)
-  );
-  const disableCurrencyError = useCallback((currencyKey: string) => {
-    setCurrencyErrors((prevErrors) => ({
-      ...prevErrors,
-      [currencyKey]: false,
-    }));
-  }, []);
-
-  const checkAndSetCurrencyValidity = useCallback(() => {
-    const newCurrencyErrors = { ...currencyErrors };
-
-    currencyKeys.forEach((key) => {
-      newCurrencyErrors[key] = isInvalidCurrency(Number(currencyInformation[key]));
-    });
-
-    setCurrencyErrors(newCurrencyErrors);
-
-    return Object.values(newCurrencyErrors).some((isError) => isError);
-  }, [currencyInformation, currencyErrors]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!isValidCurrencyDate(currencyInformation.date)) {
-      setIsDateError(true);
-      return;
-    }
-
-    const isAnyCurrencyInvalid = checkAndSetCurrencyValidity();
-    if (isAnyCurrencyInvalid) {
-      return;
-    }
-
-    if (!currencyId) {
-      addCurrencyMutation.mutate(
-        {
-          ...currencyInformation,
-        },
-        { onSuccess, onError }
-      );
-
-      return;
-    }
-
-    updateCurrencyMutation.mutate(
-      {
-        currencyId,
-        ...currencyInformation,
-      },
-      { onSuccess, onError }
-    );
+  const initialValues: CurrencyFormData = initialData ?? {
+    date: '',
+    usd: 0,
+    eur: 0,
+    gbp: 0,
+    jpy: 0,
+    cny: 0,
+    chf: 0,
+    sgd: 0,
+    thb: 0,
+    hkd: 0,
   };
 
+  const validate = (values: CurrencyFormData) => {
+    let errors: Record<string, boolean> = { date: !isValidCurrencyDate(values.date) };
+    currencyKeys.forEach((key) => {
+      errors[key] = isInvalidCurrency(Number(values[key]));
+    });
+    return errors;
+  };
+
+  const submitAction = (values: CurrencyFormData, onSuccess?: () => void, onError?: () => void) => {
+    if (currencyId !== undefined) {
+      updateCurrencyMutation.mutate({ ...values, currencyId }, { onSuccess, onError });
+    } else {
+      addCurrencyMutation.mutate(values, { onSuccess, onError });
+    }
+  };
+
+  const { formValues, errors, updateInputValue, disableError, handleSubmit } = useForm(
+    initialValues,
+    validate,
+    submitAction,
+    { onSuccess, onError }
+  );
+
   return {
-    currencyInformation,
-    isDateError,
-    currencyErrors,
-    disableDateError,
-    disableCurrencyError,
+    currencyInformation: formValues,
+    errors,
+    disableError: (currencyKey: string) => disableError(currencyKey),
     updateInputValue,
     handleSubmit,
   };

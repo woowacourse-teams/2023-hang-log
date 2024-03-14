@@ -1,7 +1,6 @@
-import type { FormEvent } from 'react';
-import { useCallback, useState } from 'react';
-
 import type { CityFormData } from '@type/city';
+
+import { useForm } from '@hooks/useForm';
 
 import { isEmptyString, isInvalidLatitude, isInvalidLongitude } from '@utils/validator';
 
@@ -21,84 +20,47 @@ export const useAddCityForm = (
   const addCityMutation = useAddCityMutation();
   const updateCityMutation = useUpdateCityMutation();
 
-  const [cityInformation, setCityInformation] = useState<CityFormData>(
-    initialData ?? {
-      name: '',
-      country: '',
-      latitude: 0,
-      longitude: 0,
-    }
-  );
-
-  const [errors, setErrors] = useState({
-    isNameError: false,
-    isCountryError: false,
-    isLatitudeError: false,
-    isLongitudeError: false,
-  });
-
-  const updateInputValue = useCallback(
-    <K extends keyof CityFormData>(key: K, value: CityFormData[K]) => {
-      setCityInformation((prevCityInformation) => {
-        const data = {
-          ...prevCityInformation,
-          [key]: value,
-        };
-
-        return data;
-      });
-    },
-    []
-  );
-
-  const disableError = useCallback((errorKey: keyof typeof errors) => {
-    setErrors((prev) => ({ ...prev, [errorKey]: false }));
-  }, []);
-
-  const validateForm = () => {
-    const { name, country, latitude, longitude } = cityInformation;
-    const newErrors = {
-      isNameError: isEmptyString(name.trim()),
-      isCountryError: isEmptyString(country.trim()),
-      isLatitudeError: isInvalidLatitude(latitude),
-      isLongitudeError: isInvalidLongitude(longitude),
-    };
-
-    setErrors(newErrors);
-
-    return Object.values(newErrors).some((isError) => isError);
+  const initialValues: CityFormData = initialData ?? {
+    name: '',
+    country: '',
+    latitude: 0,
+    longitude: 0,
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const validate = (values: CityFormData) => {
+    return {
+      name: isEmptyString(values.name.trim()),
+      country: isEmptyString(values.country.trim()),
+      latitude: isInvalidLatitude(values.latitude),
+      longitude: isInvalidLongitude(values.longitude),
+    };
+  };
 
-    if (validateForm()) {
-      return;
+  const submitAction = (values: CityFormData, onSuccess?: () => void, onError?: () => void) => {
+    if (cityId !== undefined) {
+      updateCityMutation.mutate({ ...values, cityId }, { onSuccess, onError });
+    } else {
+      addCityMutation.mutate(values, { onSuccess, onError });
     }
+  };
 
-    if (!cityId) {
-      addCityMutation.mutate(
-        {
-          ...cityInformation,
-        },
-        { onSuccess, onError }
-      );
+  const { formValues, errors, updateInputValue, disableError, handleSubmit } = useForm(
+    initialValues,
+    validate,
+    submitAction,
+    { onSuccess, onError }
+  );
 
-      return;
-    }
-
-    updateCityMutation.mutate(
-      {
-        cityId,
-        ...cityInformation,
-      },
-      { onSuccess, onError }
-    );
+  const adjustedErrors = {
+    isNameError: errors.name,
+    isCountryError: errors.country,
+    isLatitudeError: errors.latitude,
+    isLongitudeError: errors.longitude,
   };
 
   return {
-    cityInformation,
-    errors,
+    cityInformation: formValues,
+    errors: adjustedErrors,
     disableError,
     updateInputValue,
     handleSubmit,

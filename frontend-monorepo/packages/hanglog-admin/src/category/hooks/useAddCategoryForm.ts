@@ -1,7 +1,6 @@
-import type { FormEvent } from 'react';
-import { useCallback, useState } from 'react';
-
 import type { CategoryData } from '@type/category';
+
+import { useForm } from '@hooks/useForm';
 
 import { isEmptyString, isEnglish, isInvalidCategoryId, isKorean } from '@utils/validator';
 
@@ -21,78 +20,44 @@ export const useAddCategoryForm = (
   const addCategoryMutation = useAddCategoryMutation();
   const updateCategoryMutation = useUpdateCategoryMutation();
 
-  const [categoryInformation, setCategoryInformation] = useState<CategoryData>(
-    initialData ?? {
-      id: 0,
-      engName: '',
-      korName: '',
-    }
-  );
-
-  const [errors, setErrors] = useState({
-    isIdError: false,
-    isEngNameError: false,
-    isKorNameError: false,
-  });
-
-  const updateInputValue = useCallback(
-    <K extends keyof CategoryData>(key: K, value: CategoryData[K]) => {
-      setCategoryInformation((prevCategoryInformation) => {
-        const data = {
-          ...prevCategoryInformation,
-          [key]: value,
-        };
-
-        return data;
-      });
-    },
-    []
-  );
-
-  const disableError = useCallback((errorKey: keyof typeof errors) => {
-    setErrors((prev) => ({ ...prev, [errorKey]: false }));
-  }, []);
-
-  const validateForm = () => {
-    const { id, engName, korName } = categoryInformation;
-    const newErrors = {
-      isIdError: isInvalidCategoryId(id),
-      isEngNameError: isEmptyString(engName.trim()) || !isEnglish(engName),
-      isKorNameError: isEmptyString(korName.trim()) || !isKorean(korName),
-    };
-
-    setErrors(newErrors);
-
-    return Object.values(newErrors).some((isError) => isError);
+  const initialValues: CategoryData = initialData ?? {
+    id: 0,
+    engName: '',
+    korName: '',
   };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
 
-    if (validateForm()) {
-      return;
+  const validate = (values: CategoryData) => {
+    return {
+      id: isInvalidCategoryId(values.id),
+      engName: isEmptyString(values.engName.trim()) || !isEnglish(values.engName),
+      korName: isEmptyString(values.korName.trim()) || !isKorean(values.korName),
+    };
+  };
+
+  const submitAction = (values: CategoryData, onSuccess?: () => void, onError?: () => void) => {
+    if (originalCategoryId !== undefined) {
+      updateCategoryMutation.mutate({ ...values, id: originalCategoryId }, { onSuccess, onError });
+    } else {
+      addCategoryMutation.mutate(values, { onSuccess, onError });
     }
+  };
 
-    if (!originalCategoryId) {
-      addCategoryMutation.mutate(
-        {
-          ...categoryInformation,
-        },
-        { onSuccess, onError }
-      );
-      return;
-    }
+  const { formValues, errors, updateInputValue, disableError, handleSubmit } = useForm(
+    initialValues,
+    validate,
+    submitAction,
+    { onSuccess, onError }
+  );
 
-    updateCategoryMutation.mutate(
-      {
-        ...categoryInformation,
-      },
-      { onSuccess, onError }
-    );
+  const adjustedErrors = {
+    isIdError: errors.id,
+    isEngNameError: errors.engName,
+    isKorNameError: errors.korName,
   };
 
   return {
-    categoryInformation,
-    errors,
+    categoryInformation: formValues,
+    errors: adjustedErrors,
     disableError,
     updateInputValue,
     handleSubmit,
