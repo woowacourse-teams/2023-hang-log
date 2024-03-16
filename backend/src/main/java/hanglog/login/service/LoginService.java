@@ -98,9 +98,13 @@ public class LoginService {
 
     public void deleteAccount(final Long memberId) {
         final List<Long> tripIds = customTripRepository.findTripIdsByMemberId(memberId);
-        publishedTripRepository.deleteByTripIds(tripIds);
-        sharedTripRepository.deleteByTripIds(tripIds);
+
+        if (!tripIds.isEmpty()) {
+            publishedTripRepository.deleteByTripIds(tripIds);
+            sharedTripRepository.deleteByTripIds(tripIds);
+            publisher.publishEvent(new MemberDeleteEvent(tripIds, memberId));
+        }
+
         memberRepository.deleteByMemberId(memberId);
-        publisher.publishEvent(new MemberDeleteEvent(tripIds, memberId));
     }
 }
