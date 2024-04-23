@@ -34,14 +34,14 @@ public class ImageUploader {
     private String folder;
 
     public List<String> uploadImages(final List<ImageFile> imageFiles) {
-        List<CompletableFuture<String>> imageUploadsFuture = imageFiles.stream()
+        final List<CompletableFuture<String>> imageUploadsFuture = imageFiles.stream()
                 .map(imageFile -> CompletableFuture.supplyAsync(() -> uploadImage(imageFile)))
                 .toList();
         return getUploadedImageNamesFromFutures(imageUploadsFuture);
     }
 
     private List<String> getUploadedImageNamesFromFutures(List<CompletableFuture<String>> futures) {
-        List<String> fileNames = new ArrayList<>();
+        final List<String> fileNames = new ArrayList<>();
         futures.forEach(future -> {
             try {
                 fileNames.add(future.join());
